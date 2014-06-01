@@ -1,0 +1,6 @@
+(Japanese, Shift_JIS)
+
+Copyright (C) 2014 Katayama Hirofumi MZ.
+
+このソフトは、パブリック・ドメイン・ソフトウェア (PDS)です。
+使用者の自己責任でお使い下さい。

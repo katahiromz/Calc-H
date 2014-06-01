@@ -1,0 +1,529 @@
+// HParser.cpg
+
+%token_prefix;
+%smart_pointer<shared_ptr>;
+
+%token T_DIGIT0<TokenValue>;
+%token T_DIGIT1<TokenValue>;
+%token T_DIGIT2<TokenValue>;
+%token T_DIGIT3<TokenValue>;
+%token T_DIGIT4<TokenValue>;
+%token T_DIGIT5<TokenValue>;
+%token T_DIGIT6<TokenValue>;
+%token T_DIGIT7<TokenValue>;
+%token T_DIGIT8<TokenValue>;
+%token T_DIGIT9<TokenValue>;
+
+%token T_1X1<TokenValue>;
+%token T_1X2<TokenValue>;
+%token T_1X3<TokenValue>;
+%token T_1X4<TokenValue>;
+%token T_1X5<TokenValue>;
+%token T_1X6<TokenValue>;
+%token T_1X7<TokenValue>;
+%token T_1X8<TokenValue>;
+%token T_1X9<TokenValue>;
+
+%token T_2X1<TokenValue>;
+%token T_2X2<TokenValue>;
+%token T_2X3<TokenValue>;
+%token T_2X4<TokenValue>;
+%token T_2X5<TokenValue>;
+%token T_2X6<TokenValue>;
+%token T_2X7<TokenValue>;
+%token T_2X8<TokenValue>;
+%token T_2X9<TokenValue>;
+
+%token T_3X1<TokenValue>;
+%token T_3X2<TokenValue>;
+%token T_3X3<TokenValue>;
+%token T_3X4<TokenValue>;
+%token T_3X5<TokenValue>;
+%token T_3X6<TokenValue>;
+%token T_3X7<TokenValue>;
+%token T_3X8<TokenValue>;
+%token T_3X9<TokenValue>;
+
+%token T_4X1<TokenValue>;
+%token T_4X2<TokenValue>;
+%token T_4X3<TokenValue>;
+%token T_4X4<TokenValue>;
+%token T_4X5<TokenValue>;
+%token T_4X6<TokenValue>;
+%token T_4X7<TokenValue>;
+%token T_4X8<TokenValue>;
+%token T_4X9<TokenValue>;
+
+%token T_5X1<TokenValue>;
+%token T_5X2<TokenValue>;
+%token T_5X3<TokenValue>;
+%token T_5X4<TokenValue>;
+%token T_5X5<TokenValue>;
+%token T_5X6<TokenValue>;
+%token T_5X7<TokenValue>;
+%token T_5X8<TokenValue>;
+%token T_5X9<TokenValue>;
+
+%token T_6X1<TokenValue>;
+%token T_6X2<TokenValue>;
+%token T_6X3<TokenValue>;
+%token T_6X4<TokenValue>;
+%token T_6X5<TokenValue>;
+%token T_6X6<TokenValue>;
+%token T_6X7<TokenValue>;
+%token T_6X8<TokenValue>;
+%token T_6X9<TokenValue>;
+
+%token T_7X1<TokenValue>;
+%token T_7X2<TokenValue>;
+%token T_7X3<TokenValue>;
+%token T_7X4<TokenValue>;
+%token T_7X5<TokenValue>;
+%token T_7X6<TokenValue>;
+%token T_7X7<TokenValue>;
+%token T_7X8<TokenValue>;
+%token T_7X9<TokenValue>;
+
+%token T_8X1<TokenValue>;
+%token T_8X2<TokenValue>;
+%token T_8X3<TokenValue>;
+%token T_8X4<TokenValue>;
+%token T_8X5<TokenValue>;
+%token T_8X6<TokenValue>;
+%token T_8X7<TokenValue>;
+%token T_8X8<TokenValue>;
+%token T_8X9<TokenValue>;
+
+%token T_9X1<TokenValue>;
+%token T_9X2<TokenValue>;
+%token T_9X3<TokenValue>;
+%token T_9X4<TokenValue>;
+%token T_9X5<TokenValue>;
+%token T_9X6<TokenValue>;
+%token T_9X7<TokenValue>;
+%token T_9X8<TokenValue>;
+%token T_9X9<TokenValue>;
+
+%token T_ALL<TokenValue>;       // replaced
+%token T_BAI<TokenValue>;
+%token T_BUNNO<TokenValue>;
+%token T_CHOU<TokenValue>;
+%token T_COMMA<TokenValue>;
+%token T_DE<TokenValue>;
+%token T_DOT<TokenValue>;
+%token T_GO<TokenValue>;
+%token T_HA<TokenValue>;
+%token T_HACHI<TokenValue>;
+%token T_HIITA<TokenValue>;
+%token T_HIITE<TokenValue>;
+%token T_HIKU<TokenValue>;
+%token T_HIKUTO<TokenValue>;
+%token T_HYAKU<TokenValue>;
+%token T_ICHI<TokenValue>;
+%token T_IKURA<TokenValue>;
+%token T_JIJOU<TokenValue>;
+%token T_JOU<TokenValue>;
+%token T_JUU<TokenValue>;
+%token T_KA<TokenValue>;
+%token T_KAKERU<TokenValue>;
+%token T_KAKERUTO<TokenValue>;
+%token T_KAKETA<TokenValue>;
+%token T_KAKETE<TokenValue>;
+%token T_KARA<TokenValue>;
+%token T_KEI<TokenValue>;
+%token T_KYUU<TokenValue>;
+%token T_L_PAREN<TokenValue>;
+%token T_MAN<TokenValue>;
+%token T_MINUS<TokenValue>;
+%token T_MIRUTO<TokenValue>;    // replaced
+%token T_MONO<TokenValue>;
+%token T_NANA<TokenValue>;
+%token T_NI<TokenValue>;
+%token T_NO1<TokenValue>;
+%token T_NO2<TokenValue>;
+%token T_NO3<TokenValue>;
+%token T_OKU<TokenValue>;
+%token T_OSHIETE<TokenValue>;
+%token T_PERIOD<TokenValue>;
+%token T_PLUS<TokenValue>;
+%token T_ROKU<TokenValue>;
+%token T_R_PAREN<TokenValue>;
+%token T_SA<TokenValue>;
+%token T_SAN<TokenValue>;
+%token T_SEN<TokenValue>;
+%token T_SEKI<TokenValue>;
+%token T_SHI<TokenValue>;
+%token T_SHITA<TokenValue>;
+%token T_SHITE<TokenValue>;
+%token T_SHOU<TokenValue>;
+%token T_SORE<TokenValue>;
+%token T_SURU<TokenValue>;
+%token T_SURUTO<TokenValue>;
+%token T_TASHITA<TokenValue>;
+%token T_TASHITE<TokenValue>;
+%token T_TASU<TokenValue>;
+%token T_TASUTO<TokenValue>;
+%token T_TO<TokenValue>;
+%token T_WA<TokenValue>;
+%token T_WAKARAN<TokenValue>;
+%token T_WARU<TokenValue>;
+%token T_WARUTO<TokenValue>;
+%token T_WATTA<TokenValue>;
+%token T_WATTE<TokenValue>;
+%token T_WO<TokenValue>;
+%token T_YON<TokenValue>;
+%token T_ZERO<TokenValue>;
+
+%namespace Calc_H;
+
+sentence<Sentence>
+    : [DoSent1] mono(0) T_HA T_WAKARAN T_KA T_OSHIETE T_PERIOD
+    | [DoSent1] mono(0) T_HA T_WAKARAN T_KA T_PERIOD
+    | [DoSent1] mono(0) T_HA T_WAKARAN T_PERIOD
+    | [DoSent1] mono(0) T_WO T_OSHIETE T_PERIOD
+    | [DoSent1] mono(0) T_HA T_IKURA T_KA T_WAKARAN T_KA T_OSHIETE T_PERIOD
+    | [DoSent1] mono(0) T_HA T_IKURA T_KA T_WAKARAN T_KA T_PERIOD
+    | [DoSent1] mono(0) T_HA T_IKURA T_KA T_WAKARAN T_PERIOD
+    | [DoSent1] mono(0) T_HA T_IKURA T_KA T_OSHIETE T_PERIOD
+    | [DoSent1] mono(0) T_HA T_IKURA T_KA T_PERIOD
+    | [DoSent1] mono(0) T_HA T_IKURA T_OSHIETE T_PERIOD
+    | [DoSent1] mono(0) T_HA T_IKURA T_PERIOD
+    | [DoSent1] mono(0) T_HA T_PERIOD
+    | [DoSent1] mono(0) T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_KA T_WO T_OSHIETE T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_KA T_OSHIETE T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_KA T_WAKARAN T_KA T_OSHIETE T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_KA T_WAKARAN T_KA T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_KA T_WAKARAN T_OSHIETE T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_KA T_WAKARAN T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_KA T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_OSHIETE T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_PERIOD
+    | [DoSent3] suruto(0) T_PERIOD
+    | [DoSent4] kuku(0) T_PERIOD
+    | [DoSent5] T_PERIOD
+    ;
+
+suruto<Suruto>
+    : [DoSuruto1] expression_list(0) T_WO T_TASUTO
+    | [DoSuruto2] expression_list(0) T_WO T_KAKERUTO
+    | [DoSuruto3] mono(0) T_NI expression(1) T_WO T_TASUTO
+    | [DoSuruto4] mono(0) T_NI expression(1) T_WO T_KAKERUTO
+    | [DoSuruto5] mono(0) T_KARA expression(1) T_WO T_HIKUTO
+    | [DoSuruto6] mono(0) T_WO expression(1) T_DE T_WARUTO
+    | [DoSuruto7] mono(0) T_WO T_SURUTO
+    | [DoSuruto8] mono(0) T_WO expression(1) T_BAI T_NI T_SURUTO
+    | [DoSuruto8] mono(0) T_WO expression(1) T_BAI T_SURUTO
+    | [DoSuruto9] mono(0) T_WO T_BAI T_NI T_SURUTO
+    | [DoSuruto9] mono(0) T_WO T_BAI T_SURUTO
+    | [DoSuruto10] shite(0) T_SORE T_NI expression(1) T_WO T_TASUTO
+    | [DoSuruto10] shite(0) T_SORE T_TO expression(1) T_WO T_TASUTO
+    | [DoSuruto10] shite(0)             expression(1) T_WO T_TASUTO
+    | [DoSuruto11] shite(0) T_SORE T_NI expression(1) T_WO T_KAKERUTO
+    | [DoSuruto11] shite(0) T_SORE T_TO expression(1) T_WO T_KAKERUTO
+    | [DoSuruto11] shite(0)             expression(1) T_WO T_KAKERUTO
+    | [DoSuruto12] shite(0) T_SORE T_KARA expression(1) T_WO T_HIKUTO
+    | [DoSuruto12] shite(0)               expression(1) T_WO T_HIKUTO
+    | [DoSuruto13] shite(0) T_SORE T_WO expression(1) T_DE T_WARUTO
+    | [DoSuruto13] shite(0)             expression(1) T_DE T_WARUTO
+    ;
+
+shite<Shite>
+    : [DoShite1] expression_list(0) T_WO T_TASHITE
+    | [DoShite2] expression_list(0) T_WO T_KAKETE
+    | [DoShite3] mono(0) T_NI expression(1) T_WO T_TASHITE
+    | [DoShite3] mono(0) T_TO expression(1) T_WO T_TASHITE
+    | [DoShite4] mono(0) T_NI expression(1) T_WO T_KAKETE
+    | [DoShite4] mono(0) T_TO expression(1) T_WO T_KAKETE
+    | [DoShite5] mono(0) T_KARA expression(1) T_WO T_HIITE
+    | [DoShite6] mono(0) T_WO expression(1) T_DE T_WATTE
+    | [DoShite7] mono(0) T_WO T_SHITE
+    | [DoShite8] shite(0) T_SORE T_NI expression(1) T_WO T_TASHITE
+    | [DoShite8] shite(0) T_SORE T_TO expression(1) T_WO T_TASHITE
+    | [DoShite8] shite(0)             expression(1) T_WO T_TASHITE
+    | [DoShite9] shite(0) T_SORE T_NI expression(1) T_DE T_KAKETE
+    | [DoShite9] shite(0) T_SORE T_TO expression(1) T_DE T_KAKETE
+    | [DoShite9] shite(0)             expression(1) T_DE T_KAKETE
+    | [DoShite10] shite(0) T_SORE T_KARA expression(1) T_WO T_HIITE
+    | [DoShite10] shite(0)               expression(1) T_WO T_HIITE
+    | [DoShite11] shite(0) T_SORE T_WO expression(1) T_DE T_WATTE
+    | [DoShite11] shite(0)             expression(1) T_DE T_WATTE
+    | [DoShite12] shite(0) T_SORE T_WO expression(1) T_BAI T_NI T_SHITE
+    | [DoShite12] shite(0) T_SORE T_WO expression(1) T_BAI T_SHITE
+    | [DoShite13] shite(0) T_SORE T_WO T_BAI T_NI T_SHITE
+    | [DoShite13] shite(0) T_SORE T_WO T_BAI T_SHITE
+    ;
+
+mono<Mono>
+    : [DoMono1] expression_list(0) T_WO T_TASHITA T_MONO
+    | [DoMono1] expression_list(0) T_NO2 T_WA
+    | [DoMono2] expression_list(0) T_WO T_KAKETA T_MONO
+    | [DoMono2] expression_list(0) T_NO2 T_SEKI
+    | [DoMono3] expression_list(0) T_NO2 T_SA
+    | [DoMono4] expression_list(0) T_NO2 T_SHOU
+    | [DoMono5] mono(0) T_NI expression(1) T_WO T_TASHITA T_MONO
+    | [DoMono6] mono(0) T_NI expression(1) T_WO T_KAKETA T_MONO
+    | [DoMono7] mono(0) T_KARA expression(1) T_WO T_HIITA T_MONO
+    | [DoMono8] mono(0) T_WO expression(1) T_DE T_WATTA T_MONO
+    | [DoMono9] mono(0) T_WO T_SHITA T_MONO
+    | [DoMono9] mono(0) T_SHITA T_MONO
+    | [DoMono10] mono(0) T_NO3 expression(1) T_BAI
+    | [DoMono11] mono(0) T_NO3 T_BAI
+    | [DoMono12] shite(0) T_SORE T_NI expression(1) T_WO T_TASHITA T_MONO
+    | [DoMono12] shite(0) T_SORE T_TO expression(1) T_WO T_TASHITA T_MONO
+    | [DoMono12] shite(0)             expression(1) T_WO T_TASHITA T_MONO
+    | [DoMono13] shite(0) T_SORE T_NI expression(1) T_DE T_KAKETA T_MONO
+    | [DoMono13] shite(0) T_SORE T_TO expression(1) T_DE T_KAKETA T_MONO
+    | [DoMono13] shite(0)             expression(1) T_DE T_KAKETA T_MONO
+    | [DoMono14] shite(0) T_SORE T_KARA expression(1) T_WO T_HIITA T_MONO
+    | [DoMono14] shite(0)               expression(1) T_WO T_HIITA T_MONO
+    | [DoMono15] shite(0) T_SORE T_WO expression(1) T_DE T_WATTA T_MONO
+    | [DoMono15] shite(0)             expression(1) T_DE T_WATTA T_MONO
+    | [DoMono16] shite(0) T_SORE T_WO expression(1) T_BAI T_NI T_SHITA T_MONO
+    | [DoMono16] shite(0) T_SORE T_WO expression(1) T_BAI T_SHITA T_MONO
+    | [DoMono17] shite(0) T_SORE T_WO T_BAI T_NI T_SHITA T_MONO
+    | [DoMono17] shite(0) T_SORE T_WO T_BAI T_SHITA T_MONO
+    | [DoMono18] expression(0)
+    | [DoMono19] T_SORE
+    | [DoMono20] mono(0) T_TO expression_list(1) T_NO2 T_WA
+    | [DoMono21] mono(0) T_TO expression_list(1) T_NO2 T_SEKI
+    | [DoMono22] mono(0) T_TO expression(1) T_NO2 T_WA
+    | [DoMono23] mono(0) T_TO expression(1) T_NO2 T_SEKI
+    | [DoMono24] mono(0) T_TO expression(1) T_NO2 T_SA
+    | [DoMono25] mono(0) T_TO expression(1) T_NO2 T_SHOU
+    ;
+
+expression_list<ExprList>
+    : [DoExprList1] expression_list(0) T_COMMA expression(1)
+    | [DoExprList2] expression_list(0) T_TO expression(1)
+    | [DoExprList3] expression(0) T_COMMA expression(1)
+    | [DoExprList4] expression(0) T_TO expression(1)
+    ;
+
+expression<Expr>
+    : [DoExpr1] expression(0) T_PLUS term(1)
+    | [DoExpr2] expression(0) T_MINUS term(1)
+    | [DoExpr3] expression(0) T_TASU term(1)
+    | [DoExpr4] expression(0) T_HIKU term(1)
+    | [DoExpr5] term(0)
+    ;
+
+term<Term>
+    : [DoTerm1] term(0) T_KAKERU factor(1)
+    | [DoTerm2] term(0) T_WARU factor(1)
+    | [DoTerm3] factor(0)
+    ;
+
+factor<Fact>
+    : [DoFact1] factor(0) T_NO1 primary(1) T_JOU
+    | [DoFact2] factor(0) T_NO1 T_JIJOU
+    | [DoFact3] primary(0)
+    ;
+
+primary<Prim>
+    : [DoPrim1] T_L_PAREN expression(0) T_R_PAREN
+    | [DoPrim2] T_MINUS primary(0)
+    | [DoPrim3] primary(0) T_BUNNO number(1)
+    | [DoPrim4] number(0)
+    ;
+
+number<Num>
+    : [DoNum1] kei_le_number(0) T_DOT digits(1)
+    | [DoNum2] T_ZERO T_DOT digits(0)
+    | [DoNum3] kei_le_number(0)
+    | [DoNum4] T_ZERO
+    ;
+
+kei_le_number<Num>
+    : [DoKeiLeNum1] kei_number(0)
+    | [DoKeiLeNum2] chou_le_number(0)
+    ;
+
+kei_number<Num>
+    : [DoKeiNum1] sen_le_number(0) T_KEI chou_le_number(1)
+    | [DoKeiNum2] sen_le_number(0) T_KEI
+    ;
+
+chou_le_number<Num>
+    : [DoChouLeNum1] chou_number(0)
+    | [DoChouLeNum2] oku_le_number(0)
+    ;
+
+chou_number<Num>
+    : [DoChouNum1] sen_le_number(0) T_CHOU oku_le_number(1)
+    | [DoChouNum2] sen_le_number(0) T_CHOU
+    ;
+
+oku_le_number<Num>
+    : [DoOkuLeNum1] oku_number(0)
+    | [DoOkuLeNum2] man_le_number(0)
+    ;
+
+oku_number<Num>
+    : [DoOkuNum1] sen_le_number(0) T_OKU man_le_number(1)
+    | [DoOkuNum2] sen_le_number(0) T_OKU
+    ;
+
+man_le_number<Num>
+    : [DoManLeNum1] man_number(0)
+    | [DoManLeNum2] sen_le_number(0)
+    ;
+
+man_number<Num>
+    : [DoManNum1] sen_le_number(0) T_MAN sen_le_number(1)
+    | [DoManNum2] sen_le_number(0) T_MAN
+    ;
+
+sen_le_number<Num>
+    : [DoSenLeNum1] sen_number(0)
+    | [DoSenLeNum2] hyaku_le_number(0)
+    ;
+
+sen_number<Num>
+    : [DoSenNum1] ichi_number(0) T_SEN hyaku_le_number(1)
+    | [DoSenNum2] ichi_number(0) T_SEN
+    | [DoSenNum3] T_SEN hyaku_le_number(0)
+    | [DoSenNum4] T_SEN
+    ;
+
+hyaku_le_number<Num>
+    : [DoHyakuLeNum1] hyaku_number(0)
+    | [DoHyakuLeNum2] juu_le_number(0)
+    ;
+
+hyaku_number<Num>
+    : [DoHyakuNum1] ichi_number(0) T_HYAKU juu_le_number(1)
+    | [DoHyakuNum2] ichi_number(0) T_HYAKU
+    | [DoHyakuNum3] T_HYAKU juu_le_number(0)
+    | [DoHyakuNum4] T_HYAKU
+    ;
+
+juu_le_number<Num>
+    : [DoJuuLeNum1] juu_number(0)
+    | [DoJuuLeNum2] ichi_le_number(0)
+    ;
+
+juu_number<Num>
+    : [DoJuuNum1] ichi_number(0) T_JUU ichi_number(1)
+    | [DoJuuNum2] ichi_number(0) T_JUU
+    | [DoJuuNum3] T_JUU ichi_number(0)
+    | [DoJuuNum4] T_JUU
+    ;
+
+ichi_le_number<Num>
+    : [DoIchiLeNum1] ichi_number(0)
+    ;
+
+ichi_number<Num>
+    : [DoIchiNum1] T_ICHI
+    | [DoIchiNum2] T_NI
+    | [DoIchiNum3] T_SAN
+    | [DoIchiNum4] T_YON
+    | [DoIchiNum5] T_GO
+    | [DoIchiNum6] T_ROKU
+    | [DoIchiNum7] T_NANA
+    | [DoIchiNum8] T_HACHI
+    | [DoIchiNum9] T_KYUU
+    ;
+
+kuku<Num>
+    : [DoKuku1x1] T_1X1
+    | [DoKuku1x2] T_1X2
+    | [DoKuku1x3] T_1X3
+    | [DoKuku1x4] T_1X4
+    | [DoKuku1x5] T_1X5
+    | [DoKuku1x6] T_1X6
+    | [DoKuku1x7] T_1X7
+    | [DoKuku1x8] T_1X8
+    | [DoKuku1x9] T_1X9
+    | [DoKuku2x1] T_2X1
+    | [DoKuku2x2] T_2X2
+    | [DoKuku2x3] T_2X3
+    | [DoKuku2x4] T_2X4
+    | [DoKuku2x5] T_NI T_GO
+    | [DoKuku2x6] T_2X6
+    | [DoKuku2x7] T_2X7
+    | [DoKuku2x8] T_2X8
+    | [DoKuku2x9] T_NI T_KYUU
+    | [DoKuku3x1] T_3X1
+    | [DoKuku3x2] T_3X2
+    | [DoKuku3x3] T_3X3
+    | [DoKuku3x4] T_3X4
+    | [DoKuku3x5] T_3X5
+    | [DoKuku3x6] T_3X6
+    | [DoKuku3x7] T_3X7
+    | [DoKuku3x8] T_3X8
+    | [DoKuku3x9] T_3X9
+    | [DoKuku4x1] T_4X1
+    | [DoKuku4x2] T_4X2
+    | [DoKuku4x3] T_4X3
+    | [DoKuku4x4] T_4X4
+    | [DoKuku4x5] T_4X5
+    | [DoKuku4x6] T_4X6
+    | [DoKuku4x7] T_4X7
+    | [DoKuku4x8] T_4X8
+    | [DoKuku4x9] T_4X9
+    | [DoKuku5x1] T_5X1
+    | [DoKuku5x2] T_5X2
+    | [DoKuku5x3] T_5X3
+    | [DoKuku5x4] T_5X4
+    | [DoKuku5x5] T_5X5
+    | [DoKuku5x6] T_5X6
+    | [DoKuku5x7] T_5X7
+    | [DoKuku5x8] T_GO T_HA
+    | [DoKuku5x9] T_5X9
+    | [DoKuku6x1] T_6X1
+    | [DoKuku6x2] T_ROKU T_NI
+    | [DoKuku6x3] T_6X3
+    | [DoKuku6x4] T_6X4
+    | [DoKuku6x5] T_6X5
+    | [DoKuku6x6] T_6X6
+    | [DoKuku6x7] T_6X7
+    | [DoKuku6x8] T_ROKU T_HA
+    | [DoKuku6x9] T_6X9
+    | [DoKuku7x1] T_7X1
+    | [DoKuku7x2] T_NANA T_NI
+    | [DoKuku7x3] T_7X3
+    | [DoKuku7x4] T_7X4
+    | [DoKuku7x5] T_7X5
+    | [DoKuku7x6] T_7X6
+    | [DoKuku7x7] T_7X7
+    | [DoKuku7x8] T_NANA T_HA
+    | [DoKuku7x9] T_7X9
+    | [DoKuku8x1] T_8X1
+    | [DoKuku8x2] T_HACHI T_NI
+    | [DoKuku8x3] T_8X3
+    | [DoKuku8x4] T_8X4
+    | [DoKuku8x5] T_8X5
+    | [DoKuku8x6] T_8X6
+    | [DoKuku8x7] T_8X7
+    | [DoKuku8x8] T_8X8
+    | [DoKuku8x9] T_8X9
+    | [DoKuku9x1] T_9X1
+    | [DoKuku9x2] T_KYUU T_NI
+    | [DoKuku9x3] T_9X3
+    | [DoKuku9x4] T_9X4
+    | [DoKuku9x5] T_9X5
+    | [DoKuku9x6] T_9X6
+    | [DoKuku9x7] T_9X7
+    | [DoKuku9x8] T_KYUU T_HA
+    | [DoKuku9x9] T_9X9
+    ;
+
+digits<Digits>
+    : [DoDigits1] digits(0) digit(1)
+    | [DoDigits2] digit(0)
+    ;
+
+digit<Digit>
+    : [DoDigit0] T_DIGIT0
+    | [DoDigit1] T_DIGIT1
+    | [DoDigit2] T_DIGIT2
+    | [DoDigit3] T_DIGIT3
+    | [DoDigit4] T_DIGIT4
+    | [DoDigit5] T_DIGIT5
+    | [DoDigit6] T_DIGIT6
+    | [DoDigit7] T_DIGIT7
+    | [DoDigit8] T_DIGIT8
+    | [DoDigit9] T_DIGIT9
+    ;

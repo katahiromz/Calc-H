@@ -1,0 +1,8 @@
+*.o
+caper.exe
+Debug
+Release
+*.sdf
+*.opensdf
+*.suo
+HParser.h
