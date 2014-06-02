@@ -207,7 +207,9 @@ sentence<Sentence>
 suruto<Suruto>
     : [DoSuruto1] expression_list(0) T_WO T_TASUTO
     | [DoSuruto2] expression_list(0) T_WO T_KAKERUTO
+    | [DoSuruto3] mono(0) T_NI T_HA expression(1) T_WO T_TASUTO
     | [DoSuruto3] mono(0) T_NI expression(1) T_WO T_TASUTO
+    | [DoSuruto4] mono(0) T_NI T_HA expression(1) T_WO T_KAKERUTO
     | [DoSuruto4] mono(0) T_NI expression(1) T_WO T_KAKERUTO
     | [DoSuruto5] mono(0) T_KARA expression(1) T_WO T_HIKUTO
     | [DoSuruto6] mono(0) T_WO expression(1) T_DE T_WARUTO
@@ -216,9 +218,11 @@ suruto<Suruto>
     | [DoSuruto8] mono(0) T_WO expression(1) T_BAI T_SURUTO
     | [DoSuruto9] mono(0) T_WO T_BAI T_NI T_SURUTO
     | [DoSuruto9] mono(0) T_WO T_BAI T_SURUTO
+    | [DoSuruto10] shite(0) T_SORE T_NI T_HA expression(1) T_WO T_TASUTO
     | [DoSuruto10] shite(0) T_SORE T_NI expression(1) T_WO T_TASUTO
     | [DoSuruto10] shite(0) T_SORE T_TO expression(1) T_WO T_TASUTO
     | [DoSuruto10] shite(0)             expression(1) T_WO T_TASUTO
+    | [DoSuruto11] shite(0) T_SORE T_NI T_HA expression(1) T_WO T_KAKERUTO
     | [DoSuruto11] shite(0) T_SORE T_NI expression(1) T_WO T_KAKERUTO
     | [DoSuruto11] shite(0) T_SORE T_TO expression(1) T_WO T_KAKERUTO
     | [DoSuruto11] shite(0)             expression(1) T_WO T_KAKERUTO
@@ -231,16 +235,20 @@ suruto<Suruto>
 shite<Shite>
     : [DoShite1] expression_list(0) T_WO T_TASHITE
     | [DoShite2] expression_list(0) T_WO T_KAKETE
+    | [DoShite3] mono(0) T_NI T_HA expression(1) T_WO T_TASHITE
     | [DoShite3] mono(0) T_NI expression(1) T_WO T_TASHITE
     | [DoShite3] mono(0) T_TO expression(1) T_WO T_TASHITE
+    | [DoShite4] mono(0) T_NI T_HA expression(1) T_WO T_KAKETE
     | [DoShite4] mono(0) T_NI expression(1) T_WO T_KAKETE
     | [DoShite4] mono(0) T_TO expression(1) T_WO T_KAKETE
     | [DoShite5] mono(0) T_KARA expression(1) T_WO T_HIITE
     | [DoShite6] mono(0) T_WO expression(1) T_DE T_WATTE
     | [DoShite7] mono(0) T_WO T_SHITE
+    | [DoShite8] shite(0) T_SORE T_NI T_HA expression(1) T_WO T_TASHITE
     | [DoShite8] shite(0) T_SORE T_NI expression(1) T_WO T_TASHITE
     | [DoShite8] shite(0) T_SORE T_TO expression(1) T_WO T_TASHITE
     | [DoShite8] shite(0)             expression(1) T_WO T_TASHITE
+    | [DoShite9] shite(0) T_SORE T_NI T_HA expression(1) T_DE T_KAKETE
     | [DoShite9] shite(0) T_SORE T_NI expression(1) T_DE T_KAKETE
     | [DoShite9] shite(0) T_SORE T_TO expression(1) T_DE T_KAKETE
     | [DoShite9] shite(0)             expression(1) T_DE T_KAKETE
@@ -261,6 +269,7 @@ mono<Mono>
     | [DoMono2] expression_list(0) T_NO2 T_SEKI
     | [DoMono3] expression_list(0) T_NO2 T_SA
     | [DoMono4] expression_list(0) T_NO2 T_SHOU
+    | [DoMono5] mono(0) T_NI T_HA expression(1) T_WO T_TASHITA T_MONO
     | [DoMono5] mono(0) T_NI expression(1) T_WO T_TASHITA T_MONO
     | [DoMono6] mono(0) T_NI expression(1) T_WO T_KAKETA T_MONO
     | [DoMono7] mono(0) T_KARA expression(1) T_WO T_HIITA T_MONO
@@ -269,9 +278,11 @@ mono<Mono>
     | [DoMono9] mono(0) T_SHITA T_MONO
     | [DoMono10] mono(0) T_NO3 expression(1) T_BAI
     | [DoMono11] mono(0) T_NO3 T_BAI
+    | [DoMono12] shite(0) T_SORE T_NI T_HA expression(1) T_WO T_TASHITA T_MONO
     | [DoMono12] shite(0) T_SORE T_NI expression(1) T_WO T_TASHITA T_MONO
     | [DoMono12] shite(0) T_SORE T_TO expression(1) T_WO T_TASHITA T_MONO
     | [DoMono12] shite(0)             expression(1) T_WO T_TASHITA T_MONO
+    | [DoMono13] shite(0) T_SORE T_NI T_HA expression(1) T_DE T_KAKETA T_MONO
     | [DoMono13] shite(0) T_SORE T_NI expression(1) T_DE T_KAKETA T_MONO
     | [DoMono13] shite(0) T_SORE T_TO expression(1) T_DE T_KAKETA T_MONO
     | [DoMono13] shite(0)             expression(1) T_DE T_KAKETA T_MONO

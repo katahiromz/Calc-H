@@ -15,7 +15,13 @@
     * Linux + g++ (ソースのUTF-8への変換が必要)
 
 Boostのインストールが別途必要です。また、
-jonigata氏のパーサジェネレータのCaperが必要です。
+jonigata氏の最新のパーサジェネレータCaperが必要です。
+
+    Boost
+    http://www.boost.org/
+
+    Caper
+    https://github.com/jonigata/caper
 
 
 Windows + Visual C++ 2013の場合
@@ -55,20 +61,32 @@ Linux + g++の場合
 Caperのソースコードを入手し、Linuxでビルドして下さい。
 できたcaperをこのフォルダにおいてください。それから、
 ファイル「Makefile.g++」をテキストエディタで開き、
+
     #BOOST_DIR = .
     BOOST_DIR = /c/local/boost_1_55_0
+
 を
+
     BOOST_DIR = .
     #BOOST_DIR = /c/local/boost_1_55_0
+
 にして下さい。また、
+
     DOTEXE = .exe
+
 を
+
     DOTEXE = 
+
 にする必要があります。さらに
+
     DEFS = -std=c++0x -static -Wall -pedantic -D_SJIS -finput-charset=CP932 -fexec-charset=CP932
     #DEFS = -std=c++0x -static -Wall -pedantic -D_UTF8
+
 の部分を
+
     #DEFS = -std=c++0x -static -Wall -pedantic -D_SJIS -finput-charset=CP932 -fexec-charset=CP932
     DEFS = -std=c++0x -static -Wall -pedantic -D_UTF8
+
 にする必要があります。その後、このフォルダでコマンドライン
 「make -f Makefile.g++」を実行すれば、自動的にビルドできます。

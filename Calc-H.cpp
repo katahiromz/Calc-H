@@ -8,6 +8,7 @@
 namespace Calc_H
 {
     CH_Value s_sore = 0;
+    std::string s_message;
 
     static const char *s_jdigits[] =
     {
@@ -152,12 +153,30 @@ CH_Value ChSubExprList(const shared_ptr<ExprList>& exprlist)
 {
     assert(exprlist.get());
     ExprList *el = exprlist.get();
+    if (el->size() >= 3)
+        Calc_H::s_message = "ŽO‚ÂˆÈã‚Ì‘ÎÛ‚ª‚ ‚é·‚Í‹‚ß‚ç‚ê‚Ü‚¹‚ñB";
     ExprList::iterator it = el->begin();
     ExprList::iterator end = el->end();
     CH_Value value = ChCalcExpr(*it);
     for (++it; it != end; ++it)
     {
         value -= ChCalcExpr(*it);
+    }
+    return value;
+}
+
+CH_Value ChDivExprList(const shared_ptr<ExprList>& exprlist)
+{
+    assert(exprlist.get());
+    ExprList *el = exprlist.get();
+    if (el->size() >= 3)
+        Calc_H::s_message = "ŽO‚ÂˆÈã‚Ì‘ÎÛ‚ª‚ ‚é¤‚Í‹‚ß‚ç‚ê‚Ü‚¹‚ñB";
+    ExprList::iterator it = el->begin();
+    ExprList::iterator end = el->end();
+    CH_Value value = ChCalcExpr(*it);
+    for (++it; it != end; ++it)
+    {
+        value /= ChCalcExpr(*it);
     }
     return value;
 }
@@ -172,6 +191,12 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
 
     case Mono::EXPRLIST_MUL:
         return ChMulExprList(mono->m_exprlist);
+
+    case Mono::EXPRLIST_SUB:
+        return ChSubExprList(mono->m_exprlist);
+
+    case Mono::EXPRLIST_DIV:
+        return ChDivExprList(mono->m_exprlist);
 
     case Mono::MONO_ADD:
         return ChCalcMono(mono->m_mono) + ChCalcExpr(mono->m_expr);
@@ -552,20 +577,28 @@ bool ChJustDoIt(std::string& query)
         bool old_enabled = pmp::EnableIntegerDivision(false);
         try
         {
+            Calc_H::s_message.clear();
             CH_Value value = ChCalcSentence(sentence);
             pmp::EnableIntegerDivision(true);
-            std::cout << "‚±‚½‚¦F" << ChGetJpnNumberFixed(value) <<
-                " (" << value.str() << ") " <<
-                "‚Å‚·B" << std::endl;
-            s_sore = value;
+            if (s_message.empty())
+            {
+                std::cout << "‚±‚½‚¦F" << ChGetJpnNumberFixed(value) <<
+                    " (" << value.str() << ") " <<
+                    "‚Å‚·B" << std::endl;
+                s_sore = value;
+            }
+            else
+            {
+                std::cout << "‚±‚½‚¦F" << Calc_H::s_message << std::endl;
+            }
         }
         catch (const std::runtime_error&)
         {
             std::cout << "‚±‚½‚¦F" <<
                 "‚¯‚¢‚³‚ñ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B" << std::endl;
         }
-        std::cout << std::endl;
         pmp::EnableIntegerDivision(old_enabled); // restore enabled
+        std::cout << std::endl;
         return true;
     }
     std::cout << std::endl;
@@ -599,7 +632,7 @@ void ChShowLogo(void)
 {
     std::cerr <<
         "       +--------------------------------+" << std::endl <<
-        "       |  ‚Ð‚ç‚ª‚È“d‘ì Calc-H ver.0.3.7 |" << std::endl <<
+        "       |  ‚Ð‚ç‚ª‚È“d‘ì Calc-H ver.0.3.8 |" << std::endl <<
         "       |   by •ÐŽR”Ž•¶MZ (katahiromz)   |" << std::endl <<
         "       | http://katahiromz.web.fc2.com/ |" << std::endl <<
         "       | katayama.hirofumi.mz@gmail.com |" << std::endl <<
@@ -635,7 +668,8 @@ int main(int argc, char **argv)
                 query == "‚…‚˜‚‰‚”" || query == "‚d‚w‚h‚s" ||
                 query == "quit" || query == "QUIT" ||
                 query == "‚‘‚•‚‰‚”" || query == "‚p‚t‚h‚s" ||
-                query == "‚¨‚í‚é" || query == "‚¨‚í‚è")
+                query.find("‚¨‚í‚é") != std::string::npos ||
+                query.find("‚¨‚í‚è") != std::string::npos)
                 break;
 
             if (query.find("‚ ‚è‚ª‚Æ") != std::string::npos ||

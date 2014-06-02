@@ -208,7 +208,6 @@ namespace Calc_H
 
             if (!lexeme("Ç≈ÇÕÇø", false) && lexeme("Ç≈ÇÕ")) return (T_HA);
             if (!lexeme("Ç…Ç¢Çø", false) && lexeme("Ç…Ç¢")) return (T_NI);
-            if (!lexeme("Ç…ÇÕÇø", false) && lexeme("Ç…ÇÕ")) return (T_NI);
 
             // ç≈í∑àÍívñ@ÅB
             // ÅyÇ±Ç±Ç©ÇÁÅzçsÇç~èáÇ…ï¿Ç—ë÷Ç¶ÇƒÇ®Ç≠ÅB
@@ -248,6 +247,9 @@ namespace Calc_H
             if (lexeme("ÇÌÇ©ÇÁÇ»Ç¢ÇÊÇ®"))           return (T_WAKARAN);
             if (lexeme("ÇÌÇ©ÇÁÇ»Ç¢ÇÊ"))             return (T_WAKARAN);
             if (lexeme("ÇÌÇ©ÇÁÇ»Ç¢"))               return (T_WAKARAN);
+            if (lexeme("ÇÌÇ©ÇÈ"))                   return (T_WAKARAN);
+            if (lexeme("ÇÌÇ©ÇËÇ‹Ç∑"))               return (T_WAKARAN);
+            if (lexeme("ÇÌÇ©ÇËÇ‹ÇπÇÒ"))             return (T_WAKARAN);
             if (lexeme("ÇÌ"))                       return (T_WA);
             if (lexeme("ÇÎÇ¡"))                     return (T_ROKU);
             if (lexeme("ÇÎÇ≠"))                     return (T_ROKU);
@@ -316,7 +318,7 @@ namespace Calc_H
             if (lexeme("Ç…ÇΩÇ∑Ç±Ç∆ÇÃ"))             return (T_TASU);
             if (lexeme("Ç…Ç≠ÇÌÇ¶ÇÈÇ±Ç∆ÇÃ"))         return (T_TASU);
             if (lexeme("Ç…Ç©ÇØÇÈÇ±Ç∆ÇÃ"))           return (T_KAKERU);
-            if (lexeme("Ç…Ç°"))                       return (T_NI);
+            if (lexeme("Ç…Ç°"))                     return (T_NI);
             if (lexeme("Ç…"))                       return (T_NI);
             if (lexeme("Ç»Å[ÇÒÇæ"))                 return (T_IKURA);
             if (lexeme("Ç»Å[Ç…"))                   return (T_IKURA);
@@ -485,6 +487,10 @@ namespace Calc_H
             if (lexeme("Ç©Ç»Ç†"))                   return (T_KA);
             if (lexeme("Ç©Ç»Çü"))                   return (T_KA);
             if (lexeme("Ç©Ç»"))                     return (T_KA);
+            if (lexeme("Ç©ÇÀ"))                     return (T_KA);
+            if (lexeme("Ç©ÇÀÇ¶"))                   return (T_KA);
+            if (lexeme("Ç©ÇÀÅ["))                   return (T_KA);
+            if (lexeme("Ç©ÇÀÇ•"))                   return (T_KA);
             if (lexeme("Ç©Ç¡Ç±ÇÇ∆Ç∂ÇÈ"))           return (T_R_PAREN);
             if (lexeme("Ç©Ç¡Ç±ÇÇ∆Ç∂Çƒ"))           return (T_R_PAREN);
             if (lexeme("Ç©Ç¡Ç±Ç∆Ç∂ÇÈ"))             return (T_R_PAREN);
