@@ -16,15 +16,15 @@
 namespace Calc_H
 {
     template <class Iterator>
-    bool parse(shared_ptr<Sentence>& s, Iterator begin, Iterator end)
+    bool parse(shared_ptr<Sentence>& s, std::string& error,
+               Iterator begin, Iterator end)
     {
         ParserSite ps;
         Scanner<Iterator, ParserSite> scanner(ps);
 
         std::vector<TokenValue> infos;
         scanner.scan(infos, begin, end);
-        //#ifdef DEEPDEBUG
-        #if 1
+        #ifdef _DEBUG
             scanner.show_tokens(infos.begin(), infos.end());
             std::cerr << std::endl << "--------------" << std::endl;
         #endif
@@ -48,33 +48,43 @@ namespace Calc_H
             }
         }
 
-        shared_ptr<Node> node;
-        if (parser.accept(node))
+        if (ps.error().empty())
         {
-            s = static_pointer_cast<Sentence, Node>(node);
-            return true;
+            shared_ptr<Node> node;
+            if (parser.accept(node))
+            {
+                s = static_pointer_cast<Sentence, Node>(node);
+                return true;
+            }
+        }
+        else
+        {
+            error = ps.error();
         }
 
         return false;
     }
 
-    inline bool parse_string(shared_ptr<Sentence>& sentence, const char *s)
+    inline bool parse_string(shared_ptr<Sentence>& sentence, const char *s,
+                             std::string& error)
     {
-        return parse(sentence, s, s + std::strlen(s));
+        return parse(sentence, error, s, s + std::strlen(s));
     }
 
-    inline bool parse_string(shared_ptr<Sentence>& sentence, const std::string& str)
+    inline bool parse_string(shared_ptr<Sentence>& sentence, const std::string& str,
+                             std::string& error)
     {
-        return parse(sentence, str.begin(), str.end());
+        return parse(sentence, error, str.begin(), str.end());
     }
 
-    inline bool parse_file(shared_ptr<Sentence>& sentence, const char *filename)
+    inline bool parse_file(shared_ptr<Sentence>& sentence, const char *filename,
+                           std::string& error)
     {
         std::ifstream file(filename);
         if (file.is_open())
         {
             std::istreambuf_iterator<char> begin(file), end;
-            bool ok = parse(sentence, begin, end);
+            bool ok = parse(sentence, error, begin, end);
             file.close();
             return ok;
         }

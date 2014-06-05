@@ -11,7 +11,7 @@ namespace Calc_H
     struct ParserSite
     {
     public:
-        ParserSite() : m_num_errors(0), m_num_warnings(0)
+        ParserSite()
         {
         }
 
@@ -2334,31 +2334,23 @@ namespace Calc_H
         //
         void message(const std::string& str)
         {
-            std::string loc = location().to_string();
-            std::cerr << loc << str << std::endl;
+			error() = location().str();
+            error() += ": ";
+            error() += str;
         }
 
         void not_supported_yet(const std::string& str)
         {
             message(std::string("エラー: ") + str +
                     " はまだサポートされていません。");
-            add_error();
         }
 
-        int get_errors() const   { return m_num_errors; }
-        int get_warnings() const { return m_num_warnings; }
-        void add_error()         { m_num_errors++; }
-        void add_warning()       { m_num_warnings++; }
-
-        void clear_errors()
-        {
-            m_num_errors = m_num_warnings = 0;
-        }
+              std::string& error()       { return m_error; }
+        const std::string& error() const { return m_error; }
 
     protected:
         CH_Location                     m_location;
-        int                             m_num_errors;
-        int                             m_num_warnings;
+        std::string                     m_error;
     };
 } // namespace Calc_H
 

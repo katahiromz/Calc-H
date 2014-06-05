@@ -681,20 +681,36 @@ std::string ChGetJpnNumber2(CH_Value num)
 void CrTrimString(std::string& str)
 {
     static const char *spaces = " \t";
-    std::size_t i = str.find_first_not_of(spaces);
-    std::size_t j = str.find_last_not_of(spaces);
-    if (i != std::string::npos)
+    std::size_t i, j;
+    bool flag;
+    do
     {
-        if (j != std::string::npos)
-            str = str.substr(i, j - i + 1);
+        i = str.find_first_not_of(spaces);
+        j = str.find_last_not_of(spaces);
+        if (i != std::string::npos)
+        {
+            if (j != std::string::npos)
+                str = str.substr(i, j - i + 1);
+            else
+                str = str.substr(i);
+        }
         else
-            str = str.substr(i);
-    }
-    else
-    {
-        if (j != std::string::npos)
-            str = str.substr(0, j + 1);
-    }
+        {
+            if (j != std::string::npos)
+                str = str.substr(0, j + 1);
+        }
+
+        const std::string zenkaku_space("　");
+        for (flag = false; ;)
+        {
+            i = str.find(zenkaku_space);
+            if (i != 0)
+                break;
+
+            flag = true;
+            str = str.substr(zenkaku_space.size());
+        }
+    } while (flag);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -704,6 +720,13 @@ std::string ChJustDoIt(std::string& query)
     std::stringstream sstream;
     shared_ptr<Sentence> sentence;
     CrTrimString(query);
+
+    if (query.empty())
+        return "";
+
+    // comment
+    if (query.size() >= 2 && query[0] == '/' && query[1] == '/')
+        return "";
 
     sstream << "こたえ：";
 
@@ -718,6 +741,7 @@ std::string ChJustDoIt(std::string& query)
         return sstream.str();
     }
 
+    std::string error;
     query += "?";
     if (query.find("ありがと") != std::string::npos ||
         query.find("さんきゅ") != std::string::npos ||
@@ -725,7 +749,7 @@ std::string ChJustDoIt(std::string& query)
     {
         sstream << "こちらこそつかってくれてありがとう。" << std::endl;
     }
-    else if (parse_string(sentence, query))
+    else if (parse_string(sentence, query, error))
     {
         pmp::Number::Type old_type =
             pmp::SetIntDivType(pmp::Number::FLOATING);
@@ -757,54 +781,17 @@ std::string ChJustDoIt(std::string& query)
     }
     else
     {
-        sstream << "けいさんできませんでした。" << std::endl;
+        if (error.empty())
+        {
+            sstream << "けいさんできませんでした。" << std::endl;
+        }
+        else
+        {
+            sstream << error << std::endl;
+        }
     }
 
     return sstream.str();
-}
-
-////////////////////////////////////////////////////////////////////////////
-
-void ChShowLogo(void)
-{
-    std::cerr <<
-        "       +--------------------------------+" << std::endl <<
-        "       |  ひらがな電卓 Calc-H ver.0.4.0 |" << std::endl <<
-        "       |   by 片山博文MZ (katahiromz)   |" << std::endl <<
-        "       | http://katahiromz.web.fc2.com/ |" << std::endl <<
-        "       | katayama.hirofumi.mz@gmail.com |" << std::endl <<
-        "       +--------------------------------+" << std::endl <<
-        std::endl;
-}
-
-////////////////////////////////////////////////////////////////////////////
-
-extern "C"
-int main(int argc, char **argv)
-{
-    std::string query;
-
-    ChShowLogo();
-    std::cerr << "コメント：ぶんすうもけいさんできるようになりました。" <<
-                 std::endl << std::endl;
-
-    std::cerr << "「exit」か「おわる」でしゅうりょうできます。" << std::endl;
-    std::cerr << std::endl;
-    for (;;)
-    {
-        std::cout << "にゅうりょく：";
-
-        if (!std::getline(std::cin, query))
-            break;
-
-        std::string result = ChJustDoIt(query);
-        std::cout << result << std::endl;
-
-        if (result.find("しゅうりょうします") != std::string::npos)
-            break;
-    }
-
-    return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////

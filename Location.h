@@ -49,7 +49,7 @@ struct CH_Location
         return loc;
     }
 
-    std::string to_string() const
+    std::string str() const
     {
         std::string str = m_file;
         char buf[32];

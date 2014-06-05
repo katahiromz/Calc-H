@@ -9,7 +9,6 @@ CXX = g++
 #BOOST_DIR = .
 BOOST_DIR = /c/local/boost_1_55_0
 
-# Linuxの場合は、事前にソースコードをUTF-8にして下さい。
 DEFS = -std=c++0x -static -Wall -pedantic -D_SJIS -finput-charset=CP932 -fexec-charset=CP932
 #DEFS = -std=c++0x -static -Wall -pedantic -D_UTF8
 
@@ -32,17 +31,47 @@ HEADERS = \
 	Location.h \
 	stdafx.h \
 
-OBJS = \
+COMMON_OBJS = \
 	Calc-H$(DOTOBJ) \
 	PmpNumber$(DOTOBJ) \
 
-Calc-H$(DOTEXE): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o Calc-H$(DOTEXE) $(OBJS)
+GUI_OBJS = \
+	$(COMMON_OBJS) \
+	Calc-H-GUI$(DOTOBJ) \
+	PointSizeRect$(DOTOBJ) \
+	Resizable$(DOTOBJ) \
+	Calc-H-GUI_res$(DOTOBJ) \
+
+GUI_HEADERS = \
+	stdafx.h \
+	PointSizeRect.h \
+	PointSizeRect_inl.h \
+	Resizable.h \
+	Resizable_inl.h \
+
+all: Calc-H-CUI$(DOTEXE) Calc-H-GUI$(DOTEXE)
+
+Calc-H-CUI$(DOTEXE): $(COMMON_OBJS) Calc-H-CUI$(DOTOBJ)
+	$(CXX) -mconsole $(CXXFLAGS) -o Calc-H-CUI$(DOTEXE) $(COMMON_OBJS) Calc-H-CUI$(DOTOBJ)
+	strip -s Calc-H-CUI$(DOTEXE)
+Calc-H-GUI$(DOTEXE): $(GUI_OBJS) $(GUI_HEADERS)
+	$(CXX) -mwindows $(CXXFLAGS) -o Calc-H-GUI$(DOTEXE) $(GUI_OBJS)
+	strip -s Calc-H-GUI$(DOTEXE)
 
 Calc-H$(DOTOBJ): $(HEADERS) Calc-H.cpp
 	$(CXX) -c $(CXXFLAGS) Calc-H.cpp
 PmpNumber$(DOTOBJ): PmpNumber.hpp PmpNumber.cpp
 	$(CXX) -c $(CXXFLAGS) PmpNumber.cpp
+Calc-H-CUI$(DOTOBJ): stdafx.h Calc-H-CUI.cpp
+	$(CXX) -c $(CXXFLAGS) Calc-H-CUI.cpp
+Calc-H-GUI$(DOTOBJ): stdafx.h Calc-H-GUI.cpp
+	$(CXX) -c $(CXXFLAGS) Calc-H-GUI.cpp
+PointSizeRect$(DOTOBJ): stdafx.h PointSizeRect.cpp PointSizeRect.h PointSizeRect_inl.h
+	$(CXX) -c $(CXXFLAGS) PointSizeRect.cpp
+Resizable$(DOTOBJ): stdafx.h Resizable.cpp Resizable.h Resizable.h
+	$(CXX) -c $(CXXFLAGS) Resizable.cpp
+Calc-H-GUI_res$(DOTOBJ): Calc-H-GUI.rc
+	windres -i Calc-H-GUI.rc -o Calc-H-GUI_res$(DOTOBJ)
 
 HParser.h: $(CAPER) HParser.cpg
 	$(CAPER) HParser.cpg HParser.h >caper.log 2>&1

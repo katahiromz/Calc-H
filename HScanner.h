@@ -576,8 +576,8 @@ namespace Calc_H
                 ch = getch();
             } while (ch != EOF);
 
-            std::cout << "エラー：文字列「" << str <<
-                "」がわかりません。" << std::endl;
+            message(std::string("エラー：文字列「") +
+                    str + "」がわかりません。\n");
 
             return commit_token(eof);
         }   // get_token

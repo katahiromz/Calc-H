@@ -22,6 +22,7 @@
     <ProjectGuid>{289D79F9-1038-4380-B9D3-43E19A8A2CF9}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Calc-H</RootNamespace>
+    <ProjectName>Calc-H-CUI</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -164,6 +165,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Calc-H.cpp" />
+    <ClCompile Include="Calc-H-CUI.cpp" />
     <ClCompile Include="PmpNumber.cpp" />
   </ItemGroup>
   <ItemGroup>

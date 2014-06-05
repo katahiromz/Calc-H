@@ -14,7 +14,7 @@ caper.exe HParser.cpg HParser.h
 goto end
 
 :uptodated
-echo HParser.h is up-to-dated.
+echo HParser.h is up-to-date.
 goto end
 
 :error1
