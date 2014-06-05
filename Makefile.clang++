@@ -22,6 +22,7 @@ CXXFLAGS = $(DEFS) $(INCLUDES) -O9 -Ofast -DNDEBUG
 CAPER = ./caper$(DOTEXE)
 
 HEADERS = \
+	Calc-H.h \
 	PmpNumber.hpp \
 	HParseHeader.h \
 	HParser.h \
@@ -44,8 +45,10 @@ PmpNumber$(DOTOBJ): PmpNumber.hpp PmpNumber.cpp
 	$(CXX) -c $(CXXFLAGS) PmpNumber.cpp
 
 HParser.h: $(CAPER) HParser.cpg
-	$(CAPER) HParser.cpg HParser.h
+	$(CAPER) HParser.cpg HParser.h >caper.log 2>&1
 
 clean:
 	rm -f *$(DOTOBJ)
 	rm -f HParser.h
+	rm -f FTCHECK.BAT
+	rm -f caper.log

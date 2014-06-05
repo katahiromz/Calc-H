@@ -8,3 +8,5 @@ rm -f *.filters
 rm -fR Debug/
 rm -fR Release/
 rm -f HParser.h
+rm -f FTCHECK.BAT
+rm -f caper.log

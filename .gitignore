@@ -6,3 +6,5 @@ Release
 *.opensdf
 *.suo
 HParser.h
+FTCHECK.BAT
+caper.log

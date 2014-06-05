@@ -45,6 +45,10 @@ namespace Calc_H
             resynth2(infos);
             resynth3(infos);
             resynth4(infos);
+            resynth5(infos);
+            resynth6(infos);
+            resynth7(infos);
+            resynth8(infos);
         }
 
         std::string token_to_string(const info_type& info)
@@ -218,52 +222,54 @@ namespace Calc_H
             if (lexeme("？"))                       return (T_PERIOD);
             if (lexeme("＝"))                       return (T_HA);
             if (lexeme("．"))                       return (T_PERIOD);
+            if (lexeme("－"))                       return (T_MINUS);
             if (lexeme("，"))                       return (T_COMMA);
+            if (lexeme("＋"))                       return (T_TASU);
             if (lexeme("）"))                       return (T_R_PAREN);
             if (lexeme("（"))                       return (T_L_PAREN);
             if (lexeme("！"))                       return (T_PERIOD);
+            if (lexeme("・"))                       return (T_DOT);
             if (lexeme("をわることの"))             return (T_WARU);
             if (lexeme("をひくことの"))             return (T_HIKU);
-            if (lexeme("を"))                       return (T_WO);
+            if (lexeme("を"))                       return (T_WO1);
             if (lexeme("われば"))                   return (T_WARUTO);
             if (lexeme("わると"))                   return (T_WARUTO);
             if (lexeme("わることの"))               return (T_WARU);
             if (lexeme("わる"))                     return (T_WARU);
-            if (lexeme("わりざんやって"))           return (T_WATTE);
-            if (lexeme("わりざんすれば"))           return (T_WARUTO);
-            if (lexeme("わりざんすると"))           return (T_WARUTO);
-            if (lexeme("わりざんして"))             return (T_WATTE);
-            if (lexeme("わりざんしたら"))           return (T_WARUTO);
-            if (lexeme("わりざんした"))             return (T_WATTA);
-            if (lexeme("わりざんし"))               return (T_WARUTO);
-            if (lexeme("わりざん"))                 return (T_WARU);
+            if (lexeme("わりざん"))                 return (T_WARIZAN);
             if (lexeme("わり"))                     return (T_WATTE);
             if (lexeme("わって"))                   return (T_WATTE);
             if (lexeme("わったら"))                 return (T_WARUTO);
             if (lexeme("わった"))                   return (T_WATTA);
+            if (lexeme("わかる"))                   return (T_WAKARAN);
+            if (lexeme("わかりません"))             return (T_WAKARAN);
+            if (lexeme("わかります"))               return (T_WAKARAN);
             if (lexeme("わからんとよ"))             return (T_WAKARAN);
             if (lexeme("わからん"))                 return (T_WAKARAN);
             if (lexeme("わからないよー"))           return (T_WAKARAN);
             if (lexeme("わからないよお"))           return (T_WAKARAN);
             if (lexeme("わからないよ"))             return (T_WAKARAN);
             if (lexeme("わからない"))               return (T_WAKARAN);
-            if (lexeme("わかる"))                   return (T_WAKARAN);
-            if (lexeme("わかります"))               return (T_WAKARAN);
-            if (lexeme("わかりません"))             return (T_WAKARAN);
             if (lexeme("わ"))                       return (T_WA);
             if (lexeme("ろっ"))                     return (T_ROKU);
             if (lexeme("ろく"))                     return (T_ROKU);
             if (lexeme("れい"))                     return (T_ZERO);
             if (lexeme("よー"))                     return (T_KA);
             if (lexeme("よん"))                     return (T_YON);
+            if (lexeme("よお"))                     return (T_KA);
+            if (lexeme("よぉ"))                     return (T_KA);
+            if (lexeme("よう"))                     return (T_KA);
+            if (lexeme("よぅ"))                     return (T_KA);
             if (lexeme("よ"))                       return (T_KA);
             if (lexeme("やれば"))                   return (T_SURUTO);
+            if (lexeme("やると"))                   return (T_SURUTO);
             if (lexeme("やねん"))                   return (T_KA);
             if (lexeme("やね"))                     return (T_KA);
             if (lexeme("やってみれば"))             return (T_SURUTO);
             if (lexeme("やってみると"))             return (T_SURUTO);
             if (lexeme("やって"))                   return (T_SHITE);
             if (lexeme("やったら"))                 return (T_SURUTO);
+            if (lexeme("やった"))                   return (T_SHITA);
             if (lexeme("や"))                       return (T_KA);
             if (lexeme("もの"))                     return (T_MONO);
             if (lexeme("もとめると"))               return (T_SURUTO);
@@ -272,7 +278,7 @@ namespace Calc_H
             if (lexeme("もとめたら"))               return (T_SURUTO);
             if (lexeme("もとめた"))                 return (T_SHITA);
             if (lexeme("もとめ"))                   return (T_SHITE);
-            if (lexeme("も"))                       return (T_WO);
+            if (lexeme("も"))                       return (T_WO1);
             if (lexeme("みんな"))                   return (T_ALL);
             if (lexeme("みれば"))                   return (T_MIRUTO);
             if (lexeme("みると"))                   return (T_MIRUTO);
@@ -297,13 +303,7 @@ namespace Calc_H
             if (lexeme("ひくと"))                   return (T_HIKUTO);
             if (lexeme("ひくことの"))               return (T_HIKU);
             if (lexeme("ひく"))                     return (T_HIKU);
-            if (lexeme("ひきざんやって"))           return (T_HIITE);
-            if (lexeme("ひきざんすれば"))           return (T_HIKUTO);
-            if (lexeme("ひきざんすると"))           return (T_HIKUTO);
-            if (lexeme("ひきざんして"))             return (T_HIITE);
-            if (lexeme("ひきざんしたら"))           return (T_HIKUTO);
-            if (lexeme("ひきざんし"))               return (T_HIITE);
-            if (lexeme("ひきざん"))                 return (T_HIKU);
+            if (lexeme("ひきざん"))                 return (T_HIKIZAN);
             if (lexeme("ひき"))                     return (T_HIITE);
             if (lexeme("ひいて"))                   return (T_HIITE);
             if (lexeme("ひいたら"))                 return (T_HIKUTO);
@@ -314,6 +314,7 @@ namespace Calc_H
             if (lexeme("は"))                       return (T_HA);
             if (lexeme("の"))                       return (T_NO1);
             if (lexeme("ねん"))                     return (T_KA);
+            if (lexeme("ね"))                       return (T_KA);
             if (lexeme("にー"))                     return (T_NI);
             if (lexeme("にたすことの"))             return (T_TASU);
             if (lexeme("にくわえることの"))         return (T_TASU);
@@ -368,10 +369,10 @@ namespace Calc_H
             if (lexeme("どうなのでしょう"))         return (T_IKURA);
             if (lexeme("どうなの"))                 return (T_IKURA);
             if (lexeme("どう"))                     return (T_IKURA);
-            if (lexeme("とね、"))                   return (T_TO);
-            if (lexeme("とな、"))                   return (T_TO);
+            if (lexeme("とね、"))                   return (T_TO1);
+            if (lexeme("とな、"))                   return (T_TO1);
             if (lexeme("とじかっこ"))               return (T_R_PAREN);
-            if (lexeme("と"))                       return (T_TO);
+            if (lexeme("と"))                       return (T_TO1);
             if (lexeme("でんねん"))                 return (T_KA);
             if (lexeme("で"))                       return (T_DE);
             if (lexeme("てん"))                     return (T_DOT);
@@ -383,14 +384,7 @@ namespace Calc_H
             if (lexeme("たして"))                   return (T_TASHITE);
             if (lexeme("たしたら"))                 return (T_TASUTO);
             if (lexeme("たした"))                   return (T_TASHITA);
-            if (lexeme("たしざんやって"))           return (T_TASHITE);
-            if (lexeme("たしざんすれば"))           return (T_TASUTO);
-            if (lexeme("たしざんすると"))           return (T_TASUTO);
-            if (lexeme("たしざんして"))             return (T_TASHITE);
-            if (lexeme("たしざんしたら"))           return (T_TASUTO);
-            if (lexeme("たしざんした"))             return (T_TASHITA);
-            if (lexeme("たしざんし"))               return (T_TASHITE);
-            if (lexeme("たしざん"))                 return (T_TASU);
+            if (lexeme("たしざん"))                 return (T_TASHIZAN);
             if (lexeme("たしあわせれば"))           return (T_TASUTO);
             if (lexeme("たしあわせると"))           return (T_TASUTO);
             if (lexeme("たしあわせる"))             return (T_TASU);
@@ -408,22 +402,8 @@ namespace Calc_H
             if (lexeme("する"))                     return (T_SURU);
             if (lexeme("すべて"))                   return (T_ALL);
             if (lexeme("じょー"))                   return (T_JOU);
-            if (lexeme("じょざんやって"))           return (T_WATTE);
-            if (lexeme("じょざんすれば"))           return (T_WARUTO);
-            if (lexeme("じょざんすると"))           return (T_WARUTO);
-            if (lexeme("じょざんして"))             return (T_WATTE);
-            if (lexeme("じょざんしたら"))           return (T_WARUTO);
-            if (lexeme("じょざんした"))             return (T_WATTA);
-            if (lexeme("じょざんし"))               return (T_WARUTO);
-            if (lexeme("じょざん"))                 return (T_WARU);
-            if (lexeme("じょうざんやって"))         return (T_KAKETE);
-            if (lexeme("じょうざんすれば"))         return (T_KAKERUTO);
-            if (lexeme("じょうざんすると"))         return (T_KAKERUTO);
-            if (lexeme("じょうざんして"))           return (T_KAKETE);
-            if (lexeme("じょうざんしたら"))         return (T_KAKERUTO);
-            if (lexeme("じょうざんした"))           return (T_KAKETA);
-            if (lexeme("じょうざんし"))             return (T_KAKETE);
-            if (lexeme("じょうざん"))               return (T_KAKERU);
+            if (lexeme("じょざん"))                 return (T_WARIZAN);
+            if (lexeme("じょうざん"))               return (T_KAKEZAN);
             if (lexeme("じょう"))                   return (T_JOU);
             if (lexeme("じゅー"))                   return (T_JUU);
             if (lexeme("じゅう"))                   return (T_JUU);
@@ -457,19 +437,8 @@ namespace Calc_H
             if (lexeme("こたえてくれ"))             return (T_OSHIETE);
             if (lexeme("こたえてくださいよ"))       return (T_OSHIETE);
             if (lexeme("こたえてください"))         return (T_OSHIETE);
-            if (lexeme("げんざんして"))             return (T_HIITE);
-            if (lexeme("げんざんし"))               return (T_HIITE);
-            if (lexeme("けいさんやれば"))           return (T_SURUTO);
-            if (lexeme("けいさんやると"))           return (T_SURUTO);
-            if (lexeme("けいさんやって"))           return (T_SHITE);
-            if (lexeme("けいさんやったら"))         return (T_SURUTO);
-            if (lexeme("けいさんやった"))           return (T_SHITA);
-            if (lexeme("けいさんすれば"))           return (T_SURUTO);
-            if (lexeme("けいさんすると"))           return (T_SURUTO);
-            if (lexeme("けいさんして"))             return (T_SHITE);
-            if (lexeme("けいさんしたら"))           return (T_SURUTO);
-            if (lexeme("けいさんした"))             return (T_SHITA);
-            if (lexeme("けいさんし"))               return (T_SHITE);
+            if (lexeme("げんざん"))                 return (T_HIKIZAN);
+            if (lexeme("けいさん"))                 return (T_KEISAN);
             if (lexeme("けい"))                     return (T_KEI);
             if (lexeme("くわえると"))               return (T_TASUTO);
             if (lexeme("くわえることの"))           return (T_TASU);
@@ -477,33 +446,35 @@ namespace Calc_H
             if (lexeme("くわえて"))                 return (T_TASHITE);
             if (lexeme("くわえたら"))               return (T_TASUTO);
             if (lexeme("くわえた"))                 return (T_TASHITA);
+            if (lexeme("くれよー"))                 return (T_KA);
+            if (lexeme("くれよぅ"))                 return (T_KA);
+            if (lexeme("くれよ"))                   return (T_KA);
+            if (lexeme("くれ"))                     return (T_KA);
+            if (lexeme("くださいよー"))             return (T_KA);
+            if (lexeme("くださいよぅ"))             return (T_KA);
+            if (lexeme("くださいよ"))               return (T_KA);
+            if (lexeme("ください"))                 return (T_KA);
             if (lexeme("く"))                       return (T_KYUU);
             if (lexeme("きゅー"))                   return (T_KYUU);
             if (lexeme("きゅう"))                   return (T_KYUU);
             if (lexeme("が"))                       return (T_HA);
             if (lexeme("かー"))                     return (T_KA);
             if (lexeme("から"))                     return (T_KARA);
+            if (lexeme("かねー"))                   return (T_KA);
+            if (lexeme("かねえ"))                   return (T_KA);
+            if (lexeme("かねぇ"))                   return (T_KA);
+            if (lexeme("かね"))                     return (T_KA);
             if (lexeme("かなー"))                   return (T_KA);
             if (lexeme("かなあ"))                   return (T_KA);
             if (lexeme("かなぁ"))                   return (T_KA);
             if (lexeme("かな"))                     return (T_KA);
-            if (lexeme("かね"))                     return (T_KA);
-            if (lexeme("かねえ"))                   return (T_KA);
-            if (lexeme("かねー"))                   return (T_KA);
-            if (lexeme("かねぇ"))                   return (T_KA);
             if (lexeme("かっこをとじる"))           return (T_R_PAREN);
             if (lexeme("かっこをとじて"))           return (T_R_PAREN);
             if (lexeme("かっことじる"))             return (T_R_PAREN);
             if (lexeme("かっことじて"))             return (T_R_PAREN);
             if (lexeme("かっことじ"))               return (T_R_PAREN);
             if (lexeme("かっこ"))                   return (T_L_PAREN);
-            if (lexeme("かさんすれば"))             return (T_TASUTO);
-            if (lexeme("かさんすると"))             return (T_TASUTO);
-            if (lexeme("かさんして"))               return (T_TASHITE);
-            if (lexeme("かさんしたら"))             return (T_TASUTO);
-            if (lexeme("かさんした"))               return (T_TASHITA);
-            if (lexeme("かさんし"))                 return (T_TASHITE);
-            if (lexeme("かさん"))                   return (T_TASU);
+            if (lexeme("かさん"))                   return (T_TASHIZAN);
             if (lexeme("かければ"))                 return (T_KAKERUTO);
             if (lexeme("かけると"))                 return (T_KAKERUTO);
             if (lexeme("かけることの"))             return (T_KAKERU);
@@ -511,18 +482,13 @@ namespace Calc_H
             if (lexeme("かけて"))                   return (T_KAKETE);
             if (lexeme("かけたら"))                 return (T_KAKERUTO);
             if (lexeme("かけた"))                   return (T_KAKETA);
-            if (lexeme("かけざんやって"))           return (T_KAKETE);
-            if (lexeme("かけざんすれば"))           return (T_KAKERUTO);
-            if (lexeme("かけざんすると"))           return (T_KAKERUTO);
-            if (lexeme("かけざんして"))             return (T_KAKETE);
-            if (lexeme("かけざんしたら"))           return (T_KAKERUTO);
-            if (lexeme("かけざんした"))             return (T_KAKETA);
-            if (lexeme("かけざんし"))               return (T_KAKETE);
-            if (lexeme("かけざん"))                 return (T_KAKERU);
+            if (lexeme("かけざん"))                 return (T_KAKEZAN);
             if (lexeme("かけあわせれば"))           return (T_KAKERUTO);
             if (lexeme("かけあわせると"))           return (T_KAKERUTO);
             if (lexeme("かけあわせる"))             return (T_KAKERU);
+            if (lexeme("かけあわせて"))             return (T_KAKERUTO);
             if (lexeme("かけあわせた"))             return (T_KAKETA);
+            if (lexeme("かけあわせ"))               return (T_KAKEZAN);
             if (lexeme("かけあわす"))               return (T_KAKERU);
             if (lexeme("かけ"))                     return (T_KAKERU);
             if (lexeme("かあ"))                     return (T_KA);
@@ -545,6 +511,7 @@ namespace Calc_H
             if (lexeme("おく"))                     return (T_OKU);
             if (lexeme("いっ"))                     return (T_ICHI);
             if (lexeme("いち"))                     return (T_ICHI);
+            if (lexeme("いくらになるでしょう"))     return (T_IKURA);
             if (lexeme("いくらになる"))             return (T_IKURA);
             if (lexeme("いくらになります"))         return (T_IKURA);
             if (lexeme("いくらでっ"))               return (T_IKURA);
@@ -578,6 +545,8 @@ namespace Calc_H
             if (lexeme("★"))                       return (T_PERIOD);
             if (lexeme("●"))                       return (T_PERIOD);
             if (lexeme("◎"))                       return (T_PERIOD);
+            if (lexeme("÷"))                       return (T_WARU);
+            if (lexeme("×"))                       return (T_KAKERU);
             if (lexeme("}"))                        return (T_R_PAREN);
             if (lexeme("{"))                        return (T_L_PAREN);
             if (lexeme("]"))                        return (T_R_PAREN);
@@ -585,8 +554,12 @@ namespace Calc_H
             if (lexeme("?"))                        return (T_PERIOD);
             if (lexeme("=="))                       return (T_HA);
             if (lexeme("="))                        return (T_HA);
+            if (lexeme("/"))                        return (T_WARU);
             if (lexeme("."))                        return (T_PERIOD);
+            if (lexeme("-"))                        return (T_MINUS);
             if (lexeme(","))                        return (T_COMMA);
+            if (lexeme("+"))                        return (T_TASU);
+            if (lexeme("*"))                        return (T_KAKERU);
             if (lexeme(")"))                        return (T_R_PAREN);
             if (lexeme("("))                        return (T_L_PAREN);
             if (lexeme("!"))                        return (T_PERIOD);
@@ -726,6 +699,7 @@ namespace Calc_H
             m_parser_site.message(str);
         }
 
+        // T_PERIOD, T_COMMAを整理して、T_MIRUTO, T_ALLを削除する。
         void resynth1(std::vector<info_type>& infos)
         {
             std::vector<info_type> newinfos;
@@ -774,6 +748,11 @@ namespace Calc_H
             infos = newinfos;
         }
 
+        // 「の」をT_NO1, T_NO2, T_NO3に分類する。
+        // T_NO2: 「わ」「さ」「せき」「しょう」の直前の「の」。
+        // T_NO3: 「何の何倍」の「の」。
+        // T_NO4: 「かけざん」「けいさん」などの直前の「の」。
+        // T_NO1: それ以外。
         void resynth2(std::vector<info_type>& infos)
         {
             std::vector<info_type>::iterator it = infos.begin();
@@ -806,6 +785,18 @@ namespace Calc_H
                     }
                     break;
 
+                case T_TASHIZAN:
+                case T_HIKIZAN:
+                case T_KAKEZAN:
+                case T_WARIZAN:
+                case T_KEISAN:
+                    if (it_save != end)
+                    {
+                        it_save->set_token(T_NO4);
+                        it_save = end;
+                    }
+                    break;
+
                 case T_JOU:
                 case T_JIJOU:
                     it_save = end;
@@ -816,6 +807,7 @@ namespace Calc_H
             }
         }
 
+        // 特定の語句の後のT_COMMAを削除する。
         void resynth3(std::vector<info_type>& infos)
         {
             std::vector<info_type> newinfos;
@@ -848,10 +840,11 @@ namespace Calc_H
                 case T_SURUTO:
                 case T_TASHITE:
                 case T_TASU:
-                case T_TO:
+                case T_TO1:
                 case T_WARU:
                 case T_WATTE:
-                case T_WO:
+                case T_WO1:
+                case T_WO2:
                     it2 = it;
                     it2++;
                     if (it2->get_token() == T_COMMA)
@@ -870,6 +863,7 @@ namespace Calc_H
             infos = newinfos;
         }
 
+        // 小数点の後の数字にしるしをつける。
         void resynth4(std::vector<info_type>& infos)
         {
             std::vector<info_type>::iterator it = infos.begin();
@@ -896,6 +890,153 @@ namespace Calc_H
 
                 default:
                     dot = false;
+                    break;
+                }
+            }
+        }
+
+        // 「と」をT_TO1, T_TO2に分類する。
+        // T_TO2: 「なんとなんぶんのなに」の「と」。
+        // T_TO1: それ以外。
+        void resynth5(std::vector<info_type>& infos)
+        {
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            std::vector<info_type>::iterator it_save = end;
+            for (; it != end; ++it)
+            {
+                switch (it->get_token())
+                {
+                case T_TO1:
+                    it_save = it;
+                    break;
+
+                case T_ICHI:
+                case T_NI:
+                case T_SAN:
+                case T_YON:
+                case T_GO:
+                case T_ROKU:
+                case T_NANA:
+                case T_HACHI:
+                case T_KYUU:
+                    break;
+
+                case T_BUNNO:
+                    if (it_save != end)
+                    {
+                        it_save->set_token(T_TO2);
+                        it_save = end;
+                    }
+                    break;
+
+                default:
+                    it_save = end;
+                    break;
+                }
+            }
+        }
+
+        // 「計算し」「をし」などの「し」を修正する。
+        void resynth6(std::vector<info_type>& infos)
+        {
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            bool flag = false;
+            for (; it != end; ++it)
+            {
+                switch (it->get_token())
+                {
+                case T_TASHIZAN:
+                case T_HIKIZAN:
+                case T_KAKEZAN:
+                case T_WARIZAN:
+                case T_KEISAN:
+                case T_PLUS:
+                case T_MINUS:
+                case T_WO1:
+                case T_WO2:
+                    flag = true;
+                    break;
+
+                case T_YON:
+                    if (flag)
+                    {
+                        flag = false;
+                        it->set_token(T_SHITE);
+                    }
+                    break;
+
+                default:
+                    flag = false;
+                    break;
+                }
+            }
+        }
+
+        // 「を」をT_WO1とT_WO2に分類する。
+        // T_WO2: 「たしざん」「けいさん」などの直後の「を」。
+        // T_WO1: そのほかの「を」。
+        void resynth7(std::vector<info_type>& infos)
+        {
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            bool flag = false;
+            for (; it != end; ++it)
+            {
+                switch (it->get_token())
+                {
+                case T_TASHIZAN:
+                case T_HIKIZAN:
+                case T_KAKEZAN:
+                case T_WARIZAN:
+                case T_KEISAN:
+                    flag = true;
+                    break;
+
+                case T_WO1:
+                    if (flag)
+                    {
+                        flag = false;
+                        it->set_token(T_WO2);
+                    }
+                    break;
+
+                default:
+                    flag = false;
+                    break;
+                }
+            }
+        }
+
+        // 「を」の直後に「けいさん」「たしざん」などがあれば、
+        // 「を」を「の」に変える。
+        void resynth8(std::vector<info_type>& infos)
+        {
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            std::vector<info_type>::iterator it_save = end;
+            for (; it != end; ++it)
+            {
+                switch (it->get_token())
+                {
+                case T_TASHIZAN:
+                case T_HIKIZAN:
+                case T_KAKEZAN:
+                case T_WARIZAN:
+                case T_KEISAN:
+                    if (it_save != end)
+                    {
+                        it_save->set_token(T_NO4);
+                    }
+                    break;
+
+                case T_WO1:
+                    it_save = it;
+                    break;
+
+                default:
+                    it_save = end;
                     break;
                 }
             }

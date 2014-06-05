@@ -44,13 +44,15 @@ namespace Calc_H
     {
         enum {
             MONO, EXPR, SURUTO, NUM, EMPTY,
-            EXPRLIST_ADD, EXPRLIST_MUL, EXPRLIST_SUB
+            EXPRLIST_ADD, EXPRLIST_MUL, EXPRLIST_SUB,
+            SHITE
         } m_type;
         shared_ptr<Mono>        m_mono;
         shared_ptr<Expr>        m_expr;
         shared_ptr<Suruto>      m_suruto;
         shared_ptr<Num>         m_num;
         shared_ptr<ExprList>    m_exprlist;
+        shared_ptr<Shite>       m_shite;
     };
 
     struct Suruto : Node
@@ -59,7 +61,8 @@ namespace Calc_H
             EXPRLIST_ADD, EXPRLIST_MUL,
             MONO_ADD, MONO_MUL, MONO_SUB, MONO_DIV, MONO_ONLY,
             MONO_WO_EXPR_BAI, MONO_WO_BAI,
-            SHITE_TASUTO, SHITE_KAKERUTO, SHITE_HIKUTO, SHITE_WARUTO
+            SHITE_TASUTO, SHITE_KAKERUTO, SHITE_HIKUTO, SHITE_WARUTO,
+            MONO_WO_EXPR_SUB, MONO_DE_EXPR_DIV
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
@@ -71,9 +74,10 @@ namespace Calc_H
     {
         enum {
             EXPRLIST_ADD, EXPRLIST_MUL, 
-            MONO_ADD, MONO_MUL, MONO_SUB, MONO_DIV, EXPR_ONLY,
+            MONO_ADD, MONO_MUL, MONO_SUB, MONO_DIV, MONO_ONLY,
             SHITE_ADD, SHITE_MUL, SHITE_SUB, SHITE_DIV,
-            SHITE_EXPR_BAI, SHITE_BAI
+            SHITE_EXPR_BAI, SHITE_BAI,
+            MONO_WO_EXPR_SUB, MONO_WO_EXPR_DIV
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
@@ -91,7 +95,8 @@ namespace Calc_H
             SHITE_EXPR_BAI, SHITE_BAI, EXPR_ONLY, SORE,
             MONO_TO_EXPRLIST_ADD, MONO_TO_EXPRLIST_MUL,
             MONO_TO_EXPR_ADD, MONO_TO_EXPR_MUL,
-            MONO_TO_EXPR_SUB, MONO_TO_EXPR_DIV
+            MONO_TO_EXPR_SUB, MONO_TO_EXPR_DIV,
+            MONO_WO_EXPR_KARA_SUB, MONO_DE_EXPR_WO_DIV
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
@@ -117,6 +122,17 @@ namespace Calc_H
         shared_ptr<Fact>    m_fact;
     };
 
+    struct Prim : Node
+    {
+        enum {
+            EXPR, MINUS, NUM, BUNSUU, TAIBUNSUU
+        } m_type;
+        shared_ptr<Expr>    m_expr;
+        shared_ptr<Prim>    m_prim;
+        shared_ptr<Num>     m_num;
+        shared_ptr<Num>     m_num2;
+    };
+
     struct Fact : Node
     {
         enum {
@@ -124,16 +140,6 @@ namespace Calc_H
         } m_type;
         shared_ptr<Fact>    m_fact;
         shared_ptr<Prim>    m_prim;
-    };
-
-    struct Prim : Node
-    {
-        enum {
-            EXPR, MINUS, NUM, BUNSUU
-        } m_type;
-        shared_ptr<Expr>    m_expr;
-        shared_ptr<Prim>    m_prim;
-        shared_ptr<Num>     m_num;
     };
 
     struct ExprList : Node, std::vector<shared_ptr<Expr> >

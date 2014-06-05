@@ -116,6 +116,7 @@
 %token T_HACHI<TokenValue>;
 %token T_HIITA<TokenValue>;
 %token T_HIITE<TokenValue>;
+%token T_HIKIZAN<TokenValue>;
 %token T_HIKU<TokenValue>;
 %token T_HIKUTO<TokenValue>;
 %token T_HYAKU<TokenValue>;
@@ -129,8 +130,10 @@
 %token T_KAKERUTO<TokenValue>;
 %token T_KAKETA<TokenValue>;
 %token T_KAKETE<TokenValue>;
+%token T_KAKEZAN<TokenValue>;
 %token T_KARA<TokenValue>;
 %token T_KEI<TokenValue>;
+%token T_KEISAN<TokenValue>;
 %token T_KYUU<TokenValue>;
 %token T_L_PAREN<TokenValue>;
 %token T_MAN<TokenValue>;
@@ -139,9 +142,10 @@
 %token T_MONO<TokenValue>;
 %token T_NANA<TokenValue>;
 %token T_NI<TokenValue>;
-%token T_NO1<TokenValue>;
-%token T_NO2<TokenValue>;
-%token T_NO3<TokenValue>;
+%token T_NO1<TokenValue>;       // no ... jou
+%token T_NO2<TokenValue>;       // no wa/seki/sa/shou
+%token T_NO3<TokenValue>;       // no bai
+%token T_NO4<TokenValue>;       // no keisan
 %token T_OKU<TokenValue>;
 %token T_OSHIETE<TokenValue>;
 %token T_PERIOD<TokenValue>;
@@ -161,154 +165,292 @@
 %token T_SURUTO<TokenValue>;
 %token T_TASHITA<TokenValue>;
 %token T_TASHITE<TokenValue>;
+%token T_TASHIZAN<TokenValue>;
 %token T_TASU<TokenValue>;
 %token T_TASUTO<TokenValue>;
-%token T_TO<TokenValue>;
+%token T_TO1<TokenValue>;
+%token T_TO2<TokenValue>;   // taibunsuu
 %token T_WA<TokenValue>;
 %token T_WAKARAN<TokenValue>;
+%token T_WARIZAN<TokenValue>;
 %token T_WARU<TokenValue>;
 %token T_WARUTO<TokenValue>;
 %token T_WATTA<TokenValue>;
 %token T_WATTE<TokenValue>;
-%token T_WO<TokenValue>;
+%token T_WO1<TokenValue>;   // do object
+%token T_WO2<TokenValue>;   // do verb
 %token T_YON<TokenValue>;
 %token T_ZERO<TokenValue>;
 
 %namespace Calc_H;
 
 sentence<Sentence>
-    : [DoSent1] mono(0) T_HA T_WAKARAN T_KA T_OSHIETE T_PERIOD
+    : [DoSent1] mono(0) T_HA T_WAKARAN T_KA T_OSHIETE T_KA T_PERIOD
+    | [DoSent1] mono(0) T_HA T_WAKARAN T_KA T_OSHIETE T_PERIOD
     | [DoSent1] mono(0) T_HA T_WAKARAN T_KA T_PERIOD
     | [DoSent1] mono(0) T_HA T_WAKARAN T_PERIOD
-    | [DoSent1] mono(0) T_WO T_OSHIETE T_PERIOD
+    | [DoSent1] mono(0) T_WO1 T_OSHIETE T_KA T_PERIOD
+    | [DoSent1] mono(0) T_WO1 T_OSHIETE T_PERIOD
+    | [DoSent1] mono(0) T_HA T_IKURA T_KA T_WAKARAN T_KA T_OSHIETE T_KA T_PERIOD
     | [DoSent1] mono(0) T_HA T_IKURA T_KA T_WAKARAN T_KA T_OSHIETE T_PERIOD
     | [DoSent1] mono(0) T_HA T_IKURA T_KA T_WAKARAN T_KA T_PERIOD
     | [DoSent1] mono(0) T_HA T_IKURA T_KA T_WAKARAN T_PERIOD
+    | [DoSent1] mono(0) T_HA T_IKURA T_KA T_OSHIETE T_KA T_PERIOD
     | [DoSent1] mono(0) T_HA T_IKURA T_KA T_OSHIETE T_PERIOD
     | [DoSent1] mono(0) T_HA T_IKURA T_KA T_PERIOD
+    | [DoSent1] mono(0) T_HA T_IKURA T_OSHIETE T_KA T_PERIOD
     | [DoSent1] mono(0) T_HA T_IKURA T_OSHIETE T_PERIOD
     | [DoSent1] mono(0) T_HA T_IKURA T_PERIOD
     | [DoSent1] mono(0) T_HA T_PERIOD
     | [DoSent1] mono(0) T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KA T_WO T_OSHIETE T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_KA T_WO1 T_OSHIETE T_KA T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_KA T_WO1 T_OSHIETE T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KA T_OSHIETE T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_KA T_WAKARAN T_KA T_OSHIETE T_KA T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KA T_WAKARAN T_KA T_OSHIETE T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KA T_WAKARAN T_KA T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_KA T_WAKARAN T_OSHIETE T_KA T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KA T_WAKARAN T_OSHIETE T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KA T_WAKARAN T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KA T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_OSHIETE T_KA T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_OSHIETE T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_PERIOD
     | [DoSent3] suruto(0) T_PERIOD
-    | [DoSent4] kuku(0) T_PERIOD
-    | [DoSent5] T_PERIOD
+    | [DoSent4] shite(0) T_KA T_PERIOD
+    | [DoSent4] shite(0) T_PERIOD
+    | [DoSent5] kuku(0) T_PERIOD
+    | [DoSent6] T_PERIOD
     ;
 
 suruto<Suruto>
-    : [DoSuruto1] expression_list(0) T_WO T_TASUTO
-    | [DoSuruto2] expression_list(0) T_WO T_KAKERUTO
-    | [DoSuruto3] mono(0) T_NI T_HA expression(1) T_WO T_TASUTO
-    | [DoSuruto3] mono(0) T_NI expression(1) T_WO T_TASUTO
-    | [DoSuruto4] mono(0) T_NI T_HA expression(1) T_WO T_KAKERUTO
-    | [DoSuruto4] mono(0) T_NI expression(1) T_WO T_KAKERUTO
-    | [DoSuruto5] mono(0) T_KARA expression(1) T_WO T_HIKUTO
-    | [DoSuruto6] mono(0) T_WO expression(1) T_DE T_WARUTO
-    | [DoSuruto7] mono(0) T_WO T_SURUTO
-    | [DoSuruto8] mono(0) T_WO expression(1) T_BAI T_NI T_SURUTO
-    | [DoSuruto8] mono(0) T_WO expression(1) T_BAI T_SURUTO
-    | [DoSuruto9] mono(0) T_WO T_BAI T_NI T_SURUTO
-    | [DoSuruto9] mono(0) T_WO T_BAI T_SURUTO
-    | [DoSuruto10] shite(0) T_SORE T_NI T_HA expression(1) T_WO T_TASUTO
-    | [DoSuruto10] shite(0) T_SORE T_NI expression(1) T_WO T_TASUTO
-    | [DoSuruto10] shite(0) T_SORE T_TO expression(1) T_WO T_TASUTO
-    | [DoSuruto10] shite(0)             expression(1) T_WO T_TASUTO
-    | [DoSuruto11] shite(0) T_SORE T_NI T_HA expression(1) T_WO T_KAKERUTO
-    | [DoSuruto11] shite(0) T_SORE T_NI expression(1) T_WO T_KAKERUTO
-    | [DoSuruto11] shite(0) T_SORE T_TO expression(1) T_WO T_KAKERUTO
-    | [DoSuruto11] shite(0)             expression(1) T_WO T_KAKERUTO
-    | [DoSuruto12] shite(0) T_SORE T_KARA expression(1) T_WO T_HIKUTO
-    | [DoSuruto12] shite(0)               expression(1) T_WO T_HIKUTO
-    | [DoSuruto13] shite(0) T_SORE T_WO expression(1) T_DE T_WARUTO
+    : [DoSuruto1] expression_list(0) T_WO1 T_TASUTO
+    | [DoSuruto1] expression_list(0) T_NO4 T_TASHIZAN T_SURUTO
+    | [DoSuruto1] expression_list(0) T_NO4 T_TASHIZAN T_WO2 T_SURUTO
+    | [DoSuruto2] expression_list(0) T_WO1 T_KAKERUTO
+    | [DoSuruto2] expression_list(0) T_NO4 T_KAKEZAN T_SURUTO
+    | [DoSuruto2] expression_list(0) T_NO4 T_KAKEZAN T_WO2 T_SURUTO
+    | [DoSuruto3] mono(0) T_NI expression(1) T_WO2 T_TASUTO
+    | [DoSuruto3] mono(0) T_NI expression(1) T_NO4 T_TASHIZAN T_SURUTO
+    | [DoSuruto3] mono(0) T_WO1 expression(1) T_NI T_TASUTO
+    | [DoSuruto3] mono(0) T_WO1 expression(1) T_NI T_TASHIZAN T_SURUTO
+    | [DoSuruto4] mono(0) T_NI expression(1) T_WO1 T_KAKERUTO
+    | [DoSuruto4] mono(0) T_NI expression(1) T_NO4 T_KAKEZAN T_SURUTO
+    | [DoSuruto4] mono(0) T_WO1 expression(1) T_NI T_KAKERUTO
+    | [DoSuruto4] mono(0) T_WO1 expression(1) T_NI T_KAKEZAN T_SURUTO
+    | [DoSuruto5] mono(0) T_KARA expression(1) T_WO1 T_HIKUTO
+    | [DoSuruto5] mono(0) T_KARA expression(1) T_NO4 T_HIKIZAN T_SURUTO
+    | [DoSuruto5] mono(0) T_KARA expression(1) T_NO4 T_HIKIZAN T_WO2 T_SURUTO
+    | [DoSuruto16] mono(0) T_WO1 expression(1) T_KARA T_HIKUTO
+    | [DoSuruto16] mono(0) T_WO1 expression(1) T_KARA T_HIKIZAN T_SURUTO
+    | [DoSuruto6] mono(0) T_WO1 expression(1) T_DE T_WARUTO
+    | [DoSuruto6] mono(0) T_WO1 expression(1) T_DE T_WARIZAN T_WO2 T_SURUTO
+    | [DoSuruto6] mono(0) T_WO1 expression(1) T_DE T_WARIZAN T_SURUTO
+    | [DoSuruto17] mono(0) T_DE expression(1) T_WO1 T_WARUTO
+    | [DoSuruto17] mono(0) T_DE expression(1) T_NO4 T_WARIZAN T_WO2 T_SURUTO
+    | [DoSuruto17] mono(0) T_DE expression(1) T_NO4 T_WARIZAN T_SURUTO
+    | [DoSuruto7] mono(0) T_NO4 T_TASHIZAN T_WO2 T_SURUTO
+    | [DoSuruto7] mono(0) T_NO4 T_HIKIZAN T_WO2 T_SURUTO
+    | [DoSuruto7] mono(0) T_NO4 T_KAKEZAN T_WO2 T_SURUTO
+    | [DoSuruto7] mono(0) T_NO4 T_WARIZAN T_WO2 T_SURUTO
+    | [DoSuruto7] mono(0) T_NO4 T_KEISAN T_WO2 T_SURUTO
+    | [DoSuruto7] mono(0) T_NO4 T_TASHIZAN T_SURUTO
+    | [DoSuruto7] mono(0) T_NO4 T_HIKIZAN T_SURUTO
+    | [DoSuruto7] mono(0) T_NO4 T_KAKEZAN T_SURUTO
+    | [DoSuruto7] mono(0) T_NO4 T_WARIZAN T_SURUTO
+    | [DoSuruto7] mono(0) T_NO4 T_KEISAN T_SURUTO
+    | [DoSuruto8] mono(0) T_WO1 expression(1) T_BAI T_NI T_SURUTO
+    | [DoSuruto8] mono(0) T_WO1 expression(1) T_BAI T_SURUTO
+    | [DoSuruto9] mono(0) T_WO1 T_BAI T_NI T_SURUTO
+    | [DoSuruto9] mono(0) T_WO1 T_BAI T_SURUTO
+    | [DoSuruto10] shite(0) T_SORE T_NI expression(1) T_WO1 T_TASUTO
+    | [DoSuruto10] shite(0) T_SORE T_NI expression(1) T_NO4 T_TASHIZAN T_SURUTO
+    | [DoSuruto10] shite(0) T_SORE T_NI expression(1) T_NO4 T_TASHIZAN T_WO2 T_SURUTO
+    | [DoSuruto10] shite(0) T_SORE T_TO1 expression(1) T_WO1 T_TASUTO
+    | [DoSuruto10] shite(0) T_SORE T_TO1 expression(1) T_NO4 T_TASHIZAN T_SURUTO
+    | [DoSuruto10] shite(0) T_SORE T_TO1 expression(1) T_NO4 T_TASHIZAN T_WO2 T_SURUTO
+    | [DoSuruto10] shite(0)              expression(1) T_WO1 T_TASUTO
+    | [DoSuruto10] shite(0)              expression(1) T_NO4 T_TASHIZAN T_SURUTO
+    | [DoSuruto10] shite(0)              expression(1) T_NO4 T_TASHIZAN T_WO2 T_SURUTO
+    | [DoSuruto11] shite(0) T_SORE T_NI expression(1) T_WO1 T_KAKERUTO
+    | [DoSuruto11] shite(0) T_SORE T_NI expression(1) T_NO4 T_KAKEZAN T_SURUTO
+    | [DoSuruto11] shite(0) T_SORE T_NI expression(1) T_NO4 T_KAKEZAN T_WO2 T_SURUTO
+    | [DoSuruto11] shite(0) T_SORE T_TO1 expression(1) T_WO1 T_KAKERUTO
+    | [DoSuruto11] shite(0) T_SORE T_TO1 expression(1) T_NO4 T_KAKEZAN T_SURUTO
+    | [DoSuruto11] shite(0) T_SORE T_TO1 expression(1) T_NO4 T_KAKEZAN T_WO2 T_SURUTO
+    | [DoSuruto11] shite(0)              expression(1) T_WO1 T_KAKERUTO
+    | [DoSuruto11] shite(0)              expression(1) T_NO4 T_KAKEZAN T_SURUTO
+    | [DoSuruto11] shite(0)              expression(1) T_NO4 T_KAKEZAN T_WO2 T_SURUTO
+    | [DoSuruto12] shite(0) T_SORE T_KARA expression(1) T_WO1 T_HIKUTO
+    | [DoSuruto12] shite(0) T_SORE T_KARA expression(1) T_NO4 T_HIKIZAN T_SURUTO
+    | [DoSuruto12] shite(0) T_SORE T_KARA expression(1) T_NO4 T_HIKIZAN T_WO2 T_SURUTO
+    | [DoSuruto12] shite(0)               expression(1) T_WO1 T_HIKUTO
+    | [DoSuruto12] shite(0)               expression(1) T_NO4 T_HIKIZAN T_SURUTO
+    | [DoSuruto12] shite(0)               expression(1) T_NO4 T_HIKIZAN T_WO2 T_SURUTO
+    | [DoSuruto13] shite(0) T_SORE T_WO1 expression(1) T_DE T_WARUTO
+    | [DoSuruto13] shite(0) T_SORE T_WO1 expression(1) T_DE T_WARIZAN T_SURUTO
     | [DoSuruto13] shite(0)             expression(1) T_DE T_WARUTO
+    | [DoSuruto13] shite(0)             expression(1) T_DE T_WARIZAN T_SURUTO
     ;
 
 shite<Shite>
-    : [DoShite1] expression_list(0) T_WO T_TASHITE
-    | [DoShite2] expression_list(0) T_WO T_KAKETE
-    | [DoShite3] mono(0) T_NI T_HA expression(1) T_WO T_TASHITE
-    | [DoShite3] mono(0) T_NI expression(1) T_WO T_TASHITE
-    | [DoShite3] mono(0) T_TO expression(1) T_WO T_TASHITE
-    | [DoShite4] mono(0) T_NI T_HA expression(1) T_WO T_KAKETE
-    | [DoShite4] mono(0) T_NI expression(1) T_WO T_KAKETE
-    | [DoShite4] mono(0) T_TO expression(1) T_WO T_KAKETE
-    | [DoShite5] mono(0) T_KARA expression(1) T_WO T_HIITE
-    | [DoShite6] mono(0) T_WO expression(1) T_DE T_WATTE
-    | [DoShite7] mono(0) T_WO T_SHITE
-    | [DoShite8] shite(0) T_SORE T_NI T_HA expression(1) T_WO T_TASHITE
-    | [DoShite8] shite(0) T_SORE T_NI expression(1) T_WO T_TASHITE
-    | [DoShite8] shite(0) T_SORE T_TO expression(1) T_WO T_TASHITE
-    | [DoShite8] shite(0)             expression(1) T_WO T_TASHITE
-    | [DoShite9] shite(0) T_SORE T_NI T_HA expression(1) T_DE T_KAKETE
+    : [DoShite1] expression_list(0) T_WO1 T_TASHITE
+    | [DoShite1] expression_list(0) T_NO4 T_TASHIZAN T_SHITE
+    | [DoShite1] expression_list(0) T_NO4 T_TASHIZAN T_WO2 T_SHITE
+    | [DoShite2] expression_list(0) T_WO1 T_KAKETE
+    | [DoShite2] expression_list(0) T_NO4 T_KAKEZAN T_SHITE
+    | [DoShite2] expression_list(0) T_NO4 T_KAKEZAN T_WO2 T_SHITE
+    | [DoShite3] mono(0) T_NI expression(1) T_WO1 T_TASHITE
+    | [DoShite3] mono(0) T_WO1 expression(1) T_NI T_TASHITE
+    | [DoShite3] mono(0) T_WO1 expression(1) T_NI T_TASHIZAN T_SHITE
+    | [DoShite3] mono(0) T_NI expression(1) T_NO4 T_TASHIZAN T_SHITE
+    | [DoShite3] mono(0) T_NI expression(1) T_NO4 T_TASHIZAN T_WO2 T_SHITE
+    | [DoShite3] mono(0) T_TO1 expression(1) T_WO1 T_TASHITE
+    | [DoShite3] mono(0) T_TO1 expression(1) T_NO4 T_TASHIZAN T_SHITE
+    | [DoShite3] mono(0) T_TO1 expression(1) T_NO4 T_TASHIZAN T_WO2 T_SHITE
+    | [DoShite4] mono(0) T_NI expression(1) T_WO1 T_KAKETE
+    | [DoShite4] mono(0) T_WO1 expression(1) T_NI T_KAKETE
+    | [DoShite4] mono(0) T_WO1 expression(1) T_NI T_KAKEZAN T_SHITE
+    | [DoShite4] mono(0) T_NI expression(1) T_NO4 T_KAKEZAN T_SHITE
+    | [DoShite4] mono(0) T_NI expression(1) T_NO4 T_KAKEZAN T_WO2 T_SHITE
+    | [DoShite4] mono(0) T_TO1 expression(1) T_WO1 T_KAKETE
+    | [DoShite4] mono(0) T_TO1 expression(1) T_NO4 T_KAKEZAN T_SHITE
+    | [DoShite4] mono(0) T_TO1 expression(1) T_NO4 T_KAKEZAN T_WO2 T_SHITE
+    | [DoShite5] mono(0) T_KARA expression(1) T_WO1 T_HIITE
+    | [DoShite5] mono(0) T_KARA expression(1) T_NO4 T_HIKIZAN T_SHITE
+    | [DoShite5] mono(0) T_KARA expression(1) T_NO4 T_HIKIZAN T_WO2 T_SHITE
+    | [DoShite16] mono(0) T_WO1 expression(1) T_KARA T_HIITE
+    | [DoShite16] mono(0) T_WO1 expression(1) T_KARA T_HIKIZAN T_SHITE
+    | [DoShite6] mono(0) T_WO1 expression(1) T_DE T_WATTE
+    | [DoShite6] mono(0) T_WO1 expression(1) T_DE T_WARIZAN T_SHITE
+    | [DoShite6] mono(0) T_WO1 expression(1) T_DE T_WARIZAN T_WO2 T_SHITE
+    | [DoShite17] mono(0) T_DE expression(1) T_WO1 T_WATTE
+    | [DoShite17] mono(0) T_DE expression(1) T_WO1 T_WARIZAN T_SHITE
+    | [DoShite7] mono(0) T_NO4 T_TASHIZAN T_SHITE
+    | [DoShite7] mono(0) T_NO4 T_HIKIZAN T_SHITE
+    | [DoShite7] mono(0) T_NO4 T_KAKEZAN T_SHITE
+    | [DoShite7] mono(0) T_NO4 T_WARIZAN T_SHITE
+    | [DoShite7] mono(0) T_NO4 T_KEISAN T_SHITE
+    | [DoShite7] mono(0) T_NO4 T_TASHIZAN T_WO2 T_SHITE
+    | [DoShite7] mono(0) T_NO4 T_HIKIZAN T_WO2 T_SHITE
+    | [DoShite7] mono(0) T_NO4 T_KAKEZAN T_WO2 T_SHITE
+    | [DoShite7] mono(0) T_NO4 T_WARIZAN T_WO2 T_SHITE
+    | [DoShite7] mono(0) T_NO4 T_KEISAN T_WO2 T_SHITE
+    | [DoShite7] mono(0) T_NO1 T_SHITE
+    | [DoShite8] shite(0) T_SORE T_NI expression(1) T_WO1 T_TASHITE
+    | [DoShite8] shite(0) T_SORE T_NI expression(1) T_NO4 T_TASHIZAN T_SHITE
+    | [DoShite8] shite(0) T_SORE T_TO1 expression(1) T_WO1 T_TASHITE
+    | [DoShite8] shite(0) T_SORE T_TO1 expression(1) T_NO4 T_TASHIZAN T_SHITE
+    | [DoShite8] shite(0)              expression(1) T_WO1 T_TASHITE
+    | [DoShite8] shite(0)              expression(1) T_NO4 T_TASHIZAN T_SHITE
     | [DoShite9] shite(0) T_SORE T_NI expression(1) T_DE T_KAKETE
-    | [DoShite9] shite(0) T_SORE T_TO expression(1) T_DE T_KAKETE
-    | [DoShite9] shite(0)             expression(1) T_DE T_KAKETE
-    | [DoShite10] shite(0) T_SORE T_KARA expression(1) T_WO T_HIITE
-    | [DoShite10] shite(0)               expression(1) T_WO T_HIITE
-    | [DoShite11] shite(0) T_SORE T_WO expression(1) T_DE T_WATTE
+    | [DoShite9] shite(0) T_SORE T_NI expression(1) T_DE T_KAKEZAN T_SHITE
+    | [DoShite9] shite(0) T_SORE T_NI expression(1) T_DE T_KAKEZAN T_WO2 T_SHITE
+    | [DoShite9] shite(0) T_SORE T_TO1 expression(1) T_DE T_KAKETE
+    | [DoShite9] shite(0) T_SORE T_TO1 expression(1) T_DE T_KAKEZAN T_SHITE
+    | [DoShite9] shite(0) T_SORE T_TO1 expression(1) T_DE T_KAKEZAN T_WO2 T_SHITE
+    | [DoShite9] shite(0)              expression(1) T_DE T_KAKETE
+    | [DoShite9] shite(0)              expression(1) T_DE T_KAKEZAN T_SHITE
+    | [DoShite9] shite(0)              expression(1) T_DE T_KAKEZAN T_WO2 T_SHITE
+    | [DoShite10] shite(0) T_SORE T_KARA expression(1) T_WO1 T_HIITE
+    | [DoShite10] shite(0) T_SORE T_KARA expression(1) T_NO4 T_HIKIZAN T_SHITE
+    | [DoShite10] shite(0) T_SORE T_KARA expression(1) T_DE T_HIITE
+    | [DoShite10] shite(0) T_SORE T_KARA expression(1) T_DE T_HIKIZAN T_SHITE
+    | [DoShite10] shite(0) T_SORE T_KARA expression(1) T_DE T_HIKIZAN T_WO2 T_SHITE
+    | [DoShite10] shite(0)               expression(1) T_WO1 T_HIITE
+    | [DoShite10] shite(0)               expression(1) T_NO4 T_HIKIZAN T_SHITE
+    | [DoShite10] shite(0)               expression(1) T_DE T_HIITE
+    | [DoShite10] shite(0)               expression(1) T_DE T_HIKIZAN T_SHITE
+    | [DoShite10] shite(0)               expression(1) T_DE T_HIKIZAN T_WO2 T_SHITE
+    | [DoShite11] shite(0) T_SORE T_WO1 expression(1) T_DE T_WATTE
+    | [DoShite11] shite(0) T_SORE T_WO1 expression(1) T_DE T_WARIZAN T_SHITE
+    | [DoShite11] shite(0) T_SORE T_WO1 expression(1) T_DE T_WARIZAN T_WO2 T_SHITE
     | [DoShite11] shite(0)             expression(1) T_DE T_WATTE
-    | [DoShite12] shite(0) T_SORE T_WO expression(1) T_BAI T_NI T_SHITE
-    | [DoShite12] shite(0) T_SORE T_WO expression(1) T_BAI T_SHITE
-    | [DoShite13] shite(0) T_SORE T_WO T_BAI T_NI T_SHITE
-    | [DoShite13] shite(0) T_SORE T_WO T_BAI T_SHITE
+    | [DoShite11] shite(0)             expression(1) T_DE T_WARIZAN T_SHITE
+    | [DoShite11] shite(0)             expression(1) T_DE T_WARIZAN T_WO2 T_SHITE
+    | [DoShite12] shite(0) T_SORE T_WO1 expression(1) T_BAI T_NI T_SHITE
+    | [DoShite12] shite(0) T_SORE T_WO1 expression(1) T_BAI T_SHITE
+    | [DoShite13] shite(0) T_SORE T_WO1 T_BAI T_NI T_SHITE
+    | [DoShite13] shite(0) T_SORE T_WO1 T_BAI T_SHITE
     ;
 
 mono<Mono>
-    : [DoMono1] expression_list(0) T_WO T_TASHITA T_MONO
+    : [DoMono1] expression_list(0) T_WO1 T_TASHITA T_MONO
     | [DoMono1] expression_list(0) T_NO2 T_WA
-    | [DoMono2] expression_list(0) T_WO T_KAKETA T_MONO
+    | [DoMono2] expression_list(0) T_WO1 T_KAKETA T_MONO
     | [DoMono2] expression_list(0) T_NO2 T_SEKI
     | [DoMono3] expression_list(0) T_NO2 T_SA
     | [DoMono4] expression_list(0) T_NO2 T_SHOU
-    | [DoMono5] mono(0) T_NI T_HA expression(1) T_WO T_TASHITA T_MONO
-    | [DoMono5] mono(0) T_NI expression(1) T_WO T_TASHITA T_MONO
-    | [DoMono6] mono(0) T_NI expression(1) T_WO T_KAKETA T_MONO
-    | [DoMono7] mono(0) T_KARA expression(1) T_WO T_HIITA T_MONO
-    | [DoMono8] mono(0) T_WO expression(1) T_DE T_WATTA T_MONO
-    | [DoMono9] mono(0) T_WO T_SHITA T_MONO
-    | [DoMono9] mono(0) T_SHITA T_MONO
+    | [DoMono5] mono(0) T_NI expression(1) T_WO1 T_TASHITA T_MONO
+    | [DoMono5] mono(0) T_WO1 expression(1) T_NI T_TASHITA T_MONO
+    | [DoMono6] mono(0) T_NI expression(1) T_WO1 T_KAKETA T_MONO
+    | [DoMono6] mono(0) T_WO1 expression(1) T_NI T_KAKETA T_MONO
+    | [DoMono7] mono(0) T_KARA expression(1) T_WO1 T_HIITA T_MONO
+    | [DoMono26] mono(0) T_WO1 expression(1) T_KARA T_HIITA T_MONO
+    | [DoMono8] mono(0) T_WO1 expression(1) T_DE T_WATTA T_MONO
+    | [DoMono27] mono(0) T_DE expression(1) T_WO1 T_WATTA T_MONO
+    | [DoMono9] mono(0) T_NO4 T_TASHIZAN T_SHITA T_MONO
+    | [DoMono9] mono(0) T_NO4 T_HIKIZAN T_SHITA T_MONO
+    | [DoMono9] mono(0) T_NO4 T_KAKEZAN T_SHITA T_MONO
+    | [DoMono9] mono(0) T_NO4 T_WARIZAN T_SHITA T_MONO
+    | [DoMono9] mono(0) T_NO4 T_KEISAN T_SHITA T_MONO
+    | [DoMono9] mono(0) T_NO4 T_TASHIZAN T_WO2 T_SHITA T_MONO
+    | [DoMono9] mono(0) T_NO4 T_HIKIZAN T_WO2 T_SHITA T_MONO
+    | [DoMono9] mono(0) T_NO4 T_KAKEZAN T_WO2 T_SHITA T_MONO
+    | [DoMono9] mono(0) T_NO4 T_WARIZAN T_WO2 T_SHITA T_MONO
+    | [DoMono9] mono(0) T_NO4 T_KEISAN T_WO2 T_SHITA T_MONO
     | [DoMono10] mono(0) T_NO3 expression(1) T_BAI
     | [DoMono11] mono(0) T_NO3 T_BAI
-    | [DoMono12] shite(0) T_SORE T_NI T_HA expression(1) T_WO T_TASHITA T_MONO
-    | [DoMono12] shite(0) T_SORE T_NI expression(1) T_WO T_TASHITA T_MONO
-    | [DoMono12] shite(0) T_SORE T_TO expression(1) T_WO T_TASHITA T_MONO
-    | [DoMono12] shite(0)             expression(1) T_WO T_TASHITA T_MONO
-    | [DoMono13] shite(0) T_SORE T_NI T_HA expression(1) T_DE T_KAKETA T_MONO
+    | [DoMono12] shite(0) T_SORE T_NI expression(1) T_WO1 T_TASHITA T_MONO
+    | [DoMono12] shite(0) T_SORE T_NI expression(1) T_NO4 T_TASHIZAN T_SHITA T_MONO
+    | [DoMono12] shite(0) T_SORE T_TO1 expression(1) T_WO1 T_TASHITA T_MONO
+    | [DoMono12] shite(0) T_SORE T_TO1 expression(1) T_NO4 T_TASHIZAN T_SHITA T_MONO
+    | [DoMono12] shite(0)              expression(1) T_WO1 T_TASHITA T_MONO
+    | [DoMono12] shite(0)              expression(1) T_NO4 T_TASHIZAN T_SHITA T_MONO
     | [DoMono13] shite(0) T_SORE T_NI expression(1) T_DE T_KAKETA T_MONO
-    | [DoMono13] shite(0) T_SORE T_TO expression(1) T_DE T_KAKETA T_MONO
-    | [DoMono13] shite(0)             expression(1) T_DE T_KAKETA T_MONO
-    | [DoMono14] shite(0) T_SORE T_KARA expression(1) T_WO T_HIITA T_MONO
-    | [DoMono14] shite(0)               expression(1) T_WO T_HIITA T_MONO
-    | [DoMono15] shite(0) T_SORE T_WO expression(1) T_DE T_WATTA T_MONO
+    | [DoMono13] shite(0) T_SORE T_NI expression(1) T_DE T_KAKEZAN T_SHITA T_MONO
+    | [DoMono13] shite(0) T_SORE T_NI expression(1) T_DE T_KAKEZAN T_WO2 T_SHITA T_MONO
+    | [DoMono13] shite(0) T_SORE T_TO1 expression(1) T_DE T_KAKETA T_MONO
+    | [DoMono13] shite(0) T_SORE T_TO1 expression(1) T_DE T_KAKEZAN T_SHITA T_MONO
+    | [DoMono13] shite(0) T_SORE T_TO1 expression(1) T_DE T_KAKEZAN T_WO2 T_SHITA T_MONO
+    | [DoMono13] shite(0)              expression(1) T_DE T_KAKETA T_MONO
+    | [DoMono13] shite(0)              expression(1) T_DE T_KAKEZAN T_SHITA T_MONO
+    | [DoMono13] shite(0)              expression(1) T_DE T_KAKEZAN T_WO2 T_SHITA T_MONO
+    | [DoMono14] shite(0) T_SORE T_KARA expression(1) T_WO1 T_HIITA T_MONO
+    | [DoMono14] shite(0) T_SORE T_KARA expression(1) T_NO4 T_HIKIZAN T_SHITA T_MONO
+    | [DoMono14] shite(0) T_SORE T_KARA expression(1) T_DE T_HIITA T_MONO
+    | [DoMono14] shite(0) T_SORE T_KARA expression(1) T_DE T_HIKIZAN T_SHITA T_MONO
+    | [DoMono14] shite(0) T_SORE T_KARA expression(1) T_DE T_HIKIZAN T_WO2 T_SHITA T_MONO
+    | [DoMono14] shite(0)               expression(1) T_WO1 T_HIITA T_MONO
+    | [DoMono14] shite(0)               expression(1) T_NO4 T_HIKIZAN T_SHITA T_MONO
+    | [DoMono14] shite(0)               expression(1) T_DE T_HIITA T_MONO
+    | [DoMono14] shite(0)               expression(1) T_DE T_HIKIZAN T_SHITA T_MONO
+    | [DoMono14] shite(0)               expression(1) T_DE T_HIKIZAN T_WO2 T_SHITA T_MONO
+    | [DoMono15] shite(0) T_SORE T_WO1 expression(1) T_DE T_WATTA T_MONO
+    | [DoMono15] shite(0) T_SORE T_WO1 expression(1) T_DE T_WARIZAN T_MONO
+    | [DoMono15] shite(0) T_SORE T_WO1 expression(1) T_DE T_WARIZAN T_WO2 T_MONO
     | [DoMono15] shite(0)             expression(1) T_DE T_WATTA T_MONO
-    | [DoMono16] shite(0) T_SORE T_WO expression(1) T_BAI T_NI T_SHITA T_MONO
-    | [DoMono16] shite(0) T_SORE T_WO expression(1) T_BAI T_SHITA T_MONO
-    | [DoMono17] shite(0) T_SORE T_WO T_BAI T_NI T_SHITA T_MONO
-    | [DoMono17] shite(0) T_SORE T_WO T_BAI T_SHITA T_MONO
+    | [DoMono15] shite(0)             expression(1) T_DE T_WARIZAN T_SHITA T_MONO
+    | [DoMono15] shite(0)             expression(1) T_DE T_WARIZAN T_WO2 T_SHITA T_MONO
+    | [DoMono16] shite(0) T_SORE T_WO1 expression(1) T_BAI T_NI T_SHITA T_MONO
+    | [DoMono16] shite(0) T_SORE T_WO1 expression(1) T_BAI T_SHITA T_MONO
+    | [DoMono17] shite(0) T_SORE T_WO1 T_BAI T_NI T_SHITA T_MONO
+    | [DoMono17] shite(0) T_SORE T_WO1 T_BAI T_SHITA T_MONO
     | [DoMono18] expression(0)
     | [DoMono19] T_SORE
-    | [DoMono20] mono(0) T_TO expression_list(1) T_NO2 T_WA
-    | [DoMono21] mono(0) T_TO expression_list(1) T_NO2 T_SEKI
-    | [DoMono22] mono(0) T_TO expression(1) T_NO2 T_WA
-    | [DoMono23] mono(0) T_TO expression(1) T_NO2 T_SEKI
-    | [DoMono24] mono(0) T_TO expression(1) T_NO2 T_SA
-    | [DoMono25] mono(0) T_TO expression(1) T_NO2 T_SHOU
+    | [DoMono20] mono(0) T_TO1 expression_list(1) T_NO2 T_WA
+    | [DoMono21] mono(0) T_TO1 expression_list(1) T_NO2 T_SEKI
+    | [DoMono22] mono(0) T_TO1 expression(1) T_NO2 T_WA
+    | [DoMono23] mono(0) T_TO1 expression(1) T_NO2 T_SEKI
+    | [DoMono24] mono(0) T_TO1 expression(1) T_NO2 T_SA
+    | [DoMono25] mono(0) T_TO1 expression(1) T_NO2 T_SHOU
     ;
 
 expression_list<ExprList>
     : [DoExprList1] expression_list(0) T_COMMA expression(1)
-    | [DoExprList2] expression_list(0) T_TO expression(1)
+    | [DoExprList2] expression_list(0) T_TO1 expression(1)
     | [DoExprList3] expression(0) T_COMMA expression(1)
-    | [DoExprList4] expression(0) T_TO expression(1)
+    | [DoExprList4] expression(0) T_TO1 expression(1)
     ;
 
 expression<Expr>
@@ -334,6 +476,7 @@ factor<Fact>
 primary<Prim>
     : [DoPrim1] T_L_PAREN expression(0) T_R_PAREN
     | [DoPrim2] T_MINUS primary(0)
+    | [DoPrim5] kei_le_number(0) T_TO2 primary(1) T_BUNNO number(2)
     | [DoPrim3] primary(0) T_BUNNO number(1)
     | [DoPrim4] number(0)
     ;

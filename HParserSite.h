@@ -69,10 +69,21 @@ namespace Calc_H
             return shared_ptr<Sentence>(s);
         }
 
-        shared_ptr<Sentence> DoSent4(shared_ptr<Num>& num)
+        shared_ptr<Sentence> DoSent4(shared_ptr<Shite>& shite)
         {
             #ifdef DEEPDEBUG
                 std::cerr << "DoSent4" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::SHITE;
+            s->m_shite = shite;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent5(shared_ptr<Num>& num)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent5" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::NUM;
@@ -80,10 +91,10 @@ namespace Calc_H
             return shared_ptr<Sentence>(s);
         }
 
-        shared_ptr<Sentence> DoSent5()
+        shared_ptr<Sentence> DoSent6()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent5" << std::endl;
+                std::cerr << "DoSent6" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::EMPTY;
@@ -242,6 +253,30 @@ namespace Calc_H
             return shared_ptr<Suruto>(s);
         }
 
+        shared_ptr<Suruto> DoSuruto16(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSuruto16" << std::endl;
+            #endif
+            Suruto *s = new Suruto;
+            s->m_type = Suruto::MONO_WO_EXPR_SUB;
+            s->m_mono = mono;
+            s->m_expr = expr;
+            return shared_ptr<Suruto>(s);
+        }
+
+        shared_ptr<Suruto> DoSuruto17(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSuruto17" << std::endl;
+            #endif
+            Suruto *s = new Suruto;
+            s->m_type = Suruto::MONO_DE_EXPR_DIV;
+            s->m_mono = mono;
+            s->m_expr = expr;
+            return shared_ptr<Suruto>(s);
+        }
+
         shared_ptr<Shite> DoShite1(shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG
@@ -318,7 +353,7 @@ namespace Calc_H
                 std::cerr << "DoShite7" << std::endl;
             #endif
             Shite *s = new Shite;
-            s->m_type = Shite::EXPR_ONLY;
+            s->m_type = Shite::MONO_ONLY;
             s->m_mono = mono;
             return shared_ptr<Shite>(s);
         }
@@ -391,6 +426,30 @@ namespace Calc_H
             Shite *s = new Shite;
             s->m_type = Shite::SHITE_BAI;
             s->m_shite = shite;
+            return shared_ptr<Shite>(s);
+        }
+
+        shared_ptr<Shite> DoShite16(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoShite16" << std::endl;
+            #endif
+            Shite *s = new Shite;
+            s->m_type = Shite::MONO_WO_EXPR_SUB;
+            s->m_mono = mono;
+            s->m_expr = expr;
+            return shared_ptr<Shite>(s);
+        }
+
+        shared_ptr<Shite> DoShite17(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoShite17" << std::endl;
+            #endif
+            Shite *s = new Shite;
+            s->m_type = Shite::MONO_WO_EXPR_DIV;
+            s->m_mono = mono;
+            s->m_expr = expr;
             return shared_ptr<Shite>(s);
         }
 
@@ -684,6 +743,30 @@ namespace Calc_H
             return shared_ptr<Mono>(m);
         }
 
+        shared_ptr<Mono> DoMono26(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono26" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_WO_EXPR_KARA_SUB;
+            m->m_mono = mono;
+            m->m_expr = expr;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono27(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono27" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_DE_EXPR_WO_DIV;
+            m->m_mono = mono;
+            m->m_expr = expr;
+            return shared_ptr<Mono>(m);
+        }
+
         shared_ptr<Expr> DoExpr1(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG
@@ -854,6 +937,20 @@ namespace Calc_H
             Prim *p = new Prim;
             p->m_type = Prim::NUM;
             p->m_num = num;
+            return shared_ptr<Prim>(p);
+        }
+
+        shared_ptr<Prim> DoPrim5(shared_ptr<Num>& num, shared_ptr<Prim>& prim,
+                                 shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrim5" << std::endl;
+            #endif
+            Prim *p = new Prim;
+            p->m_type = Prim::TAIBUNSUU;
+            p->m_num = num;
+            p->m_prim = prim;
+            p->m_num2 = num2;
             return shared_ptr<Prim>(p);
         }
 

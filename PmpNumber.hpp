@@ -43,7 +43,6 @@
 
 #define b_mp        boost::multiprecision
 
-
 /////////////////////////////////////////////////////////////////////////////
 
 namespace pmp
@@ -51,16 +50,40 @@ namespace pmp
     typedef b_mp::cpp_int               integer_type;
     typedef b_mp::cpp_dec_float_50      floating_type;
     //typedef b_mp::cpp_dec_float_100     floating_type;
+    typedef b_mp::cpp_rational          rational_type;
+    static const unsigned s_default_precision = 50;
 
-    // returns old value
-    bool EnableIntegerDivision(bool enabled = true);
+    inline floating_type i_to_f(const integer_type& i)
+    {
+        return floating_type(i);
+    }
+
+    inline rational_type i_to_r(const integer_type& i)
+    {
+        return rational_type(i, integer_type(1));
+    }
+
+    integer_type  f_to_i(const floating_type& f);
+    rational_type f_to_r(const floating_type& f);
+
+    inline integer_type  r_to_i(const rational_type& r)
+    {
+        integer_type i = b_mp::numerator(r);
+        i /= b_mp::denominator(r);
+        return i;
+    }
+
+    inline floating_type r_to_f(const rational_type& r)
+    {
+        return floating_type(r);
+    }
 
     class Number
     {
     public:
         enum Type
         {
-            INTEGER, FLOATING
+            INTEGER, FLOATING, RATIONAL
         };
 
         Number()                        : m_inner(make_shared<Inner>(0)) { }
@@ -70,6 +93,32 @@ namespace pmp
         Number(long double f)           : m_inner(make_shared<Inner>(f)) { }
         Number(const integer_type& i)   : m_inner(make_shared<Inner>(i)) { }
         Number(const floating_type& f)  : m_inner(make_shared<Inner>(f)) { }
+        Number(const rational_type& r)  : m_inner(make_shared<Inner>(r)) { }
+
+        Number(int num, int denom) : m_inner(make_shared<Inner>(num, denom))
+        {
+        }
+
+        Number(__int64 num, __int64 denom) :
+            m_inner(make_shared<Inner>(num, denom))
+        {
+        }
+
+        Number(const integer_type& num, const integer_type& denom) :
+            m_inner(make_shared<Inner>(num, denom))
+        {
+        }
+
+        Number(const Number& num, const Number& denom) :
+            m_inner(make_shared<Inner>(num.to_i(), denom.to_i()))
+        {
+        }
+
+        Number(const std::string& num, const std::string& denom) :
+            m_inner(make_shared<Inner>(integer_type(num), integer_type(denom)))
+        {
+        }
+
         Number(Type type, const std::string& str);
         Number(const std::string& str);
         Number(const Number& num) : m_inner(num.m_inner) { }
@@ -90,6 +139,16 @@ namespace pmp
             m_inner = make_shared<Inner>(f);
         }
 
+        void assign(const rational_type& r)
+        {
+            m_inner = make_shared<Inner>(r);
+        }
+
+        void assign(const std::string& str)
+        {
+            m_inner = make_shared<Inner>(str);
+        }
+
         void assign(const Number& num)
         {
             m_inner = num.m_inner;
@@ -103,13 +162,13 @@ namespace pmp
 
         Number& operator++()
         {
-            *this = *this + 1;
+            *this += 1;
             return *this;
         }
 
         Number& operator--()
         {
-            *this = *this - 1;
+            *this -= 1;
             return *this;
         }
 
@@ -128,27 +187,40 @@ namespace pmp
         }
 
         bool is_zero() const;
+        int sign() const;
         bool operator!() const { return is_zero(); }
         std::string str() const;
         std::string str(unsigned precision) const;
+        std::string str(unsigned precision, std::ios_base::fmtflags flags) const;
 
-        Type get_type() const  { return m_inner->m_type; }
+        Type type() const  { return m_inner->m_type; }
 
-              integer_type&   get_i()        { return *m_inner.get()->m_integer;    }
-        const integer_type&   get_i() const  { return *m_inner->m_integer;          }
-              floating_type&  get_f()        { return *m_inner.get()->m_floating;   }
-        const floating_type&  get_f() const  { return *m_inner->m_floating;         }
+              integer_type&   get_i()       { assert(is_i()); return *m_inner.get()->m_integer;  }
+        const integer_type&   get_i() const { assert(is_i()); return *m_inner->m_integer;        }
+              floating_type&  get_f()       { assert(is_f()); return *m_inner.get()->m_floating; }
+        const floating_type&  get_f() const { assert(is_f()); return *m_inner->m_floating;       }
+              rational_type&  get_r()       { assert(is_r()); return *m_inner.get()->m_rational; }
+        const rational_type&  get_r() const { assert(is_r()); return *m_inner->m_rational;       }
 
         integer_type    to_i() const;   // to integer
         floating_type   to_f() const;   // to floating
+        rational_type   to_r() const;   // to rational
+
+        floating_type   i_to_f() const    { return pmp::i_to_f(get_i()); }
+        rational_type   i_to_r() const    { return pmp::i_to_r(get_i()); }
+        integer_type    f_to_i() const    { return pmp::f_to_i(get_f()); }
+        rational_type   f_to_r() const    { return pmp::f_to_r(get_f()); }
+        integer_type    r_to_i() const    { return pmp::r_to_i(get_r()); }
+        floating_type   r_to_f() const    { return pmp::r_to_f(get_r()); }
 
         void trim();
 
         template <typename T>
         T convert_to();
 
-        bool is_i() const { return get_type() == INTEGER; }
-        bool is_f() const { return get_type() == FLOATING; }
+        bool is_i() const { return type() == INTEGER; }
+        bool is_f() const { return type() == FLOATING; }
+        bool is_r() const { return type() == RATIONAL; }
 
         int compare(int n) const
         {
@@ -185,13 +257,16 @@ namespace pmp
 
         friend inline Number operator-(const Number& num1)
         {
-            switch (num1.get_type())
+            switch (num1.type())
             {
             case pmp::Number::INTEGER:
                 return Number(static_cast<integer_type>(-(*num1.m_inner->m_integer)));
 
             case pmp::Number::FLOATING:
                 return Number(static_cast<floating_type>(-(*num1.m_inner->m_floating)));
+
+            case pmp::Number::RATIONAL:
+                return Number(static_cast<rational_type>(-(*num1.m_inner->m_rational)));
 
             default:
                 assert(0);
@@ -264,76 +339,123 @@ namespace pmp
             return num1.compare(num2) >= 0;
         }
 
+    public:
+        static unsigned default_precision()
+        {
+            return s_default_precision;
+        }
+
+
     protected:  // inner
         struct Inner
         {
-            Type                    m_type;
+            Type                m_type;
             integer_type *      m_integer;
             floating_type *     m_floating;
+            rational_type *     m_rational;
 
-            Inner() : m_type(INTEGER), m_integer(new integer_type())
+            Inner() :
+                m_type(INTEGER),
+                m_integer(new integer_type()),
+                m_floating(NULL),
+                m_rational(NULL)
             {
             }
 
             Inner(int i) :
                 m_type(INTEGER),
                 m_integer(new integer_type(i)),
-                m_floating(NULL)
+                m_floating(NULL),
+                m_rational(NULL)
             {
             }
 
             explicit Inner(__int64 i) :
                 m_type(INTEGER),
                 m_integer(new integer_type(i)),
-                m_floating(NULL)
+                m_floating(NULL),
+                m_rational(NULL)
             {
             }
 
             Inner(double f) :
                 m_type(FLOATING),
                 m_integer(NULL),
-                m_floating(new floating_type(f))
+                m_floating(new floating_type(f)),
+                m_rational(NULL)
+            {
+            }
+
+            Inner(int num, int denom) :
+                m_type(RATIONAL),
+                m_integer(NULL),
+                m_floating(NULL),
+                m_rational(new rational_type(num, denom))
+            {
+            }
+
+            explicit Inner(__int64 num, __int64 denom) :
+                m_type(RATIONAL),
+                m_integer(NULL),
+                m_floating(NULL),
+                m_rational(new rational_type(num, denom))
             {
             }
 
             explicit Inner(long double f) :
                 m_type(FLOATING),
                 m_integer(NULL),
-                m_floating(new floating_type(f))
+                m_floating(new floating_type(f)),
+                m_rational(NULL)
             {
             }
 
             Inner(const integer_type& i) :
                 m_type(INTEGER),
                 m_integer(new integer_type(i)),
-                m_floating(NULL)
+                m_floating(NULL),
+                m_rational(NULL)
             {
             }
 
             Inner(const floating_type& f) :
                 m_type(FLOATING),
                 m_integer(NULL),
-                m_floating(new floating_type(f))
+                m_floating(new floating_type(f)),
+                m_rational(NULL)
+            {
+            }
+
+            Inner(const rational_type& r) :
+                m_type(RATIONAL),
+                m_integer(NULL),
+                m_floating(NULL),
+                m_rational(new rational_type(r))
             {
             }
 
             Inner(const Inner& inner) :
                 m_type(inner.m_type),
                 m_integer(NULL),
-                m_floating(NULL)
+                m_floating(NULL),
+                m_rational(NULL)
             {
                 m_integer = (inner.m_integer
-                                ? new integer_type(*inner.m_integer)
-                                : NULL);
+                              ? new integer_type(*inner.m_integer)
+                              : NULL);
                 m_floating = (inner.m_floating
-                                ? new floating_type(*inner.m_floating)
-                                : NULL);
+                              ? new floating_type(*inner.m_floating)
+                              : NULL);
+                m_rational = (inner.m_rational
+                              ? new rational_type(*inner.m_rational)
+                              : NULL);
             }
 
             Inner(Type type, const std::string& str) :
                 m_type(type),
                 m_integer(NULL),
-                m_floating(NULL)
+                m_floating(NULL),
+                m_rational(NULL)
             {
                 switch (type)
                 {
@@ -345,32 +467,79 @@ namespace pmp
                     m_floating = new floating_type(str);
                     break;
 
+                case RATIONAL:
+                    m_rational = new rational_type(str);
+                    break;
+
                 default:
                     assert(0);
                     break;
                 }
             }
 
+            Inner(const std::string& str) :
+                m_type(INTEGER),
+                m_integer(NULL),
+                m_floating(NULL),
+                m_rational(NULL)
+            {
+                if (str.find('.') != std::string::npos ||
+                    str.find("e+") != std::string::npos ||
+                    str.find("e-") != std::string::npos)
+                {
+                    m_type = FLOATING;
+                    m_floating = new floating_type(str);
+                }
+                else if (str.find('/') != std::string::npos)
+                {
+                    m_type = RATIONAL;
+                    m_rational = new rational_type(str);
+                }
+                else
+                {
+                    m_integer = new integer_type(str);
+                }
+            }
+
+            Inner(const integer_type& num, const integer_type& denom) :
+                m_type(RATIONAL),
+                m_integer(NULL),
+                m_floating(NULL),
+                m_rational(new rational_type(num, denom))
+            {
+            }
+
             ~Inner()
             {
                 delete m_integer;
                 delete m_floating;
+                delete m_rational;
             }
         }; // struct Inner
 
         shared_ptr<Inner> m_inner;
     }; // class Number
 
+    #ifdef PMP_INTDIV_INTEGER
+    #elif defined(PMP_INTDIV_FLOATING)
+    #elif defined(PMP_INTDIV_RATIONAL)
+    #else
+        Number::Type SetIntDivType(Number::Type type);
+    #endif
+
     template <typename T>
     inline T Number::convert_to()
     {
-        switch (get_type())
+        switch (type())
         {
         case INTEGER:
             return m_inner->m_integer->convert_to<T>();
 
         case FLOATING:
             return m_inner->m_floating->convert_to<T>();
+
+        case RATIONAL:
+            return m_inner->m_rational->convert_to<T>();
 
         default:
             assert(0);
@@ -386,7 +555,7 @@ template <class CharT>
 std::basic_ostream<CharT>&
 operator<<(std::basic_ostream<CharT>& o, const pmp::Number& num)
 {
-    switch (num.get_type())
+    switch (num.type())
     {
     case pmp::Number::INTEGER:
         o << num.get_i().str();
@@ -394,6 +563,10 @@ operator<<(std::basic_ostream<CharT>& o, const pmp::Number& num)
 
     case pmp::Number::FLOATING:
         o << num.get_f().str();
+        break;
+
+    case pmp::Number::RATIONAL:
+        o << num.get_r().str();
         break;
 
     default:
@@ -405,17 +578,8 @@ operator<<(std::basic_ostream<CharT>& o, const pmp::Number& num)
 
 namespace pmp
 {
-    inline Number abs(const Number& num1)
-    {
-        integer_type i = b_mp::abs(num1.to_i());
-        return Number(i);
-    }
-
-    inline Number fabs(const Number& num1)
-    {
-        floating_type f = b_mp::fabs(num1.to_f());
-        return Number(f);
-    }
+    Number abs(const Number& num1);
+    Number fabs(const Number& num1);
 
     inline Number sqrt(const Number& num1)
     {
@@ -514,6 +678,23 @@ namespace pmp
     {
         floating_type f = b_mp::atan2(num1.to_f(), num2.to_f());
         return Number(f);
+    }
+
+    inline Number numerator(const Number& num1)
+    {
+        if (num1.type() == Number::RATIONAL)
+            return b_mp::numerator(num1.get_r());
+        else
+            return num1;
+        return 0;
+    }
+
+    inline Number denominator(const Number& num1)
+    {
+        if (num1.type() == Number::RATIONAL)
+            return b_mp::denominator(num1.get_r());
+        else
+            return 1;
     }
 }
 

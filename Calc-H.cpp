@@ -2,7 +2,7 @@
 // (Japanese, Shift_JIS)
 // Linuxの場合は、UTF-8に変換して下さい。
 
-#include "stdafx.h"
+#include "Calc-H.h"
 #include "HParseHeader.h"
 
 namespace Calc_H
@@ -44,7 +44,39 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
         return ChCalcNum(prim->m_num);
 
     case Prim::BUNSUU:
-        return ChCalcNum(prim->m_num) / ChCalcPrim(prim->m_prim);
+        {
+            CH_Value num = ChCalcNum(prim->m_num);
+            CH_Value denom = ChCalcPrim(prim->m_prim);
+            if (num.is_zero())
+                return 0;
+            if (denom.is_zero())
+            {
+                Calc_H::s_message = "分母がゼロになったので計算できません。";
+                return 0;
+            }
+            if (num.is_i() && denom.is_i())
+                return CH_Value(num, denom);
+            else
+                return denom / num;
+        }
+
+	case Prim::TAIBUNSUU:
+        {
+            CH_Value seisuu = ChCalcNum(prim->m_num);
+            CH_Value denom = ChCalcPrim(prim->m_prim);
+            CH_Value num = ChCalcNum(prim->m_num2);
+            if (num.is_zero())
+                return seisuu;
+            if (denom.is_zero())
+            {
+                Calc_H::s_message = "分母がゼロになったので計算できません。";
+                return 0;
+            }
+            if (num.is_i() && denom.is_i())
+                return seisuu + CH_Value(num, denom);
+            else
+                return seisuu + denom / num;
+        }
 
     default:
         assert(0);
@@ -261,6 +293,12 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
     case Mono::MONO_TO_EXPR_DIV:
         return ChCalcMono(mono->m_mono) / ChCalcExpr(mono->m_expr);
 
+    case Mono::MONO_WO_EXPR_KARA_SUB:
+        return ChCalcExpr(mono->m_expr) - ChCalcMono(mono->m_mono);
+
+    case Mono::MONO_DE_EXPR_WO_DIV:
+        return ChCalcExpr(mono->m_expr) / ChCalcMono(mono->m_mono);
+
     default:
         assert(0);
         return 0;
@@ -289,8 +327,8 @@ CH_Value ChCalcShite(const shared_ptr<Shite>& shite)
     case Shite::MONO_DIV:
         return ChCalcMono(shite->m_mono) / ChCalcExpr(shite->m_expr);
 
-    case Shite::EXPR_ONLY:
-        return ChCalcExpr(shite->m_expr);
+    case Shite::MONO_ONLY:
+        return ChCalcMono(shite->m_mono);
 
     case Shite::SHITE_ADD:
         return ChCalcShite(shite->m_shite) + ChCalcExpr(shite->m_expr);
@@ -309,6 +347,12 @@ CH_Value ChCalcShite(const shared_ptr<Shite>& shite)
 
     case Shite::SHITE_BAI:
         return ChCalcShite(shite->m_shite) * 2;
+
+    case Shite::MONO_WO_EXPR_SUB:
+        return ChCalcMono(shite->m_mono) - ChCalcExpr(shite->m_expr);
+
+    case Shite::MONO_WO_EXPR_DIV:
+        return ChCalcMono(shite->m_mono) / ChCalcExpr(shite->m_expr);
 
     default:
         assert(0);
@@ -359,6 +403,12 @@ CH_Value ChCalcSuruto(const shared_ptr<Suruto>& suruto)
     case Suruto::SHITE_WARUTO:
         return ChCalcShite(suruto->m_shite) / ChCalcExpr(suruto->m_expr);
 
+    case Suruto::MONO_WO_EXPR_SUB:
+        return ChCalcMono(suruto->m_mono) - ChCalcExpr(suruto->m_expr);
+
+    case Suruto::MONO_DE_EXPR_DIV:
+        return ChCalcMono(suruto->m_mono) / ChCalcExpr(suruto->m_expr);
+
     default:
         assert(0);
         return 0;
@@ -392,6 +442,9 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
 
     case Sentence::EXPRLIST_SUB:
         return ChSubExprList(sentence->m_exprlist);
+
+    case Sentence::SHITE:
+        return ChCalcShite(sentence->m_shite);
 
     default:
         assert(0);
@@ -523,20 +576,30 @@ std::string ChGetJpnNumber(
     assert(num < ch_ichi);
     if (num > ch_zero)
     {
-        if (add_zerodot)
-            str += "れいてん";
-
-        std::string digits = num.str(ch_precision);
-        const std::size_t i = digits.find('.');
+        std::string digits = num.str(ch_precision, std::ios_base::fixed);
+        std::size_t i = digits.find_last_not_of('0');
+        if (i != std::string::npos)
+            digits = digits.substr(0, i + 1);
+        i = digits.find('.');
         if (i != std::string::npos)
         {
             bool ok;
             std::string jdigits;
             jdigits = ChGetJpnDigits(digits.substr(i + 1), ok);
-            if (ok)
+            if (ok && !jdigits.empty())
             {
+                if (add_zerodot)
+                    str += "れいてん";
                 str += jdigits;
             }
+            else
+            {
+                str += "ぜろ";
+            }
+        }
+        else
+        {
+            str += "ぜろ";
         }
         return str;
     }
@@ -559,7 +622,7 @@ std::string ChGetJpnNumberFixed(CH_Value num)
     ChReplaceString(str, "さんひゃく", "さんびゃく");
     ChReplaceString(str, "ろくひゃく", "ろっぴゃく");
     ChReplaceString(str, "はちひゃく", "はっぴゃく");
-    ChReplaceString(str, "いちせん", "いっせん");
+    ChReplaceString(str, "いちせん", "せん");
     ChReplaceString(str, "さんせん", "さんぜん");
     ChReplaceString(str, "はちせん", "はっせん");
     ChReplaceString(str, "いちちょう", "いっちょう");
@@ -567,42 +630,50 @@ std::string ChGetJpnNumberFixed(CH_Value num)
     return str;
 }
 
-////////////////////////////////////////////////////////////////////////////
-
-bool ChJustDoIt(std::string& query)
+std::string ChGetJpnNumberBunsuu(CH_Value num)
 {
-    shared_ptr<Sentence> sentence;
-    if (parse_string(sentence, query))
+    // bunsuu is fraction
+    std::string str;
+    pmp::Number bunshi = pmp::numerator(num);
+    pmp::Number bunbo = pmp::denominator(num);
+    bool minus = false;
+    if (bunshi.sign() < 0)
     {
-        bool old_enabled = pmp::EnableIntegerDivision(false);
-        try
-        {
-            Calc_H::s_message.clear();
-            CH_Value value = ChCalcSentence(sentence);
-            pmp::EnableIntegerDivision(true);
-            if (s_message.empty())
-            {
-                std::cout << "こたえ：" << ChGetJpnNumberFixed(value) <<
-                    " (" << value.str() << ") " <<
-                    "です。" << std::endl;
-                s_sore = value;
-            }
-            else
-            {
-                std::cout << "こたえ：" << Calc_H::s_message << std::endl;
-            }
-        }
-        catch (const std::runtime_error&)
-        {
-            std::cout << "こたえ：" <<
-                "けいさんできませんでした。" << std::endl;
-        }
-        pmp::EnableIntegerDivision(old_enabled); // restore enabled
-        std::cout << std::endl;
-        return true;
+        minus = true;
+        bunshi = -bunshi;
     }
-    std::cout << std::endl;
-    return false;
+    pmp::Number seisuu(0);
+    if (bunshi >= bunbo)
+    {
+        pmp::Number::Type old_type = pmp::SetIntDivType(pmp::Number::INTEGER);
+        seisuu = bunshi / bunbo;
+        pmp::SetIntDivType(old_type);
+        seisuu.trim();
+        bunshi -= bunbo * seisuu;
+    }
+    if (minus)
+        str += "まいなす";
+    if (!seisuu.is_zero())
+    {
+        str += ChGetJpnNumberFixed(seisuu);
+        str += "と";
+    }
+    str += ChGetJpnNumberFixed(bunbo);
+    str += "ぶんの";
+    str += ChGetJpnNumberFixed(bunshi);
+    return str;
+}
+
+std::string ChGetJpnNumber2(CH_Value num)
+{
+    std::string str;
+    pmp::Number::Type old_type = pmp::SetIntDivType(pmp::Number::INTEGER);
+    if (num.type() == pmp::Number::RATIONAL)
+        str = ChGetJpnNumberBunsuu(num);
+    else
+        str = ChGetJpnNumberFixed(num);
+    pmp::SetIntDivType(old_type);
+    return str;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -628,11 +699,77 @@ void CrTrimString(std::string& str)
 
 ////////////////////////////////////////////////////////////////////////////
 
+std::string ChJustDoIt(std::string& query)
+{
+    std::stringstream sstream;
+    shared_ptr<Sentence> sentence;
+    CrTrimString(query);
+
+    sstream << "こたえ：";
+
+    if (query == "exit" || query == "EXIT" ||
+        query == "ｅｘｉｔ" || query == "ＥＸＩＴ" ||
+        query == "quit" || query == "QUIT" ||
+        query == "ｑｕｉｔ" || query == "ＱＵＩＴ" ||
+        query.find("おわる") != std::string::npos ||
+        query.find("おわり") != std::string::npos)
+    {
+        sstream << "しゅうりょうします。" << std::endl;
+        return sstream.str();
+    }
+
+    query += "?";
+    if (query.find("ありがと") != std::string::npos ||
+        query.find("さんきゅ") != std::string::npos ||
+        query.find("かんしゃ") != std::string::npos)
+    {
+        sstream << "こちらこそつかってくれてありがとう。" << std::endl;
+    }
+    else if (parse_string(sentence, query))
+    {
+        pmp::Number::Type old_type =
+            pmp::SetIntDivType(pmp::Number::FLOATING);
+        try
+        {
+            Calc_H::s_message.clear();
+            CH_Value value = ChCalcSentence(sentence);
+            value.trim();
+            if (s_message.empty())
+            {
+                sstream << ChGetJpnNumber2(value) <<
+                    " (" << value.str() << ") " << "です。" << std::endl;
+                s_sore = value;
+            }
+            else
+            {
+                sstream << Calc_H::s_message << std::endl;
+            }
+        }
+        catch (const std::overflow_error&)
+        {
+            sstream << "おーばーふろーです。" << std::endl;
+        }
+        catch (const std::runtime_error&)
+        {
+            sstream << "けいさんできませんでした。" << std::endl;
+        }
+        pmp::SetIntDivType(old_type); // restore old
+    }
+    else
+    {
+        sstream << "けいさんできませんでした。" << std::endl;
+    }
+
+    return sstream.str();
+}
+
+////////////////////////////////////////////////////////////////////////////
+
 void ChShowLogo(void)
 {
     std::cerr <<
         "       +--------------------------------+" << std::endl <<
-        "       |  ひらがな電卓 Calc-H ver.0.3.8 |" << std::endl <<
+        "       |  ひらがな電卓 Calc-H ver.0.4.0 |" << std::endl <<
         "       |   by 片山博文MZ (katahiromz)   |" << std::endl <<
         "       | http://katahiromz.web.fc2.com/ |" << std::endl <<
         "       | katayama.hirofumi.mz@gmail.com |" << std::endl <<
@@ -648,53 +785,23 @@ int main(int argc, char **argv)
     std::string query;
 
     ChShowLogo();
-    std::cerr << "コメント：しょうすうもけいさんできるようになりました。" <<
+    std::cerr << "コメント：ぶんすうもけいさんできるようになりました。" <<
                  std::endl << std::endl;
 
-    if (argc <= 1)
+    std::cerr << "「exit」か「おわる」でしゅうりょうできます。" << std::endl;
+    std::cerr << std::endl;
+    for (;;)
     {
-        std::cerr << "「exit」か「おわる」でしゅうりょうできます。" << std::endl;
-        std::cerr << std::endl;
-        for (;;)
-        {
-            std::cout << "にゅうりょく：";
+        std::cout << "にゅうりょく：";
 
-            if (!std::getline(std::cin, query))
-                break;
+        if (!std::getline(std::cin, query))
+            break;
 
-            CrTrimString(query);
+        std::string result = ChJustDoIt(query);
+        std::cout << result << std::endl;
 
-            if (query == "exit" || query == "EXIT" ||
-                query == "ｅｘｉｔ" || query == "ＥＸＩＴ" ||
-                query == "quit" || query == "QUIT" ||
-                query == "ｑｕｉｔ" || query == "ＱＵＩＴ" ||
-                query.find("おわる") != std::string::npos ||
-                query.find("おわり") != std::string::npos)
-                break;
-
-            if (query.find("ありがと") != std::string::npos ||
-                query.find("さんきゅ") != std::string::npos ||
-                query.find("かんしゃ") != std::string::npos)
-            {
-                std::cout << "こちらこそつかってくれてありがとう。" << std::endl;
-                continue;
-            }
-
-            query += "?";
-            ChJustDoIt(query);
-        }
-    }
-    else
-    {
-        query = argv[1];
-
-        CrTrimString(query);
-
-        query += "?";
-        if (!ChJustDoIt(query))
-        {
-            return 1;
-        }
+        if (result.find("しゅうりょうします") != std::string::npos)
+            break;
     }
 
     return 0;

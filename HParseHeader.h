@@ -23,7 +23,8 @@ namespace Calc_H
 
         std::vector<TokenValue> infos;
         scanner.scan(infos, begin, end);
-        #ifdef DEEPDEBUG
+        //#ifdef DEEPDEBUG
+        #if 1
             scanner.show_tokens(infos.begin(), infos.end());
             std::cerr << std::endl << "--------------" << std::endl;
         #endif
