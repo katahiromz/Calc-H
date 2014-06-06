@@ -300,6 +300,12 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
     case Mono::MONO_DE_EXPR_WO_DIV:
         return ChCalcExpr(mono->m_expr) / ChCalcMono(mono->m_mono);
 
+    case Mono::TERM_ONLY:
+        return ChCalcTerm(mono->m_term);
+
+    case Mono::FACT_ONLY:
+        return ChCalcFact(mono->m_fact);
+
     default:
         assert(0);
         return 0;
@@ -450,6 +456,329 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
     default:
         assert(0);
         return 0;
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////
+
+void ChAnalyzeMonoTermKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
+{
+    Mono *m;
+    switch (term->m_type)
+    {
+    case Term::MUL:
+        m = new Mono;
+        m->m_type = Mono::FACT_ONLY;
+        m->m_fact = term->m_fact;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Term::DIV:
+    case Term::FACT_ONLY:
+        Calc_H::s_message = "かけざんではありません。";
+        break;
+    }
+}
+
+void ChAnalyzeMonoTermWarukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
+{
+    Mono *m;
+    switch (term->m_type)
+    {
+    case Term::DIV:
+        m = new Mono;
+        m->m_type = Mono::FACT_ONLY;
+        m->m_fact = term->m_fact;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Term::MUL:
+    case Term::FACT_ONLY:
+        Calc_H::s_message = "わりざんではありません。";
+        break;
+    }
+}
+
+void ChAnalyzeMonoExprTasukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+{
+    Mono *m;
+    switch (expr->m_type)
+    {
+    case Expr::ADD:
+        m = new Mono;
+        m->m_type = Mono::TERM_ONLY;
+        m->m_term = expr->m_term;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Expr::SUB:
+    case Expr::TERM_ONLY:
+        Calc_H::s_message = "たしざんではありません。";
+        break;
+    }
+}
+
+void ChAnalyzeMonoExprKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+{
+    switch (expr->m_type)
+    {
+    case Expr::ADD:
+    case Expr::SUB:
+        Calc_H::s_message = "かけざんではありません。";
+        break;
+
+    case Expr::TERM_ONLY:
+        ChAnalyzeMonoTermKakerukazu(mono, expr->m_term);
+        break;
+    }
+}
+
+void ChAnalyzeMonoExprHikukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+{
+    Mono *m;
+    switch (expr->m_type)
+    {
+    case Expr::ADD:
+    case Expr::TERM_ONLY:
+        Calc_H::s_message = "ひきざんではありません。";
+        break;
+
+    case Expr::SUB:
+        m = new Mono;
+        m->m_type = Mono::TERM_ONLY;
+        m->m_term = expr->m_term;
+        mono = shared_ptr<Mono>(m);
+        break;
+    }
+}
+
+void ChAnalyzeMonoExprWarukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+{
+    switch (expr->m_type)
+    {
+    case Expr::ADD:
+    case Expr::SUB:
+        Calc_H::s_message = "かけざんではありません。";
+        break;
+
+    case Expr::TERM_ONLY:
+        ChAnalyzeMonoTermWarukazu(mono, expr->m_term);
+        break;
+    }
+}
+
+void ChAnalyzeMono(shared_ptr<Mono>& mono)
+{
+    Mono *m;
+    switch (mono->m_type)
+    {
+    case Mono::MONO_NO_TASUKAZU:
+        switch (mono->m_mono->m_type)
+        {
+        case Mono::EXPR_ONLY:
+            ChAnalyzeMonoExprTasukazu(mono, mono->m_mono->m_expr);
+            break;
+
+        case Mono::MONO_ADD:
+        case Mono::SHITE_ADD:
+        case Mono::MONO_TO_EXPR_ADD:
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = mono->m_mono->m_expr;
+            mono = shared_ptr<Mono>(m);
+            break;
+
+        case Mono::MONO_TO_EXPRLIST_ADD:
+            m = new Mono;
+            m->m_type = Mono::EXPRLIST_ADD;
+            m->m_exprlist = mono->m_mono->m_exprlist;
+            mono = shared_ptr<Mono>(m);
+            break;
+
+        default:
+            Calc_H::s_message = "たしざんではありません。";
+            break;
+        }
+        break;
+
+    case Mono::MONO_NO_KAKERUKAZU:
+        switch (mono->m_mono->m_type)
+        {
+        case Mono::EXPR_ONLY:
+            ChAnalyzeMonoExprKakerukazu(mono, mono->m_mono->m_expr);
+            break;
+
+        case Mono::MONO_MUL:
+        case Mono::SHITE_MUL:
+        case Mono::MONO_TO_EXPR_MUL:
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = mono->m_mono->m_expr;
+            mono = shared_ptr<Mono>(m);
+            break;
+
+        case Mono::MONO_TO_EXPRLIST_MUL:
+            m = new Mono;
+            m->m_type = Mono::EXPRLIST_MUL;
+            m->m_exprlist = mono->m_mono->m_exprlist;
+            mono = shared_ptr<Mono>(m);
+            break;
+
+        default:
+            Calc_H::s_message = "かけざんではありません。";
+            break;
+        }
+        break;
+
+    case Mono::MONO_NO_HIKUKAZU:
+        switch (mono->m_mono->m_type)
+        {
+        case Mono::EXPR_ONLY:
+            ChAnalyzeMonoExprHikukazu(mono, mono->m_mono->m_expr);
+            break;
+
+        case Mono::MONO_SUB:
+        case Mono::SHITE_SUB:
+        case Mono::MONO_TO_EXPR_SUB:
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = mono->m_mono->m_expr;
+            mono = shared_ptr<Mono>(m);
+            break;
+
+        default:
+            Calc_H::s_message = "ひきざんではありません。";
+            break;
+        }
+        break;
+
+    case Mono::MONO_NO_WARUKAZU:
+        switch (mono->m_mono->m_type)
+        {
+        case Mono::EXPR_ONLY:
+            ChAnalyzeMonoExprWarukazu(mono, mono->m_mono->m_expr);
+            break;
+
+        case Mono::MONO_DIV:
+        case Mono::SHITE_DIV:
+        case Mono::MONO_TO_EXPR_DIV:
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = mono->m_mono->m_expr;
+            mono = shared_ptr<Mono>(m);
+            break;
+
+        default:
+            Calc_H::s_message = "ひきざんではありません。";
+            break;
+        }
+        break;
+
+    case Mono::SURUTOKI_TASUKAZU:
+        switch (mono->m_suruto->m_type)
+        {
+        case Suruto::EXPRLIST_ADD:
+            {
+                ExprList *el = mono->m_suruto->m_exprlist.get();
+                const std::size_t count = el->size();
+                assert(count >= 2);
+                shared_ptr<Expr> e = (*el)[count - 1];
+                m = new Mono;
+                m->m_type = Mono::EXPR_ONLY;
+                m->m_expr = e;
+                mono = shared_ptr<Mono>(m);
+            }
+            break;
+
+        case Suruto::MONO_ADD:
+        case Suruto::SHITE_TASUTO:
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = mono->m_suruto->m_expr;
+            mono = shared_ptr<Mono>(m);
+            break;
+
+        default:
+            Calc_H::s_message = "たしざんではありません。";
+        }
+        break;
+
+    case Mono::SURUTOKI_KAKERUKAZU:
+        switch (mono->m_suruto->m_type)
+        {
+        case Suruto::EXPRLIST_MUL:
+            {
+                ExprList *el = mono->m_suruto->m_exprlist.get();
+                const std::size_t count = el->size();
+                assert(count >= 2);
+                shared_ptr<Expr> e = (*el)[count - 1];
+                m = new Mono;
+                m->m_type = Mono::EXPR_ONLY;
+                m->m_expr = e;
+                mono = shared_ptr<Mono>(m);
+            }
+            break;
+
+        case Suruto::MONO_MUL:
+        case Suruto::SHITE_KAKERUTO:
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = mono->m_suruto->m_expr;
+            mono = shared_ptr<Mono>(m);
+            break;
+
+        default:
+            Calc_H::s_message = "かけざんではありません。";
+        }
+        break;
+
+    case Mono::SURUTOKI_HIKUKAZU:
+        switch (mono->m_suruto->m_type)
+        {
+        case Suruto::MONO_SUB:
+        case Suruto::SHITE_HIKUTO:
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = mono->m_suruto->m_expr;
+            mono = shared_ptr<Mono>(m);
+            break;
+
+        default:
+            Calc_H::s_message = "ひきざんではありません。";
+        }
+        break;
+
+    case Mono::SURUTOKI_WARUKAZU:
+        switch (mono->m_suruto->m_type)
+        {
+        case Suruto::MONO_DIV:
+        case Suruto::SHITE_WARUTO:
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = mono->m_suruto->m_expr;
+            mono = shared_ptr<Mono>(m);
+            break;
+
+        default:
+            Calc_H::s_message = "わりざんではありません。";
+        }
+        break;
+
+    default:
+        break;
+    }
+}
+
+void ChAnalyzeSentence(shared_ptr<Sentence>& sentence)
+{
+    switch (sentence->m_type)
+    {
+    case Sentence::MONO:
+        ChAnalyzeMono(sentence->m_mono);
+        break;
+
+    default:
+        break;
     }
 }
 
@@ -752,6 +1081,7 @@ std::string ChJustDoIt(std::string& query)
     }
     else if (parse_string(sentence, query, error))
     {
+        ChAnalyzeSentence(sentence);
         pmp::Number::Type old_type =
             pmp::SetIntDivType(pmp::Number::FLOATING);
         try

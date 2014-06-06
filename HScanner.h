@@ -501,6 +501,7 @@ namespace Calc_H
             if (lexeme("かっことじて"))             return (T_R_PAREN);
             if (lexeme("かっことじ"))               return (T_R_PAREN);
             if (lexeme("かっこ"))                   return (T_L_PAREN);
+            if (lexeme("かず"))                     return (T_MONO);
             if (lexeme("かさん"))                   return (T_TASHIZAN);
             if (lexeme("かければ"))                 return (T_KAKERUTO);
             if (lexeme("かけるとき"))               return (T_KAKERUTO);
@@ -527,6 +528,16 @@ namespace Calc_H
             if (lexeme("かあ"))                     return (T_KA);
             if (lexeme("かぁ"))                     return (T_KA);
             if (lexeme("か"))                       return (T_KA);
+            if (lexeme("おねがいよ"))               return (T_ONEGAI);
+            if (lexeme("おねがいやねん"))           return (T_ONEGAI);
+            if (lexeme("おねがいする"))             return (T_ONEGAI);
+            if (lexeme("おねがいしますよ"))         return (T_ONEGAI);
+            if (lexeme("おねがいしますね"))         return (T_ONEGAI);
+            if (lexeme("おねがいします"))           return (T_ONEGAI);
+            if (lexeme("おねがいいたしますよ"))     return (T_ONEGAI);
+            if (lexeme("おねがいいたしますね"))     return (T_ONEGAI);
+            if (lexeme("おねがいいたします"))       return (T_ONEGAI);
+            if (lexeme("おねがい"))                 return (T_ONEGAI);
             if (lexeme("おしえろよ"))               return (T_OSHIETE);
             if (lexeme("おしえろ"))                 return (T_OSHIETE);
             if (lexeme("おしえてん"))               return (T_OSHIETE);
@@ -791,6 +802,7 @@ namespace Calc_H
         // T_NO2: 「わ」「さ」「せき」「しょう」の直前の「の」。
         // T_NO3: 「何の何倍」の「の」。
         // T_NO4: 「かけざん」「けいさん」などの直前の「の」。
+        // T_NO5: 「のたすかず」「のかけるかず」の「の」
         // T_NO1: それ以外。
         void resynth2(std::vector<info_type>& infos)
         {
@@ -832,6 +844,17 @@ namespace Calc_H
                     if (it_save != end)
                     {
                         it_save->set_token(T_NO4);
+                        it_save = end;
+                    }
+                    break;
+
+                case T_TASU:
+                case T_KAKERU:
+                case T_HIKU:
+                case T_WARU:
+                    if (it_save != end)
+                    {
+                        it_save->set_token(T_NO5);
                         it_save = end;
                     }
                     break;

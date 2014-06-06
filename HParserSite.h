@@ -767,6 +767,94 @@ namespace Calc_H
             return shared_ptr<Mono>(m);
         }
 
+        shared_ptr<Mono> DoMono28(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono28" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_NO_TASUKAZU;
+            m->m_mono = mono;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono29(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono29" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_NO_KAKERUKAZU;
+            m->m_mono = mono;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono30(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono30" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_NO_HIKUKAZU;
+            m->m_mono = mono;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono31(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono31" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_NO_WARUKAZU;
+            m->m_mono = mono;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono32(shared_ptr<Suruto>& suruto)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono32" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SURUTOKI_TASUKAZU;
+            m->m_suruto = suruto;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono33(shared_ptr<Suruto>& suruto)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono33" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SURUTOKI_KAKERUKAZU;
+            m->m_suruto = suruto;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono34(shared_ptr<Suruto>& suruto)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono34" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SURUTOKI_HIKUKAZU;
+            m->m_suruto = suruto;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono35(shared_ptr<Suruto>& suruto)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono35" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SURUTOKI_WARUKAZU;
+            m->m_suruto = suruto;
+            return shared_ptr<Mono>(m);
+        }
+
         shared_ptr<Expr> DoExpr1(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG

@@ -96,12 +96,20 @@ namespace Calc_H
             MONO_TO_EXPRLIST_ADD, MONO_TO_EXPRLIST_MUL,
             MONO_TO_EXPR_ADD, MONO_TO_EXPR_MUL,
             MONO_TO_EXPR_SUB, MONO_TO_EXPR_DIV,
-            MONO_WO_EXPR_KARA_SUB, MONO_DE_EXPR_WO_DIV
+            MONO_WO_EXPR_KARA_SUB, MONO_DE_EXPR_WO_DIV,
+            TERM_ONLY, FACT_ONLY,
+            SURUTOKI_TASUKAZU, SURUTOKI_KAKERUKAZU,
+            SURUTOKI_HIKUKAZU, SURUTOKI_WARUKAZU,
+            MONO_NO_TASUKAZU, MONO_NO_KAKERUKAZU,
+            MONO_NO_HIKUKAZU, MONO_NO_WARUKAZU,
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
         shared_ptr<Shite>       m_shite;
         shared_ptr<Expr>        m_expr;
+        shared_ptr<Suruto>      m_suruto;
+        shared_ptr<Term>        m_term;
+        shared_ptr<Fact>        m_fact;
     };
 
     struct Expr : Node
