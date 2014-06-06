@@ -49,6 +49,7 @@ namespace Calc_H
             resynth6(infos);
             resynth7(infos);
             resynth8(infos);
+            resynth9(infos);
         }
 
         std::string token_to_string(const info_type& info)
@@ -102,9 +103,6 @@ namespace Calc_H
                 newline();
                 return commit_token(T_PERIOD);
             }
-
-            if (lexeme("これ"))                     return (T_SORE);
-            if (lexeme("それ"))                     return (T_SORE);
 
             if (lexeme("いんいちが"))               return (T_1X1);
             if (lexeme("いんにが"))                 return (T_1X2);
@@ -392,12 +390,19 @@ namespace Calc_H
             if (lexeme("たしあわせた"))             return (T_TASHITA);
             if (lexeme("たしあわす"))               return (T_TASU);
             if (lexeme("たし"))                     return (T_TASHITE);
+            if (lexeme("それの"))                   return (T_SONO);
+            if (lexeme("それがしの"))               return (T_SONO);
+            if (lexeme("それがし"))                 return (T_SORE);
+            if (lexeme("それ"))                     return (T_SORE);
+            if (lexeme("そのとき"))                 return (T_SURUTO);
+            if (lexeme("その"))                     return (T_SONO);
             if (lexeme("ぜんぶ"))                   return (T_ALL);
             if (lexeme("ぜん"))                     return (T_SEN);
             if (lexeme("ぜろ"))                     return (T_ZERO);
             if (lexeme("せん"))                     return (T_SEN);
             if (lexeme("せき"))                     return (T_SEKI);
             if (lexeme("すれば"))                   return (T_SURUTO);
+            if (lexeme("するとき"))                 return (T_SURUTO);
             if (lexeme("すると"))                   return (T_SURUTO);
             if (lexeme("する"))                     return (T_SURU);
             if (lexeme("すべて"))                   return (T_ALL);
@@ -417,6 +422,7 @@ namespace Calc_H
             if (lexeme("して"))                     return (T_SHITE);
             if (lexeme("しち"))                     return (T_NANA);
             if (lexeme("したら"))                   return (T_SURUTO);
+            if (lexeme("したとき"))                 return (T_SURUTO);
             if (lexeme("した"))                     return (T_SHITA);
             if (lexeme("しい"))                     return (T_YON);
             if (lexeme("しぃ"))                     return (T_YON);
@@ -428,6 +434,9 @@ namespace Calc_H
             if (lexeme("さしひいた"))               return (T_HIITA);
             if (lexeme("さ"))                       return (T_SA);
             if (lexeme("ご"))                       return (T_GO);
+            if (lexeme("これの"))                   return (T_SONO);
+            if (lexeme("これ"))                     return (T_SORE);
+            if (lexeme("このとき"))                 return (T_SURUTO);
             if (lexeme("こたえろよ"))               return (T_OSHIETE);
             if (lexeme("こたえろ"))                 return (T_OSHIETE);
             if (lexeme("こたえてくれるかい"))       return (T_OSHIETE);
@@ -700,11 +709,10 @@ namespace Calc_H
         }
 
         // T_PERIOD, T_COMMAを整理して、T_MIRUTO, T_ALLを削除する。
+        // T_SONOをT_SORE, T_NO4に置き換える。
         void resynth1(std::vector<info_type>& infos)
         {
             std::vector<info_type> newinfos;
-            info_type info;
-
             std::vector<info_type>::iterator it = infos.begin();
             std::vector<info_type>::iterator end = infos.end();
 
@@ -719,6 +727,13 @@ namespace Calc_H
             {
                 switch (it->get_token())
                 {
+                case T_SONO:
+                    it->set_token(T_SORE);
+                    newinfos.push_back(*it);
+                    it->set_token(T_NO4);
+                    newinfos.push_back(*it);
+                    break;
+
                 case T_MIRUTO:
                 case T_ALL:
                     continue;
@@ -807,64 +822,8 @@ namespace Calc_H
             }
         }
 
-        // 特定の語句の後のT_COMMAを削除する。
-        void resynth3(std::vector<info_type>& infos)
-        {
-            std::vector<info_type> newinfos;
-            info_type info;
-
-            std::vector<info_type>::iterator it = infos.begin();
-            std::vector<info_type>::iterator end = infos.end();
-            std::vector<info_type>::iterator it2;
-            for (; it != end; ++it)
-            {
-                switch (it->get_token())
-                {
-                case T_DE:
-                case T_HA:
-                case T_HIITE:
-                case T_HIKU:
-                case T_IKURA:
-                case T_KA:
-                case T_KAKERU:
-                case T_KAKETE:
-                case T_KARA:
-                case T_MINUS:
-                case T_NI:
-                case T_NO1:
-                case T_NO2:
-                case T_NO3:
-                case T_PLUS:
-                case T_SHITA:
-                case T_SHITE:
-                case T_SURUTO:
-                case T_TASHITE:
-                case T_TASU:
-                case T_TO1:
-                case T_WARU:
-                case T_WATTE:
-                case T_WO1:
-                case T_WO2:
-                    it2 = it;
-                    it2++;
-                    if (it2->get_token() == T_COMMA)
-                    {
-                        newinfos.push_back(*it);
-                        it = it2;
-                        continue;
-                    }
-                    break;
-
-                default:
-                    break;
-                }
-                newinfos.push_back(*it);
-            }
-            infos = newinfos;
-        }
-
         // 小数点の後の数字にしるしをつける。
-        void resynth4(std::vector<info_type>& infos)
+        void resynth3(std::vector<info_type>& infos)
         {
             std::vector<info_type>::iterator it = infos.begin();
             std::vector<info_type>::iterator end = infos.end();
@@ -898,17 +857,20 @@ namespace Calc_H
         // 「と」をT_TO1, T_TO2に分類する。
         // T_TO2: 「なんとなんぶんのなに」の「と」。
         // T_TO1: それ以外。
-        void resynth5(std::vector<info_type>& infos)
+        void resynth4(std::vector<info_type>& infos)
         {
             std::vector<info_type>::iterator it = infos.begin();
             std::vector<info_type>::iterator end = infos.end();
             std::vector<info_type>::iterator it_save = end;
+            int flag = 0;
             for (; it != end; ++it)
             {
                 switch (it->get_token())
                 {
                 case T_TO1:
-                    it_save = it;
+                    if (flag != 2)
+                        it_save = it;
+                    flag = 0;
                     break;
 
                 case T_ICHI:
@@ -920,6 +882,15 @@ namespace Calc_H
                 case T_NANA:
                 case T_HACHI:
                 case T_KYUU:
+                case T_JUU:
+                case T_HYAKU:
+                case T_SEN:
+                case T_MAN:
+                case T_OKU:
+                case T_CHOU:
+                case T_KEI:
+                    if (flag == 1)
+                        flag = 2;
                     break;
 
                 case T_BUNNO:
@@ -928,13 +899,69 @@ namespace Calc_H
                         it_save->set_token(T_TO2);
                         it_save = end;
                     }
+                    flag = 1;
                     break;
 
                 default:
                     it_save = end;
+                    flag = 0;
                     break;
                 }
             }
+        }
+
+        // 特定の語句の後のT_COMMAを削除する。
+        void resynth5(std::vector<info_type>& infos)
+        {
+            std::vector<info_type> newinfos;
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            std::vector<info_type>::iterator it2;
+            for (; it != end; ++it)
+            {
+                switch (it->get_token())
+                {
+                case T_DE:
+                case T_HA:
+                case T_HIITE:
+                case T_HIKU:
+                case T_IKURA:
+                case T_KA:
+                case T_KAKERU:
+                case T_KAKETE:
+                case T_KARA:
+                case T_MINUS:
+                //case T_NI:    // NOTE: T_NIは、数字かもしれない。
+                case T_NO1:
+                case T_NO2:
+                case T_NO3:
+                case T_PLUS:
+                case T_SHITA:
+                case T_SHITE:
+                case T_SURUTO:
+                case T_TASHITE:
+                case T_TASU:
+                case T_TO1:
+                case T_WARU:
+                case T_WATTE:
+                case T_WO1:
+                case T_WO2:
+                    it2 = it;
+                    it2++;
+                    if (it2->get_token() == T_COMMA)
+                    {
+                        newinfos.push_back(*it);
+                        it = it2;
+                        continue;
+                    }
+                    break;
+
+                default:
+                    break;
+                }
+                newinfos.push_back(*it);
+            }
+            infos = newinfos;
         }
 
         // 「計算し」「をし」などの「し」を修正する。
@@ -1040,6 +1067,50 @@ namespace Calc_H
                     break;
                 }
             }
+        }
+
+        // 特定の語句直前の「、」を取り除く。
+        void resynth9(std::vector<info_type>& infos)
+        {
+            std::vector<info_type> newinfos;
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            for (; it != end; ++it)
+            {
+                if (it->get_token() == T_COMMA)
+                {
+                    switch ((it + 1)->get_token())
+                    {
+                    case T_TASU:
+                    case T_TASHITE:
+                    case T_TASHITA:
+                    case T_TASUTO:
+                    case T_HIKU:
+                    case T_HIITE:
+                    case T_HIITA:
+                    case T_HIKUTO:
+                    case T_KAKERU:
+                    case T_KAKETA:
+                    case T_KAKETE:
+                    case T_KAKERUTO:
+                    case T_WARU:
+                    case T_WATTA:
+                    case T_WATTE:
+                    case T_WARUTO:
+                    case T_SURU:
+                    case T_SHITA:
+                    case T_SHITE:
+                    case T_SURUTO:
+                        ++it;
+                        break;
+
+                    default:
+                        break;
+                    }
+                }
+                newinfos.push_back(*it);
+            }
+            infos = newinfos;
         }
 
     private:

@@ -73,12 +73,12 @@ void MResizable::ModifyParentStyle(BOOL bEnableResize)
     if (bEnableResize)
     {
         style &= ~DS_MODALFRAME;
-        style |= WS_THICKFRAME;
+        style |= WS_THICKFRAME | WS_MAXIMIZEBOX;
         ::SetWindowLong(m_hwndParent, GWL_STYLE, style);
     }
     else
     {
-        style &= ~WS_THICKFRAME;
+        style &= ~(WS_THICKFRAME | WS_MAXIMIZEBOX);
         style |= DS_MODALFRAME;
         ::SetWindowLong(m_hwndParent, GWL_STYLE, style);
     }
@@ -96,12 +96,26 @@ void MResizable::ModifyParentStyle(BOOL bEnableResize)
         style |= WS_EX_DLGMODALFRAME;
         ::SetWindowLong(m_hwndParent, GWL_EXSTYLE, style);
     }
+    if (bEnableResize)
+    {
+        ::GetSystemMenu(m_hwndParent, TRUE);
+    }
+    else
+    {
+        HMENU hSysMenu;
+        hSysMenu = ::GetSystemMenu(m_hwndParent, FALSE);
+        ::RemoveMenu(hSysMenu, SC_MAXIMIZE, MF_BYCOMMAND);
+        ::RemoveMenu(hSysMenu, SC_SIZE, MF_BYCOMMAND);
+    }
+    ::RedrawWindow(m_hwndParent, NULL, NULL,
+                   RDW_FRAME | RDW_INVALIDATE | RDW_ERASENOW);
 }
 
 void MResizable::EnableResize(BOOL bEnableResize)
 {
     ShowSizeGrip(bEnableResize);
     ModifyParentStyle(bEnableResize);
+    m_bResizeEnabled = bEnableResize;
 }
 
 void MResizable::OnParentCreate(HWND hwndParent, BOOL bEnableResize)
@@ -113,6 +127,7 @@ void MResizable::OnParentCreate(HWND hwndParent, BOOL bEnableResize)
 
     ClearLayouts();
 
+    // NOTE: The parent window must be initially WS_THICKFRAME.
     assert(::GetWindowLong(hwndParent, GWL_STYLE) & WS_THICKFRAME);
     EnableResize(bEnableResize);
 }

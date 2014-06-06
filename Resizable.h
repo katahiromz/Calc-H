@@ -65,12 +65,14 @@ public:
     const layout_type *CtrlLayout(HWND hwndCtrl) const;
     const layout_type *CtrlLayout(UINT nCtrlID) const;
 
+    BOOL IsResizeEnabled() const;
     void EnableResize(BOOL bEnableResize);
     void ClearLayouts();
 
 protected:
     HWND            m_hwndParent;
     HWND            m_hwndSizeGrip;
+    BOOL            m_bResizeEnabled;
     layouts_type    m_layouts;
 
     void ShowSizeGrip(BOOL bShow = TRUE);

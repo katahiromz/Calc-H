@@ -1,3 +1,4 @@
+// (Japanese, Shift_JIS)
 #include "stdafx.h"
 
 HINSTANCE   ch_hInstance = NULL;
@@ -132,7 +133,7 @@ BOOL ChOnInitDialog(HWND hwnd)
             ::SetWindowLongPtr(hwndEdt2, GWLP_WNDPROC,
                 reinterpret_cast<LONG_PTR>(ChEditWndProc)));
 
-    ::SetWindowPos(hwnd, NULL, 0, 0, 640, 400,
+    ::SetWindowPos(hwnd, NULL, 0, 0, 640, 360,
         SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOOWNERZORDER |
         SWP_NOREDRAW | SWP_NOZORDER);
     ::SendMessageA(hwnd, DM_REPOSITION, 0, 0);
@@ -167,6 +168,7 @@ BOOL ChOnOK(HWND hwnd)
         return FALSE;
 
     ::SetDlgItemTextA(hwnd, edt2, NULL);
+    ch_resizable.EnableResize(!ch_resizable.IsResizeEnabled());
 
     return TRUE;
 }

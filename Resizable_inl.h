@@ -22,13 +22,14 @@ MZC_INLINE MCtrlLayout::MCtrlLayout(HWND hwndCtrl,
 // MResizable
 
 MZC_INLINE MResizable::MResizable() :
-    m_hwndParent(NULL), m_hwndSizeGrip(NULL)
+    m_hwndParent(NULL), m_hwndSizeGrip(NULL), m_bResizeEnabled(FALSE)
 {
 }
 
 MZC_INLINE MResizable::MResizable(const MResizable& rsz) :
     m_hwndParent(rsz.m_hwndParent),
     m_hwndSizeGrip(rsz.m_hwndSizeGrip),
+    m_bResizeEnabled(rsz.m_bResizeEnabled),
     m_layouts(rsz.m_layouts)
 {
 }
@@ -37,6 +38,7 @@ MZC_INLINE MResizable& MResizable::operator=(const MResizable& rsz)
 {
     m_hwndParent = rsz.m_hwndParent;
     m_hwndSizeGrip = rsz.m_hwndSizeGrip;
+    m_bResizeEnabled = rsz.m_bResizeEnabled;
     m_layouts = rsz.m_layouts;
     return *this;
 }
@@ -74,6 +76,11 @@ MZC_INLINE void MResizable::OnSize()
 
     ArrangeLayout();
     MoveSizeGrip();
+}
+
+MZC_INLINE BOOL MResizable::IsResizeEnabled() const
+{
+    return m_bResizeEnabled;
 }
 
 ////////////////////////////////////////////////////////////////////////////
