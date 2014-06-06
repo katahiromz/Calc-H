@@ -895,14 +895,14 @@ namespace Calc_H
             return shared_ptr<Fact>(f);
         }
 
-        shared_ptr<Prim> DoPrim1(shared_ptr<Expr>& expr)
+        shared_ptr<Prim> DoPrim1(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
                 std::cerr << "DoPrim1" << std::endl;
             #endif
             Prim *p = new Prim;
-            p->m_type = Prim::EXPR;
-            p->m_expr = expr;
+            p->m_type = Prim::MONO;
+            p->m_mono = mono;
             return shared_ptr<Prim>(p);
         }
 

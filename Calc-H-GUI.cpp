@@ -168,7 +168,6 @@ BOOL ChOnOK(HWND hwnd)
         return FALSE;
 
     ::SetDlgItemTextA(hwnd, edt2, NULL);
-    ch_resizable.EnableResize(!ch_resizable.IsResizeEnabled());
 
     return TRUE;
 }

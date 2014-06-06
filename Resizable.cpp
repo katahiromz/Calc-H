@@ -106,9 +106,11 @@ void MResizable::ModifyParentStyle(BOOL bEnableResize)
         hSysMenu = ::GetSystemMenu(m_hwndParent, FALSE);
         ::RemoveMenu(hSysMenu, SC_MAXIMIZE, MF_BYCOMMAND);
         ::RemoveMenu(hSysMenu, SC_SIZE, MF_BYCOMMAND);
+        ::RemoveMenu(hSysMenu, SC_RESTORE, MF_BYCOMMAND);
     }
     ::RedrawWindow(m_hwndParent, NULL, NULL,
                    RDW_FRAME | RDW_INVALIDATE | RDW_ERASENOW);
+    ::InvalidateRect(m_hwndParent, NULL, TRUE);
 }
 
 void MResizable::EnableResize(BOOL bEnableResize)

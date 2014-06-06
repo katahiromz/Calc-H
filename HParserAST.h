@@ -125,12 +125,13 @@ namespace Calc_H
     struct Prim : Node
     {
         enum {
-            EXPR, MINUS, NUM, BUNSUU, TAIBUNSUU
+            MONO, MINUS, NUM, BUNSUU, TAIBUNSUU
         } m_type;
         shared_ptr<Expr>    m_expr;
         shared_ptr<Prim>    m_prim;
         shared_ptr<Num>     m_num;
         shared_ptr<Num>     m_num2;
+        shared_ptr<Mono>    m_mono;
     };
 
     struct Fact : Node

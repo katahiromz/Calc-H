@@ -20,6 +20,7 @@ namespace Calc_H
 using namespace Calc_H;
 
 CH_Value ChCalcExpr(const shared_ptr<Expr>& expr);
+CH_Value ChCalcMono(const shared_ptr<Mono>& mono);
 CH_Value ChCalcFact(const shared_ptr<Fact>& fact);
 CH_Value ChCalcShite(const shared_ptr<Shite>& shite);
 
@@ -34,8 +35,8 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
 {
     switch (prim->m_type)
     {
-    case Prim::EXPR:
-        return ChCalcExpr(prim->m_expr);
+    case Prim::MONO:
+        return ChCalcMono(prim->m_mono);
 
     case Prim::MINUS:
         return -ChCalcPrim(prim->m_prim);

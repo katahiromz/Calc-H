@@ -50,6 +50,7 @@ namespace Calc_H
             resynth7(infos);
             resynth8(infos);
             resynth9(infos);
+            resynth10(infos);
         }
 
         std::string token_to_string(const info_type& info)
@@ -231,6 +232,7 @@ namespace Calc_H
             if (lexeme("ÇÇ–Ç≠Ç±Ç∆ÇÃ"))             return (T_HIKU);
             if (lexeme("Ç"))                       return (T_WO1);
             if (lexeme("ÇÌÇÍÇŒ"))                   return (T_WARUTO);
+            if (lexeme("ÇÌÇÈÇ∆Ç´"))                 return (T_WARUTO);
             if (lexeme("ÇÌÇÈÇ∆"))                   return (T_WARUTO);
             if (lexeme("ÇÌÇÈÇ±Ç∆ÇÃ"))               return (T_WARU);
             if (lexeme("ÇÌÇÈ"))                     return (T_WARU);
@@ -238,6 +240,7 @@ namespace Calc_H
             if (lexeme("ÇÌÇË"))                     return (T_WATTE);
             if (lexeme("ÇÌÇ¡Çƒ"))                   return (T_WATTE);
             if (lexeme("ÇÌÇ¡ÇΩÇÁ"))                 return (T_WARUTO);
+            if (lexeme("ÇÌÇ¡ÇΩÇ∆Ç´"))               return (T_WARUTO);
             if (lexeme("ÇÌÇ¡ÇΩ"))                   return (T_WATTA);
             if (lexeme("ÇÌÇ©ÇÈ"))                   return (T_WAKARAN);
             if (lexeme("ÇÌÇ©ÇËÇ‹ÇπÇÒ"))             return (T_WAKARAN);
@@ -281,14 +284,18 @@ namespace Calc_H
             if (lexeme("Ç›ÇÍÇŒ"))                   return (T_MIRUTO);
             if (lexeme("Ç›ÇÈÇ∆"))                   return (T_MIRUTO);
             if (lexeme("Ç‹ÇÒ"))                     return (T_MAN);
+            if (lexeme("Ç‹Ç¢Ç»Ç∑Ç∑ÇÈÇ∆Ç´"))         return (T_HIKUTO);
             if (lexeme("Ç‹Ç¢Ç»Ç∑ÇµÇƒ"))             return (T_HIITE);
             if (lexeme("Ç‹Ç¢Ç»Ç∑ÇµÇΩÇÁ"))           return (T_HIKUTO);
+            if (lexeme("Ç‹Ç¢Ç»Ç∑ÇµÇΩÇ∆Ç´"))         return (T_HIKUTO);
             if (lexeme("Ç‹Ç¢Ç»Ç∑ÇµÇΩ"))             return (T_HIITA);
             if (lexeme("Ç‹Ç¢Ç»Ç∑Çµ"))               return (T_HIITE);
             if (lexeme("Ç‹Ç¢Ç»Ç∑"))                 return (T_MINUS);
             if (lexeme("Ç÷"))                       return (T_NI);
+            if (lexeme("Ç’ÇÁÇ∑Ç∑ÇÈÇ∆Ç´"))           return (T_TASUTO);
             if (lexeme("Ç’ÇÁÇ∑ÇµÇƒ"))               return (T_TASHITE);
             if (lexeme("Ç’ÇÁÇ∑ÇµÇΩÇÁ"))             return (T_TASUTO);
+            if (lexeme("Ç’ÇÁÇ∑ÇµÇΩÇ∆Ç´"))           return (T_TASUTO);
             if (lexeme("Ç’ÇÁÇ∑ÇµÇΩ"))               return (T_TASHITA);
             if (lexeme("Ç’ÇÁÇ∑Çµ"))                 return (T_TASHITE);
             if (lexeme("Ç’ÇÁÇ∑"))                   return (T_PLUS);
@@ -298,6 +305,7 @@ namespace Calc_H
             if (lexeme("Ç–Ç·Ç≠"))                   return (T_HYAKU);
             if (lexeme("Ç–Çø"))                     return (T_NANA);
             if (lexeme("Ç–ÇØÇŒ"))                   return (T_HIKUTO);
+            if (lexeme("Ç–Ç≠Ç∆Ç´"))                 return (T_HIKUTO);
             if (lexeme("Ç–Ç≠Ç∆"))                   return (T_HIKUTO);
             if (lexeme("Ç–Ç≠Ç±Ç∆ÇÃ"))               return (T_HIKU);
             if (lexeme("Ç–Ç≠"))                     return (T_HIKU);
@@ -305,6 +313,7 @@ namespace Calc_H
             if (lexeme("Ç–Ç´"))                     return (T_HIITE);
             if (lexeme("Ç–Ç¢Çƒ"))                   return (T_HIITE);
             if (lexeme("Ç–Ç¢ÇΩÇÁ"))                 return (T_HIKUTO);
+            if (lexeme("Ç–Ç¢ÇΩÇ∆Ç´"))               return (T_HIKUTO);
             if (lexeme("Ç–Ç¢ÇΩ"))                   return (T_HIITA);
             if (lexeme("ÇŒÇ¢"))                     return (T_BAI);
             if (lexeme("ÇÕÇ¡"))                     return (T_HACHI);
@@ -340,6 +349,7 @@ namespace Calc_H
             if (lexeme("Ç»ÇÒÇ≈ÇµÇÂÇ§"))             return (T_IKURA);
             if (lexeme("Ç»ÇÒÇæ"))                   return (T_IKURA);
             if (lexeme("Ç»ÇÒ"))                     return (T_IKURA);
+            if (lexeme("Ç»Ç…Ç…Ç»ÇÈÇ≈ÇµÇÂÇ§"))       return (T_IKURA);
             if (lexeme("Ç»Ç…Ç…Ç»ÇÈ"))               return (T_IKURA);
             if (lexeme("Ç»Ç…Ç≈Ç¡"))                 return (T_IKURA);
             if (lexeme("Ç»Ç…Ç≈Ç∑"))                 return (T_IKURA);
@@ -376,17 +386,21 @@ namespace Calc_H
             if (lexeme("ÇƒÇÒ"))                     return (T_DOT);
             if (lexeme("ÇøÇÂÇ§"))                   return (T_CHOU);
             if (lexeme("ÇΩÇπÇŒ"))                   return (T_TASUTO);
+            if (lexeme("ÇΩÇ∑Ç∆Ç´"))                 return (T_TASUTO);
             if (lexeme("ÇΩÇ∑Ç∆"))                   return (T_TASUTO);
             if (lexeme("ÇΩÇ∑Ç±Ç∆ÇÃ"))               return (T_TASU);
             if (lexeme("ÇΩÇ∑"))                     return (T_TASU);
             if (lexeme("ÇΩÇµÇƒ"))                   return (T_TASHITE);
             if (lexeme("ÇΩÇµÇΩÇÁ"))                 return (T_TASUTO);
+            if (lexeme("ÇΩÇµÇΩÇ∆Ç´"))               return (T_TASUTO);
             if (lexeme("ÇΩÇµÇΩ"))                   return (T_TASHITA);
             if (lexeme("ÇΩÇµÇ¥ÇÒ"))                 return (T_TASHIZAN);
             if (lexeme("ÇΩÇµÇ†ÇÌÇπÇÍÇŒ"))           return (T_TASUTO);
+            if (lexeme("ÇΩÇµÇ†ÇÌÇπÇÈÇ∆Ç´"))         return (T_TASUTO);
             if (lexeme("ÇΩÇµÇ†ÇÌÇπÇÈÇ∆"))           return (T_TASUTO);
             if (lexeme("ÇΩÇµÇ†ÇÌÇπÇÈ"))             return (T_TASU);
             if (lexeme("ÇΩÇµÇ†ÇÌÇπÇƒ"))             return (T_TASHITE);
+            if (lexeme("ÇΩÇµÇ†ÇÌÇπÇΩÇ∆Ç´"))         return (T_TASUTO);
             if (lexeme("ÇΩÇµÇ†ÇÌÇπÇΩ"))             return (T_TASHITA);
             if (lexeme("ÇΩÇµÇ†ÇÌÇ∑"))               return (T_TASU);
             if (lexeme("ÇΩÇµ"))                     return (T_TASHITE);
@@ -428,9 +442,11 @@ namespace Calc_H
             if (lexeme("ÇµÇ°"))                     return (T_YON);
             if (lexeme("Çµ"))                       return (T_YON);
             if (lexeme("Ç≥ÇÒ"))                     return (T_SAN);
+            if (lexeme("Ç≥ÇµÇ–Ç≠Ç∆Ç´"))             return (T_HIKUTO);
             if (lexeme("Ç≥ÇµÇ–Ç´"))                 return (T_HIITE);
             if (lexeme("Ç≥ÇµÇ–Ç¢Çƒ"))               return (T_HIITE);
             if (lexeme("Ç≥ÇµÇ–Ç¢ÇΩÇÁ"))             return (T_HIKUTO);
+            if (lexeme("Ç≥ÇµÇ–Ç¢ÇΩÇ∆Ç´"))           return (T_HIKUTO);
             if (lexeme("Ç≥ÇµÇ–Ç¢ÇΩ"))               return (T_HIITA);
             if (lexeme("Ç≥"))                       return (T_SA);
             if (lexeme("Ç≤"))                       return (T_GO);
@@ -449,11 +465,13 @@ namespace Calc_H
             if (lexeme("Ç∞ÇÒÇ¥ÇÒ"))                 return (T_HIKIZAN);
             if (lexeme("ÇØÇ¢Ç≥ÇÒ"))                 return (T_KEISAN);
             if (lexeme("ÇØÇ¢"))                     return (T_KEI);
+            if (lexeme("Ç≠ÇÌÇ¶ÇÈÇ∆Ç´"))             return (T_TASUTO);
             if (lexeme("Ç≠ÇÌÇ¶ÇÈÇ∆"))               return (T_TASUTO);
             if (lexeme("Ç≠ÇÌÇ¶ÇÈÇ±Ç∆ÇÃ"))           return (T_TASU);
             if (lexeme("Ç≠ÇÌÇ¶ÇÈ"))                 return (T_TASU);
             if (lexeme("Ç≠ÇÌÇ¶Çƒ"))                 return (T_TASHITE);
             if (lexeme("Ç≠ÇÌÇ¶ÇΩÇÁ"))               return (T_TASUTO);
+            if (lexeme("Ç≠ÇÌÇ¶ÇΩÇ∆Ç´"))             return (T_TASUTO);
             if (lexeme("Ç≠ÇÌÇ¶ÇΩ"))                 return (T_TASHITA);
             if (lexeme("Ç≠ÇÍÇÊÅ["))                 return (T_KA);
             if (lexeme("Ç≠ÇÍÇÊÇ£"))                 return (T_KA);
@@ -485,20 +503,26 @@ namespace Calc_H
             if (lexeme("Ç©Ç¡Ç±"))                   return (T_L_PAREN);
             if (lexeme("Ç©Ç≥ÇÒ"))                   return (T_TASHIZAN);
             if (lexeme("Ç©ÇØÇÍÇŒ"))                 return (T_KAKERUTO);
+            if (lexeme("Ç©ÇØÇÈÇ∆Ç´"))               return (T_KAKERUTO);
             if (lexeme("Ç©ÇØÇÈÇ∆"))                 return (T_KAKERUTO);
             if (lexeme("Ç©ÇØÇÈÇ±Ç∆ÇÃ"))             return (T_KAKERU);
             if (lexeme("Ç©ÇØÇÈ"))                   return (T_KAKERU);
             if (lexeme("Ç©ÇØÇƒ"))                   return (T_KAKETE);
             if (lexeme("Ç©ÇØÇΩÇÁ"))                 return (T_KAKERUTO);
+            if (lexeme("Ç©ÇØÇΩÇ∆Ç´"))               return (T_KAKERUTO);
             if (lexeme("Ç©ÇØÇΩ"))                   return (T_KAKETA);
             if (lexeme("Ç©ÇØÇ¥ÇÒ"))                 return (T_KAKEZAN);
             if (lexeme("Ç©ÇØÇ†ÇÌÇπÇÍÇŒ"))           return (T_KAKERUTO);
+            if (lexeme("Ç©ÇØÇ†ÇÌÇπÇÈÇ∆Ç´"))         return (T_KAKERUTO);
             if (lexeme("Ç©ÇØÇ†ÇÌÇπÇÈÇ∆"))           return (T_KAKERUTO);
             if (lexeme("Ç©ÇØÇ†ÇÌÇπÇÈ"))             return (T_KAKERU);
             if (lexeme("Ç©ÇØÇ†ÇÌÇπÇƒ"))             return (T_KAKERUTO);
+            if (lexeme("Ç©ÇØÇ†ÇÌÇπÇΩÇ∆Ç´"))         return (T_KAKERUTO);
             if (lexeme("Ç©ÇØÇ†ÇÌÇπÇΩ"))             return (T_KAKETA);
             if (lexeme("Ç©ÇØÇ†ÇÌÇπ"))               return (T_KAKEZAN);
+            if (lexeme("Ç©ÇØÇ†ÇÌÇ∑Ç∆Ç´"))           return (T_KAKERUTO);
             if (lexeme("Ç©ÇØÇ†ÇÌÇ∑"))               return (T_KAKERU);
+            if (lexeme("Ç©ÇØÇ†ÇÌÇµÇΩÇ∆Ç´"))         return (T_KAKERUTO);
             if (lexeme("Ç©ÇØ"))                     return (T_KAKERU);
             if (lexeme("Ç©Ç†"))                     return (T_KA);
             if (lexeme("Ç©Çü"))                     return (T_KA);
@@ -1107,6 +1131,43 @@ namespace Calc_H
                     default:
                         break;
                     }
+                }
+                newinfos.push_back(*it);
+            }
+            infos = newinfos;
+        }
+
+        // äáå ÇÃëŒâûÇèCê≥Ç∑ÇÈÅB
+        void resynth10(std::vector<info_type>& infos)
+        {
+            std::vector<info_type> newinfos;
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            info_type info;
+            int nest = 0;
+            for (; it != end; ++it)
+            {
+                switch (it->get_token())
+                {
+                case T_L_PAREN:
+                    ++nest;
+                    assert(nest >= 0);
+                    break;
+
+                case T_R_PAREN:
+                    --nest;
+                    assert(nest >= 0);
+                    break;
+
+                case T_PERIOD:
+                case eof:
+                    info = *it;
+                    for (info.set_token(T_R_PAREN); nest > 0; --nest)
+                        newinfos.push_back(info);
+                    break;
+
+                default:
+                    break;
                 }
                 newinfos.push_back(*it);
             }
