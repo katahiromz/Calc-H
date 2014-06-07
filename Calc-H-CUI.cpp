@@ -39,7 +39,10 @@ int main(int argc, char **argv)
             if (!std::getline(fin, query))
                 break;
 
+            std::string input = query;
+
             std::string result = ChJustDoIt(query);
+            std::cout << "‚É‚ã‚¤‚è‚å‚­F" << input << std::endl;
             std::cout << result << std::endl;
 
             if (result.find("‚µ‚ã‚¤‚è‚å‚¤‚µ‚Ü‚·") != std::string::npos)

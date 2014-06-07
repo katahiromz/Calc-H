@@ -104,6 +104,11 @@
 %token T_9X8<TokenValue>;
 %token T_9X9<TokenValue>;
 
+%token T_TASARERU<TokenValue>;
+%token T_KAKERARERU<TokenValue>;
+%token T_HIKARERU<TokenValue>;
+%token T_WARARERU<TokenValue>;
+
 %token T_ALL<TokenValue>;       // replaced
 %token T_BAI<TokenValue>;
 %token T_BUNNO<TokenValue>;
@@ -134,6 +139,7 @@
 %token T_KARA<TokenValue>;
 %token T_KEI<TokenValue>;
 %token T_KEISAN<TokenValue>;
+%token T_KOTAE<TokenValue>;
 %token T_KYUU<TokenValue>;
 %token T_L_PAREN<TokenValue>;
 %token T_MAN<TokenValue>;
@@ -547,6 +553,16 @@ mono<Mono>
     | [DoMono33] suruto(0) T_KAKERU T_MONO
     | [DoMono34] suruto(0) T_HIKU T_MONO
     | [DoMono35] suruto(0) T_WARU T_MONO
+    | [DoMono9] mono(0) T_NO4 T_KOTAE
+    | [DoMono36] suruto(0) T_KOTAE
+    | [DoMono37] suruto(0) T_TASARERU T_MONO
+    | [DoMono38] suruto(0) T_KAKERARERU T_MONO
+    | [DoMono39] suruto(0) T_HIKARERU T_MONO
+    | [DoMono40] suruto(0) T_WARARERU T_MONO
+    | [DoMono41] mono(0) T_NO5 T_TASARERU T_MONO
+    | [DoMono42] mono(0) T_NO5 T_KAKERARERU T_MONO
+    | [DoMono43] mono(0) T_NO5 T_HIKARERU T_MONO
+    | [DoMono44] mono(0) T_NO5 T_WARARERU T_MONO
     ;
 
 expression_list<ExprList>
