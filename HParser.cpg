@@ -538,6 +538,14 @@ mono<Mono>
     | [DoMono17] shite(0) T_SORE T_WO1 T_BAI T_NI T_SHITA T_MONO
     | [DoMono17] shite(0) T_SORE T_WO1 T_BAI T_SHITA T_MONO
     | [DoMono18] expression(0)
+    | [DoMono45] T_SORE T_NO4 T_TASU T_MONO
+    | [DoMono46] T_SORE T_NO4 T_KAKERU T_MONO
+    | [DoMono47] T_SORE T_NO4 T_HIKU T_MONO
+    | [DoMono48] T_SORE T_NO4 T_WARU T_MONO
+    | [DoMono49] T_SORE T_NO4 T_TASARERU T_MONO
+    | [DoMono50] T_SORE T_NO4 T_KAKERARERU T_MONO
+    | [DoMono51] T_SORE T_NO4 T_HIKARERU T_MONO
+    | [DoMono52] T_SORE T_NO4 T_WARARERU T_MONO
     | [DoMono19] T_SORE
     | [DoMono20] mono(0) T_TO1 expression_list(1) T_NO2 T_WA
     | [DoMono21] mono(0) T_TO1 expression_list(1) T_NO2 T_SEKI

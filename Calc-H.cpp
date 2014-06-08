@@ -8,6 +8,7 @@
 namespace Calc_H
 {
     CH_Value s_sore = 0;
+    shared_ptr<Sentence> s_sentence_prev;
     std::string s_message;
 
     static const char *s_jdigits[] =
@@ -454,9 +455,6 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
     case Sentence::EXPRLIST_MUL:
         return ChMulExprList(sentence->m_exprlist);
 
-    case Sentence::EXPRLIST_SUB:
-        return ChSubExprList(sentence->m_exprlist);
-
     case Sentence::SHITE:
         return ChCalcShite(sentence->m_shite);
 
@@ -472,6 +470,7 @@ void ChAnalyzeExpr(shared_ptr<Expr>& expr);
 void ChAnalyzeExprList(shared_ptr<ExprList>& exprlist);
 void ChAnalyzeMono(shared_ptr<Mono>& mono);
 void ChAnalyzeShite(shared_ptr<Shite>& shite);
+void ChAnalyzeSuruto(shared_ptr<Suruto>& suruto);
 void ChAnalyzeTerm(shared_ptr<Term>& term);
 
 void ChAnalyzeMonoTermTasukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term);
@@ -484,6 +483,11 @@ void ChAnalyzeMonoFactKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 void ChAnalyzeMonoFactHikukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact);
 void ChAnalyzeMonoFactWarukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact);
 
+void ChAnalyzeMonoFactTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact);
+void ChAnalyzeMonoFactKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact);
+void ChAnalyzeMonoFactHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact);
+void ChAnalyzeMonoFactWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact);
+
 void ChAnalyzeMonoSurutoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto);
 void ChAnalyzeMonoSurutoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto);
 void ChAnalyzeMonoSurutoHikukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto);
@@ -493,6 +497,11 @@ void ChAnalyzeMonoMonoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2);
 void ChAnalyzeMonoMonoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2);
 void ChAnalyzeMonoMonoHikukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2);
 void ChAnalyzeMonoMonoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2);
+
+void ChAnalyzeMonoMonoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2);
+void ChAnalyzeMonoMonoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2);
+void ChAnalyzeMonoMonoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2);
+void ChAnalyzeMonoMonoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2);
 
 void ChAnalyzeMonoExprTasukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr);
 void ChAnalyzeMonoExprKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr);
@@ -522,6 +531,32 @@ void ChAnalyzeMonoTermHikukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 
     default:
         Calc_H::s_message = "ひきざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoTermTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
+{
+    switch (term->m_type)
+    {
+    case Term::FACT_ONLY:
+        ChAnalyzeMonoFactTasarerukazu(mono, term->m_fact);
+        break;
+
+    default:
+        Calc_H::s_message = "たしざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoTermHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
+{
+    switch (term->m_type)
+    {
+    case Term::FACT_ONLY:
+        ChAnalyzeMonoFactHikarerukazu(mono, term->m_fact);
+        break;
+
+    default:
+        Calc_H::s_message = "たしざんではありません。";
     }
 }
 
@@ -642,6 +677,11 @@ void ChAnalyzeMonoShiteWarukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite
         Calc_H::s_message = "わりざんではありません。";
     }
 }
+
+void ChAnalyzeMonoShiteTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite);
+void ChAnalyzeMonoShiteKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite);
+void ChAnalyzeMonoShiteHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite);
+void ChAnalyzeMonoShiteWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite);
 
 void ChAnalyzeMonoMonoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
 {
@@ -917,6 +957,38 @@ void ChAnalyzeMonoFactWarukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 {
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoWarukazu(mono, fact->m_prim->m_mono);
+    else
+        Calc_H::s_message = "わりざんではありません。";
+}
+
+void ChAnalyzeMonoFactTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
+{
+    if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
+        ChAnalyzeMonoMonoTasarerukazu(mono, fact->m_prim->m_mono);
+    else
+        Calc_H::s_message = "たしざんではありません。";
+}
+
+void ChAnalyzeMonoFactKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
+{
+    if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
+        ChAnalyzeMonoMonoKakerarerukazu(mono, fact->m_prim->m_mono);
+    else
+        Calc_H::s_message = "かけざんではありません。";
+}
+
+void ChAnalyzeMonoFactHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
+{
+    if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
+        ChAnalyzeMonoMonoHikarerukazu(mono, fact->m_prim->m_mono);
+    else
+        Calc_H::s_message = "ひきざんではありません。";
+}
+
+void ChAnalyzeMonoFactWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
+{
+    if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
+        ChAnalyzeMonoMonoWararerukazu(mono, fact->m_prim->m_mono);
     else
         Calc_H::s_message = "わりざんではありません。";
 }
@@ -1425,6 +1497,729 @@ void ChAnalyzeMonoSurutoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
     }
 }
 
+void ChAnalyzeMonoPrevSentenceTasukazu(shared_ptr<Mono>& mono)
+{
+    Mono *m;
+    Sentence *sentence = Calc_H::s_sentence_prev.get();
+
+    switch (sentence->m_type)
+    {
+    case Sentence::MONO:
+        ChAnalyzeMono(sentence->m_mono);
+        ChAnalyzeMonoMonoTasukazu(mono, sentence->m_mono);
+        break;
+
+    case Sentence::EXPR:
+        ChAnalyzeExpr(sentence->m_expr);
+        ChAnalyzeMonoExprTasukazu(mono, sentence->m_expr);
+        break;
+
+    case Sentence::SURUTO:
+        ChAnalyzeSuruto(sentence->m_suruto);
+        ChAnalyzeMonoSurutoTasukazu(mono, sentence->m_suruto);
+        break;
+
+    case Sentence::EXPRLIST_ADD:
+        {
+            ChAnalyzeExprList(sentence->m_exprlist);
+            ExprList *el = sentence->m_exprlist.get();
+            const std::size_t count = el->size();
+            assert(count >= 2);
+            shared_ptr<Expr> e = (*el)[count - 1];
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = e;
+            mono = shared_ptr<Mono>(m);
+        }
+        break;
+
+    case Sentence::SHITE:
+        ChAnalyzeShite(sentence->m_shite);
+        ChAnalyzeMonoShiteTasukazu(mono, sentence->m_shite);
+        break;
+
+    case Sentence::EXPRLIST_MUL:
+    default:
+        Calc_H::s_message = "たしざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoPrevSentenceKakerukazu(shared_ptr<Mono>& mono)
+{
+    Mono *m;
+    Sentence *sentence = Calc_H::s_sentence_prev.get();
+
+    switch (sentence->m_type)
+    {
+    case Sentence::MONO:
+        ChAnalyzeMono(sentence->m_mono);
+        ChAnalyzeMonoMonoKakerukazu(mono, sentence->m_mono);
+        break;
+
+    case Sentence::EXPR:
+        ChAnalyzeExpr(sentence->m_expr);
+        ChAnalyzeMonoExprKakerukazu(mono, sentence->m_expr);
+        break;
+
+    case Sentence::SURUTO:
+        ChAnalyzeSuruto(sentence->m_suruto);
+        ChAnalyzeMonoSurutoKakerukazu(mono, sentence->m_suruto);
+        break;
+
+    case Sentence::EXPRLIST_MUL:
+        {
+            ChAnalyzeExprList(sentence->m_exprlist);
+            ExprList *el = sentence->m_exprlist.get();
+            const std::size_t count = el->size();
+            assert(count >= 2);
+            shared_ptr<Expr> e = (*el)[count - 1];
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = e;
+            mono = shared_ptr<Mono>(m);
+        }
+        break;
+
+    case Sentence::SHITE:
+        ChAnalyzeShite(sentence->m_shite);
+        ChAnalyzeMonoShiteKakerukazu(mono, sentence->m_shite);
+        break;
+
+    case Sentence::EXPRLIST_ADD:
+    default:
+        Calc_H::s_message = "かけざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoPrevSentenceHikukazu(shared_ptr<Mono>& mono)
+{
+    Sentence *sentence = Calc_H::s_sentence_prev.get();
+
+    switch (sentence->m_type)
+    {
+    case Sentence::MONO:
+        ChAnalyzeMono(sentence->m_mono);
+        ChAnalyzeMonoMonoHikukazu(mono, sentence->m_mono);
+        break;
+
+    case Sentence::EXPR:
+        ChAnalyzeExpr(sentence->m_expr);
+        ChAnalyzeMonoExprHikukazu(mono, sentence->m_expr);
+        break;
+
+    case Sentence::SURUTO:
+        ChAnalyzeSuruto(sentence->m_suruto);
+        ChAnalyzeMonoSurutoHikukazu(mono, sentence->m_suruto);
+        break;
+
+    case Sentence::SHITE:
+        ChAnalyzeShite(sentence->m_shite);
+        ChAnalyzeMonoShiteHikukazu(mono, sentence->m_shite);
+        break;
+
+    case Sentence::EXPRLIST_ADD:
+    case Sentence::EXPRLIST_MUL:
+    default:
+        Calc_H::s_message = "ひきざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoPrevSentenceWarukazu(shared_ptr<Mono>& mono)
+{
+    Sentence *sentence = Calc_H::s_sentence_prev.get();
+
+    switch (sentence->m_type)
+    {
+    case Sentence::MONO:
+        ChAnalyzeMono(sentence->m_mono);
+        ChAnalyzeMonoMonoWarukazu(mono, sentence->m_mono);
+        break;
+
+    case Sentence::EXPR:
+        ChAnalyzeExpr(sentence->m_expr);
+        ChAnalyzeMonoExprWarukazu(mono, sentence->m_expr);
+        break;
+
+    case Sentence::SURUTO:
+        ChAnalyzeSuruto(sentence->m_suruto);
+        ChAnalyzeMonoSurutoWarukazu(mono, sentence->m_suruto);
+        break;
+
+    case Sentence::SHITE:
+        ChAnalyzeShite(sentence->m_shite);
+        ChAnalyzeMonoShiteWarukazu(mono, sentence->m_shite);
+        break;
+
+    case Sentence::EXPRLIST_ADD:
+    case Sentence::EXPRLIST_MUL:
+    default:
+        Calc_H::s_message = "わりざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoPrevSentenceTasarerukazu(shared_ptr<Mono>& mono)
+{
+    Mono *m;
+    Sentence *sentence = Calc_H::s_sentence_prev.get();
+
+    switch (sentence->m_type)
+    {
+    case Sentence::MONO:
+        ChAnalyzeMono(sentence->m_mono);
+        ChAnalyzeMonoMonoTasarerukazu(mono, sentence->m_mono);
+        break;
+
+    case Sentence::EXPR:
+        ChAnalyzeExpr(sentence->m_expr);
+        ChAnalyzeMonoExprTasarerukazu(mono, sentence->m_expr);
+        break;
+
+    case Sentence::SURUTO:
+        ChAnalyzeSuruto(sentence->m_suruto);
+        ChAnalyzeMonoSurutoTasarerukazu(mono, sentence->m_suruto);
+        break;
+
+    case Sentence::EXPRLIST_ADD:
+        {
+            ChAnalyzeExprList(sentence->m_exprlist);
+            ExprList *el = sentence->m_exprlist.get();
+            const std::size_t count = el->size();
+            assert(count >= 2);
+            shared_ptr<Expr> e = (*el)[0];
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = e;
+            mono = shared_ptr<Mono>(m);
+        }
+        break;
+
+    case Sentence::SHITE:
+        ChAnalyzeShite(sentence->m_shite);
+        ChAnalyzeMonoShiteTasarerukazu(mono, sentence->m_shite);
+        break;
+
+    case Sentence::EXPRLIST_MUL:
+    default:
+        Calc_H::s_message = "たしざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoPrevSentenceKakerarerukazu(shared_ptr<Mono>& mono)
+{
+    Mono *m;
+    Sentence *sentence = Calc_H::s_sentence_prev.get();
+
+    switch (sentence->m_type)
+    {
+    case Sentence::MONO:
+        ChAnalyzeMono(sentence->m_mono);
+        ChAnalyzeMonoMonoKakerarerukazu(mono, sentence->m_mono);
+        break;
+
+    case Sentence::EXPR:
+        ChAnalyzeExpr(sentence->m_expr);
+        ChAnalyzeMonoExprKakerarerukazu(mono, sentence->m_expr);
+        break;
+
+    case Sentence::SURUTO:
+        ChAnalyzeSuruto(sentence->m_suruto);
+        ChAnalyzeMonoSurutoKakerarerukazu(mono, sentence->m_suruto);
+        break;
+
+    case Sentence::EXPRLIST_MUL:
+        {
+            ChAnalyzeExprList(sentence->m_exprlist);
+            ExprList *el = sentence->m_exprlist.get();
+            const std::size_t count = el->size();
+            assert(count >= 2);
+            shared_ptr<Expr> e = (*el)[0];
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = e;
+            mono = shared_ptr<Mono>(m);
+        }
+        break;
+
+    case Sentence::SHITE:
+        ChAnalyzeShite(sentence->m_shite);
+        ChAnalyzeMonoShiteKakerarerukazu(mono, sentence->m_shite);
+        break;
+
+    case Sentence::EXPRLIST_ADD:
+    default:
+        Calc_H::s_message = "かけざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoPrevSentenceHikarerukazu(shared_ptr<Mono>& mono)
+{
+    Sentence *sentence = Calc_H::s_sentence_prev.get();
+
+    switch (sentence->m_type)
+    {
+    case Sentence::MONO:
+        ChAnalyzeMono(sentence->m_mono);
+        ChAnalyzeMonoMonoHikarerukazu(mono, sentence->m_mono);
+        break;
+
+    case Sentence::EXPR:
+        ChAnalyzeExpr(sentence->m_expr);
+        ChAnalyzeMonoExprHikarerukazu(mono, sentence->m_expr);
+        break;
+
+    case Sentence::SURUTO:
+        ChAnalyzeSuruto(sentence->m_suruto);
+        ChAnalyzeMonoSurutoHikarerukazu(mono, sentence->m_suruto);
+        break;
+
+    case Sentence::SHITE:
+        ChAnalyzeShite(sentence->m_shite);
+        ChAnalyzeMonoShiteHikarerukazu(mono, sentence->m_shite);
+        break;
+
+    case Sentence::EXPRLIST_ADD:
+    case Sentence::EXPRLIST_MUL:
+    default:
+        Calc_H::s_message = "ひきざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoPrevSentenceWararerukazu(shared_ptr<Mono>& mono)
+{
+    Sentence *sentence = Calc_H::s_sentence_prev.get();
+
+    switch (sentence->m_type)
+    {
+    case Sentence::MONO:
+        ChAnalyzeMono(sentence->m_mono);
+        ChAnalyzeMonoMonoWararerukazu(mono, sentence->m_mono);
+        break;
+
+    case Sentence::EXPR:
+        ChAnalyzeExpr(sentence->m_expr);
+        ChAnalyzeMonoExprWararerukazu(mono, sentence->m_expr);
+        break;
+
+    case Sentence::SURUTO:
+        ChAnalyzeSuruto(sentence->m_suruto);
+        ChAnalyzeMonoSurutoWararerukazu(mono, sentence->m_suruto);
+        break;
+
+    case Sentence::SHITE:
+        ChAnalyzeShite(sentence->m_shite);
+        ChAnalyzeMonoShiteWararerukazu(mono, sentence->m_shite);
+        break;
+
+    case Sentence::EXPRLIST_ADD:
+    case Sentence::EXPRLIST_MUL:
+    default:
+        Calc_H::s_message = "わりざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoMonoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
+{
+    Mono *m;
+    switch (mono2->m_type)
+    {
+    case Mono::EXPRLIST_ADD:
+        {
+            ChAnalyzeExprList(mono2->m_exprlist);
+            ExprList *el = mono2->m_exprlist.get();
+            const std::size_t count = el->size();
+            assert(count >= 2);
+            shared_ptr<Expr> e = (*el)[0];
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = e;
+            mono = shared_ptr<Mono>(m);
+        }
+        break;
+
+    case Mono::MONO_ADD:
+        mono = mono2->m_mono;
+        break;
+
+    case Mono::MONO_ONLY:
+        ChAnalyzeMonoMonoTasarerukazu(mono, mono2->m_mono);
+        break;
+
+    case Mono::SHITE_ADD:
+        m = new Mono;
+        m->m_type = Mono::SHITE_ONLY;
+        m->m_shite = mono->m_shite;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Mono::SHITE_ONLY:
+        ChAnalyzeMonoShiteTasarerukazu(mono, mono2->m_shite);
+        break;
+
+    case Mono::EXPR_ONLY:
+        ChAnalyzeMonoExprTasarerukazu(mono, mono2->m_expr);
+        break;
+
+    //case Mono::SORE:
+
+    case Mono::MONO_TO_EXPRLIST_ADD:
+    case Mono::MONO_TO_EXPR_ADD:
+        mono = mono2->m_mono;
+        break;
+
+    case Mono::TERM_ONLY:
+        ChAnalyzeMonoTermTasarerukazu(mono, mono2->m_term);
+        break;
+
+    case Mono::FACT_ONLY:
+        ChAnalyzeMonoFactTasarerukazu(mono, mono2->m_fact);
+        break;
+
+    case Mono::SURUTO_ONLY:
+        ChAnalyzeMonoSurutoTasarerukazu(mono, mono2->m_suruto);
+        break;
+
+    default:
+        Calc_H::s_message = "たしざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoMonoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
+{
+    Mono *m;
+    switch (mono2->m_type)
+    {
+    case Mono::EXPRLIST_MUL:
+        {
+            ChAnalyzeExprList(mono2->m_exprlist);
+            ExprList *el = mono2->m_exprlist.get();
+            const std::size_t count = el->size();
+            assert(count >= 2);
+            shared_ptr<Expr> e = (*el)[0];
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = e;
+            mono = shared_ptr<Mono>(m);
+        }
+        break;
+
+    case Mono::MONO_MUL:
+        mono = mono2->m_mono;
+        break;
+
+    case Mono::MONO_ONLY:
+        ChAnalyzeMonoMonoKakerarerukazu(mono, mono2->m_mono);
+        break;
+
+    case Mono::SHITE_MUL:
+        m = new Mono;
+        m->m_type = Mono::SHITE_ONLY;
+        m->m_shite = mono->m_shite;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Mono::SHITE_ONLY:
+        ChAnalyzeMonoShiteKakerarerukazu(mono, mono2->m_shite);
+        break;
+
+    case Mono::EXPR_ONLY:
+        ChAnalyzeMonoExprKakerarerukazu(mono, mono2->m_expr);
+        break;
+
+    //case Mono::SORE:
+
+    case Mono::MONO_TO_EXPRLIST_MUL:
+    case Mono::MONO_TO_EXPR_MUL:
+        mono = mono2->m_mono;
+        break;
+        
+    case Mono::TERM_ONLY:
+        ChAnalyzeMonoTermKakerarerukazu(mono, mono2->m_term);
+        break;
+
+    case Mono::FACT_ONLY:
+        ChAnalyzeMonoFactKakerarerukazu(mono, mono2->m_fact);
+        break;
+
+    case Mono::SURUTO_ONLY:
+        ChAnalyzeMonoSurutoKakerarerukazu(mono, mono2->m_suruto);
+        break;
+
+    default:
+        Calc_H::s_message = "かけざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoMonoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
+{
+    Mono *m;
+    switch (mono2->m_type)
+    {
+    case Mono::EXPRLIST_SUB:
+        {
+            ChAnalyzeExprList(mono2->m_exprlist);
+            ExprList *el = mono2->m_exprlist.get();
+            const std::size_t count = el->size();
+            assert(count >= 2);
+            shared_ptr<Expr> e = (*el)[0];
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = e;
+            mono = shared_ptr<Mono>(m);
+        }
+        break;
+
+    case Mono::MONO_SUB:
+        mono = mono2->m_mono;
+        break;
+
+    case Mono::MONO_ONLY:
+        ChAnalyzeMonoMonoHikarerukazu(mono, mono2->m_mono);
+        break;
+
+    case Mono::SHITE_SUB:
+        m = new Mono;
+        m->m_type = Mono::SHITE_ONLY;
+        m->m_shite = mono2->m_shite;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Mono::SHITE_ONLY:
+        ChAnalyzeMonoShiteHikarerukazu(mono, mono2->m_shite);
+        break;
+
+    case Mono::EXPR_ONLY:
+        ChAnalyzeMonoExprHikarerukazu(mono, mono2->m_expr);
+        break;
+
+    //case Mono::SORE:
+        
+    case Mono::MONO_TO_EXPR_SUB:
+        mono = mono2->m_mono;
+        break;
+
+    case Mono::MONO_WO_EXPR_KARA_SUB:
+        m = new Mono;
+        m->m_type = Mono::EXPR_ONLY;
+        m->m_expr = mono2->m_expr;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Mono::TERM_ONLY:
+        ChAnalyzeMonoTermHikarerukazu(mono, mono2->m_term);
+        break;
+
+    case Mono::FACT_ONLY:
+        ChAnalyzeMonoFactHikarerukazu(mono, mono2->m_fact);
+        break;
+
+    case Mono::SURUTO_ONLY:
+        ChAnalyzeMonoSurutoHikarerukazu(mono, mono2->m_suruto);
+        break;
+
+    default:
+        Calc_H::s_message = "ひきざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoMonoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
+{
+    Mono *m;
+    switch (mono2->m_type)
+    {
+    case Mono::EXPRLIST_DIV:
+        {
+            ChAnalyzeExprList(mono2->m_exprlist);
+            ExprList *el = mono2->m_exprlist.get();
+            const std::size_t count = el->size();
+            assert(count >= 2);
+            shared_ptr<Expr> e = (*el)[0];
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = e;
+            mono = shared_ptr<Mono>(m);
+        }
+        break;
+
+    case Mono::MONO_ONLY:
+        ChAnalyzeMonoMonoWararerukazu(mono, mono2->m_mono);
+        break;
+
+    case Mono::SHITE_DIV:
+        m = new Mono;
+        m->m_type = Mono::SHITE_ONLY;
+        m->m_shite = mono2->m_shite;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Mono::SHITE_ONLY:
+        ChAnalyzeMonoShiteWararerukazu(mono, mono2->m_shite);
+        break;
+
+    case Mono::EXPR_ONLY:
+        ChAnalyzeMonoExprWararerukazu(mono, mono2->m_expr);
+        break;
+
+    //case Mono::SORE:
+
+    case Mono::MONO_DIV:
+    case Mono::MONO_TO_EXPR_DIV:
+        mono = mono2->m_mono;
+        break;
+
+    case Mono::MONO_DE_EXPR_WO_DIV:
+        m = new Mono;
+        m->m_type = Mono::EXPR_ONLY;
+        m->m_expr = mono2->m_expr;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Mono::TERM_ONLY:
+        ChAnalyzeMonoTermWararerukazu(mono, mono2->m_term);
+        break;
+
+    case Mono::FACT_ONLY:
+        ChAnalyzeMonoFactWararerukazu(mono, mono2->m_fact);
+        break;
+
+    case Mono::SURUTO_ONLY:
+        ChAnalyzeMonoSurutoWararerukazu(mono, mono2->m_suruto);
+        break;
+
+    default:
+        Calc_H::s_message = "わりざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoShiteTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite)
+{
+    Mono *m;
+    switch (shite->m_type)
+    {
+    case Shite::EXPRLIST_ADD:
+        {
+            ChAnalyzeExprList(shite->m_exprlist);
+            ExprList *el = shite->m_exprlist.get();
+            const std::size_t count = el->size();
+            assert(count >= 2);
+            shared_ptr<Expr> e = (*el)[0];
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = e;
+            mono = shared_ptr<Mono>(m);
+        }
+        break;
+
+    case Shite::MONO_ADD:
+        mono = shite->m_mono;
+        break;
+
+    case Shite::MONO_ONLY:
+        ChAnalyzeMonoMonoTasarerukazu(mono, shite->m_mono);
+        break;
+
+    case Shite::SHITE_ADD:
+        m = new Mono;
+        m->m_type = Mono::SHITE_ONLY;
+        m->m_shite = shite->m_shite;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    default:
+        Calc_H::s_message = "たしざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoShiteKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite)
+{
+    Mono *m;
+    switch (shite->m_type)
+    {
+    case Shite::EXPRLIST_MUL:
+        {
+            ChAnalyzeExprList(shite->m_exprlist);
+            ExprList *el = shite->m_exprlist.get();
+            const std::size_t count = el->size();
+            assert(count >= 2);
+            shared_ptr<Expr> e = (*el)[0];
+            m = new Mono;
+            m->m_type = Mono::EXPR_ONLY;
+            m->m_expr = e;
+            mono = shared_ptr<Mono>(m);
+        }
+        break;
+
+    case Shite::MONO_MUL:
+        mono = shite->m_mono;
+        break;
+
+    case Shite::MONO_ONLY:
+        ChAnalyzeMonoMonoKakerarerukazu(mono, shite->m_mono);
+        break;
+
+    case Shite::SHITE_MUL:
+        m = new Mono;
+        m->m_type = Mono::SHITE_ONLY;
+        m->m_shite = shite->m_shite;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    default:
+        Calc_H::s_message = "かけざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoShiteHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite)
+{
+    Mono *m;
+    switch (shite->m_type)
+    {
+    case Shite::MONO_SUB:
+    case Shite::MONO_WO_EXPR_SUB:
+        mono = shite->m_mono;
+        break;
+
+    case Shite::MONO_ONLY:
+        ChAnalyzeMonoMonoHikarerukazu(mono, shite->m_mono);
+        break;
+
+    case Shite::SHITE_SUB:
+        m = new Mono;
+        m->m_type = Mono::SHITE_ONLY;
+        m->m_shite = shite->m_shite;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    default:
+        Calc_H::s_message = "ひきざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoShiteWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite)
+{
+    Mono *m;
+    switch (shite->m_type)
+    {
+    case Shite::MONO_DIV:
+    case Shite::MONO_WO_EXPR_DIV:
+        mono = shite->m_mono;
+        break;
+
+    case Shite::MONO_ONLY:
+        ChAnalyzeMonoMonoWararerukazu(mono, shite->m_mono);
+        break;
+
+    case Shite::SHITE_DIV:
+        m = new Mono;
+        m->m_type = Mono::SHITE_ONLY;
+        m->m_shite = shite->m_shite;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    default:
+        Calc_H::s_message = "わりざんではありません。";
+    }
+}
+
 void ChAnalyzeMono(shared_ptr<Mono>& mono)
 {
     Mono *m;
@@ -1796,6 +2591,38 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         }
         break;
 
+    case Mono::SORE_NO_TASUKAZU:
+        ChAnalyzeMonoPrevSentenceTasukazu(mono);
+        break;
+
+    case Mono::SORE_NO_KAKERUKAZU:
+        ChAnalyzeMonoPrevSentenceKakerukazu(mono);
+        break;
+
+    case Mono::SORE_NO_HIKUKAZU:
+        ChAnalyzeMonoPrevSentenceHikukazu(mono);
+        break;
+
+    case Mono::SORE_NO_WARUKAZU:
+        ChAnalyzeMonoPrevSentenceWarukazu(mono);
+        break;
+
+    case Mono::SORE_NO_TASARERUKAZU:
+        ChAnalyzeMonoPrevSentenceTasarerukazu(mono);
+        break;
+
+    case Mono::SORE_NO_KAKERARERUKAZU:
+        ChAnalyzeMonoPrevSentenceKakerarerukazu(mono);
+        break;
+
+    case Mono::SORE_NO_HIKARERUKAZU:
+        ChAnalyzeMonoPrevSentenceHikarerukazu(mono);
+        break;
+
+    case Mono::SORE_NO_WARARERUKAZU:
+        ChAnalyzeMonoPrevSentenceWararerukazu(mono);
+        break;
+
     default:
         break;
     }
@@ -1968,6 +2795,15 @@ void ChAnalyzeSentence(shared_ptr<Sentence>& sentence)
 
     case Sentence::SURUTO:
         ChAnalyzeSuruto(sentence->m_suruto);
+        break;
+
+    case Sentence::EXPRLIST_ADD:
+    case Sentence::EXPRLIST_MUL:
+        ChAnalyzeExprList(sentence->m_exprlist);
+        break;
+
+    case Sentence::SHITE:
+        ChAnalyzeShite(sentence->m_shite);
         break;
 
     default:
@@ -2311,6 +3147,7 @@ std::string ChJustDoIt(std::string& query)
         {
             sstream << Calc_H::s_message << std::endl;
         }
+        s_sentence_prev = sentence;
     }
     else
     {

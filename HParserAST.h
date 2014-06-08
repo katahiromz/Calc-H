@@ -44,7 +44,7 @@ namespace Calc_H
     {
         enum {
             MONO, EXPR, SURUTO, NUM, EMPTY,
-            EXPRLIST_ADD, EXPRLIST_MUL, EXPRLIST_SUB,
+            EXPRLIST_ADD, EXPRLIST_MUL,
             SHITE
         } m_type;
         shared_ptr<Mono>        m_mono;
@@ -106,7 +106,11 @@ namespace Calc_H
             SURUTOKI_TASARERUKAZU, SURUTOKI_KAKERARERUKAZU,
             SURUTOKI_HIKARERUKAZU, SURUTOKI_WARARERUKAZU,
             MONO_NO_TASARERUKAZU, MONO_NO_KAKERARERUKAZU,
-            MONO_NO_HIKARERUKAZU, MONO_NO_WARARERUKAZU
+            MONO_NO_HIKARERUKAZU, MONO_NO_WARARERUKAZU,
+            SORE_NO_TASUKAZU, SORE_NO_KAKERUKAZU,
+            SORE_NO_HIKUKAZU, SORE_NO_WARUKAZU,
+            SORE_NO_TASARERUKAZU, SORE_NO_KAKERARERUKAZU,
+            SORE_NO_HIKARERUKAZU, SORE_NO_WARARERUKAZU
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;

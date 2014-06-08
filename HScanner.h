@@ -1047,6 +1047,8 @@ namespace Calc_H
                 case T_NO1:
                 case T_NO2:
                 case T_NO3:
+                case T_NO4:
+                case T_NO5:
                 case T_PLUS:
                 case T_SHITA:
                 case T_SHITE:

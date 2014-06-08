@@ -954,6 +954,86 @@ namespace Calc_H
             return shared_ptr<Mono>(m);
         }
 
+        shared_ptr<Mono> DoMono45()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono45" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SORE_NO_TASUKAZU;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono46()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono46" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SORE_NO_KAKERUKAZU;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono47()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono47" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SORE_NO_HIKUKAZU;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono48()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono48" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SORE_NO_WARUKAZU;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono49()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono49" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SORE_NO_TASARERUKAZU;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono50()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono50" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SORE_NO_KAKERARERUKAZU;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono51()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono51" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SORE_NO_HIKARERUKAZU;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono52()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono52" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SORE_NO_WARARERUKAZU;
+            return shared_ptr<Mono>(m);
+        }
+
         shared_ptr<Expr> DoExpr1(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG
