@@ -1273,46 +1273,19 @@ namespace Calc_H
             std::vector<info_type>::iterator end = infos.end();
             std::vector<info_type>::iterator it_save = end;
             info_type info;
-            int count = 0;
             for (; it != end; ++it)
             {
-                switch (it->get_token())
+                if (it->get_token() == T_SORE &&
+                    (it + 1)->get_token() == T_NO4 &&
+                    (it + 2)->get_token() == T_MONO)
                 {
-                case T_SORE:
-                    if (count == 0)
-                    {
-                        count = 1;
-                        it_save = it;
-                    }
-                    break;
-
-                case T_NO4:
-                    if (count == 1)
-                        count = 2;
-                    break;
-
-                case T_MONO:
-                    if (count == 2)
-                    {
-                        count = 0;
-                        it_save->set_token(T_SORE);
-                        newinfos.push_back(*it_save);
-                        it_save = end;
-                    }
-                    break;
-
-                default:
-                    if (count != 0)
-                    {
-                        for (int i = 0; i < count; ++i)
-                        {
-                            newinfos.push_back(*it_save);
-                            ++it_save;
-                        }
-                        count = 0;
-                    }
                     newinfos.push_back(*it);
-                    break;
+                    ++it;
+                    ++it;
+                }
+                else
+                {
+                    newinfos.push_back(*it);
                 }
             }
             infos = newinfos;
