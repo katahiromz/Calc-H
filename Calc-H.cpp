@@ -470,6 +470,9 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
 
 void ChAnalyzeExpr(shared_ptr<Expr>& expr);
 void ChAnalyzeExprList(shared_ptr<ExprList>& exprlist);
+void ChAnalyzeMono(shared_ptr<Mono>& mono);
+void ChAnalyzeShite(shared_ptr<Shite>& shite);
+void ChAnalyzeTerm(shared_ptr<Term>& term);
 
 void ChAnalyzeMonoTermTasukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term);
 void ChAnalyzeMonoTermKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term);
@@ -1046,6 +1049,7 @@ void ChAnalyzeMonoTermKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& t
     switch (term->m_type)
     {
     case Term::MUL:
+        ChAnalyzeTerm(term->m_term);
         m = new Mono;
         m->m_type = Mono::TERM_ONLY;
         m->m_term = term->m_term;
@@ -1066,6 +1070,7 @@ void ChAnalyzeMonoExprTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& exp
     switch (expr->m_type)
     {
     case Expr::ADD:
+        ChAnalyzeExpr(expr->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = expr->m_expr;
@@ -1085,6 +1090,7 @@ void ChAnalyzeMonoTermWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& ter
     switch (term->m_type)
     {
     case Term::DIV:
+        ChAnalyzeTerm(term->m_term);
         m = new Mono;
         m->m_type = Mono::TERM_ONLY;
         m->m_term = term->m_term;
@@ -1121,6 +1127,7 @@ void ChAnalyzeMonoExprHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& exp
     switch (expr->m_type)
     {
     case Expr::SUB:
+        ChAnalyzeExpr(expr->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = expr->m_expr;
@@ -1157,6 +1164,7 @@ void ChAnalyzeMonoSurutoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
     {
     case Suruto::EXPRLIST_ADD:
         {
+            ChAnalyzeExprList(suruto->m_exprlist);
             ExprList *el = suruto->m_exprlist.get();
             const std::size_t count = el->size();
             assert(count >= 2);
@@ -1170,6 +1178,7 @@ void ChAnalyzeMonoSurutoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
 
     case Suruto::MONO_ADD:
     case Suruto::SHITE_TASUTO:
+        ChAnalyzeExpr(suruto->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = suruto->m_expr;
@@ -1188,6 +1197,7 @@ void ChAnalyzeMonoSurutoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& s
     {
     case Suruto::EXPRLIST_MUL:
         {
+            ChAnalyzeExprList(suruto->m_exprlist);
             ExprList *el = suruto->m_exprlist.get();
             const std::size_t count = el->size();
             assert(count >= 2);
@@ -1201,6 +1211,7 @@ void ChAnalyzeMonoSurutoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& s
 
     case Suruto::MONO_MUL:
     case Suruto::SHITE_KAKERUTO:
+        ChAnalyzeExpr(suruto->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = suruto->m_expr;
@@ -1219,6 +1230,7 @@ void ChAnalyzeMonoSurutoHikukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
     {
     case Suruto::MONO_SUB:
     case Suruto::SHITE_HIKUTO:
+        ChAnalyzeExpr(suruto->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = suruto->m_expr;
@@ -1226,6 +1238,7 @@ void ChAnalyzeMonoSurutoHikukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
         break;
 
     case Suruto::MONO_WO_EXPR_SUB:
+        ChAnalyzeMono(suruto->m_mono);
         m = new Mono;
         m->m_type = Mono::MONO_ONLY;
         m->m_mono = suruto->m_mono;
@@ -1244,6 +1257,7 @@ void ChAnalyzeMonoSurutoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
     {
     case Suruto::MONO_DIV:
     case Suruto::SHITE_WARUTO:
+        ChAnalyzeExpr(suruto->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = suruto->m_expr;
@@ -1251,6 +1265,7 @@ void ChAnalyzeMonoSurutoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
         break;
 
     case Suruto::MONO_DE_EXPR_DIV:
+        ChAnalyzeMono(suruto->m_mono);
         m = new Mono;
         m->m_type = Mono::MONO_ONLY;
         m->m_mono = suruto->m_mono;
@@ -1269,6 +1284,7 @@ void ChAnalyzeMonoSurutoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
     {
     case Suruto::EXPRLIST_ADD:
         {
+            ChAnalyzeExprList(suruto->m_exprlist);
             ExprList *el = suruto->m_exprlist.get();
             const std::size_t count = el->size();
             assert(count >= 2);
@@ -1281,6 +1297,7 @@ void ChAnalyzeMonoSurutoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
         break;
 
     case Suruto::MONO_ADD:
+        ChAnalyzeMono(suruto->m_mono);
         m = new Mono;
         m->m_type = Mono::MONO_ONLY;
         m->m_mono = suruto->m_mono;
@@ -1288,6 +1305,7 @@ void ChAnalyzeMonoSurutoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
         break;
 
     case Suruto::SHITE_TASUTO:
+        ChAnalyzeShite(suruto->m_shite);
         m = new Mono;
         m->m_type = Mono::SHITE_ONLY;
         m->m_shite = suruto->m_shite;
@@ -1306,6 +1324,7 @@ void ChAnalyzeMonoSurutoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto
     {
     case Suruto::EXPRLIST_MUL:
         {
+            ChAnalyzeExprList(suruto->m_exprlist);
             ExprList *el = suruto->m_exprlist.get();
             const std::size_t count = el->size();
             assert(count >= 2);
@@ -1318,6 +1337,7 @@ void ChAnalyzeMonoSurutoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto
         break;
 
     case Suruto::MONO_MUL:
+        ChAnalyzeMono(suruto->m_mono);
         m = new Mono;
         m->m_type = Mono::MONO_ONLY;
         m->m_mono = suruto->m_mono;
@@ -1325,6 +1345,7 @@ void ChAnalyzeMonoSurutoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto
         break;
 
     case Suruto::SHITE_KAKERUTO:
+        ChAnalyzeShite(suruto->m_shite);
         m = new Mono;
         m->m_type = Mono::SHITE_ONLY;
         m->m_shite = suruto->m_shite;
@@ -1342,6 +1363,7 @@ void ChAnalyzeMonoSurutoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
     switch (suruto->m_type)
     {
     case Suruto::MONO_SUB:
+        ChAnalyzeMono(suruto->m_mono);
         m = new Mono;
         m->m_type = Mono::MONO_ONLY;
         m->m_mono = suruto->m_mono;
@@ -1349,6 +1371,7 @@ void ChAnalyzeMonoSurutoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
         break;
 
     case Suruto::SHITE_HIKUTO:
+        ChAnalyzeShite(suruto->m_shite);
         m = new Mono;
         m->m_type = Mono::SHITE_ONLY;
         m->m_shite = suruto->m_shite;
@@ -1356,6 +1379,7 @@ void ChAnalyzeMonoSurutoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
         break;
 
     case Suruto::MONO_WO_EXPR_SUB:
+        ChAnalyzeExpr(suruto->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = suruto->m_expr;
@@ -1373,6 +1397,7 @@ void ChAnalyzeMonoSurutoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
     switch (suruto->m_type)
     {
     case Suruto::MONO_DIV:
+        ChAnalyzeMono(suruto->m_mono);
         m = new Mono;
         m->m_type = Mono::MONO_ONLY;
         m->m_mono = suruto->m_mono;
@@ -1380,6 +1405,7 @@ void ChAnalyzeMonoSurutoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
         break;
 
     case Suruto::SHITE_WARUTO:
+        ChAnalyzeShite(suruto->m_shite);
         m = new Mono;
         m->m_type = Mono::SHITE_ONLY;
         m->m_shite = suruto->m_shite;
@@ -1387,6 +1413,7 @@ void ChAnalyzeMonoSurutoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
         break;
 
     case Suruto::MONO_DE_EXPR_DIV:
+        ChAnalyzeExpr(suruto->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = suruto->m_expr;
@@ -1417,6 +1444,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         case Mono::MONO_ADD:
         case Mono::SHITE_ADD:
         case Mono::MONO_TO_EXPR_ADD:
+            ChAnalyzeExpr(mono->m_mono->m_expr);
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
             m->m_expr = mono->m_mono->m_expr;
@@ -1424,6 +1452,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         case Mono::MONO_TO_EXPRLIST_ADD:
+            ChAnalyzeExprList(mono->m_mono->m_exprlist);
             m = new Mono;
             m->m_type = Mono::EXPRLIST_ADD;
             m->m_exprlist = mono->m_mono->m_exprlist;
@@ -1450,6 +1479,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         case Mono::MONO_MUL:
         case Mono::SHITE_MUL:
         case Mono::MONO_TO_EXPR_MUL:
+            ChAnalyzeExpr(mono->m_mono->m_expr);
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
             m->m_expr = mono->m_mono->m_expr;
@@ -1457,6 +1487,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         case Mono::MONO_TO_EXPRLIST_MUL:
+            ChAnalyzeExprList(mono->m_mono->m_exprlist);
             m = new Mono;
             m->m_type = Mono::EXPRLIST_MUL;
             m->m_exprlist = mono->m_mono->m_exprlist;
@@ -1483,6 +1514,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         case Mono::MONO_SUB:
         case Mono::SHITE_SUB:
         case Mono::MONO_TO_EXPR_SUB:
+            ChAnalyzeExpr(mono->m_mono->m_expr);
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
             m->m_expr = mono->m_mono->m_expr;
@@ -1509,6 +1541,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         case Mono::MONO_DIV:
         case Mono::SHITE_DIV:
         case Mono::MONO_TO_EXPR_DIV:
+            ChAnalyzeExpr(mono->m_mono->m_expr);
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
             m->m_expr = mono->m_mono->m_expr;
@@ -1566,6 +1599,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
 
         case Mono::EXPRLIST_ADD:
             {
+                ChAnalyzeExprList(mono->m_mono->m_exprlist);
                 ExprList *el = mono->m_mono->m_exprlist.get();
                 const std::size_t count = el->size();
                 assert(count >= 2);
@@ -1580,6 +1614,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         case Mono::MONO_ADD:
         case Mono::MONO_TO_EXPRLIST_ADD:
         case Mono::MONO_TO_EXPR_ADD:
+            ChAnalyzeMono(mono->m_mono->m_mono);
             m = new Mono;
             m->m_type = Mono::MONO_ONLY;
             m->m_mono = mono->m_mono->m_mono;
@@ -1587,6 +1622,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         case Mono::SHITE_ADD:
+            ChAnalyzeShite(mono->m_mono->m_shite);
             m = new Mono;
             m->m_type = Mono::SHITE_ONLY;
             m->m_shite = mono->m_mono->m_shite;
@@ -1612,6 +1648,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
 
         case Mono::EXPRLIST_MUL:
             {
+                ChAnalyzeExprList(mono->m_mono->m_exprlist);
                 ExprList *el = mono->m_mono->m_exprlist.get();
                 const std::size_t count = el->size();
                 assert(count >= 2);
@@ -1626,6 +1663,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         case Mono::MONO_MUL:
         case Mono::MONO_TO_EXPRLIST_ADD:
         case Mono::MONO_TO_EXPR_MUL:
+            ChAnalyzeMono(mono->m_mono->m_mono);
             m = new Mono;
             m->m_type = Mono::MONO_ONLY;
             m->m_mono = mono->m_mono->m_mono;
@@ -1633,6 +1671,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         case Mono::SHITE_MUL:
+            ChAnalyzeShite(mono->m_mono->m_shite);
             m = new Mono;
             m->m_type = Mono::SHITE_ONLY;
             m->m_shite = mono->m_mono->m_shite;
@@ -1658,6 +1697,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
 
         case Mono::EXPRLIST_SUB:
             {
+                ChAnalyzeExprList(mono->m_mono->m_exprlist);
                 ExprList *el = mono->m_mono->m_exprlist.get();
                 const std::size_t count = el->size();
                 assert(count >= 2);
@@ -1671,6 +1711,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             
         case Mono::MONO_SUB:
         case Mono::MONO_TO_EXPR_SUB:
+            ChAnalyzeMono(mono->m_mono->m_mono);
             m = new Mono;
             m->m_type = Mono::MONO_ONLY;
             m->m_mono = mono->m_mono->m_mono;
@@ -1678,6 +1719,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         case Mono::MONO_WO_EXPR_KARA_SUB:
+            ChAnalyzeExpr(mono->m_mono->m_expr);
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
             m->m_expr = mono->m_mono->m_expr;
@@ -1685,6 +1727,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         case Mono::SHITE_SUB:
+            ChAnalyzeShite(mono->m_mono->m_shite);
             m = new Mono;
             m->m_type = Mono::SHITE_ONLY;
             m->m_shite = mono->m_mono->m_shite;
@@ -1710,6 +1753,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
 
         case Mono::EXPRLIST_DIV:
             {
+                ChAnalyzeExprList(mono->m_mono->m_exprlist);
                 ExprList *el = mono->m_mono->m_exprlist.get();
                 const std::size_t count = el->size();
                 assert(count >= 2);
@@ -1723,6 +1767,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             
         case Mono::MONO_DIV:
         case Mono::MONO_TO_EXPR_DIV:
+            ChAnalyzeMono(mono->m_mono->m_mono);
             m = new Mono;
             m->m_type = Mono::MONO_ONLY;
             m->m_mono = mono->m_mono->m_mono;
@@ -1730,6 +1775,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         case Mono::MONO_DE_EXPR_WO_DIV:
+            ChAnalyzeExpr(mono->m_mono->m_expr);
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
             m->m_expr = mono->m_mono->m_expr;
@@ -1737,6 +1783,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         case Mono::SHITE_DIV:
+            ChAnalyzeShite(mono->m_mono->m_shite);
             m = new Mono;
             m->m_type = Mono::SHITE_ONLY;
             m->m_shite = mono->m_mono->m_shite;
