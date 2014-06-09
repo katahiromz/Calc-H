@@ -81,23 +81,42 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
                 return seisuu + denom / num;
         }
 
-    case Prim::FUNCTION:
+    case Prim::FUNC1ARG:
         {
             CH_Value value = ChCalcPrim(prim->m_prim);
-            switch (prim->m_func->m_type)
+            switch (prim->m_func1arg->m_type)
             {
-            case Func::SIN:
+            case Func1Arg::SIN:
                 value = pmp::sin(value);
                 break;
 
-            case Func::COS:
+            case Func1Arg::COS:
                 value = pmp::cos(value);
                 break;
 
-            case Func::TAN:
+            case Func1Arg::TAN:
                 value = pmp::tan(value);
                 break;
+
+            case Func1Arg::ASIN:
+                value = pmp::asin(value);
+                break;
+
+            case Func1Arg::ACOS:
+                value = pmp::acos(value);
+                break;
+
+            case Func1Arg::ATAN:
+                value = pmp::atan(value);
+                break;
             }
+            return value;
+        }
+
+    case Prim::DO:
+        {
+            CH_Value value = ChCalcPrim(prim->m_prim);
+            value *= pmp::atan(1) / 45;
             return value;
         }
 
@@ -110,12 +129,7 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
 CH_Value 
 ChPowFactPrim(const shared_ptr<Fact>& fact, const shared_ptr<Prim>& prim)
 {
-    CH_Value value = 1;
-    CH_Value count = ChCalcFact(fact);
-    for (int i = 0; i < count; ++i)
-    {
-        value *= ChCalcPrim(prim);
-    }
+    CH_Value value = pmp::pow(ChCalcFact(fact), ChCalcPrim(prim));
     return value;
 }
 
@@ -127,7 +141,11 @@ CH_Value ChCalcFact(const shared_ptr<Fact>& fact)
         return ChPowFactPrim(fact->m_fact, fact->m_prim);
 
     case Fact::POW2:
-        return ChCalcFact(fact->m_fact) * ChCalcFact(fact->m_fact);
+        {
+            CH_Value value = ChCalcFact(fact->m_fact);
+            value *= value;
+            return value;
+        }
 
     case Fact::SINGLE:
         return ChCalcPrim(fact->m_prim);
@@ -2703,7 +2721,8 @@ void ChAnalyzePrim(shared_ptr<Prim>& prim)
     case Prim::MINUS:
     case Prim::BUNSUU:
     case Prim::TAIBUNSUU:
-    case Prim::FUNCTION:
+    case Prim::FUNC1ARG:
+    case Prim::DO:
         ChAnalyzePrim(prim->m_prim);
         break;
 

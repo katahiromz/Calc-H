@@ -1221,14 +1221,25 @@ namespace Calc_H
             return shared_ptr<Prim>(p);
         }
 
-        shared_ptr<Prim> DoPrim6(shared_ptr<Func>& func, shared_ptr<Prim>& prim)
+        shared_ptr<Prim> DoPrim6(shared_ptr<Func1Arg>& func1arg, shared_ptr<Prim>& prim)
         {
             #ifdef DEEPDEBUG
                 std::cerr << "DoPrim6" << std::endl;
             #endif
             Prim *p = new Prim;
-            p->m_type = Prim::FUNCTION;
-            p->m_func = func;
+            p->m_type = Prim::FUNC1ARG;
+            p->m_func1arg = func1arg;
+            p->m_prim = prim;
+            return shared_ptr<Prim>(p);
+        }
+
+        shared_ptr<Prim> DoPrim7(shared_ptr<Prim>& prim)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrim7" << std::endl;
+            #endif
+            Prim *p = new Prim;
+            p->m_type = Prim::DO;
             p->m_prim = prim;
             return shared_ptr<Prim>(p);
         }
@@ -2640,34 +2651,64 @@ namespace Calc_H
             return shared_ptr<Digit>(d);
         }
 
-        shared_ptr<Func> DoFunc1()
+        shared_ptr<Func1Arg> DoFunc1Arg1()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1" << std::endl;
+                std::cerr << "DoFunc1Arg1" << std::endl;
             #endif
-            Func *f = new Func;
-            f->m_type = Func::SIN;
-            return shared_ptr<Func>(f);
+            Func1Arg *f = new Func1Arg;
+            f->m_type = Func1Arg::SIN;
+            return shared_ptr<Func1Arg>(f);
         }
 
-        shared_ptr<Func> DoFunc2()
+        shared_ptr<Func1Arg> DoFunc1Arg2()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc2" << std::endl;
+                std::cerr << "DoFunc1Arg2" << std::endl;
             #endif
-            Func *f = new Func;
-            f->m_type = Func::COS;
-            return shared_ptr<Func>(f);
+            Func1Arg *f = new Func1Arg;
+            f->m_type = Func1Arg::COS;
+            return shared_ptr<Func1Arg>(f);
         }
 
-        shared_ptr<Func> DoFunc3()
+        shared_ptr<Func1Arg> DoFunc1Arg3()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc3" << std::endl;
+                std::cerr << "DoFunc1Arg3" << std::endl;
             #endif
-            Func *f = new Func;
-            f->m_type = Func::TAN;
-            return shared_ptr<Func>(f);
+            Func1Arg *f = new Func1Arg;
+            f->m_type = Func1Arg::TAN;
+            return shared_ptr<Func1Arg>(f);
+        }
+
+        shared_ptr<Func1Arg> DoFunc1Arg4()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFunc1Arg4" << std::endl;
+            #endif
+            Func1Arg *f = new Func1Arg;
+            f->m_type = Func1Arg::ASIN;
+            return shared_ptr<Func1Arg>(f);
+        }
+
+        shared_ptr<Func1Arg> DoFunc1Arg5()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFunc1Arg5" << std::endl;
+            #endif
+            Func1Arg *f = new Func1Arg;
+            f->m_type = Func1Arg::ACOS;
+            return shared_ptr<Func1Arg>(f);
+        }
+
+        shared_ptr<Func1Arg> DoFunc1Arg6()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFunc1Arg6" << std::endl;
+            #endif
+            Func1Arg *f = new Func1Arg;
+            f->m_type = Func1Arg::ATAN;
+            return shared_ptr<Func1Arg>(f);
         }
 
     public:

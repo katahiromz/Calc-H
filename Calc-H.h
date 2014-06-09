@@ -5,6 +5,7 @@
 #include <string>   // for std::string
 #include <vector>   // for std::vector
 #include <sstream>  // for std::stringstream
+#include <cmath>    // for M_PI
 
 #if (__cplusplus >= 201103L)
     #include <memory>

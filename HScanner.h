@@ -410,6 +410,7 @@ namespace Calc_H
             if (lexeme("Ç«Ç§Ç»ÇÃÇ≈ÇµÇÂÇ§"))             return (T_IKURA);
             if (lexeme("Ç«Ç§Ç»ÇÃ"))                     return (T_IKURA);
             if (lexeme("Ç«Ç§"))                         return (T_IKURA);
+            if (lexeme("Ç«"))                           return (T_DO);
             if (lexeme("Ç∆ÇÀÅA"))                       return (T_TO1);
             if (lexeme("Ç∆Ç»ÅA"))                       return (T_TO1);
             if (lexeme("Ç∆Ç∂Ç©Ç¡Ç±"))                   return (T_R_PAREN);
@@ -633,6 +634,9 @@ namespace Calc_H
             if (lexeme("Ç¢Ç≠Ç¬Ç»ÇÃÇ≈ÇµÇÂÇ§"))           return (T_IKURA);
             if (lexeme("Ç¢Ç≠Ç¬Ç»ÇÃ"))                   return (T_IKURA);
             if (lexeme("Ç¢Ç≠Ç¬"))                       return (T_IKURA);
+            if (lexeme("Ç†Å[Ç≠ÇΩÇÒÇ∂Ç•ÇÒÇ∆"))           return (T_ATAN);
+            if (lexeme("Ç†Å[Ç≠Ç≥Ç¢ÇÒ"))                 return (T_ASIN);
+            if (lexeme("Ç†Å[Ç≠Ç±Ç≥Ç¢ÇÒ"))               return (T_ACOS);
             if (lexeme("Ål"))                           return (T_R_PAREN);
             if (lexeme("Åk"))                           return (T_L_PAREN);
             if (lexeme("Åz"))                           return (T_R_PAREN);
