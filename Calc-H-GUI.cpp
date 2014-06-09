@@ -2,9 +2,14 @@
 #include "stdafx.h"
 
 HINSTANCE   ch_hInstance = NULL;
+HWND        ch_hMainWnd = NULL;
 WNDPROC     ch_fnOldEditWndProc = NULL;
 MResizable  ch_resizable;
 HBRUSH      ch_hbrBack = NULL;
+
+std::vector<std::string> ch_history;
+std::size_t              ch_history_index = 0;
+std::size_t              ch_history_count = 0;
 
 // hook for Ctrl+A
 HHOOK ch_hCtrlAHook = NULL;
@@ -65,6 +70,42 @@ ChEditWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         InvalidateRect(hwnd, NULL, FALSE);
         return result;
 
+    case WM_KEYDOWN:
+        if (s_flag)
+        {
+            switch (wParam)
+            {
+            case VK_UP:
+                if (1 <= ch_history_index)
+                {
+                    --ch_history_index;
+                    std::string& str = ch_history[ch_history_index];
+                    ::SetWindowTextA(hwnd, str.c_str());
+                    ::SendMessageA(hwnd, EM_SETSEL, int(str.size()), int(str.size()));
+                }
+                return 0;
+
+            case VK_DOWN:
+                if (ch_history_index + 1 < ch_history_count)
+                {
+                    ++ch_history_index;
+                    std::string& str = ch_history[ch_history_index];
+                    ::SetWindowTextA(hwnd, str.c_str());
+                    ::SendMessageA(hwnd, EM_SETSEL, int(str.size()), int(str.size()));
+                }
+                else
+                {
+                    if (ch_history_index < ch_history_count)
+                        ++ch_history_index;
+                    ::SetWindowTextA(hwnd, NULL);
+                    ::SendMessageA(hwnd, EM_SETSEL, 0, 0);
+                }
+                return 0;
+            }
+        }
+        result = ::CallWindowProc(ch_fnOldEditWndProc, hwnd, uMsg, wParam, lParam);
+        return result;
+
     case WM_CHAR:
     case WM_PAINT:
         result = ::CallWindowProc(ch_fnOldEditWndProc, hwnd, uMsg, wParam, lParam);
@@ -104,6 +145,8 @@ void ChAddOutput(HWND hwnd, const char *text)
 
 BOOL ChOnInitDialog(HWND hwnd)
 {
+    ch_hMainWnd = hwnd;
+
     std::string contents;
     contents += ch_logo;
     contents += "\n";
@@ -154,6 +197,9 @@ BOOL ChOnOK(HWND hwnd)
     CrTrimString(query);
     if (query.empty())
         return TRUE;
+
+    ch_history.push_back(query);
+    ch_history_index = ch_history_count = ch_history.size();
 
     std::string result = ChJustDoIt(query);
 

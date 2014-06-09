@@ -121,6 +121,7 @@
 %token T_DE<TokenValue>;
 %token T_DO<TokenValue>;
 %token T_DOT<TokenValue>;
+%token T_E<TokenValue>;
 %token T_GO<TokenValue>;
 %token T_HA<TokenValue>;
 %token T_HACHI<TokenValue>;
@@ -162,6 +163,7 @@
 %token T_ONEGAI<TokenValue>;
 %token T_OSHIETE<TokenValue>;
 %token T_PERIOD<TokenValue>;
+%token T_PI<TokenValue>;
 %token T_PLUS<TokenValue>;
 %token T_ROKU<TokenValue>;
 %token T_R_PAREN<TokenValue>;
@@ -615,6 +617,8 @@ primary<Prim>
     | [DoPrim5] kei_le_number(0) T_TO2 primary(1) T_BUNNO number(2)
     | [DoPrim3] primary(0) T_BUNNO number(1)
     | [DoPrim4] number(0)
+    | [DoPrim8] T_PI
+    | [DoPrim9] T_E
     ;
 
 number<Num>

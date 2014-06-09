@@ -63,7 +63,7 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
                 return denom / num;
         }
 
-	case Prim::TAIBUNSUU:
+    case Prim::TAIBUNSUU:
         {
             CH_Value seisuu = ChCalcNum(prim->m_num);
             CH_Value denom = ChCalcPrim(prim->m_prim);
@@ -119,6 +119,12 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
             value *= pmp::atan(1) / 45;
             return value;
         }
+
+    case Prim::PI:
+        return pmp::atan(1) * 4;
+
+    case Prim::E:
+        return pmp::exp(1);
 
     default:
         assert(0);
@@ -1284,7 +1290,7 @@ void ChAnalyzeMonoExprWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& exp
 
 void ChAnalyzeMonoSurutoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto)
 {
-	Mono *m;
+    Mono *m;
     switch (suruto->m_type)
     {
     case Suruto::EXPRLIST_ADD:
@@ -1317,7 +1323,7 @@ void ChAnalyzeMonoSurutoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
 
 void ChAnalyzeMonoSurutoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto)
 {
-	Mono *m;
+    Mono *m;
     switch (suruto->m_type)
     {
     case Suruto::EXPRLIST_MUL:
@@ -3197,7 +3203,8 @@ std::string ChJustDoIt(std::string& query)
                 if (s_message.empty())
                 {
                     sstream << ChGetJpnNumber2(value) <<
-                        " (" << value.str() << ") " << "‚Å‚·B" << std::endl;
+                        " (" << value.str(ch_precision) <<
+                                ") " << "‚Å‚·B" << std::endl;
                     s_sore = value;
                 }
                 else

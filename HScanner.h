@@ -330,12 +330,14 @@ namespace Calc_H
             if (lexeme("ひいたときの"))                 return (T_HIKUTO);
             if (lexeme("ひいたとき"))                   return (T_HIKUTO);
             if (lexeme("ひいた"))                       return (T_HIITA);
+            if (lexeme("ぱい"))                         return (T_PI);
             if (lexeme("ばい"))                         return (T_BAI);
             if (lexeme("はっ"))                         return (T_HACHI);
             if (lexeme("はち"))                         return (T_HACHI);
             if (lexeme("は"))                           return (T_HA);
             if (lexeme("の"))                           return (T_NO1);
             if (lexeme("ねん"))                         return (T_KA);
+            if (lexeme("ねいぴあすう"))                 return (T_E);
             if (lexeme("ね"))                           return (T_KA);
             if (lexeme("にー"))                         return (T_NI);
             if (lexeme("にたすことの"))                 return (T_TASU);
@@ -420,6 +422,7 @@ namespace Calc_H
             if (lexeme("てん"))                         return (T_DOT);
             if (lexeme("って"))                         return (T_HA);
             if (lexeme("ちょう"))                       return (T_CHOU);
+            if (lexeme("たんぜんと"))                   return (T_TAN);
             if (lexeme("たんじぇんと"))                 return (T_TAN);
             if (lexeme("たせば"))                       return (T_TASUTO);
             if (lexeme("たすとき"))                     return (T_TASUTO);
@@ -613,6 +616,8 @@ namespace Calc_H
             if (lexeme("おしえてください"))             return (T_OSHIETE);
             if (lexeme("おしえて"))                     return (T_OSHIETE);
             if (lexeme("おく"))                         return (T_OKU);
+            if (lexeme("えんしゅうりつ"))               return (T_PI);
+            if (lexeme("いー"))                         return (T_E);
             if (lexeme("いっ"))                         return (T_ICHI);
             if (lexeme("いち"))                         return (T_ICHI);
             if (lexeme("いくらになるでしょう"))         return (T_IKURA);
@@ -634,6 +639,7 @@ namespace Calc_H
             if (lexeme("いくつなのでしょう"))           return (T_IKURA);
             if (lexeme("いくつなの"))                   return (T_IKURA);
             if (lexeme("いくつ"))                       return (T_IKURA);
+            if (lexeme("あーくたんぜんと"))             return (T_ATAN);
             if (lexeme("あーくたんじぇんと"))           return (T_ATAN);
             if (lexeme("あーくさいん"))                 return (T_ASIN);
             if (lexeme("あーくこさいん"))               return (T_ACOS);

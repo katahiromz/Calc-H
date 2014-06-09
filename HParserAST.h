@@ -143,7 +143,8 @@ namespace Calc_H
     struct Prim : Node
     {
         enum {
-            MONO, MINUS, NUM, BUNSUU, TAIBUNSUU, FUNC1ARG, DO
+            MONO, MINUS, NUM, BUNSUU, TAIBUNSUU, FUNC1ARG, DO,
+            PI, E
         } m_type;
         shared_ptr<Expr>        m_expr;
         shared_ptr<Prim>        m_prim;
