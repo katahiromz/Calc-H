@@ -1221,6 +1221,18 @@ namespace Calc_H
             return shared_ptr<Prim>(p);
         }
 
+        shared_ptr<Prim> DoPrim6(shared_ptr<Func>& func, shared_ptr<Prim>& prim)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrim6" << std::endl;
+            #endif
+            Prim *p = new Prim;
+            p->m_type = Prim::FUNCTION;
+            p->m_func = func;
+            p->m_prim = prim;
+            return shared_ptr<Prim>(p);
+        }
+
         shared_ptr<ExprList> DoExprList1(shared_ptr<ExprList>& exprlist, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
@@ -2511,12 +2523,18 @@ namespace Calc_H
 
         shared_ptr<Digits> DoDigits1(shared_ptr<Digits>& digits, shared_ptr<Digit>& digit)
         {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDigits1" << std::endl;
+            #endif
             digits.get()->push_back(digit);
             return digits;
         }
 
         shared_ptr<Digits> DoDigits2(shared_ptr<Digit>& digit)
         {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDigits2" << std::endl;
+            #endif
             Digits *digits = new Digits;
             digits->push_back(digit);
             return shared_ptr<Digits>(digits);
@@ -2524,6 +2542,9 @@ namespace Calc_H
 
         shared_ptr<Digit> DoDigit0()
         {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDigit0" << std::endl;
+            #endif
             Digit *d = new Digit;
             d->m_digit = 0;
             return shared_ptr<Digit>(d);
@@ -2531,6 +2552,9 @@ namespace Calc_H
 
         shared_ptr<Digit> DoDigit1()
         {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDigit1" << std::endl;
+            #endif
             Digit *d = new Digit;
             d->m_digit = 1;
             return shared_ptr<Digit>(d);
@@ -2538,6 +2562,9 @@ namespace Calc_H
 
         shared_ptr<Digit> DoDigit2()
         {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDigit2" << std::endl;
+            #endif
             Digit *d = new Digit;
             d->m_digit = 2;
             return shared_ptr<Digit>(d);
@@ -2545,6 +2572,9 @@ namespace Calc_H
 
         shared_ptr<Digit> DoDigit3()
         {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDigit3" << std::endl;
+            #endif
             Digit *d = new Digit;
             d->m_digit = 3;
             return shared_ptr<Digit>(d);
@@ -2552,6 +2582,9 @@ namespace Calc_H
 
         shared_ptr<Digit> DoDigit4()
         {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDigit4" << std::endl;
+            #endif
             Digit *d = new Digit;
             d->m_digit = 4;
             return shared_ptr<Digit>(d);
@@ -2559,6 +2592,9 @@ namespace Calc_H
 
         shared_ptr<Digit> DoDigit5()
         {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDigit5" << std::endl;
+            #endif
             Digit *d = new Digit;
             d->m_digit = 5;
             return shared_ptr<Digit>(d);
@@ -2566,6 +2602,9 @@ namespace Calc_H
 
         shared_ptr<Digit> DoDigit6()
         {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDigit6" << std::endl;
+            #endif
             Digit *d = new Digit;
             d->m_digit = 6;
             return shared_ptr<Digit>(d);
@@ -2573,6 +2612,9 @@ namespace Calc_H
 
         shared_ptr<Digit> DoDigit7()
         {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDigit7" << std::endl;
+            #endif
             Digit *d = new Digit;
             d->m_digit = 7;
             return shared_ptr<Digit>(d);
@@ -2580,6 +2622,9 @@ namespace Calc_H
 
         shared_ptr<Digit> DoDigit8()
         {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDigit8" << std::endl;
+            #endif
             Digit *d = new Digit;
             d->m_digit = 8;
             return shared_ptr<Digit>(d);
@@ -2587,9 +2632,42 @@ namespace Calc_H
 
         shared_ptr<Digit> DoDigit9()
         {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDigit9" << std::endl;
+            #endif
             Digit *d = new Digit;
             d->m_digit = 9;
             return shared_ptr<Digit>(d);
+        }
+
+        shared_ptr<Func> DoFunc1()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFunc1" << std::endl;
+            #endif
+            Func *f = new Func;
+            f->m_type = Func::SIN;
+            return shared_ptr<Func>(f);
+        }
+
+        shared_ptr<Func> DoFunc2()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFunc2" << std::endl;
+            #endif
+            Func *f = new Func;
+            f->m_type = Func::COS;
+            return shared_ptr<Func>(f);
+        }
+
+        shared_ptr<Func> DoFunc3()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFunc3" << std::endl;
+            #endif
+            Func *f = new Func;
+            f->m_type = Func::TAN;
+            return shared_ptr<Func>(f);
         }
 
     public:

@@ -419,6 +419,7 @@ namespace Calc_H
             if (lexeme("‚Ä‚ñ"))                         return (T_DOT);
             if (lexeme("‚Á‚Ä"))                         return (T_HA);
             if (lexeme("‚¿‚å‚¤"))                       return (T_CHOU);
+            if (lexeme("‚½‚ñ‚¶‚¥‚ñ‚Æ"))                 return (T_TAN);
             if (lexeme("‚½‚¹‚Î"))                       return (T_TASUTO);
             if (lexeme("‚½‚·‚Æ‚«"))                     return (T_TASUTO);
             if (lexeme("‚½‚·‚Æ"))                       return (T_TASUTO);
@@ -493,6 +494,7 @@ namespace Calc_H
             if (lexeme("‚³‚µ‚Ð‚¢‚½‚Æ‚«‚Ì"))             return (T_HIKUTO);
             if (lexeme("‚³‚µ‚Ð‚¢‚½‚Æ‚«"))               return (T_HIKUTO);
             if (lexeme("‚³‚µ‚Ð‚¢‚½"))                   return (T_HIITA);
+            if (lexeme("‚³‚¢‚ñ"))                       return (T_SIN);
             if (lexeme("‚³"))                           return (T_SA);
             if (lexeme("‚²"))                           return (T_GO);
             if (lexeme("‚±‚ê‚Ì"))                       return (T_SONO);
@@ -508,6 +510,7 @@ namespace Calc_H
             if (lexeme("‚±‚½‚¦‚Ä‚­‚¾‚³‚¢‚æ"))           return (T_OSHIETE);
             if (lexeme("‚±‚½‚¦‚Ä‚­‚¾‚³‚¢"))             return (T_OSHIETE);
             if (lexeme("‚±‚½‚¦"))                       return (T_KOTAE);
+            if (lexeme("‚±‚³‚¢‚ñ"))                     return (T_COS);
             if (lexeme("‚°‚ñ‚´‚ñ"))                     return (T_HIKIZAN);
             if (lexeme("‚¯‚¢‚³‚ñ"))                     return (T_KEISAN);
             if (lexeme("‚¯‚¢"))                         return (T_KEI);

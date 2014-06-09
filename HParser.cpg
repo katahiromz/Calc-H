@@ -114,6 +114,7 @@
 %token T_BUNNO<TokenValue>;
 %token T_CHOU<TokenValue>;
 %token T_COMMA<TokenValue>;
+%token T_COS<TokenValue>;
 %token T_DE<TokenValue>;
 %token T_DOT<TokenValue>;
 %token T_GO<TokenValue>;
@@ -168,10 +169,12 @@
 %token T_SHITA<TokenValue>;
 %token T_SHITE<TokenValue>;
 %token T_SHOU<TokenValue>;
+%token T_SIN<TokenValue>;
 %token T_SONO<TokenValue>;    // replaced
 %token T_SORE<TokenValue>;
 %token T_SURU<TokenValue>;
 %token T_SURUTO<TokenValue>;
+%token T_TAN<TokenValue>;
 %token T_TASHITA<TokenValue>;
 %token T_TASHITE<TokenValue>;
 %token T_TASHIZAN<TokenValue>;
@@ -601,7 +604,8 @@ factor<Fact>
     ;
 
 primary<Prim>
-    : [DoPrim1] T_L_PAREN mono(0) T_R_PAREN
+    : [DoPrim6] function(0) primary(1)
+    | [DoPrim1] T_L_PAREN mono(0) T_R_PAREN
     | [DoPrim2] T_MINUS primary(0)
     | [DoPrim5] kei_le_number(0) T_TO2 primary(1) T_BUNNO number(2)
     | [DoPrim3] primary(0) T_BUNNO number(1)
@@ -807,4 +811,10 @@ digit<Digit>
     | [DoDigit7] T_DIGIT7
     | [DoDigit8] T_DIGIT8
     | [DoDigit9] T_DIGIT9
+    ;
+
+function<Func>
+    : [DoFunc1] T_SIN
+    | [DoFunc2] T_COS
+    | [DoFunc3] T_TAN
     ;

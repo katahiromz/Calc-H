@@ -18,6 +18,7 @@ namespace Calc_H
     struct Num;
     struct Digit;
     struct Digits;
+    struct Func;
 
     //
     // Node
@@ -142,13 +143,14 @@ namespace Calc_H
     struct Prim : Node
     {
         enum {
-            MONO, MINUS, NUM, BUNSUU, TAIBUNSUU
+            MONO, MINUS, NUM, BUNSUU, TAIBUNSUU, FUNCTION
         } m_type;
         shared_ptr<Expr>    m_expr;
         shared_ptr<Prim>    m_prim;
         shared_ptr<Num>     m_num;
         shared_ptr<Num>     m_num2;
         shared_ptr<Mono>    m_mono;
+        shared_ptr<Func>    m_func;
     };
 
     struct Fact : Node
@@ -188,6 +190,13 @@ namespace Calc_H
             }
             return s;
         }
+    };
+
+    struct Func : Node
+    {
+        enum {
+            SIN, COS, TAN
+        } m_type;
     };
 
     //

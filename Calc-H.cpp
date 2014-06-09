@@ -81,6 +81,26 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
                 return seisuu + denom / num;
         }
 
+    case Prim::FUNCTION:
+        {
+            CH_Value value = ChCalcPrim(prim->m_prim);
+            switch (prim->m_func->m_type)
+            {
+            case Func::SIN:
+                value = pmp::sin(value);
+                break;
+
+            case Func::COS:
+                value = pmp::cos(value);
+                break;
+
+            case Func::TAN:
+                value = pmp::tan(value);
+                break;
+            }
+            return value;
+        }
+
     default:
         assert(0);
         return 0;
@@ -472,6 +492,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono);
 void ChAnalyzeShite(shared_ptr<Shite>& shite);
 void ChAnalyzeSuruto(shared_ptr<Suruto>& suruto);
 void ChAnalyzeTerm(shared_ptr<Term>& term);
+void ChAnalyzeFact(shared_ptr<Fact>& fact);
 
 void ChAnalyzeMonoTermTasukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term);
 void ChAnalyzeMonoTermKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term);
@@ -581,6 +602,7 @@ void ChAnalyzeMonoShiteTasukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite
 
     case Shite::MONO_ADD:
     case Shite::SHITE_ADD:
+        ChAnalyzeExpr(shite->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = shite->m_expr;
@@ -617,6 +639,7 @@ void ChAnalyzeMonoShiteKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shi
 
     case Shite::MONO_MUL:
     case Shite::SHITE_MUL:
+        ChAnalyzeExpr(shite->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = shite->m_expr;
@@ -644,6 +667,7 @@ void ChAnalyzeMonoShiteHikukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite
     case Shite::MONO_SUB:
     case Shite::SHITE_SUB:
     case Shite::MONO_WO_EXPR_SUB:
+        ChAnalyzeExpr(shite->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = shite->m_expr;
@@ -667,6 +691,7 @@ void ChAnalyzeMonoShiteWarukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite
     case Shite::MONO_DIV:
     case Shite::SHITE_DIV:
     case Shite::MONO_WO_EXPR_DIV:
+        ChAnalyzeExpr(shite->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = shite->m_expr;
@@ -706,6 +731,7 @@ void ChAnalyzeMonoMonoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
     case Mono::MONO_ADD:
     case Mono::SHITE_ADD:
     case Mono::MONO_TO_EXPR_ADD:
+        ChAnalyzeExpr(mono2->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = mono2->m_expr;
@@ -766,6 +792,7 @@ void ChAnalyzeMonoMonoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2
     case Mono::MONO_MUL:
     case Mono::SHITE_MUL:
     case Mono::MONO_TO_EXPR_MUL:
+        ChAnalyzeExpr(mono2->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = mono2->m_expr;
@@ -825,6 +852,7 @@ void ChAnalyzeMonoMonoHikukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
     case Mono::MONO_SUB:
     case Mono::MONO_TO_EXPR_SUB:
     case Mono::SHITE_SUB:
+        ChAnalyzeExpr(mono2->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = mono2->m_expr;
@@ -846,6 +874,7 @@ void ChAnalyzeMonoMonoHikukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
     //case Mono::SORE:
 
     case Mono::MONO_WO_EXPR_KARA_SUB:
+        ChAnalyzeMono(mono2->m_mono);
         mono = mono2->m_mono;
         break;
 
@@ -888,6 +917,7 @@ void ChAnalyzeMonoMonoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
     case Mono::MONO_DIV:
     case Mono::MONO_TO_EXPR_DIV:
     case Mono::SHITE_DIV:
+        ChAnalyzeExpr(mono2->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = mono2->m_expr;
@@ -909,6 +939,7 @@ void ChAnalyzeMonoMonoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
     //case Mono::SORE:
 
     case Mono::MONO_DE_EXPR_WO_DIV:
+        ChAnalyzeMono(mono2->m_mono);
         mono = mono2->m_mono;
         break;
 
@@ -999,6 +1030,7 @@ void ChAnalyzeMonoTermKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
     switch (term->m_type)
     {
     case Term::MUL:
+        ChAnalyzeFact(term->m_fact);
         m = new Mono;
         m->m_type = Mono::FACT_ONLY;
         m->m_fact = term->m_fact;
@@ -1025,6 +1057,7 @@ void ChAnalyzeMonoTermWarukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
         break;
 
     case Term::DIV:
+        ChAnalyzeFact(term->m_fact);
         m = new Mono;
         m->m_type = Mono::FACT_ONLY;
         m->m_fact = term->m_fact;
@@ -1044,6 +1077,7 @@ void ChAnalyzeMonoExprTasukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
     switch (expr->m_type)
     {
     case Expr::ADD:
+        ChAnalyzeTerm(expr->m_term);
         m = new Mono;
         m->m_type = Mono::TERM_ONLY;
         m->m_term = expr->m_term;
@@ -1087,6 +1121,7 @@ void ChAnalyzeMonoExprHikukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         break;
 
     case Expr::SUB:
+        ChAnalyzeTerm(expr->m_term);
         m = new Mono;
         m->m_type = Mono::TERM_ONLY;
         m->m_term = expr->m_term;
@@ -1837,6 +1872,7 @@ void ChAnalyzeMonoMonoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
         break;
 
     case Mono::MONO_ADD:
+        ChAnalyzeMono(mono2->m_mono);
         mono = mono2->m_mono;
         break;
 
@@ -1845,9 +1881,10 @@ void ChAnalyzeMonoMonoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
         break;
 
     case Mono::SHITE_ADD:
+        ChAnalyzeShite(mono2->m_shite);
         m = new Mono;
         m->m_type = Mono::SHITE_ONLY;
-        m->m_shite = mono->m_shite;
+        m->m_shite = mono2->m_shite;
         mono = shared_ptr<Mono>(m);
         break;
 
@@ -1863,6 +1900,7 @@ void ChAnalyzeMonoMonoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
 
     case Mono::MONO_TO_EXPRLIST_ADD:
     case Mono::MONO_TO_EXPR_ADD:
+        ChAnalyzeMono(mono2->m_mono);
         mono = mono2->m_mono;
         break;
 
@@ -1903,6 +1941,7 @@ void ChAnalyzeMonoMonoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& m
         break;
 
     case Mono::MONO_MUL:
+        ChAnalyzeMono(mono2->m_mono);
         mono = mono2->m_mono;
         break;
 
@@ -1911,9 +1950,10 @@ void ChAnalyzeMonoMonoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& m
         break;
 
     case Mono::SHITE_MUL:
+        ChAnalyzeShite(mono2->m_shite);
         m = new Mono;
         m->m_type = Mono::SHITE_ONLY;
-        m->m_shite = mono->m_shite;
+        m->m_shite = mono2->m_shite;
         mono = shared_ptr<Mono>(m);
         break;
 
@@ -1929,6 +1969,7 @@ void ChAnalyzeMonoMonoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& m
 
     case Mono::MONO_TO_EXPRLIST_MUL:
     case Mono::MONO_TO_EXPR_MUL:
+        ChAnalyzeMono(mono2->m_mono);
         mono = mono2->m_mono;
         break;
         
@@ -1969,6 +2010,7 @@ void ChAnalyzeMonoMonoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
         break;
 
     case Mono::MONO_SUB:
+        ChAnalyzeMono(mono2->m_mono);
         mono = mono2->m_mono;
         break;
 
@@ -1977,6 +2019,7 @@ void ChAnalyzeMonoMonoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
         break;
 
     case Mono::SHITE_SUB:
+        ChAnalyzeShite(mono2->m_shite);
         m = new Mono;
         m->m_type = Mono::SHITE_ONLY;
         m->m_shite = mono2->m_shite;
@@ -1994,10 +2037,12 @@ void ChAnalyzeMonoMonoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
     //case Mono::SORE:
         
     case Mono::MONO_TO_EXPR_SUB:
+        ChAnalyzeMono(mono2->m_mono);
         mono = mono2->m_mono;
         break;
 
     case Mono::MONO_WO_EXPR_KARA_SUB:
+        ChAnalyzeExpr(mono2->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = mono2->m_expr;
@@ -2045,6 +2090,7 @@ void ChAnalyzeMonoMonoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
         break;
 
     case Mono::SHITE_DIV:
+        ChAnalyzeShite(mono2->m_shite);
         m = new Mono;
         m->m_type = Mono::SHITE_ONLY;
         m->m_shite = mono2->m_shite;
@@ -2063,10 +2109,12 @@ void ChAnalyzeMonoMonoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
 
     case Mono::MONO_DIV:
     case Mono::MONO_TO_EXPR_DIV:
+        ChAnalyzeMono(mono2->m_mono);
         mono = mono2->m_mono;
         break;
 
     case Mono::MONO_DE_EXPR_WO_DIV:
+        ChAnalyzeExpr(mono2->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
         m->m_expr = mono2->m_expr;
@@ -2118,6 +2166,7 @@ void ChAnalyzeMonoShiteTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
         break;
 
     case Shite::SHITE_ADD:
+        ChAnalyzeShite(shite->m_shite);
         m = new Mono;
         m->m_type = Mono::SHITE_ONLY;
         m->m_shite = shite->m_shite;
@@ -2157,6 +2206,7 @@ void ChAnalyzeMonoShiteKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>&
         break;
 
     case Shite::SHITE_MUL:
+        ChAnalyzeShite(shite->m_shite);
         m = new Mono;
         m->m_type = Mono::SHITE_ONLY;
         m->m_shite = shite->m_shite;
@@ -2183,6 +2233,7 @@ void ChAnalyzeMonoShiteHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
         break;
 
     case Shite::SHITE_SUB:
+        ChAnalyzeShite(shite->m_shite);
         m = new Mono;
         m->m_type = Mono::SHITE_ONLY;
         m->m_shite = shite->m_shite;
@@ -2209,6 +2260,7 @@ void ChAnalyzeMonoShiteWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
         break;
 
     case Shite::SHITE_DIV:
+        ChAnalyzeShite(shite->m_shite);
         m = new Mono;
         m->m_type = Mono::SHITE_ONLY;
         m->m_shite = shite->m_shite;
@@ -2651,6 +2703,7 @@ void ChAnalyzePrim(shared_ptr<Prim>& prim)
     case Prim::MINUS:
     case Prim::BUNSUU:
     case Prim::TAIBUNSUU:
+    case Prim::FUNCTION:
         ChAnalyzePrim(prim->m_prim);
         break;
 
