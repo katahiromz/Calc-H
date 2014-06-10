@@ -288,6 +288,7 @@ namespace Calc_H
             if (lexeme("もとめた"))                     return (T_SHITA);
             if (lexeme("もとめ"))                       return (T_SHITE);
             if (lexeme("も"))                           return (T_WO1);
+            if (lexeme("むりょうたいすう"))             return (T_MURYOUTAISUU);
             if (lexeme("みんな"))                       return (T_ALL);
             if (lexeme("みれば"))                       return (T_MIRUTO);
             if (lexeme("みると"))                       return (T_MIRUTO);
@@ -312,6 +313,7 @@ namespace Calc_H
             if (lexeme("ぷらすされる"))                 return (T_TASARERU);
             if (lexeme("ぷらす"))                       return (T_PLUS);
             if (lexeme("ぶんの"))                       return (T_BUNNO);
+            if (lexeme("ふかしぎ"))                     return (T_FUKASHIGI);
             if (lexeme("ぴゃく"))                       return (T_HYAKU);
             if (lexeme("びゃく"))                       return (T_HYAKU);
             if (lexeme("ひゃく"))                       return (T_HYAKU);
@@ -380,6 +382,7 @@ namespace Calc_H
             if (lexeme("なんだろう"))                   return (T_IKURA);
             if (lexeme("なんだ"))                       return (T_IKURA);
             if (lexeme("なん"))                         return (T_IKURA);
+            if (lexeme("なゆた"))                       return (T_NAYUTA);
             if (lexeme("なにになるんです"))             return (T_IKURA);
             if (lexeme("なにになるのです"))             return (T_IKURA);
             if (lexeme("なにになるでしょう"))           return (T_IKURA);
@@ -459,6 +462,7 @@ namespace Calc_H
             if (lexeme("ぜろ"))                         return (T_ZERO);
             if (lexeme("せん"))                         return (T_SEN);
             if (lexeme("せき"))                         return (T_SEKI);
+            if (lexeme("せい"))                         return (T_SEI);
             if (lexeme("すれば"))                       return (T_SURUTO);
             if (lexeme("するときの"))                   return (T_SURUTO);
             if (lexeme("するとき"))                     return (T_SURUTO);
@@ -469,6 +473,7 @@ namespace Calc_H
             if (lexeme("じょざん"))                     return (T_WARIZAN);
             if (lexeme("じょうざん"))                   return (T_KAKEZAN);
             if (lexeme("じょう"))                       return (T_JOU);
+            if (lexeme("じょ"))                         return (T_JO);
             if (lexeme("じゅー"))                       return (T_JUU);
             if (lexeme("じゅう"))                       return (T_JUU);
             if (lexeme("じじょう"))                     return (T_JIJOU);
@@ -499,7 +504,10 @@ namespace Calc_H
             if (lexeme("さしひいたとき"))               return (T_HIKUTO);
             if (lexeme("さしひいた"))                   return (T_HIITA);
             if (lexeme("さいん"))                       return (T_SIN);
+            if (lexeme("さい"))                         return (T_SAI);
             if (lexeme("さ"))                           return (T_SA);
+            if (lexeme("ごく"))                         return (T_GOKU);
+            if (lexeme("ごうがしゃ"))                   return (T_GOUGASHA);
             if (lexeme("ご"))                           return (T_GO);
             if (lexeme("これの"))                       return (T_SONO);
             if (lexeme("これ"))                         return (T_SORE);
@@ -515,6 +523,7 @@ namespace Calc_H
             if (lexeme("こたえてください"))             return (T_OSHIETE);
             if (lexeme("こたえ"))                       return (T_KOTAE);
             if (lexeme("こさいん"))                     return (T_COS);
+            if (lexeme("こう"))                         return (T_KOU);
             if (lexeme("げんざん"))                     return (T_HIKIZAN);
             if (lexeme("けいさん"))                     return (T_KEISAN);
             if (lexeme("けい"))                         return (T_KEI);
@@ -540,8 +549,10 @@ namespace Calc_H
             if (lexeme("く"))                           return (T_KYUU);
             if (lexeme("きゅー"))                       return (T_KYUU);
             if (lexeme("きゅう"))                       return (T_KYUU);
+            if (lexeme("がい"))                         return (T_GAI);
             if (lexeme("が"))                           return (T_HA);
             if (lexeme("かー"))                         return (T_KA);
+            if (lexeme("かん"))                         return (T_KAN);
             if (lexeme("から"))                         return (T_KARA);
             if (lexeme("かねー"))                       return (T_KA);
             if (lexeme("かねえ"))                       return (T_KA);
@@ -643,6 +654,7 @@ namespace Calc_H
             if (lexeme("あーくたんじぇんと"))           return (T_ATAN);
             if (lexeme("あーくさいん"))                 return (T_ASIN);
             if (lexeme("あーくこさいん"))               return (T_ACOS);
+            if (lexeme("あそうぎ"))                     return (T_ASOUGI);
             if (lexeme("〕"))                           return (T_R_PAREN);
             if (lexeme("〔"))                           return (T_L_PAREN);
             if (lexeme("】"))                           return (T_R_PAREN);

@@ -32,15 +32,28 @@ typedef pmp::Number CH_Value;
 
 #define ch_precision    15
 
-static const CH_Value ch_kei   = 10000000000000000;
-static const CH_Value ch_chou  = 1000000000000;
-static const CH_Value ch_oku   = 100000000;
-static const CH_Value ch_man   = 10000;
-static const CH_Value ch_sen   = 1000;
-static const CH_Value ch_hyaku = 100;
-static const CH_Value ch_juu   = 10;
-static const CH_Value ch_ichi  = 1;
-static const CH_Value ch_zero  = 0;
+static const CH_Value ch_zero  =          0;
+static const CH_Value ch_ichi  =          1;
+static const CH_Value ch_juu   =          10;
+static const CH_Value ch_hyaku =          100;
+static const CH_Value ch_sen   =          1000;
+static const CH_Value ch_man   =          10000;
+static const CH_Value ch_oku   =          100000000;
+static const CH_Value ch_chou  =          1000000000000;
+static const CH_Value ch_kei   =          10000000000000000;
+static const CH_Value ch_gai            ("100000000000000000000");
+static const CH_Value ch_jo             ("1000000000000000000000000");
+static const CH_Value ch_jou            ("10000000000000000000000000000");
+static const CH_Value ch_kou            ("100000000000000000000000000000000");
+static const CH_Value ch_kan            ("1000000000000000000000000000000000000");
+static const CH_Value ch_sei            ("10000000000000000000000000000000000000000");
+static const CH_Value ch_sai            ("100000000000000000000000000000000000000000000");
+static const CH_Value ch_goku           ("1000000000000000000000000000000000000000000000000");
+static const CH_Value ch_gougasha       ("10000000000000000000000000000000000000000000000000000");
+static const CH_Value ch_asougi         ("100000000000000000000000000000000000000000000000000000000");
+static const CH_Value ch_nayuta         ("1000000000000000000000000000000000000000000000000000000000000");
+static const CH_Value ch_fukashigi      ("10000000000000000000000000000000000000000000000000000000000000000");
+static const CH_Value ch_muryoutaisuu   ("100000000000000000000000000000000000000000000000000000000000000000000");
 
 #include "Location.h"
 #include "HParserAST.h"

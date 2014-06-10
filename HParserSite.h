@@ -1342,6 +1342,461 @@ namespace Calc_H
             return shared_ptr<Num>(n);
         }
 
+        shared_ptr<Num> DoMuryoutaisuuLeNum1(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMuryoutaisuuLeNum1" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoMuryoutaisuuLeNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMuryoutaisuuLeNum2" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoMuryoutaisuuNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMuryoutaisuuNum1" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_muryoutaisuu;
+            num1.get()->m_value += num2->m_value;
+            return num1;
+        }
+
+        shared_ptr<Num> DoMuryoutaisuuNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMuryoutaisuuNum2" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_muryoutaisuu;
+            return num1;
+        }
+
+        shared_ptr<Num> DoFukashigiLeNum1(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFukashigiLeNum1" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoFukashigiLeNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFukashigiLeNum2" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoFukashigiNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFukashigiNum1" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_fukashigi;
+            num1.get()->m_value += num2->m_value;
+            return num1;
+        }
+
+        shared_ptr<Num> DoFukashigiNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFukashigiNum2" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_fukashigi;
+            return num1;
+        }
+
+        shared_ptr<Num> DoNayutaLeNum1(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoNayutaLeNum1" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoNayutaLeNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoNayutaLeNum2" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoNayutaNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoNayutaNum1" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_nayuta;
+            num1.get()->m_value += num2->m_value;
+            return num1;
+        }
+
+        shared_ptr<Num> DoNayutaNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoNayutaNum2" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_nayuta;
+            return num1;
+        }
+
+        shared_ptr<Num> DoAsougiLeNum1(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoAsougiLeNum1" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoAsougiLeNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoAsougiLeNum2" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoAsougiNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoAsougiNum1" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_asougi;
+            num1.get()->m_value += num2->m_value;
+            return num1;
+        }
+
+        shared_ptr<Num> DoAsougiNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoAsougiNum2" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_asougi;
+            return num1;
+        }
+
+        shared_ptr<Num> DoGougashaLeNum1(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoGougashaLeNum1" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoGougashaLeNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoGougashaLeNum2" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoGougashaNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoGougashaNum1" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_gougasha;
+            num1.get()->m_value += num2->m_value;
+            return num1;
+        }
+
+        shared_ptr<Num> DoGougashaNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoGougashaNum2" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_gougasha;
+            return num1;
+        }
+
+        shared_ptr<Num> DoGokuLeNum1(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoGokuLeNum1" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoGokuLeNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoGokuLeNum2" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoGokuNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoGokuNum1" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_goku;
+            num1.get()->m_value += num2->m_value;
+            return num1;
+        }
+
+        shared_ptr<Num> DoGokuNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoGokuNum2" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_goku;
+            return num1;
+        }
+
+        shared_ptr<Num> DoSaiLeNum1(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSaiLeNum1" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoSaiLeNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSaiLeNum2" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoSaiNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSaiNum1" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_sai;
+            num1.get()->m_value += num2->m_value;
+            return num1;
+        }
+
+        shared_ptr<Num> DoSaiNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSaiNum2" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_sai;
+            return num1;
+        }
+
+        shared_ptr<Num> DoSeiLeNum1(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSeiLeNum1" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoSeiLeNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSeiLeNum2" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoSeiNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSeiNum1" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_sei;
+            num1.get()->m_value += num2->m_value;
+            return num1;
+        }
+
+        shared_ptr<Num> DoSeiNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSeiNum2" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_sei;
+            return num1;
+        }
+
+        shared_ptr<Num> DoKanLeNum1(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoKanLeNum1" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoKanLeNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoKanLeNum2" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoKanNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoKanNum1" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_kan;
+            num1.get()->m_value += num2->m_value;
+            return num1;
+        }
+
+        shared_ptr<Num> DoKanNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoKanNum2" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_kan;
+            return num1;
+        }
+
+        shared_ptr<Num> DoKouLeNum1(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoKouLeNum1" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoKouLeNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoKouLeNum2" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoKouNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoKouNum1" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_kou;
+            num1.get()->m_value += num2->m_value;
+            return num1;
+        }
+
+        shared_ptr<Num> DoKouNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoKouNum2" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_kou;
+            return num1;
+        }
+
+        shared_ptr<Num> DoJouLeNum1(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoJouLeNum1" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoJouLeNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoJouLeNum2" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoJouNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoJouNum1" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_jou;
+            num1.get()->m_value += num2->m_value;
+            return num1;
+        }
+
+        shared_ptr<Num> DoJouNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoJouNum2" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_jou;
+            return num1;
+        }
+
+        shared_ptr<Num> DoJoLeNum1(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoJoLeNum1" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoJoLeNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoJoLeNum2" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoJoNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoJoNum1" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_jo;
+            num1.get()->m_value += num2->m_value;
+            return num1;
+        }
+
+        shared_ptr<Num> DoJoNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoJoNum2" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_jo;
+            return num1;
+        }
+
+        shared_ptr<Num> DoGaiLeNum1(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoGaiLeNum1" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoGaiLeNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoGaiLeNum2" << std::endl;
+            #endif
+            return num1;
+        }
+
+        shared_ptr<Num> DoGaiNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoGaiNum1" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_gai;
+            num1.get()->m_value += num2->m_value;
+            return num1;
+        }
+
+        shared_ptr<Num> DoGaiNum2(shared_ptr<Num>& num1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoGaiNum2" << std::endl;
+            #endif
+            num1.get()->m_value *= ch_gai;
+            return num1;
+        }
+
         shared_ptr<Num> DoKeiLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG

@@ -112,6 +112,7 @@
 %token T_ACOS<TokenValue>;
 %token T_ALL<TokenValue>;       // replaced
 %token T_ASIN<TokenValue>;
+%token T_ASOUGI<TokenValue>;
 %token T_ATAN<TokenValue>;
 %token T_BAI<TokenValue>;
 %token T_BUNNO<TokenValue>;
@@ -122,7 +123,11 @@
 %token T_DO<TokenValue>;
 %token T_DOT<TokenValue>;
 %token T_E<TokenValue>;
+%token T_FUKASHIGI<TokenValue>;
+%token T_GAI<TokenValue>;
 %token T_GO<TokenValue>;
+%token T_GOKU<TokenValue>;
+%token T_GOUGASHA<TokenValue>;
 %token T_HA<TokenValue>;
 %token T_HACHI<TokenValue>;
 %token T_HIITA<TokenValue>;
@@ -134,6 +139,7 @@
 %token T_ICHI<TokenValue>;
 %token T_IKURA<TokenValue>;
 %token T_JIJOU<TokenValue>;
+%token T_JO<TokenValue>;
 %token T_JOU<TokenValue>;
 %token T_JUU<TokenValue>;
 %token T_KA<TokenValue>;
@@ -142,17 +148,21 @@
 %token T_KAKETA<TokenValue>;
 %token T_KAKETE<TokenValue>;
 %token T_KAKEZAN<TokenValue>;
+%token T_KAN<TokenValue>;
 %token T_KARA<TokenValue>;
 %token T_KEI<TokenValue>;
 %token T_KEISAN<TokenValue>;
 %token T_KOTAE<TokenValue>;
+%token T_KOU<TokenValue>;
 %token T_KYUU<TokenValue>;
 %token T_L_PAREN<TokenValue>;
 %token T_MAN<TokenValue>;
 %token T_MINUS<TokenValue>;
 %token T_MIRUTO<TokenValue>;    // replaced
 %token T_MONO<TokenValue>;
+%token T_MURYOUTAISUU<TokenValue>;
 %token T_NANA<TokenValue>;
+%token T_NAYUTA<TokenValue>;
 %token T_NI<TokenValue>;
 %token T_NO1<TokenValue>;       // no ... jou
 %token T_NO2<TokenValue>;       // no wa/seki/sa/shou
@@ -168,7 +178,9 @@
 %token T_ROKU<TokenValue>;
 %token T_R_PAREN<TokenValue>;
 %token T_SA<TokenValue>;
+%token T_SAI<TokenValue>;
 %token T_SAN<TokenValue>;
+%token T_SEI<TokenValue>;
 %token T_SEKI<TokenValue>;
 %token T_SEN<TokenValue>;
 %token T_SHI<TokenValue>;
@@ -622,10 +634,140 @@ primary<Prim>
     ;
 
 number<Num>
-    : [DoNum1] kei_le_number(0) T_DOT digits(1)
+    : [DoNum1] muryoutaisuu_le_number(0) T_DOT digits(1)
     | [DoNum2] T_ZERO T_DOT digits(0)
-    | [DoNum3] kei_le_number(0)
+    | [DoNum3] muryoutaisuu_le_number(0)
     | [DoNum4] T_ZERO
+    ;
+
+muryoutaisuu_le_number<Num>
+    : [DoMuryoutaisuuLeNum1] muryoutaisuu_number(0)
+    | [DoMuryoutaisuuLeNum2] fukashigi_le_number(0)
+    ;
+
+muryoutaisuu_number<Num>
+    : [DoMuryoutaisuuNum1] sen_le_number(0) T_MURYOUTAISUU fukashigi_le_number(1)
+    | [DoMuryoutaisuuNum2] sen_le_number(0) T_MURYOUTAISUU
+    ;
+
+fukashigi_le_number<Num>
+    : [DoFukashigiLeNum1] fukashigi_number(0)
+    | [DoFukashigiLeNum2] nayuta_le_number(0)
+    ;
+
+fukashigi_number<Num>
+    : [DoFukashigiNum1] sen_le_number(0) T_FUKASHIGI nayuta_le_number(1)
+    | [DoFukashigiNum2] sen_le_number(0) T_FUKASHIGI
+    ;
+
+nayuta_le_number<Num>
+    : [DoNayutaLeNum1] nayuta_number(0)
+    | [DoNayutaLeNum2] asougi_le_number(0)
+    ;
+
+nayuta_number<Num>
+    : [DoNayutaNum1] sen_le_number(0) T_NAYUTA asougi_le_number(1)
+    | [DoNayutaNum2] sen_le_number(0) T_NAYUTA
+    ;
+
+asougi_le_number<Num>
+    : [DoAsougiLeNum1] asougi_number(0)
+    | [DoAsougiLeNum2] gougasha_le_number(0)
+    ;
+
+asougi_number<Num>
+    : [DoAsougiNum1] sen_le_number(0) T_ASOUGI gougasha_le_number(1)
+    | [DoAsougiNum2] sen_le_number(0) T_ASOUGI
+    ;
+
+gougasha_le_number<Num>
+    : [DoGougashaLeNum1] gougasha_number(0)
+    | [DoGougashaLeNum2] goku_le_number(0)
+    ;
+
+gougasha_number<Num>
+    : [DoGougashaNum1] sen_le_number(0) T_GOUGASHA goku_le_number(1)
+    | [DoGougashaNum2] sen_le_number(0) T_GOUGASHA
+    ;
+
+goku_le_number<Num>
+    : [DoGokuLeNum1] goku_number(0)
+    | [DoGokuLeNum2] sai_le_number(0)
+    ;
+
+goku_number<Num>
+    : [DoGokuNum1] sen_le_number(0) T_GOKU sai_le_number(1)
+    | [DoGokuNum2] sen_le_number(0) T_GOKU
+    ;
+
+sai_le_number<Num>
+    : [DoSaiLeNum1] sai_number(0)
+    | [DoSaiLeNum2] sei_le_number(0)
+    ;
+
+sai_number<Num>
+    : [DoSaiNum1] sen_le_number(0) T_SAI sei_le_number(1)
+    | [DoSaiNum2] sen_le_number(0) T_SAI
+    ;
+
+sei_le_number<Num>
+    : [DoSeiLeNum1] sei_number(0)
+    | [DoSeiLeNum2] kan_le_number(0)
+    ;
+
+sei_number<Num>
+    : [DoSeiNum1] sen_le_number(0) T_SEI kan_le_number(1)
+    | [DoSeiNum2] sen_le_number(0) T_SEI
+    ;
+
+kan_le_number<Num>
+    : [DoKanLeNum1] kan_number(0)
+    | [DoKanLeNum2] kou_le_number(0)
+    ;
+
+kan_number<Num>
+    : [DoKanNum1] sen_le_number(0) T_KAN kou_le_number(1)
+    | [DoKanNum2] sen_le_number(0) T_KAN
+    ;
+
+kou_le_number<Num>
+    : [DoKouLeNum1] kou_number(0)
+    | [DoKouLeNum2] jou_le_number(0)
+    ;
+
+kou_number<Num>
+    : [DoKouNum1] sen_le_number(0) T_KOU jou_le_number(1)
+    | [DoKouNum2] sen_le_number(0) T_KOU
+    ;
+
+jou_le_number<Num>
+    : [DoJouLeNum1] jou_number(0)
+    | [DoJouLeNum2] jo_le_number(0)
+    ;
+
+jou_number<Num>
+    : [DoJouNum1] sen_le_number(0) T_JOU jo_le_number(1)
+    | [DoJouNum2] sen_le_number(0) T_JOU
+    ;
+
+jo_le_number<Num>
+    : [DoJoLeNum1] jo_number(0)
+    | [DoJoLeNum2] gai_le_number(0)
+    ;
+
+jo_number<Num>
+    : [DoJoNum1] sen_le_number(0) T_JO gai_le_number(1)
+    | [DoJoNum2] sen_le_number(0) T_JO
+    ;
+
+gai_le_number<Num>
+    : [DoGaiLeNum1] gai_number(0)
+    | [DoGaiLeNum2] kei_le_number(0)
+    ;
+
+gai_number<Num>
+    : [DoGaiNum1] sen_le_number(0) T_GAI kei_le_number(1)
+    | [DoGaiNum2] sen_le_number(0) T_GAI
     ;
 
 kei_le_number<Num>

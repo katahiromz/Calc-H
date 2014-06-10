@@ -2943,6 +2943,111 @@ std::string ChGetJpnNumber(
         num = -num;
     }
     assert(num >= 0);
+    if (num >= ch_muryoutaisuu)
+    {
+        str += ChGetJpnNumber(num.to_i() / ch_muryoutaisuu, false);
+        str += "‚Þ‚è‚å‚¤‚½‚¢‚·‚¤";
+        str += ChGetJpnNumber(num % ch_muryoutaisuu, false);
+        return str;
+    }
+    assert(num < ch_muryoutaisuu);
+    ///
+    if (num >= ch_fukashigi)
+    {
+        str += ChGetJpnNumber(num.to_i() / ch_fukashigi, false);
+        str += "‚Ó‚©‚µ‚¬";
+        str += ChGetJpnNumber(num % ch_fukashigi, false);
+        return str;
+    }
+    assert(num < ch_fukashigi);
+    if (num >= ch_nayuta)
+    {
+        str += ChGetJpnNumber(num.to_i() / ch_nayuta, false);
+        str += "‚È‚ä‚½";
+        str += ChGetJpnNumber(num % ch_nayuta, false);
+        return str;
+    }
+    assert(num < ch_nayuta);
+    if (num >= ch_asougi)
+    {
+        str += ChGetJpnNumber(num.to_i() / ch_asougi, false);
+        str += "‚ ‚»‚¤‚¬";
+        str += ChGetJpnNumber(num % ch_asougi, false);
+        return str;
+    }
+    assert(num < ch_asougi);
+    if (num >= ch_gougasha)
+    {
+        str += ChGetJpnNumber(num.to_i() / ch_gougasha, false);
+        str += "‚²‚¤‚ª‚µ‚á";
+        str += ChGetJpnNumber(num % ch_gougasha, false);
+        return str;
+    }
+    assert(num < ch_gougasha);
+    if (num >= ch_goku)
+    {
+        str += ChGetJpnNumber(num.to_i() / ch_goku, false);
+        str += "‚²‚­";
+        str += ChGetJpnNumber(num % ch_goku, false);
+        return str;
+    }
+    assert(num < ch_goku);
+    if (num >= ch_sai)
+    {
+        str += ChGetJpnNumber(num.to_i() / ch_sai, false);
+        str += "‚³‚¢";
+        str += ChGetJpnNumber(num % ch_sai, false);
+        return str;
+    }
+    assert(num < ch_sai);
+    if (num >= ch_sei)
+    {
+        str += ChGetJpnNumber(num.to_i() / ch_sei, false);
+        str += "‚¹‚¢";
+        str += ChGetJpnNumber(num % ch_sei, false);
+        return str;
+    }
+    assert(num < ch_sei);
+    if (num >= ch_kan)
+    {
+        str += ChGetJpnNumber(num.to_i() / ch_kan, false);
+        str += "‚©‚ñ";
+        str += ChGetJpnNumber(num % ch_kan, false);
+        return str;
+    }
+    assert(num < ch_kan);
+    if (num >= ch_kou)
+    {
+        str += ChGetJpnNumber(num.to_i() / ch_kou, false);
+        str += "‚±‚¤";
+        str += ChGetJpnNumber(num % ch_kou, false);
+        return str;
+    }
+    assert(num < ch_kou);
+    if (num >= ch_jou)
+    {
+        str += ChGetJpnNumber(num.to_i() / ch_jou, false);
+        str += "‚¶‚å‚¤";
+        str += ChGetJpnNumber(num % ch_jou, false);
+        return str;
+    }
+    assert(num < ch_jou);
+    if (num >= ch_jo)
+    {
+        str += ChGetJpnNumber(num.to_i() / ch_jo, false);
+        str += "‚¶‚å";
+        str += ChGetJpnNumber(num % ch_jo, false);
+        return str;
+    }
+    assert(num < ch_jo);
+    if (num >= ch_gai)
+    {
+        str += ChGetJpnNumber(num.to_i() / ch_gai, false);
+        str += "‚ª‚¢";
+        str += ChGetJpnNumber(num % ch_gai, false);
+        return str;
+    }
+    assert(num < ch_gai);
     if (num >= ch_kei)
     {
         str += ChGetJpnNumber(num.to_i() / ch_kei, false);
@@ -3064,6 +3169,9 @@ std::string ChGetJpnNumberFixed(CH_Value num)
     ChReplaceString(str, "‚Í‚¿‚¹‚ñ", "‚Í‚Á‚¹‚ñ");
     ChReplaceString(str, "‚¢‚¿‚¿‚å‚¤", "‚¢‚Á‚¿‚å‚¤");
     ChReplaceString(str, "‚¢‚¿‚¯‚¢", "‚¢‚Á‚¯‚¢");
+    ChReplaceString(str, "‚¢‚¿‚±‚¤", "‚¢‚Á‚±‚¤");
+    ChReplaceString(str, "‚¢‚¿‚©‚ñ", "‚¢‚Á‚©‚ñ");
+    ChReplaceString(str, "‚¢‚¿‚¹‚¢", "‚¢‚Á‚¹‚¢");
     return str;
 }
 
