@@ -469,10 +469,10 @@ namespace Calc_H
             if (lexeme("すると"))                       return (T_SURUTO);
             if (lexeme("する"))                         return (T_SURU);
             if (lexeme("すべて"))                       return (T_ALL);
-            if (lexeme("じょー"))                       return (T_JOU);
+            if (lexeme("じょー"))                       return (T_JOU1);
             if (lexeme("じょざん"))                     return (T_WARIZAN);
             if (lexeme("じょうざん"))                   return (T_KAKEZAN);
-            if (lexeme("じょう"))                       return (T_JOU);
+            if (lexeme("じょう"))                       return (T_JOU1);
             if (lexeme("じょ"))                         return (T_JO);
             if (lexeme("じゅー"))                       return (T_JUU);
             if (lexeme("じゅう"))                       return (T_JUU);
@@ -883,22 +883,26 @@ namespace Calc_H
         }
 
         // 「の」をT_NO1, T_NO2, T_NO3に分類する。
+        // 数の単位「穣」をT_JOU2に分類する。
         // T_NO2: 「わ」「さ」「せき」「しょう」の直前の「の」。
         // T_NO3: 「何の何倍」の「の」。
         // T_NO4: 「かけざん」「けいさん」「こたえ」などの直前の「の」。
         // T_NO5: 「のたすかず」「のたされるかず」「のかけるかず」の「の」
+        // T_NO6: 「何の何乗」の「の」。
         // T_NO1: それ以外。
         void resynth2(std::vector<info_type>& infos)
         {
             std::vector<info_type>::iterator it = infos.begin();
             std::vector<info_type>::iterator end = infos.end();
             std::vector<info_type>::iterator it_save = end;
+            std::vector<info_type>::iterator it2 = end;
             for (; it != end; ++it)
             {
                 switch (it->get_token())
                 {
                 case T_NO1:
                     it_save = it;
+                    it2 = end;
                     break;
 
                 case T_WA:
@@ -910,6 +914,7 @@ namespace Calc_H
                         it_save->set_token(T_NO2);
                         it_save = end;
                     }
+                    it2 = end;
                     break;
 
                 case T_BAI:
@@ -917,6 +922,11 @@ namespace Calc_H
                     {
                         it_save->set_token(T_NO3);
                         it_save = end;
+                        if (it2->get_token() == T_JOU1)
+                        {
+                            it2->set_token(T_JOU2);
+                            it2 = end;
+                        }
                     }
                     break;
 
@@ -931,6 +941,7 @@ namespace Calc_H
                         it_save->set_token(T_NO4);
                         it_save = end;
                     }
+                    it2 = end;
                     break;
 
                 case T_TASU:
@@ -946,11 +957,27 @@ namespace Calc_H
                         it_save->set_token(T_NO5);
                         it_save = end;
                     }
+                    it2 = end;
                     break;
 
-                case T_JOU:
+                case T_JOU1:
+                    if (it_save != end)
+                    {
+                        it_save->set_token(T_NO6);
+                        it2 = it;
+                    }
+                    else
+                        it->set_token(T_JOU2);
+                    break;
+
                 case T_JIJOU:
-                    it_save = end;
+                    if (it_save != end)
+                    {
+                        it_save->set_token(T_NO6);
+                        it_save = end;
+                    }
+                    it2 = end;
+                    break;
 
                 default:
                     break;
@@ -1074,6 +1101,7 @@ namespace Calc_H
                 case T_NO3:
                 case T_NO4:
                 case T_NO5:
+                case T_NO6:
                 case T_PLUS:
                 case T_SHITA:
                 case T_SHITE:
