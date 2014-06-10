@@ -38,14 +38,14 @@ inline int MzcGetLParamY(LPARAM lParam)
 
 const char * const ch_logo = 
         "       +--------------------------------+\n"
-        "       |  ひらがな電卓 Calc-H ver.0.4.4 |\n"
+        "       |  ひらがな電卓 Calc-H ver.0.4.5 |\n"
         "       |   by 片山博文MZ (katahiromz)   |\n"
         "       | http://katahiromz.web.fc2.com/ |\n"
         "       | katayama.hirofumi.mz@gmail.com |\n"
         "       +--------------------------------+\n";
 
 const char * const ch_comment =
-    "コメント：ぶんすうもけいさんできるようになりました。";
+    "コメント：むりょうたいすうまでけいさんできるようになりました。";
 
 std::string ChJustDoIt(std::string& query);
 void CrTrimString(std::string& str);

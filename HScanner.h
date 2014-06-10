@@ -65,7 +65,7 @@ namespace Calc_H
         {
             for (TokenInfoIt it = begin; it != end; ++it)
             {
-                std::cout << token_to_string(*it) << " ";
+                std::cerr << token_to_string(*it) << " ";
             }
         }
 
@@ -885,7 +885,7 @@ namespace Calc_H
         // 「の」をT_NO1, T_NO2, T_NO3に分類する。
         // 数の単位「穣」をT_JOU2に分類する。
         // T_NO2: 「わ」「さ」「せき」「しょう」の直前の「の」。
-        // T_NO3: 「何の何倍」の「の」。
+        // T_NO3: 「何の何倍」の「の」。「何の（...）」の「の」。
         // T_NO4: 「かけざん」「けいさん」「こたえ」などの直前の「の」。
         // T_NO5: 「のたすかず」「のたされるかず」「のかけるかず」の「の」
         // T_NO6: 「何の何乗」の「の」。
@@ -918,6 +918,7 @@ namespace Calc_H
                     break;
 
                 case T_BAI:
+                case T_L_PAREN:
                     if (it_save != end)
                     {
                         it_save->set_token(T_NO3);

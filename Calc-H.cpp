@@ -2943,6 +2943,8 @@ std::string ChGetJpnNumber(
         num = -num;
     }
     assert(num >= 0);
+    if (num >= ch_muryoutaisuu * 10000)
+        return "‚¨‚¨‚«‚·‚¬‚é‚©‚¸";
     if (num >= ch_muryoutaisuu)
     {
         str += ChGetJpnNumber(num.to_i() / ch_muryoutaisuu, false);
