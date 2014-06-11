@@ -565,8 +565,12 @@ namespace Calc_H
             if (lexeme("Ç≠ÇæÇ≥Ç¢"))                     return (T_KA);
             if (lexeme("Ç≠"))                           return (T_KYUU);
             if (lexeme("Ç¨Ç·Ç≠ÇÊÇ∞ÇÒ"))                 return (T_ACOS);
+            if (lexeme("Ç¨Ç·Ç≠ÇΩÇÒÇ∫ÇÒÇ∆"))             return (T_ATAN);
+            if (lexeme("Ç¨Ç·Ç≠ÇΩÇÒÇ∂Ç•ÇÒÇ∆"))           return (T_ATAN);
             if (lexeme("Ç¨Ç·Ç≠ÇπÇ¢ÇπÇ¬"))               return (T_ATAN);
             if (lexeme("Ç¨Ç·Ç≠ÇπÇ¢Ç∞ÇÒ"))               return (T_ASIN);
+            if (lexeme("Ç¨Ç·Ç≠Ç≥Ç¢ÇÒ"))                 return (T_ASIN);
+            if (lexeme("Ç¨Ç·Ç≠Ç±Ç≥Ç¢ÇÒ"))               return (T_ACOS);
             if (lexeme("Ç´Ç„Å["))                       return (T_KYUU);
             if (lexeme("Ç´Ç„Ç§"))                       return (T_KYUU);
             if (lexeme("Ç™Ç¢"))                         return (T_GAI);
@@ -1078,6 +1082,7 @@ namespace Calc_H
                         no1 = std::string::npos;
                     }
                     jou1 = std::string::npos;
+                    flag = false;
                     break;
 
                 case T_SIN:

@@ -530,6 +530,11 @@ mono<Mono>
     | [DoMono9] mono(0) T_NO4 T_KAKEZAN T_SHITA T_MONO
     | [DoMono9] mono(0) T_NO4 T_WARIZAN T_SHITA T_MONO
     | [DoMono9] mono(0) T_NO4 T_KEISAN T_SHITA T_MONO
+    | [DoMono9] mono(0) T_NO4 T_TASHIZAN
+    | [DoMono9] mono(0) T_NO4 T_HIKIZAN
+    | [DoMono9] mono(0) T_NO4 T_KAKEZAN
+    | [DoMono9] mono(0) T_NO4 T_WARIZAN
+    | [DoMono9] mono(0) T_NO4 T_KEISAN
     | [DoMono10] mono(0) T_NO3 expression(1) T_BAI
     | [DoMono11] mono(0) T_NO3 T_BAI
     | [DoMono12] shite(0) T_SORE T_NI T_COMMA expression(1) T_WO1 T_TASHITA T_MONO

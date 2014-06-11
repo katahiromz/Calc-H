@@ -1,3 +1,5 @@
+// stdafx.h
+
 #include <string>   // for std::string
 #include <vector>   // for std::vector
 #include <iostream> // for std::cin, std::cout, std::cerr, std::endl

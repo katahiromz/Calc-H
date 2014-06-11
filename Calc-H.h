@@ -1,4 +1,4 @@
-// stdafx.h
+// Calc-H.h
 
 #define _CRT_SECURE_NO_WARNINGS
 
