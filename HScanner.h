@@ -269,6 +269,8 @@ namespace Calc_H
             if (lexeme("‚ë‚Á"))                         return (T_ROKU);
             if (lexeme("‚ë‚­"))                         return (T_ROKU);
             if (lexeme("‚ê‚¢"))                         return (T_ZERO);
+            if (lexeme("‚é[‚Æ"))                       return (T_ROOT);
+            if (lexeme("‚é‚¤‚Æ"))                       return (T_ROOT);
             if (lexeme("‚è‚Á‚Û‚¤"))                     return (T_RIPPOU);
             if (lexeme("‚æ["))                         return (T_KA);
             if (lexeme("‚æ‚ñ"))                         return (T_YON);
@@ -1078,6 +1080,7 @@ namespace Calc_H
                 case T_ASIN:
                 case T_ACOS:
                 case T_ATAN:
+                case T_ROOT:
                     if (no1 != std::string::npos)
                     {
                         (newinfos.begin() + no1)->set_token(T_NO7);

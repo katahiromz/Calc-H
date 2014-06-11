@@ -177,6 +177,7 @@
 %token T_PLUS<TokenValue>;
 %token T_RIPPOU<TokenValue>;
 %token T_ROKU<TokenValue>;
+%token T_ROOT<TokenValue>;
 %token T_R_PAREN<TokenValue>;
 %token T_SA<TokenValue>;
 %token T_SAI<TokenValue>;
@@ -1013,4 +1014,5 @@ func1arg<Func1Arg>
     | [DoFunc1Arg4] T_ASIN
     | [DoFunc1Arg5] T_ACOS
     | [DoFunc1Arg6] T_ATAN
+    | [DoFunc1Arg7] T_ROOT
     ;

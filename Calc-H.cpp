@@ -112,6 +112,10 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
             case Func1Arg::ATAN:
                 value = pmp::atan(value);
                 break;
+
+            case Func1Arg::SQRT:
+                value = pmp::sqrt(value);
+                break;
             }
             if (prim->m_type == Prim::FUNC1ARG_HEIHOU)
                 value *= value;
@@ -393,6 +397,9 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
 
         case Func1Arg::ATAN:
             return pmp::atan(v1);
+
+        case Func1Arg::SQRT:
+            return pmp::sqrt(v1);
 
         default:
             assert(0);
