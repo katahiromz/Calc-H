@@ -48,10 +48,10 @@
 namespace pmp
 {
     typedef b_mp::cpp_int               integer_type;
-    typedef b_mp::cpp_dec_float_50      floating_type;
-    //typedef b_mp::cpp_dec_float_100     floating_type;
+    //typedef b_mp::cpp_dec_float_50      floating_type;
+    typedef b_mp::cpp_dec_float_100     floating_type;
     typedef b_mp::cpp_rational          rational_type;
-    static const unsigned s_default_precision = 50;
+    static const unsigned s_default_precision = 100;
 
     inline floating_type i_to_f(const integer_type& i)
     {

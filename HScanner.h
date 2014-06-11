@@ -930,6 +930,7 @@ namespace Calc_H
             std::size_t no1 = std::string::npos;    // position of T_NO1
             std::size_t jou1 = std::string::npos;   // position of T_JOU1
             std::size_t wo1 = std::string::npos;    // position of T_WO1
+            bool flag = false;
             for (; it != end; ++it)
             {
                 switch (it->get_token())
@@ -969,11 +970,13 @@ namespace Calc_H
                 case T_NO1:
                     no1 = std::distance(infos.begin(), it);
                     jou1 = std::string::npos;
+                    flag = false;
                     break;
 
                 case T_WO1:
                     wo1 = std::distance(infos.begin(), it);
                     jou1 = std::string::npos;
+                    flag = false;
                     break;
 
                 case T_WA:
@@ -991,7 +994,7 @@ namespace Calc_H
                 case T_BAI:
                     if (no1 != std::string::npos)
                     {
-                        (newinfos.begin() + no1)->set_token(T_NO2);
+                        (newinfos.begin() + no1)->set_token(T_NO3);
                         no1 = std::string::npos;
                         if (jou1 != std::string::npos &&
                             newinfos[jou1].get_token() == T_JOU1)
@@ -1000,6 +1003,7 @@ namespace Calc_H
                             jou1 = std::string::npos;
                         }
                     }
+                    flag = false;
                     break;
 
                 case T_TASHIZAN:
@@ -1014,6 +1018,7 @@ namespace Calc_H
                         no1 = std::string::npos;
                     }
                     jou1 = std::string::npos;
+                    flag = false;
                     break;
 
                 case T_TASU:
@@ -1030,6 +1035,7 @@ namespace Calc_H
                         no1 = std::string::npos;
                     }
                     jou1 = std::string::npos;
+                    flag = false;
                     break;
 
                 case T_JOU1:
@@ -1041,7 +1047,6 @@ namespace Calc_H
                             newinfos[jou1].set_token(T_JOU2);
                         }
                         (newinfos.begin() + no1)->set_token(T_NO6);
-                        no1 = std::string::npos;
                         jou1 = std::distance(infos.begin(), it);
                     }
                     else if (wo1 != std::string::npos)
@@ -1058,10 +1063,11 @@ namespace Calc_H
                     {
                         (newinfos.begin() + jou1)->set_token(T_JOU2);
                     }
-                    else
+                    else if (!flag)
                     {
                         it->set_token(T_JOU2);
                     }
+                    flag = false;
                     break;
 
                 case T_HEIHOU:
@@ -1086,6 +1092,7 @@ namespace Calc_H
                         (newinfos.begin() + no1)->set_token(T_NO7);
                     }
                     jou1 = std::string::npos;
+                    flag = true;
                     break;
 
                 default:

@@ -45,7 +45,7 @@ const char * const ch_logo =
         "       +--------------------------------+\n";
 
 const char * const ch_comment =
-    "コメント：むりょうたいすうまでけいさんできるようになりました。";
+    "コメント：さんかくかんすうがけいさんできるようになりました。";
 
 std::string ChJustDoIt(std::string& query);
 void CrTrimString(std::string& str);
