@@ -63,7 +63,8 @@ namespace Calc_H
             MONO_ADD, MONO_MUL, MONO_SUB, MONO_DIV, MONO_ONLY,
             MONO_WO_EXPR_BAI, MONO_WO_BAI,
             SHITE_TASUTO, SHITE_KAKERUTO, SHITE_HIKUTO, SHITE_WARUTO,
-            MONO_WO_EXPR_SUB, MONO_DE_EXPR_DIV
+            MONO_WO_EXPR_SUB, MONO_DE_EXPR_DIV,
+            MONO_WO_EXPR_JOU, MONO_WO_JIJOU
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
@@ -78,7 +79,8 @@ namespace Calc_H
             MONO_ADD, MONO_MUL, MONO_SUB, MONO_DIV, MONO_ONLY,
             SHITE_ADD, SHITE_MUL, SHITE_SUB, SHITE_DIV,
             SHITE_EXPR_BAI, SHITE_BAI,
-            MONO_WO_EXPR_SUB, MONO_WO_EXPR_DIV
+            MONO_WO_EXPR_SUB, MONO_WO_EXPR_DIV,
+            SHITE_EXPR_JOU, SHITE_JIJOU
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
@@ -112,7 +114,8 @@ namespace Calc_H
             SORE_NO_HIKUKAZU, SORE_NO_WARUKAZU,
             SORE_NO_TASARERUKAZU, SORE_NO_KAKERARERUKAZU,
             SORE_NO_HIKARERUKAZU, SORE_NO_WARARERUKAZU,
-            MONO_FUNC1ARG
+            MONO_FUNC1ARG, SHITE_EXPR_JOU, SHITE_JIJOU,
+            MONO_EXPR_JOU, MONO_JIJOU
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;

@@ -327,6 +327,8 @@ suruto<Suruto>
     | [DoSuruto9] mono(0) T_WO1 T_BAI T_NI T_COMMA T_SURUTO
     | [DoSuruto9] mono(0) T_WO1 T_BAI T_NI T_SURUTO
     | [DoSuruto9] mono(0) T_WO1 T_BAI T_SURUTO
+    | [DoSuruto18] mono(0) T_WO1 expression(1) T_JOU1 T_SURUTO
+    | [DoSuruto19] mono(0) T_WO1 T_JIJOU T_SURUTO
     | [DoSuruto10] shite(0) T_SORE T_NI T_COMMA expression(1) T_WO1 T_TASUTO
     | [DoSuruto10] shite(0) T_SORE T_NI T_COMMA expression(1) T_NO4 T_TASHIZAN T_SURUTO
     | [DoSuruto10] shite(0) T_SORE T_NI T_COMMA expression(1) T_NO4 T_TASHIZAN T_WO2 T_SURUTO
@@ -481,6 +483,10 @@ shite<Shite>
     | [DoShite13] shite(0) T_SORE T_WO1 T_BAI T_NI T_COMMA T_SHITE
     | [DoShite13] shite(0) T_SORE T_WO1 T_BAI T_NI T_SHITE
     | [DoShite13] shite(0) T_SORE T_WO1 T_BAI T_SHITE
+    | [DoShite18] shite(0) T_SORE T_WO1 expression(1) T_JOU1 T_SHITE
+    | [DoShite18] shite(0) 			    expression(1) T_JOU1 T_SHITE
+    | [DoShite19] shite(0) T_SORE T_WO1 T_JIJOU T_SHITE
+    | [DoShite19] shite(0) 			    T_JIJOU T_SHITE
     ;
 
 mono<Mono>
@@ -574,6 +580,10 @@ mono<Mono>
     | [DoMono17] shite(0) T_SORE T_WO1 T_BAI T_NI T_COMMA T_SHITA T_MONO
     | [DoMono17] shite(0) T_SORE T_WO1 T_BAI T_NI T_SHITA T_MONO
     | [DoMono17] shite(0) T_SORE T_WO1 T_BAI T_SHITA T_MONO
+    | [DoMono54] shite(0) T_SORE T_WO1 expression(1) T_JOU1 T_SHITA T_MONO
+    | [DoMono54] shite(0)              expression(1) T_JOU1 T_SHITA T_MONO
+    | [DoMono55] shite(0) T_SORE T_WO1 T_JIJOU T_SHITA T_MONO
+    | [DoMono55] shite(0) 			   T_JIJOU T_SHITA T_MONO
     | [DoMono18] expression(0)
     | [DoMono45] T_SORE T_NO4 T_TASU T_MONO
     | [DoMono46] T_SORE T_NO4 T_KAKERU T_MONO
@@ -609,6 +619,10 @@ mono<Mono>
     | [DoMono43] mono(0) T_NO5 T_HIKARERU T_MONO
     | [DoMono44] mono(0) T_NO5 T_WARARERU T_MONO
     | [DoMono53] mono(0) T_NO7 func1arg(1)
+    | [DoMono56] mono(0) T_WO1 expression(1) T_JOU1 T_SHITA T_MONO
+    | [DoMono56] mono(0) T_NO6 expression(1) T_JOU1
+    | [DoMono57] mono(0) T_WO1 T_JIJOU T_SHITA T_MONO
+    | [DoMono57] mono(0) T_NO6 T_JIJOU
     ;
 
 expression_list<ExprList>

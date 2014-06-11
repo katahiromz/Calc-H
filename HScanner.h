@@ -313,6 +313,7 @@ namespace Calc_H
             if (lexeme("まいなすし"))                   return (T_HIITE);
             if (lexeme("まいなすされる"))               return (T_HIKARERU);
             if (lexeme("まいなす"))                     return (T_MINUS);
+            if (lexeme("へいほう"))                     return (T_JIJOU);
             if (lexeme("へ"))                           return (T_NI);
             if (lexeme("ぷらすするときの"))             return (T_TASUTO);
             if (lexeme("ぷらすするとき"))               return (T_TASUTO);
@@ -853,7 +854,7 @@ namespace Calc_H
         }
 
         // T_PERIOD, T_COMMAを整理して、T_MIRUTO, T_ALLを削除する。
-        // T_SONOを「T_SORE, T_NO4」に置き換える。
+        // T_SONOを「T_SORE, T_NO1」に置き換える。
         void resynth1(std::vector<info_type>& infos)
         {
             std::vector<info_type> newinfos;
@@ -874,7 +875,7 @@ namespace Calc_H
                 case T_SONO:
                     it->set_token(T_SORE);
                     newinfos.push_back(*it);
-                    it->set_token(T_NO4);
+                    it->set_token(T_NO1);
                     newinfos.push_back(*it);
                     break;
 
@@ -907,7 +908,7 @@ namespace Calc_H
             infos = newinfos;
         }
 
-        // 「の」をT_NO1, T_NO2, T_NO3に分類する。
+        // 「の」をT_NO1, T_NO2, ..., T_NO7に分類する。
         // 数の単位「穣」をT_JOU2に分類する。
         // T_NO2: 「わ」「さ」「せき」「しょう」の直前の「の」。
         // T_NO3: 「何の何倍」の「の」。「何の（...）」の「の」。
@@ -923,8 +924,9 @@ namespace Calc_H
             std::vector<info_type>::iterator it = infos.begin();
             std::vector<info_type>::iterator end = infos.end();
             int nest;
-            std::size_t no1 = std::string::npos;  // position of T_NO1
-            std::size_t jou1 = std::string::npos;  // position of T_JOU1
+            std::size_t no1 = std::string::npos;    // position of T_NO1
+            std::size_t jou1 = std::string::npos;   // position of T_JOU1
+            std::size_t wo1 = std::string::npos;    // position of T_WO1
             for (; it != end; ++it)
             {
                 switch (it->get_token())
@@ -963,6 +965,11 @@ namespace Calc_H
 
                 case T_NO1:
                     no1 = std::distance(infos.begin(), it);
+                    jou1 = std::string::npos;
+                    break;
+
+                case T_WO1:
+                    wo1 = std::distance(infos.begin(), it);
                     jou1 = std::string::npos;
                     break;
 
@@ -1032,6 +1039,16 @@ namespace Calc_H
                         }
                         (newinfos.begin() + no1)->set_token(T_NO6);
                         no1 = std::string::npos;
+                        jou1 = std::distance(infos.begin(), it);
+                    }
+                    else if (wo1 != std::string::npos)
+                    {
+                        if (jou1 != std::string::npos &&
+                            newinfos[jou1].get_token() == T_JOU1)
+                        {
+                            newinfos[jou1].set_token(T_JOU2);
+                        }
+                        wo1 = std::string::npos;
                         jou1 = std::distance(infos.begin(), it);
                     }
                     else if (jou1 != std::string::npos)

@@ -391,6 +391,24 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
             return 0;
         }
 
+    case Mono::SHITE_EXPR_JOU:
+        v1 = ChCalcShite(mono->m_shite);
+        v2 = ChCalcExpr(mono->m_expr);
+        return pmp::pow(v1, v2);
+
+    case Mono::SHITE_JIJOU:
+        v1 = ChCalcShite(mono->m_shite);
+        return v1 * v1;
+
+    case Mono::MONO_EXPR_JOU:
+        v1 = ChCalcMono(mono->m_mono);
+        v2 = ChCalcExpr(mono->m_expr);
+        return pmp::pow(v1, v2);
+
+    case Mono::MONO_JIJOU:
+        v1 = ChCalcMono(mono->m_mono);
+        return v1 * v1;
+
     default:
         assert(0);
         return 0;
@@ -399,6 +417,7 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
 
 CH_Value ChCalcShite(const shared_ptr<Shite>& shite)
 {
+    CH_Value v1, v2;
     switch (shite->m_type)
     {
     case Shite::EXPRLIST_ADD:
@@ -446,6 +465,15 @@ CH_Value ChCalcShite(const shared_ptr<Shite>& shite)
     case Shite::MONO_WO_EXPR_DIV:
         return ChCalcMono(shite->m_mono) / ChCalcExpr(shite->m_expr);
 
+    case Shite::SHITE_EXPR_JOU:
+        v1 = ChCalcShite(shite->m_shite);
+        v2 = ChCalcExpr(shite->m_expr);
+        return pmp::pow(v1, v2);
+
+    case Shite::SHITE_JIJOU:
+        v1 = ChCalcShite(shite->m_shite);
+        return v1 * v1;
+
     default:
         assert(0);
         return 0;
@@ -454,6 +482,7 @@ CH_Value ChCalcShite(const shared_ptr<Shite>& shite)
 
 CH_Value ChCalcSuruto(const shared_ptr<Suruto>& suruto)
 {
+    CH_Value v1, v2;
     switch (suruto->m_type)
     {
     case Suruto::EXPRLIST_ADD:
@@ -500,6 +529,15 @@ CH_Value ChCalcSuruto(const shared_ptr<Suruto>& suruto)
 
     case Suruto::MONO_DE_EXPR_DIV:
         return ChCalcExpr(suruto->m_expr) / ChCalcMono(suruto->m_mono);
+
+    case Suruto::MONO_WO_EXPR_JOU:
+        v1 = ChCalcMono(suruto->m_mono);
+        v2 = ChCalcExpr(suruto->m_expr);
+        return pmp::pow(v1, v2);
+
+    case Suruto::MONO_WO_JIJOU:
+        v1 = ChCalcMono(suruto->m_mono);
+        return v1 * v1;
 
     default:
         assert(0);
@@ -2733,7 +2771,13 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         break;
 
     case Mono::MONO_FUNC1ARG:
+    case Mono::MONO_JIJOU:
         ChAnalyzeMono(mono->m_mono);
+        break;
+
+    case Mono::MONO_EXPR_JOU:
+        ChAnalyzeMono(mono->m_mono);
+        ChAnalyzeExpr(mono->m_expr);
         break;
 
     default:
@@ -2837,11 +2881,13 @@ void ChAnalyzeShite(shared_ptr<Shite>& shite)
     case Shite::SHITE_SUB:
     case Shite::SHITE_DIV:
     case Shite::SHITE_EXPR_BAI:
+    case Shite::SHITE_EXPR_JOU:
         ChAnalyzeShite(shite->m_shite);
         ChAnalyzeExpr(shite->m_expr);
         break;
 
     case Shite::SHITE_BAI:
+    case Shite::SHITE_JIJOU:
         ChAnalyzeShite(shite->m_shite);
         break;
     }
