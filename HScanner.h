@@ -892,14 +892,47 @@ namespace Calc_H
         // T_NO1: それ以外。
         void resynth2(std::vector<info_type>& infos)
         {
+            std::vector<info_type> newinfos;
+            std::vector<info_type> subinfos;
             std::vector<info_type>::iterator it = infos.begin();
             std::vector<info_type>::iterator end = infos.end();
             std::vector<info_type>::iterator it_save = end;
             std::vector<info_type>::iterator it2 = end;
+            int nest;
             for (; it != end; ++it)
             {
                 switch (it->get_token())
                 {
+                case T_L_PAREN:
+                    newinfos.push_back(*it);
+                    subinfos.clear();
+                    ++it;
+                    for (nest = 1; it != end; ++it)
+                    {
+                        switch (it->get_token())
+                        {
+                        case T_L_PAREN:
+                            ++nest;
+                            subinfos.push_back(*it);
+                            continue;
+
+                        case T_R_PAREN:
+                            --nest;
+                            if (nest == 0)
+                                break;
+                            subinfos.push_back(*it);
+                            continue;
+
+                        default:
+                            subinfos.push_back(*it);
+                            continue;
+                        }
+                        break;
+                    }
+                    resynth2(subinfos);
+                    newinfos.insert(newinfos.end(), subinfos.begin(), subinfos.end());
+                    break;
+
                 case T_NO1:
                     it_save = it;
                     it2 = end;
@@ -918,7 +951,6 @@ namespace Calc_H
                     break;
 
                 case T_BAI:
-                case T_L_PAREN:
                     if (it_save != end)
                     {
                         it_save->set_token(T_NO3);
@@ -983,7 +1015,9 @@ namespace Calc_H
                 default:
                     break;
                 }
+                newinfos.push_back(*it);
             }
+            newinfos = infos;
         }
 
         // 小数点の後の数字にしるしをつける。
