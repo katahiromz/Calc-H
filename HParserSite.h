@@ -1034,6 +1034,90 @@ namespace Calc_H
             return shared_ptr<Mono>(m);
         }
 
+        shared_ptr<Mono> DoMono53(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono53" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_FUNC1ARG;
+            m->m_mono = mono;
+            Func1Arg *f1a = new Func1Arg;
+            f1a->m_type = Func1Arg::SIN;
+            m->m_func1arg = shared_ptr<Func1Arg>(f1a);
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono54(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono54" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_FUNC1ARG;
+            m->m_mono = mono;
+            Func1Arg *f1a = new Func1Arg;
+            f1a->m_type = Func1Arg::COS;
+            m->m_func1arg = shared_ptr<Func1Arg>(f1a);
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono55(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono55" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_FUNC1ARG;
+            m->m_mono = mono;
+            Func1Arg *f1a = new Func1Arg;
+            f1a->m_type = Func1Arg::TAN;
+            m->m_func1arg = shared_ptr<Func1Arg>(f1a);
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono56(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono56" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_FUNC1ARG;
+            m->m_mono = mono;
+            Func1Arg *f1a = new Func1Arg;
+            f1a->m_type = Func1Arg::ASIN;
+            m->m_func1arg = shared_ptr<Func1Arg>(f1a);
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono57(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono57" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_FUNC1ARG;
+            m->m_mono = mono;
+            Func1Arg *f1a = new Func1Arg;
+            f1a->m_type = Func1Arg::ACOS;
+            m->m_func1arg = shared_ptr<Func1Arg>(f1a);
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono58(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono58" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_FUNC1ARG;
+            m->m_mono = mono;
+            Func1Arg *f1a = new Func1Arg;
+            f1a->m_type = Func1Arg::ATAN;
+            m->m_func1arg = shared_ptr<Func1Arg>(f1a);
+            return shared_ptr<Mono>(m);
+        }
+
         shared_ptr<Expr> DoExpr1(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG

@@ -217,6 +217,15 @@ namespace Calc_H
             // 【ここから】行を降順に並び替えておく。
             if (lexeme("｝"))                           return (T_R_PAREN);
             if (lexeme("｛"))                           return (T_L_PAREN);
+            if (lexeme("ｔａｎ"))                       return (T_TAN);
+            if (lexeme("ｓｉｎ"))                       return (T_SIN);
+            if (lexeme("ｃｏｓ"))                       return (T_COS);
+            if (lexeme("ａｔａｎ"))                     return (T_ATAN);
+            if (lexeme("ａｓｉｎ"))                     return (T_ASIN);
+            if (lexeme("ａｒｃｔａｎ"))                 return (T_ATAN);
+            if (lexeme("ａｒｃｓｉｎ"))                 return (T_ASIN);
+            if (lexeme("ａｒｃｃｏｓ"))                 return (T_ACOS);
+            if (lexeme("ａｃｏｓ"))                     return (T_ACOS);
             if (lexeme("］"))                           return (T_R_PAREN);
             if (lexeme("［"))                           return (T_L_PAREN);
             if (lexeme("？"))                           return (T_PERIOD);
@@ -261,6 +270,7 @@ namespace Calc_H
             if (lexeme("れい"))                         return (T_ZERO);
             if (lexeme("よー"))                         return (T_KA);
             if (lexeme("よん"))                         return (T_YON);
+            if (lexeme("よげん"))                       return (T_COS);
             if (lexeme("よお"))                         return (T_KA);
             if (lexeme("よぉ"))                         return (T_KA);
             if (lexeme("よう"))                         return (T_KA);
@@ -462,6 +472,8 @@ namespace Calc_H
             if (lexeme("ぜろ"))                         return (T_ZERO);
             if (lexeme("せん"))                         return (T_SEN);
             if (lexeme("せき"))                         return (T_SEKI);
+            if (lexeme("せいせつ"))                     return (T_TAN);
+            if (lexeme("せいげん"))                     return (T_SIN);
             if (lexeme("せい"))                         return (T_SEI);
             if (lexeme("すれば"))                       return (T_SURUTO);
             if (lexeme("するときの"))                   return (T_SURUTO);
@@ -547,6 +559,9 @@ namespace Calc_H
             if (lexeme("くださいよ"))                   return (T_KA);
             if (lexeme("ください"))                     return (T_KA);
             if (lexeme("く"))                           return (T_KYUU);
+            if (lexeme("ぎゃくよげん"))                 return (T_ACOS);
+            if (lexeme("ぎゃくせいせつ"))               return (T_ATAN);
+            if (lexeme("ぎゃくせいげん"))               return (T_ASIN);
             if (lexeme("きゅー"))                       return (T_KYUU);
             if (lexeme("きゅう"))                       return (T_KYUU);
             if (lexeme("がい"))                         return (T_GAI);
@@ -677,6 +692,15 @@ namespace Calc_H
             if (lexeme("×"))                           return (T_KAKERU);
             if (lexeme("}"))                            return (T_R_PAREN);
             if (lexeme("{"))                            return (T_L_PAREN);
+            if (lexeme("tan"))                          return (T_TAN);
+            if (lexeme("sin"))                          return (T_SIN);
+            if (lexeme("cos"))                          return (T_COS);
+            if (lexeme("atan"))                         return (T_ATAN);
+            if (lexeme("asin"))                         return (T_ASIN);
+            if (lexeme("arctan"))                       return (T_ATAN);
+            if (lexeme("arcsin"))                       return (T_ASIN);
+            if (lexeme("arccos"))                       return (T_ACOS);
+            if (lexeme("acos"))                         return (T_ACOS);
             if (lexeme("]"))                            return (T_R_PAREN);
             if (lexeme("["))                            return (T_L_PAREN);
             if (lexeme("?"))                            return (T_PERIOD);
@@ -828,7 +852,7 @@ namespace Calc_H
         }
 
         // T_PERIOD, T_COMMAを整理して、T_MIRUTO, T_ALLを削除する。
-        // T_SONOをT_SORE, T_NO4に置き換える。
+        // T_SONOを「T_SORE, T_NO4」に置き換える。
         void resynth1(std::vector<info_type>& infos)
         {
             std::vector<info_type> newinfos;
@@ -889,6 +913,7 @@ namespace Calc_H
         // T_NO4: 「かけざん」「けいさん」「こたえ」などの直前の「の」。
         // T_NO5: 「のたすかず」「のたされるかず」「のかけるかず」の「の」
         // T_NO6: 「何の何乗」の「の」。
+        // T_NO7: 三角関数「正弦」「余弦」「正接」の直前の「の」。
         // T_NO1: それ以外。
         void resynth2(std::vector<info_type>& infos)
         {
@@ -1007,6 +1032,20 @@ namespace Calc_H
                     if (it_save != end)
                     {
                         it_save->set_token(T_NO6);
+                        it_save = end;
+                    }
+                    it2 = end;
+                    break;
+
+                case T_SIN:
+                case T_COS:
+                case T_TAN:
+                case T_ASIN:
+                case T_ACOS:
+                case T_ATAN:
+                    if (it_save != end)
+                    {
+                        it_save->set_token(T_NO7);
                         it_save = end;
                     }
                     it2 = end;

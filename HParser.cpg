@@ -171,6 +171,7 @@
 %token T_NO4<TokenValue>;       // no keisan
 %token T_NO5<TokenValue>;       // no tasukazu, no kakerukazu, etc.
 %token T_NO6<TokenValue>;       // no jijou, no nan-jou
+%token T_NO7<TokenValue>;       // no seigen, no yogen, no seisetu, etc.
 %token T_OKU<TokenValue>;
 %token T_ONEGAI<TokenValue>;
 %token T_OSHIETE<TokenValue>;
@@ -607,6 +608,12 @@ mono<Mono>
     | [DoMono42] mono(0) T_NO5 T_KAKERARERU T_MONO
     | [DoMono43] mono(0) T_NO5 T_HIKARERU T_MONO
     | [DoMono44] mono(0) T_NO5 T_WARARERU T_MONO
+    | [DoMono53] mono(0) T_NO7 T_SIN
+    | [DoMono54] mono(0) T_NO7 T_COS
+    | [DoMono55] mono(0) T_NO7 T_TAN
+    | [DoMono56] mono(0) T_NO7 T_ASIN
+    | [DoMono57] mono(0) T_NO7 T_ACOS
+    | [DoMono58] mono(0) T_NO7 T_ATAN
     ;
 
 expression_list<ExprList>

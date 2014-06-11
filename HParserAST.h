@@ -111,7 +111,8 @@ namespace Calc_H
             SORE_NO_TASUKAZU, SORE_NO_KAKERUKAZU,
             SORE_NO_HIKUKAZU, SORE_NO_WARUKAZU,
             SORE_NO_TASARERUKAZU, SORE_NO_KAKERARERUKAZU,
-            SORE_NO_HIKARERUKAZU, SORE_NO_WARARERUKAZU
+            SORE_NO_HIKARERUKAZU, SORE_NO_WARARERUKAZU,
+            MONO_FUNC1ARG
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
@@ -120,6 +121,7 @@ namespace Calc_H
         shared_ptr<Suruto>      m_suruto;
         shared_ptr<Term>        m_term;
         shared_ptr<Fact>        m_fact;
+        shared_ptr<Func1Arg>    m_func1arg;
     };
 
     struct Expr : Node

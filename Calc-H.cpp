@@ -358,6 +358,33 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
     case Mono::SURUTO_ONLY:
         return ChCalcSuruto(mono->m_suruto);
 
+    case Mono::MONO_FUNC1ARG:
+        v1 = ChCalcMono(mono->m_mono);
+        switch (mono->m_func1arg->m_type)
+        {
+        case Func1Arg::SIN:
+            return pmp::sin(v1);
+
+        case Func1Arg::COS:
+            return pmp::cos(v1);
+
+        case Func1Arg::TAN:
+            return pmp::tan(v1);
+
+        case Func1Arg::ASIN:
+            return pmp::asin(v1);
+
+        case Func1Arg::ACOS:
+            return pmp::acos(v1);
+
+        case Func1Arg::ATAN:
+            return pmp::atan(v1);
+
+        default:
+            assert(0);
+            return 0;
+        }
+
     default:
         assert(0);
         return 0;
@@ -2697,6 +2724,10 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
 
     case Mono::SORE_NO_WARARERUKAZU:
         ChAnalyzeMonoPrevSentenceWararerukazu(mono);
+        break;
+
+    case Mono::MONO_FUNC1ARG:
+        ChAnalyzeMono(mono->m_mono);
         break;
 
     default:
