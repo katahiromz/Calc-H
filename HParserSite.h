@@ -1276,6 +1276,34 @@ namespace Calc_H
             return shared_ptr<Prim>(p);
         }
 
+        shared_ptr<Prim> DoPrim10(shared_ptr<Func1Arg>& func1arg, shared_ptr<Prim>& prim)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrim10" << std::endl;
+            #endif
+            Prim *p = new Prim;
+            p->m_type = Prim::FUNC1ARG_JIJOU;
+            p->m_func1arg = func1arg;
+            p->m_prim = prim;
+            return shared_ptr<Prim>(p);
+        }
+
+        shared_ptr<Prim> DoPrim11(
+            shared_ptr<Func1Arg>& func1arg,
+            shared_ptr<Num>& num,
+            shared_ptr<Prim>& prim)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrim10" << std::endl;
+            #endif
+            Prim *p = new Prim;
+            p->m_type = Prim::FUNC1ARG_JOU;
+            p->m_func1arg = func1arg;
+            p->m_num = num;
+            p->m_prim = prim;
+            return shared_ptr<Prim>(p);
+        }
+
         shared_ptr<ExprList> DoExprList1(shared_ptr<ExprList>& exprlist, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG

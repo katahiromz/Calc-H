@@ -640,6 +640,8 @@ factor<Fact>
 
 primary<Prim>
     : [DoPrim7] primary(0) T_DO
+    | [DoPrim10] func1arg(0) T_JIJOU primary(1)
+    | [DoPrim11] func1arg(0) number(1) T_JOU1 primary(2)
     | [DoPrim6] func1arg(0) primary(1)
     | [DoPrim1] T_L_PAREN mono(0) T_R_PAREN
     | [DoPrim2] T_MINUS primary(0)

@@ -82,6 +82,8 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
         }
 
     case Prim::FUNC1ARG:
+    case Prim::FUNC1ARG_JIJOU:
+    case Prim::FUNC1ARG_JOU:
         {
             CH_Value value = ChCalcPrim(prim->m_prim);
             switch (prim->m_func1arg->m_type)
@@ -110,6 +112,10 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
                 value = pmp::atan(value);
                 break;
             }
+            if (prim->m_type == Prim::FUNC1ARG_JIJOU)
+                value *= value;
+            else if (prim->m_type == Prim::FUNC1ARG_JOU)
+                value = pmp::pow(value, prim->m_num->m_value);
             return value;
         }
 
@@ -2962,7 +2968,7 @@ std::string ChGetJpnDigits(const std::string& str, bool& ok)
     return result;
 }
 
-std::string ChGetJpnNumber(
+std::string ChGetJpnNumber1(
     CH_Value num,
     bool add_zero = true,
     bool add_zerodot = true)
@@ -2978,162 +2984,162 @@ std::string ChGetJpnNumber(
         return "‚¨‚¨‚«‚·‚¬‚é‚©‚¸";
     if (num >= ch_muryoutaisuu)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_muryoutaisuu, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_muryoutaisuu, false);
         str += "‚Þ‚è‚å‚¤‚½‚¢‚·‚¤";
-        str += ChGetJpnNumber(num % ch_muryoutaisuu, false);
+        str += ChGetJpnNumber1(num % ch_muryoutaisuu, false);
         return str;
     }
     assert(num < ch_muryoutaisuu);
     ///
     if (num >= ch_fukashigi)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_fukashigi, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_fukashigi, false);
         str += "‚Ó‚©‚µ‚¬";
-        str += ChGetJpnNumber(num % ch_fukashigi, false);
+        str += ChGetJpnNumber1(num % ch_fukashigi, false);
         return str;
     }
     assert(num < ch_fukashigi);
     if (num >= ch_nayuta)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_nayuta, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_nayuta, false);
         str += "‚È‚ä‚½";
-        str += ChGetJpnNumber(num % ch_nayuta, false);
+        str += ChGetJpnNumber1(num % ch_nayuta, false);
         return str;
     }
     assert(num < ch_nayuta);
     if (num >= ch_asougi)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_asougi, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_asougi, false);
         str += "‚ ‚»‚¤‚¬";
-        str += ChGetJpnNumber(num % ch_asougi, false);
+        str += ChGetJpnNumber1(num % ch_asougi, false);
         return str;
     }
     assert(num < ch_asougi);
     if (num >= ch_gougasha)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_gougasha, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_gougasha, false);
         str += "‚²‚¤‚ª‚µ‚á";
-        str += ChGetJpnNumber(num % ch_gougasha, false);
+        str += ChGetJpnNumber1(num % ch_gougasha, false);
         return str;
     }
     assert(num < ch_gougasha);
     if (num >= ch_goku)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_goku, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_goku, false);
         str += "‚²‚­";
-        str += ChGetJpnNumber(num % ch_goku, false);
+        str += ChGetJpnNumber1(num % ch_goku, false);
         return str;
     }
     assert(num < ch_goku);
     if (num >= ch_sai)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_sai, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_sai, false);
         str += "‚³‚¢";
-        str += ChGetJpnNumber(num % ch_sai, false);
+        str += ChGetJpnNumber1(num % ch_sai, false);
         return str;
     }
     assert(num < ch_sai);
     if (num >= ch_sei)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_sei, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_sei, false);
         str += "‚¹‚¢";
-        str += ChGetJpnNumber(num % ch_sei, false);
+        str += ChGetJpnNumber1(num % ch_sei, false);
         return str;
     }
     assert(num < ch_sei);
     if (num >= ch_kan)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_kan, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_kan, false);
         str += "‚©‚ñ";
-        str += ChGetJpnNumber(num % ch_kan, false);
+        str += ChGetJpnNumber1(num % ch_kan, false);
         return str;
     }
     assert(num < ch_kan);
     if (num >= ch_kou)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_kou, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_kou, false);
         str += "‚±‚¤";
-        str += ChGetJpnNumber(num % ch_kou, false);
+        str += ChGetJpnNumber1(num % ch_kou, false);
         return str;
     }
     assert(num < ch_kou);
     if (num >= ch_jou)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_jou, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_jou, false);
         str += "‚¶‚å‚¤";
-        str += ChGetJpnNumber(num % ch_jou, false);
+        str += ChGetJpnNumber1(num % ch_jou, false);
         return str;
     }
     assert(num < ch_jou);
     if (num >= ch_jo)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_jo, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_jo, false);
         str += "‚¶‚å";
-        str += ChGetJpnNumber(num % ch_jo, false);
+        str += ChGetJpnNumber1(num % ch_jo, false);
         return str;
     }
     assert(num < ch_jo);
     if (num >= ch_gai)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_gai, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_gai, false);
         str += "‚ª‚¢";
-        str += ChGetJpnNumber(num % ch_gai, false);
+        str += ChGetJpnNumber1(num % ch_gai, false);
         return str;
     }
     assert(num < ch_gai);
     if (num >= ch_kei)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_kei, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_kei, false);
         str += "‚¯‚¢";
-        str += ChGetJpnNumber(num % ch_kei, false);
+        str += ChGetJpnNumber1(num % ch_kei, false);
         return str;
     }
     assert(num < ch_kei);
     if (num >= ch_chou)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_chou, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_chou, false);
         str += "‚¿‚å‚¤";
-        str += ChGetJpnNumber(num % ch_chou, false);
+        str += ChGetJpnNumber1(num % ch_chou, false);
         return str;
     }
     assert(num < ch_chou);
     if (num >= ch_oku)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_oku, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_oku, false);
         str += "‚¨‚­";
-        str += ChGetJpnNumber(num % ch_oku, false);
+        str += ChGetJpnNumber1(num % ch_oku, false);
         return str;
     }
     assert(num < ch_oku);
     if (num >= ch_man)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_man, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_man, false);
         str += "‚Ü‚ñ";
-        str += ChGetJpnNumber(num % ch_man, false);
+        str += ChGetJpnNumber1(num % ch_man, false);
         return str;
     }
     assert(num < ch_man);
     if (num >= ch_sen)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_sen, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_sen, false);
         str += "‚¹‚ñ";
-        str += ChGetJpnNumber(num % ch_sen, false);
+        str += ChGetJpnNumber1(num % ch_sen, false);
         return str;
     }
     assert(num < ch_sen);
     if (num >= ch_hyaku)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_hyaku, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_hyaku, false);
         str += "‚Ð‚á‚­";
-        str += ChGetJpnNumber(num % ch_hyaku, false);
+        str += ChGetJpnNumber1(num % ch_hyaku, false);
         return str;
     }
     assert(num < ch_hyaku);
     if (num >= ch_juu)
     {
-        str += ChGetJpnNumber(num.to_i() / ch_juu, false);
+        str += ChGetJpnNumber1(num.to_i() / ch_juu, false);
         str += "‚¶‚ã‚¤";
-        str += ChGetJpnNumber(num % ch_juu, false);
+        str += ChGetJpnNumber1(num % ch_juu, false);
         return str;
     }
     assert(num < ch_juu);
@@ -3144,7 +3150,7 @@ std::string ChGetJpnNumber(
         if (!num.is_zero())
         {
             str += "‚Ä‚ñ";
-            str += ChGetJpnNumber(num, false, false);
+            str += ChGetJpnNumber1(num, false, false);
         }
         return str;
     }
@@ -3186,9 +3192,17 @@ std::string ChGetJpnNumber(
     return str;
 }
 
+std::string ChGetJpnNumber2(CH_Value num)
+{
+    std::string str;
+    str = num.str(ch_precision, std::ios_base::fixed);
+    CH_Value value(str);
+    return ChGetJpnNumber1(value);
+}
+
 std::string ChGetJpnNumberFixed(CH_Value num)
 {
-    std::string str = ChGetJpnNumber(num);
+    std::string str = ChGetJpnNumber2(num);
     ChReplaceString(str, "‚¢‚¿‚Ä‚ñ", "‚¢‚Á‚Ä‚ñ");
     ChReplaceString(str, "‚É‚Ä‚ñ", "‚É‚¢‚Ä‚ñ");
     ChReplaceString(str, "‚¶‚ã‚¤‚Ä‚ñ", "‚¶‚Á‚Ä‚ñ");
@@ -3242,7 +3256,7 @@ std::string ChGetJpnNumberBunsuu(CH_Value num)
     return str;
 }
 
-std::string ChGetJpnNumber2(CH_Value num)
+std::string ChGetJpnNumberFixed2(CH_Value num)
 {
     std::string str;
     pmp::Number::Type old_type = pmp::SetIntDivType(pmp::Number::INTEGER);
@@ -3343,7 +3357,7 @@ std::string ChJustDoIt(std::string& query)
                 value.trim();
                 if (s_message.empty())
                 {
-                    sstream << ChGetJpnNumber2(value) <<
+                    sstream << ChGetJpnNumberFixed2(value) <<
                         " (" << value.str(ch_precision) <<
                                 ") " << "‚Å‚·B" << std::endl;
                     s_sore = value;

@@ -967,7 +967,7 @@ namespace Calc_H
                 case T_SEKI:
                 case T_SA:
                 case T_SHOU:
-                    if (it_save != end)
+                    if (it_save != end && it_save->get_token() == T_NO1)
                     {
                         it_save->set_token(T_NO2);
                         it_save = end;
@@ -976,7 +976,7 @@ namespace Calc_H
                     break;
 
                 case T_BAI:
-                    if (it_save != end)
+                    if (it_save != end && it_save->get_token() == T_NO1)
                     {
                         it_save->set_token(T_NO3);
                         it_save = end;
@@ -994,7 +994,7 @@ namespace Calc_H
                 case T_WARIZAN:
                 case T_KEISAN:
                 case T_KOTAE:
-                    if (it_save != end)
+                    if (it_save != end && it_save->get_token() == T_NO1)
                     {
                         it_save->set_token(T_NO4);
                         it_save = end;
@@ -1010,7 +1010,7 @@ namespace Calc_H
                 case T_KAKERARERU:
                 case T_HIKARERU:
                 case T_WARARERU:
-                    if (it_save != end)
+                    if (it_save != end && it_save->get_token() == T_NO1)
                     {
                         it_save->set_token(T_NO5);
                         it_save = end;
@@ -1019,17 +1019,17 @@ namespace Calc_H
                     break;
 
                 case T_JOU1:
-                    if (it_save != end)
+                    if (it_save != end && it_save->get_token() == T_NO1)
                     {
                         it_save->set_token(T_NO6);
                         it2 = it;
                     }
-                    else
+                    else if (it_save == end)
                         it->set_token(T_JOU2);
                     break;
 
                 case T_JIJOU:
-                    if (it_save != end)
+                    if (it_save != end && it_save->get_token() == T_NO1)
                     {
                         it_save->set_token(T_NO6);
                         it_save = end;
@@ -1043,11 +1043,11 @@ namespace Calc_H
                 case T_ASIN:
                 case T_ACOS:
                 case T_ATAN:
-                    if (it_save != end)
+                    if (it_save != end && it_save->get_token() == T_NO1)
                     {
                         it_save->set_token(T_NO7);
-                        it_save = end;
                     }
+                    it_save = it;
                     it2 = end;
                     break;
 
