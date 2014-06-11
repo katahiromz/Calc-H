@@ -82,7 +82,8 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
         }
 
     case Prim::FUNC1ARG:
-    case Prim::FUNC1ARG_JIJOU:
+    case Prim::FUNC1ARG_HEIHOU:
+    case Prim::FUNC1ARG_RIPPOU:
     case Prim::FUNC1ARG_JOU:
         {
             CH_Value value = ChCalcPrim(prim->m_prim);
@@ -112,8 +113,10 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
                 value = pmp::atan(value);
                 break;
             }
-            if (prim->m_type == Prim::FUNC1ARG_JIJOU)
+            if (prim->m_type == Prim::FUNC1ARG_HEIHOU)
                 value *= value;
+            else if (prim->m_type == Prim::FUNC1ARG_RIPPOU)
+                value = value * value * value;
             else if (prim->m_type == Prim::FUNC1ARG_JOU)
                 value = pmp::pow(value, prim->m_num->m_value);
             return value;
@@ -155,8 +158,13 @@ CH_Value ChCalcFact(const shared_ptr<Fact>& fact)
     case Fact::POW2:
         {
             CH_Value value = ChCalcFact(fact->m_fact);
-            value *= value;
-            return value;
+            return value * value;
+        }
+
+    case Fact::POW3:
+        {
+            CH_Value value = ChCalcFact(fact->m_fact);
+            return value * value * value;
         }
 
     case Fact::SINGLE:
@@ -396,18 +404,26 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
         v2 = ChCalcExpr(mono->m_expr);
         return pmp::pow(v1, v2);
 
-    case Mono::SHITE_JIJOU:
+    case Mono::SHITE_HEIHOU:
         v1 = ChCalcShite(mono->m_shite);
         return v1 * v1;
+
+    case Mono::SHITE_RIPPOU:
+        v1 = ChCalcShite(mono->m_shite);
+        return v1 * v1 * v1;
 
     case Mono::MONO_EXPR_JOU:
         v1 = ChCalcMono(mono->m_mono);
         v2 = ChCalcExpr(mono->m_expr);
         return pmp::pow(v1, v2);
 
-    case Mono::MONO_JIJOU:
+    case Mono::MONO_HEIHOU:
         v1 = ChCalcMono(mono->m_mono);
         return v1 * v1;
+
+    case Mono::MONO_RIPPOU:
+        v1 = ChCalcMono(mono->m_mono);
+        return v1 * v1 * v1;
 
     default:
         assert(0);
@@ -470,9 +486,13 @@ CH_Value ChCalcShite(const shared_ptr<Shite>& shite)
         v2 = ChCalcExpr(shite->m_expr);
         return pmp::pow(v1, v2);
 
-    case Shite::SHITE_JIJOU:
+    case Shite::SHITE_HEIHOU:
         v1 = ChCalcShite(shite->m_shite);
         return v1 * v1;
+
+    case Shite::SHITE_RIPPOU:
+        v1 = ChCalcShite(shite->m_shite);
+        return v1 * v1 * v1;
 
     default:
         assert(0);
@@ -535,9 +555,13 @@ CH_Value ChCalcSuruto(const shared_ptr<Suruto>& suruto)
         v2 = ChCalcExpr(suruto->m_expr);
         return pmp::pow(v1, v2);
 
-    case Suruto::MONO_WO_JIJOU:
+    case Suruto::MONO_WO_HEIHOU:
         v1 = ChCalcMono(suruto->m_mono);
         return v1 * v1;
+
+    case Suruto::MONO_WO_RIPPOU:
+        v1 = ChCalcMono(suruto->m_mono);
+        return v1 * v1 * v1;
 
     default:
         assert(0);
@@ -2771,7 +2795,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         break;
 
     case Mono::MONO_FUNC1ARG:
-    case Mono::MONO_JIJOU:
+    case Mono::MONO_HEIHOU:
         ChAnalyzeMono(mono->m_mono);
         break;
 
@@ -2813,6 +2837,12 @@ void ChAnalyzePrim(shared_ptr<Prim>& prim)
         ChAnalyzePrim(prim->m_prim);
         break;
 
+    case Prim::FUNC1ARG_HEIHOU:
+    case Prim::FUNC1ARG_RIPPOU:
+    case Prim::FUNC1ARG_JOU:
+        ChAnalyzePrim(prim->m_prim);
+        break;
+
     default:
         break;
     }
@@ -2828,6 +2858,7 @@ void ChAnalyzeFact(shared_ptr<Fact>& fact)
         break;
 
     case Fact::POW2:
+    case Fact::POW3:
         ChAnalyzeFact(fact->m_fact);
         break;
 
@@ -2887,7 +2918,8 @@ void ChAnalyzeShite(shared_ptr<Shite>& shite)
         break;
 
     case Shite::SHITE_BAI:
-    case Shite::SHITE_JIJOU:
+    case Shite::SHITE_HEIHOU:
+    case Shite::SHITE_RIPPOU:
         ChAnalyzeShite(shite->m_shite);
         break;
     }

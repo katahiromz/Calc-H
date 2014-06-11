@@ -269,6 +269,7 @@ namespace Calc_H
             if (lexeme("‚ë‚Á"))                         return (T_ROKU);
             if (lexeme("‚ë‚­"))                         return (T_ROKU);
             if (lexeme("‚ê‚¢"))                         return (T_ZERO);
+            if (lexeme("‚è‚Á‚Û‚¤"))                     return (T_RIPPOU);
             if (lexeme("‚æ["))                         return (T_KA);
             if (lexeme("‚æ‚ñ"))                         return (T_YON);
             if (lexeme("‚æ‚°‚ñ"))                       return (T_COS);
@@ -313,7 +314,7 @@ namespace Calc_H
             if (lexeme("‚Ü‚¢‚È‚·‚µ"))                   return (T_HIITE);
             if (lexeme("‚Ü‚¢‚È‚·‚³‚ê‚é"))               return (T_HIKARERU);
             if (lexeme("‚Ü‚¢‚È‚·"))                     return (T_MINUS);
-            if (lexeme("‚Ö‚¢‚Ù‚¤"))                     return (T_JIJOU);
+            if (lexeme("‚Ö‚¢‚Ù‚¤"))                     return (T_HEIHOU);
             if (lexeme("‚Ö"))                           return (T_NI);
             if (lexeme("‚Õ‚ç‚·‚·‚é‚Æ‚«‚Ì"))             return (T_TASUTO);
             if (lexeme("‚Õ‚ç‚·‚·‚é‚Æ‚«"))               return (T_TASUTO);
@@ -490,7 +491,7 @@ namespace Calc_H
             if (lexeme("‚¶‚å"))                         return (T_JO);
             if (lexeme("‚¶‚ã["))                       return (T_JUU);
             if (lexeme("‚¶‚ã‚¤"))                       return (T_JUU);
-            if (lexeme("‚¶‚¶‚å‚¤"))                     return (T_JIJOU);
+            if (lexeme("‚¶‚¶‚å‚¤"))                     return (T_HEIHOU);
             if (lexeme("‚µ["))                         return (T_YON);
             if (lexeme("‚µ‚ç‚ñ"))                       return (T_WAKARAN);
             if (lexeme("‚µ‚ç‚È‚¢"))                     return (T_WAKARAN);
@@ -1061,7 +1062,8 @@ namespace Calc_H
                     }
                     break;
 
-                case T_JIJOU:
+                case T_HEIHOU:
+                case T_RIPPOU:
                     if (no1 != std::string::npos)
                     {
                         (newinfos.begin() + no1)->set_token(T_NO6);

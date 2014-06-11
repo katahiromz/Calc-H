@@ -104,11 +104,6 @@
 %token T_9X8<TokenValue>;
 %token T_9X9<TokenValue>;
 
-%token T_TASARERU<TokenValue>;
-%token T_KAKERARERU<TokenValue>;
-%token T_HIKARERU<TokenValue>;
-%token T_WARARERU<TokenValue>;
-
 %token T_ACOS<TokenValue>;
 %token T_ALL<TokenValue>;       // replaced
 %token T_ASIN<TokenValue>;
@@ -130,20 +125,22 @@
 %token T_GOUGASHA<TokenValue>;
 %token T_HA<TokenValue>;
 %token T_HACHI<TokenValue>;
+%token T_HEIHOU<TokenValue>;
 %token T_HIITA<TokenValue>;
 %token T_HIITE<TokenValue>;
+%token T_HIKARERU<TokenValue>;
 %token T_HIKIZAN<TokenValue>;
 %token T_HIKU<TokenValue>;
 %token T_HIKUTO<TokenValue>;
 %token T_HYAKU<TokenValue>;
 %token T_ICHI<TokenValue>;
 %token T_IKURA<TokenValue>;
-%token T_JIJOU<TokenValue>;
 %token T_JO<TokenValue>;
 %token T_JOU1<TokenValue>;  // exponent
 %token T_JOU2<TokenValue>;  // number unit
 %token T_JUU<TokenValue>;
 %token T_KA<TokenValue>;
+%token T_KAKERARERU<TokenValue>;
 %token T_KAKERU<TokenValue>;
 %token T_KAKERUTO<TokenValue>;
 %token T_KAKETA<TokenValue>;
@@ -170,7 +167,7 @@
 %token T_NO3<TokenValue>;       // no bai
 %token T_NO4<TokenValue>;       // no keisan
 %token T_NO5<TokenValue>;       // no tasukazu, no kakerukazu, etc.
-%token T_NO6<TokenValue>;       // no jijou, no nan-jou
+%token T_NO6<TokenValue>;       // no heihou, no nan-jou
 %token T_NO7<TokenValue>;       // no seigen, no yogen, no seisetu, etc.
 %token T_OKU<TokenValue>;
 %token T_ONEGAI<TokenValue>;
@@ -178,6 +175,7 @@
 %token T_PERIOD<TokenValue>;
 %token T_PI<TokenValue>;
 %token T_PLUS<TokenValue>;
+%token T_RIPPOU<TokenValue>;
 %token T_ROKU<TokenValue>;
 %token T_R_PAREN<TokenValue>;
 %token T_SA<TokenValue>;
@@ -196,6 +194,7 @@
 %token T_SURU<TokenValue>;
 %token T_SURUTO<TokenValue>;
 %token T_TAN<TokenValue>;
+%token T_TASARERU<TokenValue>;
 %token T_TASHITA<TokenValue>;
 %token T_TASHITE<TokenValue>;
 %token T_TASHIZAN<TokenValue>;
@@ -205,6 +204,7 @@
 %token T_TO2<TokenValue>;   // taibunsuu
 %token T_WA<TokenValue>;
 %token T_WAKARAN<TokenValue>;
+%token T_WARARERU<TokenValue>;
 %token T_WARIZAN<TokenValue>;
 %token T_WARU<TokenValue>;
 %token T_WARUTO<TokenValue>;
@@ -328,7 +328,8 @@ suruto<Suruto>
     | [DoSuruto9] mono(0) T_WO1 T_BAI T_NI T_SURUTO
     | [DoSuruto9] mono(0) T_WO1 T_BAI T_SURUTO
     | [DoSuruto18] mono(0) T_WO1 expression(1) T_JOU1 T_SURUTO
-    | [DoSuruto19] mono(0) T_WO1 T_JIJOU T_SURUTO
+    | [DoSuruto19] mono(0) T_WO1 T_HEIHOU T_SURUTO
+    | [DoSuruto20] mono(0) T_WO1 T_RIPPOU T_SURUTO
     | [DoSuruto10] shite(0) T_SORE T_NI T_COMMA expression(1) T_WO1 T_TASUTO
     | [DoSuruto10] shite(0) T_SORE T_NI T_COMMA expression(1) T_NO4 T_TASHIZAN T_SURUTO
     | [DoSuruto10] shite(0) T_SORE T_NI T_COMMA expression(1) T_NO4 T_TASHIZAN T_WO2 T_SURUTO
@@ -484,9 +485,11 @@ shite<Shite>
     | [DoShite13] shite(0) T_SORE T_WO1 T_BAI T_NI T_SHITE
     | [DoShite13] shite(0) T_SORE T_WO1 T_BAI T_SHITE
     | [DoShite18] shite(0) T_SORE T_WO1 expression(1) T_JOU1 T_SHITE
-    | [DoShite18] shite(0) 			    expression(1) T_JOU1 T_SHITE
-    | [DoShite19] shite(0) T_SORE T_WO1 T_JIJOU T_SHITE
-    | [DoShite19] shite(0) 			    T_JIJOU T_SHITE
+    | [DoShite18] shite(0)              expression(1) T_JOU1 T_SHITE
+    | [DoShite19] shite(0) T_SORE T_WO1 T_HEIHOU T_SHITE
+    | [DoShite19] shite(0)              T_HEIHOU T_SHITE
+    | [DoShite20] shite(0) T_SORE T_WO1 T_RIPPOU T_SHITE
+    | [DoShite20] shite(0)              T_RIPPOU T_SHITE
     ;
 
 mono<Mono>
@@ -582,8 +585,10 @@ mono<Mono>
     | [DoMono17] shite(0) T_SORE T_WO1 T_BAI T_SHITA T_MONO
     | [DoMono54] shite(0) T_SORE T_WO1 expression(1) T_JOU1 T_SHITA T_MONO
     | [DoMono54] shite(0)              expression(1) T_JOU1 T_SHITA T_MONO
-    | [DoMono55] shite(0) T_SORE T_WO1 T_JIJOU T_SHITA T_MONO
-    | [DoMono55] shite(0) 			   T_JIJOU T_SHITA T_MONO
+    | [DoMono55] shite(0) T_SORE T_WO1 T_HEIHOU T_SHITA T_MONO
+    | [DoMono55] shite(0)              T_HEIHOU T_SHITA T_MONO
+    | [DoMono58] shite(0) T_SORE T_WO1 T_RIPPOU T_SHITA T_MONO
+    | [DoMono58] shite(0)              T_RIPPOU T_SHITA T_MONO
     | [DoMono18] expression(0)
     | [DoMono45] T_SORE T_NO4 T_TASU T_MONO
     | [DoMono46] T_SORE T_NO4 T_KAKERU T_MONO
@@ -621,8 +626,10 @@ mono<Mono>
     | [DoMono53] mono(0) T_NO7 func1arg(1)
     | [DoMono56] mono(0) T_WO1 expression(1) T_JOU1 T_SHITA T_MONO
     | [DoMono56] mono(0) T_NO6 expression(1) T_JOU1
-    | [DoMono57] mono(0) T_WO1 T_JIJOU T_SHITA T_MONO
-    | [DoMono57] mono(0) T_NO6 T_JIJOU
+    | [DoMono57] mono(0) T_WO1 T_HEIHOU T_SHITA T_MONO
+    | [DoMono57] mono(0) T_NO6 T_HEIHOU
+    | [DoMono59] mono(0) T_WO1 T_RIPPOU T_SHITA T_MONO
+    | [DoMono59] mono(0) T_NO6 T_RIPPOU
     ;
 
 expression_list<ExprList>
@@ -648,13 +655,15 @@ term<Term>
 
 factor<Fact>
     : [DoFact1] factor(0) T_NO6 primary(1) T_JOU1
-    | [DoFact2] factor(0) T_NO6 T_JIJOU
+    | [DoFact2] factor(0) T_NO6 T_HEIHOU
+    | [DoFact4] factor(0) T_NO6 T_RIPPOU
     | [DoFact3] primary(0)
     ;
 
 primary<Prim>
     : [DoPrim7] primary(0) T_DO
-    | [DoPrim10] func1arg(0) T_JIJOU primary(1)
+    | [DoPrim10] func1arg(0) T_HEIHOU primary(1)
+    | [DoPrim12] func1arg(0) T_RIPPOU primary(1)
     | [DoPrim11] func1arg(0) number(1) T_JOU1 primary(2)
     | [DoPrim6] func1arg(0) primary(1)
     | [DoPrim1] T_L_PAREN mono(0) T_R_PAREN

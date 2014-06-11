@@ -64,7 +64,7 @@ namespace Calc_H
             MONO_WO_EXPR_BAI, MONO_WO_BAI,
             SHITE_TASUTO, SHITE_KAKERUTO, SHITE_HIKUTO, SHITE_WARUTO,
             MONO_WO_EXPR_SUB, MONO_DE_EXPR_DIV,
-            MONO_WO_EXPR_JOU, MONO_WO_JIJOU
+            MONO_WO_EXPR_JOU, MONO_WO_HEIHOU, MONO_WO_RIPPOU
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
@@ -80,7 +80,7 @@ namespace Calc_H
             SHITE_ADD, SHITE_MUL, SHITE_SUB, SHITE_DIV,
             SHITE_EXPR_BAI, SHITE_BAI,
             MONO_WO_EXPR_SUB, MONO_WO_EXPR_DIV,
-            SHITE_EXPR_JOU, SHITE_JIJOU
+            SHITE_EXPR_JOU, SHITE_HEIHOU, SHITE_RIPPOU
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
@@ -114,8 +114,8 @@ namespace Calc_H
             SORE_NO_HIKUKAZU, SORE_NO_WARUKAZU,
             SORE_NO_TASARERUKAZU, SORE_NO_KAKERARERUKAZU,
             SORE_NO_HIKARERUKAZU, SORE_NO_WARARERUKAZU,
-            MONO_FUNC1ARG, SHITE_EXPR_JOU, SHITE_JIJOU,
-            MONO_EXPR_JOU, MONO_JIJOU
+            MONO_FUNC1ARG, SHITE_EXPR_JOU, SHITE_HEIHOU, SHITE_RIPPOU,
+            MONO_EXPR_JOU, MONO_HEIHOU, MONO_RIPPOU
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
@@ -149,7 +149,7 @@ namespace Calc_H
     {
         enum {
             MONO, MINUS, NUM, BUNSUU, TAIBUNSUU, FUNC1ARG, DO,
-            PI, E, FUNC1ARG_JIJOU, FUNC1ARG_JOU
+            PI, E, FUNC1ARG_HEIHOU, FUNC1ARG_RIPPOU, FUNC1ARG_JOU
         } m_type;
         shared_ptr<Expr>        m_expr;
         shared_ptr<Prim>        m_prim;
@@ -162,7 +162,7 @@ namespace Calc_H
     struct Fact : Node
     {
         enum {
-            POW, POW2, SINGLE
+            POW, POW2, POW3, SINGLE
         } m_type;
         shared_ptr<Fact>    m_fact;
         shared_ptr<Prim>    m_prim;

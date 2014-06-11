@@ -295,7 +295,18 @@ namespace Calc_H
                 std::cerr << "DoSuruto19" << std::endl;
             #endif
             Suruto *s = new Suruto;
-            s->m_type = Suruto::MONO_WO_JIJOU;
+            s->m_type = Suruto::MONO_WO_HEIHOU;
+            s->m_mono = mono;
+            return shared_ptr<Suruto>(s);
+        }
+
+        shared_ptr<Suruto> DoSuruto20(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSuruto20" << std::endl;
+            #endif
+            Suruto *s = new Suruto;
+            s->m_type = Suruto::MONO_WO_RIPPOU;
             s->m_mono = mono;
             return shared_ptr<Suruto>(s);
         }
@@ -494,7 +505,18 @@ namespace Calc_H
                 std::cerr << "DoShite19" << std::endl;
             #endif
             Shite *s = new Shite;
-            s->m_type = Shite::SHITE_JIJOU;
+            s->m_type = Shite::SHITE_HEIHOU;
+            s->m_shite = shite;
+            return shared_ptr<Shite>(s);
+        }
+
+        shared_ptr<Shite> DoShite20(shared_ptr<Shite>& shite)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoShite20" << std::endl;
+            #endif
+            Shite *s = new Shite;
+            s->m_type = Shite::SHITE_RIPPOU;
             s->m_shite = shite;
             return shared_ptr<Shite>(s);
         }
@@ -1110,7 +1132,7 @@ namespace Calc_H
                 std::cerr << "DoMono55" << std::endl;
             #endif
             Mono *m = new Mono;
-            m->m_type = Mono::SHITE_JIJOU;
+            m->m_type = Mono::SHITE_HEIHOU;
             m->m_shite = shite;
             return shared_ptr<Mono>(m);
         }
@@ -1133,7 +1155,29 @@ namespace Calc_H
                 std::cerr << "DoMono57" << std::endl;
             #endif
             Mono *m = new Mono;
-            m->m_type = Mono::MONO_JIJOU;
+            m->m_type = Mono::MONO_HEIHOU;
+            m->m_mono = mono;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono58(shared_ptr<Shite>& shite)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono58" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SHITE_RIPPOU;
+            m->m_shite = shite;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono59(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono59" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_RIPPOU;
             m->m_mono = mono;
             return shared_ptr<Mono>(m);
         }
@@ -1266,6 +1310,17 @@ namespace Calc_H
             return shared_ptr<Fact>(f);
         }
 
+        shared_ptr<Fact> DoFact4(shared_ptr<Fact>& fact)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFact4" << std::endl;
+            #endif
+            Fact *f = new Fact;
+            f->m_type = Fact::POW3;
+            f->m_fact = fact;
+            return shared_ptr<Fact>(f);
+        }
+
         shared_ptr<Prim> DoPrim1(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
@@ -1374,7 +1429,7 @@ namespace Calc_H
                 std::cerr << "DoPrim10" << std::endl;
             #endif
             Prim *p = new Prim;
-            p->m_type = Prim::FUNC1ARG_JIJOU;
+            p->m_type = Prim::FUNC1ARG_HEIHOU;
             p->m_func1arg = func1arg;
             p->m_prim = prim;
             return shared_ptr<Prim>(p);
@@ -1386,12 +1441,26 @@ namespace Calc_H
             shared_ptr<Prim>& prim)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrim10" << std::endl;
+                std::cerr << "DoPrim11" << std::endl;
             #endif
             Prim *p = new Prim;
             p->m_type = Prim::FUNC1ARG_JOU;
             p->m_func1arg = func1arg;
             p->m_num = num;
+            p->m_prim = prim;
+            return shared_ptr<Prim>(p);
+        }
+
+        shared_ptr<Prim> DoPrim12(
+            shared_ptr<Func1Arg>& func1arg,
+            shared_ptr<Prim>& prim)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrim12" << std::endl;
+            #endif
+            Prim *p = new Prim;
+            p->m_type = Prim::FUNC1ARG_RIPPOU;
+            p->m_func1arg = func1arg;
             p->m_prim = prim;
             return shared_ptr<Prim>(p);
         }
