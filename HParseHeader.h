@@ -26,7 +26,7 @@ namespace Calc_H
         scanner.scan(infos, begin, end);
         #ifdef _DEBUG
             scanner.show_tokens(infos.begin(), infos.end());
-            std::cerr << std::endl << "--------------" << std::endl;
+            std::cerr << "--------------" << std::endl;
         #endif
 
         Parser<shared_ptr<Node>, ParserSite> parser(ps);

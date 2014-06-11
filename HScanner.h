@@ -67,6 +67,7 @@ namespace Calc_H
             {
                 std::cerr << token_to_string(*it) << " ";
             }
+            std::cerr << std::endl;
         }
 
         Token get_token(TokenValue& info)
@@ -921,9 +922,9 @@ namespace Calc_H
             std::vector<info_type> subinfos;
             std::vector<info_type>::iterator it = infos.begin();
             std::vector<info_type>::iterator end = infos.end();
-            std::vector<info_type>::iterator it_save = end;
-            std::vector<info_type>::iterator it2 = end;
             int nest;
+            std::size_t no1 = std::string::npos;  // position of T_NO1
+            std::size_t jou1 = std::string::npos;  // position of T_JOU1
             for (; it != end; ++it)
             {
                 switch (it->get_token())
@@ -954,36 +955,39 @@ namespace Calc_H
                         }
                         break;
                     }
+                    //show_tokens(subinfos.begin(), subinfos.end());
                     resynth2(subinfos);
+                    //show_tokens(subinfos.begin(), subinfos.end());
                     newinfos.insert(newinfos.end(), subinfos.begin(), subinfos.end());
                     break;
 
                 case T_NO1:
-                    it_save = it;
-                    it2 = end;
+                    no1 = std::distance(infos.begin(), it);
+                    jou1 = std::string::npos;
                     break;
 
                 case T_WA:
                 case T_SEKI:
                 case T_SA:
                 case T_SHOU:
-                    if (it_save != end && it_save->get_token() == T_NO1)
+                    if (no1 != std::string::npos)
                     {
-                        it_save->set_token(T_NO2);
-                        it_save = end;
+                        (newinfos.begin() + no1)->set_token(T_NO2);
+                        no1 = std::string::npos;
                     }
-                    it2 = end;
+                    jou1 = std::string::npos;
                     break;
 
                 case T_BAI:
-                    if (it_save != end && it_save->get_token() == T_NO1)
+                    if (no1 != std::string::npos)
                     {
-                        it_save->set_token(T_NO3);
-                        it_save = end;
-                        if (it2->get_token() == T_JOU1)
+                        (newinfos.begin() + no1)->set_token(T_NO2);
+                        no1 = std::string::npos;
+                        if (jou1 != std::string::npos &&
+                            newinfos[jou1].get_token() == T_JOU1)
                         {
-                            it2->set_token(T_JOU2);
-                            it2 = end;
+                            newinfos[jou1].set_token(T_JOU2);
+                            jou1 = std::string::npos;
                         }
                     }
                     break;
@@ -994,12 +998,12 @@ namespace Calc_H
                 case T_WARIZAN:
                 case T_KEISAN:
                 case T_KOTAE:
-                    if (it_save != end && it_save->get_token() == T_NO1)
+                    if (no1 != std::string::npos)
                     {
-                        it_save->set_token(T_NO4);
-                        it_save = end;
+                        (newinfos.begin() + no1)->set_token(T_NO4);
+                        no1 = std::string::npos;
                     }
-                    it2 = end;
+                    jou1 = std::string::npos;
                     break;
 
                 case T_TASU:
@@ -1010,31 +1014,43 @@ namespace Calc_H
                 case T_KAKERARERU:
                 case T_HIKARERU:
                 case T_WARARERU:
-                    if (it_save != end && it_save->get_token() == T_NO1)
+                    if (no1 != std::string::npos)
                     {
-                        it_save->set_token(T_NO5);
-                        it_save = end;
+                        (newinfos.begin() + no1)->set_token(T_NO5);
+                        no1 = std::string::npos;
                     }
-                    it2 = end;
+                    jou1 = std::string::npos;
                     break;
 
                 case T_JOU1:
-                    if (it_save != end && it_save->get_token() == T_NO1)
+                    if (no1 != std::string::npos)
                     {
-                        it_save->set_token(T_NO6);
-                        it2 = it;
+                        if (jou1 != std::string::npos &&
+                            newinfos[jou1].get_token() == T_JOU1)
+                        {
+                            newinfos[jou1].set_token(T_JOU2);
+                        }
+                        (newinfos.begin() + no1)->set_token(T_NO6);
+                        no1 = std::string::npos;
+                        jou1 = std::distance(infos.begin(), it);
                     }
-                    else if (it_save == end)
+                    else if (jou1 != std::string::npos)
+                    {
+                        (newinfos.begin() + jou1)->set_token(T_JOU2);
+                    }
+                    else
+                    {
                         it->set_token(T_JOU2);
+                    }
                     break;
 
                 case T_JIJOU:
-                    if (it_save != end && it_save->get_token() == T_NO1)
+                    if (no1 != std::string::npos)
                     {
-                        it_save->set_token(T_NO6);
-                        it_save = end;
+                        (newinfos.begin() + no1)->set_token(T_NO6);
+                        no1 = std::string::npos;
                     }
-                    it2 = end;
+                    jou1 = std::string::npos;
                     break;
 
                 case T_SIN:
@@ -1043,12 +1059,11 @@ namespace Calc_H
                 case T_ASIN:
                 case T_ACOS:
                 case T_ATAN:
-                    if (it_save != end && it_save->get_token() == T_NO1)
+                    if (no1 != std::string::npos)
                     {
-                        it_save->set_token(T_NO7);
+                        (newinfos.begin() + no1)->set_token(T_NO7);
                     }
-                    it_save = it;
-                    it2 = end;
+                    jou1 = std::string::npos;
                     break;
 
                 default:
@@ -1056,7 +1071,7 @@ namespace Calc_H
                 }
                 newinfos.push_back(*it);
             }
-            newinfos = infos;
+            infos = newinfos;
         }
 
         // ¬”“_‚ÌŒã‚Ì”š‚É‚µ‚é‚µ‚ğ‚Â‚¯‚éB
