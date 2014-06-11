@@ -492,7 +492,9 @@ namespace Calc_H
             if (lexeme("Ç∂ÇÂÇ§"))                       return (T_JOU1);
             if (lexeme("Ç∂ÇÂ"))                         return (T_JO);
             if (lexeme("Ç∂Ç„Å["))                       return (T_JUU);
+            if (lexeme("Ç∂Ç„Ç¡"))                       return (T_JUU);
             if (lexeme("Ç∂Ç„Ç§"))                       return (T_JUU);
+            if (lexeme("Ç∂Ç¡"))                         return (T_JUU);
             if (lexeme("Ç∂Ç∂ÇÂÇ§"))                     return (T_HEIHOU);
             if (lexeme("ÇµÅ["))                         return (T_YON);
             if (lexeme("ÇµÇÁÇÒ"))                       return (T_WAKARAN);
@@ -525,6 +527,7 @@ namespace Calc_H
             if (lexeme("Ç≥"))                           return (T_SA);
             if (lexeme("Ç≤Ç≠"))                         return (T_GOKU);
             if (lexeme("Ç≤Ç§Ç™ÇµÇ·"))                   return (T_GOUGASHA);
+            if (lexeme("Ç≤Ç§"))                         return (T_GO);
             if (lexeme("Ç≤"))                           return (T_GO);
             if (lexeme("Ç±ÇÍÇÃ"))                       return (T_SONO);
             if (lexeme("Ç±ÇÍ"))                         return (T_SORE);

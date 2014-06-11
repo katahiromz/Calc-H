@@ -3290,6 +3290,7 @@ std::string ChGetJpnNumberFixed(CH_Value num)
     std::string str = ChGetJpnNumber2(num);
     ChReplaceString(str, "‚¢‚¿‚Ä‚ñ", "‚¢‚Á‚Ä‚ñ");
     ChReplaceString(str, "‚É‚Ä‚ñ", "‚É‚¢‚Ä‚ñ");
+    ChReplaceString(str, "‚²‚Ä‚ñ", "‚²‚¤‚Ä‚ñ");
     ChReplaceString(str, "‚¶‚ã‚¤‚Ä‚ñ", "‚¶‚Á‚Ä‚ñ");
     ChReplaceString(str, "‚¢‚¿‚¶‚ã‚¤", "‚¶‚ã‚¤");
     ChReplaceString(str, "‚¢‚¿‚Ð‚á‚­", "‚Ð‚á‚­");
@@ -3300,10 +3301,17 @@ std::string ChGetJpnNumberFixed(CH_Value num)
     ChReplaceString(str, "‚³‚ñ‚¹‚ñ", "‚³‚ñ‚º‚ñ");
     ChReplaceString(str, "‚Í‚¿‚¹‚ñ", "‚Í‚Á‚¹‚ñ");
     ChReplaceString(str, "‚¢‚¿‚¿‚å‚¤", "‚¢‚Á‚¿‚å‚¤");
+    ChReplaceString(str, "‚¶‚ã‚¤‚¿‚å‚¤", "‚¶‚ã‚Á‚¿‚å‚¤");
     ChReplaceString(str, "‚¢‚¿‚¯‚¢", "‚¢‚Á‚¯‚¢");
+    ChReplaceString(str, "‚¶‚ã‚¤‚¯‚¢", "‚¶‚ã‚Á‚¯‚¢");
     ChReplaceString(str, "‚¢‚¿‚±‚¤", "‚¢‚Á‚±‚¤");
+    ChReplaceString(str, "‚¶‚ã‚¤‚±‚¤", "‚¶‚ã‚Á‚±‚¤");
     ChReplaceString(str, "‚¢‚¿‚©‚ñ", "‚¢‚Á‚©‚ñ");
+    ChReplaceString(str, "‚¶‚ã‚¤‚©‚ñ", "‚¶‚ã‚Á‚©‚ñ");
     ChReplaceString(str, "‚¢‚¿‚¹‚¢", "‚¢‚Á‚¹‚¢");
+    ChReplaceString(str, "‚¶‚ã‚¤‚¹‚¢", "‚¶‚ã‚Á‚¹‚¢");
+    ChReplaceString(str, "‚¢‚¿‚³‚¢", "‚¢‚Á‚³‚¢");
+    ChReplaceString(str, "‚¶‚ã‚¤‚³‚¢", "‚¶‚ã‚Á‚³‚¢");
     return str;
 }
 
