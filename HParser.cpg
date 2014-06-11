@@ -608,12 +608,7 @@ mono<Mono>
     | [DoMono42] mono(0) T_NO5 T_KAKERARERU T_MONO
     | [DoMono43] mono(0) T_NO5 T_HIKARERU T_MONO
     | [DoMono44] mono(0) T_NO5 T_WARARERU T_MONO
-    | [DoMono53] mono(0) T_NO7 T_SIN
-    | [DoMono54] mono(0) T_NO7 T_COS
-    | [DoMono55] mono(0) T_NO7 T_TAN
-    | [DoMono56] mono(0) T_NO7 T_ASIN
-    | [DoMono57] mono(0) T_NO7 T_ACOS
-    | [DoMono58] mono(0) T_NO7 T_ATAN
+    | [DoMono53] mono(0) T_NO7 func1arg(1)
     ;
 
 expression_list<ExprList>
