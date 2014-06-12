@@ -194,7 +194,6 @@
 %token T_SIN<TokenValue>;
 %token T_SONO<TokenValue>;    // replaced
 %token T_SORE<TokenValue>;
-%token T_SURU<TokenValue>;
 %token T_SURUTO<TokenValue>;
 %token T_TAN<TokenValue>;
 %token T_TASARERU<TokenValue>;
@@ -533,6 +532,7 @@ mono<Mono>
     | [DoMono9] mono(0) T_NO4 T_KAKEZAN T_SHITA T_MONO
     | [DoMono9] mono(0) T_NO4 T_WARIZAN T_SHITA T_MONO
     | [DoMono9] mono(0) T_NO4 T_KEISAN T_SHITA T_MONO
+    | [DoMono9] mono(0) T_WO1 T_SHITA T_MONO
     | [DoMono9] mono(0) T_NO4 T_TASHIZAN
     | [DoMono9] mono(0) T_NO4 T_HIKIZAN
     | [DoMono9] mono(0) T_NO4 T_KAKEZAN

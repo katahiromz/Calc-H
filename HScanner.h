@@ -297,7 +297,6 @@ namespace Calc_H
             if (lexeme("Ç‚"))                           return (T_KA);
             if (lexeme("Ç‡ÇÃ"))                         return (T_MONO);
             if (lexeme("Ç‡Ç∆ÇﬂÇÈÇ∆"))                   return (T_SURUTO);
-            if (lexeme("Ç‡Ç∆ÇﬂÇÈ"))                     return (T_SURU);
             if (lexeme("Ç‡Ç∆ÇﬂÇƒ"))                     return (T_SHITE);
             if (lexeme("Ç‡Ç∆ÇﬂÇΩÇÁ"))                   return (T_SURUTO);
             if (lexeme("Ç‡Ç∆ÇﬂÇΩ"))                     return (T_SHITA);
@@ -487,7 +486,6 @@ namespace Calc_H
             if (lexeme("Ç∑ÇÈÇ∆Ç´ÇÃ"))                   return (T_SURUTO);
             if (lexeme("Ç∑ÇÈÇ∆Ç´"))                     return (T_SURUTO);
             if (lexeme("Ç∑ÇÈÇ∆"))                       return (T_SURUTO);
-            if (lexeme("Ç∑ÇÈ"))                         return (T_SURU);
             if (lexeme("Ç∑Ç◊Çƒ"))                       return (T_ALL);
             if (lexeme("Ç∂ÇÂÅ["))                       return (T_JOU1);
             if (lexeme("Ç∂ÇÂÇ¥ÇÒ"))                     return (T_WARIZAN);
@@ -1407,7 +1405,6 @@ namespace Calc_H
                     case T_WATTA:
                     case T_WATTE:
                     case T_WARUTO:
-                    case T_SURU:
                     case T_SHITA:
                     case T_SHITE:
                     case T_SURUTO:
