@@ -115,7 +115,8 @@ namespace Calc_H
             SORE_NO_TASARERUKAZU, SORE_NO_KAKERARERUKAZU,
             SORE_NO_HIKARERUKAZU, SORE_NO_WARARERUKAZU,
             MONO_FUNC1ARG, SHITE_EXPR_JOU, SHITE_HEIHOU, SHITE_RIPPOU,
-            MONO_EXPR_JOU, MONO_HEIHOU, MONO_RIPPOU
+            MONO_EXPR_JOU, MONO_HEIHOU, MONO_RIPPOU,
+            MONO_NO_EXPR_PERCENT
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;

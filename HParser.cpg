@@ -169,9 +169,11 @@
 %token T_NO5<TokenValue>;       // no tasukazu, no kakerukazu, etc.
 %token T_NO6<TokenValue>;       // no heihou, no nan-jou
 %token T_NO7<TokenValue>;       // no seigen, no yogen, no seisetu, etc.
+%token T_NO8<TokenValue>;       // no ... percent
 %token T_OKU<TokenValue>;
 %token T_ONEGAI<TokenValue>;
 %token T_OSHIETE<TokenValue>;
+%token T_PERCENT<TokenValue>;
 %token T_PERIOD<TokenValue>;
 %token T_PI<TokenValue>;
 %token T_PLUS<TokenValue>;
@@ -636,6 +638,7 @@ mono<Mono>
     | [DoMono57] mono(0) T_NO6 T_HEIHOU
     | [DoMono59] mono(0) T_WO1 T_RIPPOU T_SHITA T_MONO
     | [DoMono59] mono(0) T_NO6 T_RIPPOU
+    | [DoMono60] mono(0) T_NO8 expression(1) T_PERCENT
     ;
 
 expression_list<ExprList>

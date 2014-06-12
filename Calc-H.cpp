@@ -432,6 +432,13 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
         v1 = ChCalcMono(mono->m_mono);
         return v1 * v1 * v1;
 
+    case Mono::MONO_NO_EXPR_PERCENT:
+        v1 = ChCalcMono(mono->m_mono);
+        v2 = ChCalcExpr(mono->m_expr);
+        v1 *= v2;
+        v1 /= 100;
+        return v1;
+
     default:
         assert(0);
         return 0;
@@ -2807,6 +2814,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         break;
 
     case Mono::MONO_EXPR_JOU:
+    case Mono::MONO_NO_EXPR_PERCENT:
         ChAnalyzeMono(mono->m_mono);
         ChAnalyzeExpr(mono->m_expr);
         break;

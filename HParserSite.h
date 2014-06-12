@@ -1182,6 +1182,18 @@ namespace Calc_H
             return shared_ptr<Mono>(m);
         }
 
+        shared_ptr<Mono> DoMono60(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono60" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_NO_EXPR_PERCENT;
+            m->m_mono = mono;
+            m->m_expr = expr;
+            return shared_ptr<Mono>(m);
+        }
+
         shared_ptr<Expr> DoExpr1(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG
