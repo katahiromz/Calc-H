@@ -2405,6 +2405,493 @@ void ChAnalyzeMonoShiteWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
     }
 }
 
+bool ChIsMonoTashizan(shared_ptr<Mono>& mono);
+bool ChIsMonoKakezan(shared_ptr<Mono>& mono);
+bool ChIsMonoHikizan(shared_ptr<Mono>& mono);
+bool ChIsMonoWarizan(shared_ptr<Mono>& mono);
+
+bool ChIsShiteTashizan(shared_ptr<Shite>& shite)
+{
+    switch (shite->m_type)
+    {
+    case Shite::EXPRLIST_ADD:
+    case Shite::MONO_ADD:
+    case Shite::SHITE_ADD:
+        return true;
+
+    case Shite::MONO_ONLY:
+        return ChIsMonoTashizan(shite->m_mono);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsShiteKakezan(shared_ptr<Shite>& shite)
+{
+    switch (shite->m_type)
+    {
+    case Shite::EXPRLIST_MUL:
+    case Shite::MONO_MUL:
+    case Shite::SHITE_MUL:
+    case Shite::SHITE_EXPR_BAI:
+    case Shite::SHITE_BAI:
+        return true;
+
+    case Shite::MONO_ONLY:
+        return ChIsMonoKakezan(shite->m_mono);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsShiteHikizan(shared_ptr<Shite>& shite)
+{
+    switch (shite->m_type)
+    {
+    case Shite::MONO_SUB:
+    case Shite::SHITE_SUB:
+    case Shite::MONO_WO_EXPR_SUB:
+        return true;
+
+    case Shite::MONO_ONLY:
+        return ChIsMonoHikizan(shite->m_mono);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsShiteWarizan(shared_ptr<Shite>& shite)
+{
+    switch (shite->m_type)
+    {
+    case Shite::MONO_DIV:
+    case Shite::SHITE_DIV:
+    case Shite::MONO_WO_EXPR_DIV:
+        return true;
+
+    case Shite::MONO_ONLY:
+        return ChIsMonoWarizan(shite->m_mono);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsPrimTashizan(shared_ptr<Prim>& prim)
+{
+    if (prim->m_type == Prim::MONO)
+        return ChIsMonoTashizan(prim->m_mono);
+    else
+        return false;
+}
+
+bool ChIsPrimKakezan(shared_ptr<Prim>& prim)
+{
+    if (prim->m_type == Prim::MONO)
+        return ChIsMonoKakezan(prim->m_mono);
+    else
+        return false;
+}
+
+bool ChIsPrimHikizan(shared_ptr<Prim>& prim)
+{
+    if (prim->m_type == Prim::MONO)
+        return ChIsMonoHikizan(prim->m_mono);
+    else
+        return false;
+}
+
+bool ChIsPrimWarizan(shared_ptr<Prim>& prim)
+{
+    if (prim->m_type == Prim::MONO)
+        return ChIsMonoWarizan(prim->m_mono);
+    else
+        return false;
+}
+
+bool ChIsFactTashizan(shared_ptr<Fact>& fact)
+{
+    if (fact->m_type == Fact::SINGLE)
+        return ChIsPrimTashizan(fact->m_prim);
+    else
+        return false;
+}
+
+bool ChIsFactKakezan(shared_ptr<Fact>& fact)
+{
+    if (fact->m_type == Fact::SINGLE)
+        return ChIsPrimKakezan(fact->m_prim);
+    else
+        return false;
+}
+
+bool ChIsFactHikizan(shared_ptr<Fact>& fact)
+{
+    if (fact->m_type == Fact::SINGLE)
+        return ChIsPrimHikizan(fact->m_prim);
+    else
+        return false;
+}
+
+bool ChIsFactWarizan(shared_ptr<Fact>& fact)
+{
+    if (fact->m_type == Fact::SINGLE)
+        return ChIsPrimWarizan(fact->m_prim);
+    else
+        return false;
+}
+
+bool ChIsTermTashizan(shared_ptr<Term>& term)
+{
+    switch (term->m_type)
+    {
+    case Term::MUL:
+    case Term::DIV:
+        return false;
+
+    case Term::FACT_ONLY:
+        return ChIsFactTashizan(term->m_fact);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsTermKakezan(shared_ptr<Term>& term)
+{
+    switch (term->m_type)
+    {
+    case Term::MUL:
+        return true;
+
+    case Term::DIV:
+        return false;
+
+    case Term::FACT_ONLY:
+        return ChIsFactKakezan(term->m_fact);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsTermHikizan(shared_ptr<Term>& term)
+{
+    switch (term->m_type)
+    {
+    case Term::MUL:
+    case Term::DIV:
+        return false;
+
+    case Term::FACT_ONLY:
+        return ChIsFactHikizan(term->m_fact);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsTermWarizan(shared_ptr<Term>& term)
+{
+    switch (term->m_type)
+    {
+    case Term::MUL:
+        return false;
+
+    case Term::DIV:
+        return true;
+
+    case Term::FACT_ONLY:
+        return ChIsFactWarizan(term->m_fact);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsExprTashizan(shared_ptr<Expr>& expr)
+{
+    switch (expr->m_type)
+    {
+    case Expr::ADD:
+        return true;
+
+    case Expr::SUB:
+        return false;
+
+    case Expr::TERM_ONLY:
+        return ChIsTermTashizan(expr->m_term);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsExprKakezan(shared_ptr<Expr>& expr)
+{
+    switch (expr->m_type)
+    {
+    case Expr::ADD:
+    case Expr::SUB:
+        return false;
+
+    case Expr::TERM_ONLY:
+        return ChIsTermKakezan(expr->m_term);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsExprHikizan(shared_ptr<Expr>& expr)
+{
+    switch (expr->m_type)
+    {
+    case Expr::ADD:
+        return false;
+
+    case Expr::SUB:
+        return true;
+
+    case Expr::TERM_ONLY:
+        return ChIsTermHikizan(expr->m_term);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsExprWarizan(shared_ptr<Expr>& expr)
+{
+    switch (expr->m_type)
+    {
+    case Expr::ADD:
+    case Expr::SUB:
+        return false;
+
+    case Expr::TERM_ONLY:
+        return ChIsTermWarizan(expr->m_term);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsSurutoTashizan(shared_ptr<Suruto>& suruto)
+{
+    switch (suruto->m_type)
+    {
+    case Suruto::EXPRLIST_ADD:
+    case Suruto::MONO_ADD:
+    case Suruto::SHITE_TASUTO:
+        return true;
+
+    case Suruto::MONO_ONLY:
+        return ChIsMonoTashizan(suruto->m_mono);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsSurutoKakezan(shared_ptr<Suruto>& suruto)
+{
+    switch (suruto->m_type)
+    {
+    case Suruto::EXPRLIST_MUL:
+    case Suruto::MONO_MUL:
+    case Suruto::MONO_WO_EXPR_BAI:
+    case Suruto::MONO_WO_BAI:
+    case Suruto::SHITE_KAKERUTO:
+        return true;
+
+    case Suruto::MONO_ONLY:
+        return ChIsMonoKakezan(suruto->m_mono);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsSurutoHikizan(shared_ptr<Suruto>& suruto)
+{
+    switch (suruto->m_type)
+    {
+    case Suruto::MONO_SUB:
+    case Suruto::SHITE_HIKUTO:
+    case Suruto::MONO_WO_EXPR_SUB:
+        return true;
+
+    case Suruto::MONO_ONLY:
+        return ChIsMonoHikizan(suruto->m_mono);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsSurutoWarizan(shared_ptr<Suruto>& suruto)
+{
+    switch (suruto->m_type)
+    {
+    case Suruto::MONO_DIV:
+    case Suruto::SHITE_WARUTO:
+    case Suruto::MONO_DE_EXPR_DIV:
+        return true;
+
+    case Suruto::MONO_ONLY:
+        return ChIsMonoWarizan(suruto->m_mono);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsMonoTashizan(shared_ptr<Mono>& mono)
+{
+    switch (mono->m_type)
+    {
+    case Mono::EXPRLIST_ADD:
+    case Mono::MONO_ADD:
+    case Mono::SHITE_ADD:
+    case Mono::MONO_TO_EXPRLIST_ADD:
+    case Mono::MONO_TO_EXPR_ADD:
+        return true;
+
+    case Mono::MONO_ONLY:
+        return ChIsMonoTashizan(mono->m_mono);
+
+    case Mono::SHITE_ONLY:
+        return ChIsShiteTashizan(mono->m_shite);
+
+    case Mono::EXPR_ONLY:
+        return ChIsExprTashizan(mono->m_expr);
+
+    case Mono::TERM_ONLY:
+        return ChIsTermTashizan(mono->m_term);
+
+    case Mono::FACT_ONLY:
+        return ChIsFactTashizan(mono->m_fact);
+
+    case Mono::SURUTO_ONLY:
+        return ChIsSurutoTashizan(mono->m_suruto);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsMonoKakezan(shared_ptr<Mono>& mono)
+{
+    switch (mono->m_type)
+    {
+    case Mono::EXPRLIST_MUL:
+    case Mono::MONO_MUL:
+    case Mono::MONO_EXPR_BAI:
+    case Mono::MONO_BAI:
+    case Mono::SHITE_MUL:
+    case Mono::SHITE_EXPR_BAI:
+    case Mono::SHITE_BAI:
+    case Mono::MONO_TO_EXPRLIST_MUL:
+    case Mono::MONO_TO_EXPR_MUL:
+        return true;
+
+    case Mono::MONO_ONLY:
+        return ChIsMonoKakezan(mono->m_mono);
+
+    case Mono::SHITE_ONLY:
+        return ChIsShiteKakezan(mono->m_shite);
+
+    case Mono::EXPR_ONLY:
+        return ChIsExprKakezan(mono->m_expr);
+
+    case Mono::TERM_ONLY:
+        return ChIsTermKakezan(mono->m_term);
+
+    case Mono::FACT_ONLY:
+        return ChIsFactKakezan(mono->m_fact);
+
+    case Mono::SURUTO_ONLY:
+        return ChIsSurutoKakezan(mono->m_suruto);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsMonoHikizan(shared_ptr<Mono>& mono)
+{
+    switch (mono->m_type)
+    {
+    case Mono::EXPRLIST_SUB:
+    case Mono::MONO_SUB:
+    case Mono::SHITE_SUB:
+    case Mono::MONO_TO_EXPR_SUB:
+    case Mono::MONO_WO_EXPR_KARA_SUB:
+        return true;
+
+    case Mono::MONO_ONLY:
+        return ChIsMonoHikizan(mono->m_mono);
+
+    case Mono::SHITE_ONLY:
+        return ChIsShiteHikizan(mono->m_shite);
+
+    case Mono::EXPR_ONLY:
+        return ChIsExprHikizan(mono->m_expr);
+
+    case Mono::TERM_ONLY:
+        return ChIsTermHikizan(mono->m_term);
+
+    case Mono::FACT_ONLY:
+        return ChIsFactHikizan(mono->m_fact);
+
+    case Mono::SURUTO_ONLY:
+        return ChIsSurutoHikizan(mono->m_suruto);
+
+    default:
+        return false;
+    }
+}
+
+bool ChIsMonoWarizan(shared_ptr<Mono>& mono)
+{
+    switch (mono->m_type)
+    {
+
+    case Mono::EXPRLIST_DIV:
+    case Mono::MONO_DIV:
+    case Mono::SHITE_DIV:
+    case Mono::MONO_TO_EXPR_DIV:
+    case Mono::MONO_DE_EXPR_WO_DIV:
+        return true;
+
+    case Mono::MONO_ONLY:
+        return ChIsMonoWarizan(mono->m_mono);
+
+    case Mono::SHITE_ONLY:
+        return ChIsShiteWarizan(mono->m_shite);
+
+    case Mono::EXPR_ONLY:
+        return ChIsExprWarizan(mono->m_expr);
+
+    case Mono::TERM_ONLY:
+        return ChIsTermWarizan(mono->m_term);
+
+    case Mono::FACT_ONLY:
+        return ChIsFactWarizan(mono->m_fact);
+
+    case Mono::SURUTO_ONLY:
+        return ChIsSurutoWarizan(mono->m_suruto);
+
+    default:
+        return false;
+    }
+}
+
+
 void ChAnalyzeMono(shared_ptr<Mono>& mono)
 {
     Mono *m;
@@ -2817,6 +3304,34 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
     case Mono::MONO_NO_EXPR_PERCENT:
         ChAnalyzeMono(mono->m_mono);
         ChAnalyzeExpr(mono->m_expr);
+        break;
+
+    case Mono::TASHIZAN:
+        ChAnalyzeMono(mono->m_mono);
+        if (!ChIsMonoTashizan(mono->m_mono))
+            Calc_H::s_message = "たしざんではありません。";
+        mono = mono->m_mono;
+        break;
+
+    case Mono::KAKEZAN:
+        ChAnalyzeMono(mono->m_mono);
+        if (!ChIsMonoKakezan(mono->m_mono))
+            Calc_H::s_message = "かけざんではありません。";
+        mono = mono->m_mono;
+        break;
+
+    case Mono::HIKIZAN:
+        ChAnalyzeMono(mono->m_mono);
+        if (!ChIsMonoHikizan(mono->m_mono))
+            Calc_H::s_message = "ひきざんではありません。";
+        mono = mono->m_mono;
+        break;
+
+    case Mono::WARIZAN:
+        ChAnalyzeMono(mono->m_mono);
+        if (!ChIsMonoWarizan(mono->m_mono))
+            Calc_H::s_message = "わりざんではありません。";
+        mono = mono->m_mono;
         break;
 
     default:

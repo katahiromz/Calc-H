@@ -522,21 +522,25 @@ mono<Mono>
     | [DoMono8] mono(0) T_WO1 expression(1) T_DE T_WATTA T_MONO
     | [DoMono27] mono(0) T_DE expression(1) T_WO1 T_WATTA T_MONO
     | [DoMono27] mono(0) T_DE expression(1) T_WATTA T_MONO
-    | [DoMono9] mono(0) T_NO4 T_TASHIZAN T_WO2 T_SHITA T_MONO
-    | [DoMono9] mono(0) T_NO4 T_HIKIZAN T_WO2 T_SHITA T_MONO
-    | [DoMono9] mono(0) T_NO4 T_KAKEZAN T_WO2 T_SHITA T_MONO
-    | [DoMono9] mono(0) T_NO4 T_WARIZAN T_WO2 T_SHITA T_MONO
+    | [DoMono61] mono(0) T_NO4 T_TASHIZAN T_WO2 T_SHITA T_MONO
+    | [DoMono61] mono(0) T_NO4 T_TASHIZAN T_SHITA T_MONO
+    | [DoMono61] mono(0) T_NO4 T_TASHIZAN
+    | [DoMono61] mono(0) T_NO2 T_WA
+    | [DoMono62] mono(0) T_NO4 T_KAKEZAN T_WO2 T_SHITA T_MONO
+    | [DoMono62] mono(0) T_NO4 T_KAKEZAN T_SHITA T_MONO
+    | [DoMono62] mono(0) T_NO4 T_KAKEZAN
+    | [DoMono62] mono(0) T_NO2 T_SEKI
+    | [DoMono63] mono(0) T_NO4 T_HIKIZAN T_WO2 T_SHITA T_MONO
+    | [DoMono63] mono(0) T_NO4 T_HIKIZAN T_SHITA T_MONO
+    | [DoMono63] mono(0) T_NO4 T_HIKIZAN
+    | [DoMono63] mono(0) T_NO2 T_SA
+    | [DoMono64] mono(0) T_NO4 T_WARIZAN T_WO2 T_SHITA T_MONO
+    | [DoMono64] mono(0) T_NO4 T_WARIZAN T_SHITA T_MONO
+    | [DoMono64] mono(0) T_NO4 T_WARIZAN
+    | [DoMono64] mono(0) T_NO2 T_SHOU
     | [DoMono9] mono(0) T_NO4 T_KEISAN T_WO2 T_SHITA T_MONO
-    | [DoMono9] mono(0) T_NO4 T_TASHIZAN T_SHITA T_MONO
-    | [DoMono9] mono(0) T_NO4 T_HIKIZAN T_SHITA T_MONO
-    | [DoMono9] mono(0) T_NO4 T_KAKEZAN T_SHITA T_MONO
-    | [DoMono9] mono(0) T_NO4 T_WARIZAN T_SHITA T_MONO
     | [DoMono9] mono(0) T_NO4 T_KEISAN T_SHITA T_MONO
     | [DoMono9] mono(0) T_WO1 T_SHITA T_MONO
-    | [DoMono9] mono(0) T_NO4 T_TASHIZAN
-    | [DoMono9] mono(0) T_NO4 T_HIKIZAN
-    | [DoMono9] mono(0) T_NO4 T_KAKEZAN
-    | [DoMono9] mono(0) T_NO4 T_WARIZAN
     | [DoMono9] mono(0) T_NO4 T_KEISAN
     | [DoMono10] mono(0) T_NO3 expression(1) T_BAI
     | [DoMono11] mono(0) T_NO3 T_BAI

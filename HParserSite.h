@@ -1194,6 +1194,50 @@ namespace Calc_H
             return shared_ptr<Mono>(m);
         }
 
+        shared_ptr<Mono> DoMono61(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono61" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::TASHIZAN;
+            m->m_mono = mono;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono62(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono62" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::KAKEZAN;
+            m->m_mono = mono;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono63(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono63" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::HIKIZAN;
+            m->m_mono = mono;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono64(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono64" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::WARIZAN;
+            m->m_mono = mono;
+            return shared_ptr<Mono>(m);
+        }
+
         shared_ptr<Expr> DoExpr1(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG
