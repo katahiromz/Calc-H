@@ -324,6 +324,7 @@ suruto<Suruto>
     | [DoSuruto7] mono(0) T_NO4 T_KAKEZAN T_SURUTO
     | [DoSuruto7] mono(0) T_NO4 T_WARIZAN T_SURUTO
     | [DoSuruto7] mono(0) T_NO4 T_KEISAN T_SURUTO
+    | [DoSuruto7] mono(0) T_WO1 T_SURUTO
     | [DoSuruto8] mono(0) T_WO1 expression(1) T_BAI T_NI T_COMMA T_SURUTO
     | [DoSuruto8] mono(0) T_WO1 expression(1) T_BAI T_NI T_SURUTO
     | [DoSuruto8] mono(0) T_WO1 expression(1) T_BAI T_SURUTO
@@ -434,7 +435,7 @@ shite<Shite>
     | [DoShite7] mono(0) T_NO4 T_KAKEZAN T_WO2 T_SHITE
     | [DoShite7] mono(0) T_NO4 T_WARIZAN T_WO2 T_SHITE
     | [DoShite7] mono(0) T_NO4 T_KEISAN T_WO2 T_SHITE
-    | [DoShite7] mono(0) T_NO1 T_SHITE
+    | [DoShite7] mono(0) T_WO1 T_SHITE
     | [DoShite8] shite(0) T_SORE T_NI T_COMMA expression(1) T_WO1 T_TASHITE
     | [DoShite8] shite(0) T_SORE T_NI T_COMMA expression(1) T_TASHITE
     | [DoShite8] shite(0) T_SORE T_NI T_COMMA expression(1) T_NO4 T_TASHIZAN T_SHITE
