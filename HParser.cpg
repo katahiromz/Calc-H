@@ -632,6 +632,10 @@ mono<Mono>
     | [DoMono38] suruto(0) T_KAKERARERU T_MONO
     | [DoMono39] suruto(0) T_HIKARERU T_MONO
     | [DoMono40] suruto(0) T_WARARERU T_MONO
+    | [DoMono65] suruto(0) T_WA
+    | [DoMono66] suruto(0) T_SEKI
+    | [DoMono67] suruto(0) T_SA
+    | [DoMono68] suruto(0) T_SHOU
     | [DoMono41] mono(0) T_NO5 T_TASARERU T_MONO
     | [DoMono42] mono(0) T_NO5 T_KAKERARERU T_MONO
     | [DoMono43] mono(0) T_NO5 T_HIKARERU T_MONO

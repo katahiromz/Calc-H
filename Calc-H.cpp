@@ -3334,6 +3334,47 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         mono = mono->m_mono;
         break;
 
+    case Mono::SURUTO_WA:
+        ChAnalyzeSuruto(mono->m_suruto);
+        if (!ChIsSurutoTashizan(mono->m_suruto))
+            Calc_H::s_message = "たしざんではありません。";
+        m = new Mono;
+        m->m_type = Mono::SURUTO_ONLY;
+        m->m_suruto = mono->m_suruto;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Mono::SURUTO_SEKI:
+        ChAnalyzeSuruto(mono->m_suruto);
+        if (!ChIsSurutoKakezan(mono->m_suruto))
+            Calc_H::s_message = "かけざんではありません。";
+        m = new Mono;
+        m->m_type = Mono::SURUTO_ONLY;
+        m->m_suruto = mono->m_suruto;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Mono::SURUTO_SA:
+        ChAnalyzeSuruto(mono->m_suruto);
+        if (!ChIsSurutoHikizan(mono->m_suruto))
+            Calc_H::s_message = "ひきざんではありません。";
+        m = new Mono;
+        m->m_type = Mono::SURUTO_ONLY;
+        m->m_suruto = mono->m_suruto;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Mono::SURUTO_SHOU:
+        ChAnalyzeSuruto(mono->m_suruto);
+        if (!ChIsSurutoWarizan(mono->m_suruto))
+            Calc_H::s_message = "わりざんではありません。";
+        m = new Mono;
+        m->m_type = Mono::SURUTO_ONLY;
+        m->m_suruto = mono->m_suruto;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+
     default:
         break;
     }
