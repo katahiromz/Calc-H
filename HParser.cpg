@@ -106,6 +106,7 @@
 
 %token T_ACOS<TokenValue>;
 %token T_ALL<TokenValue>;       // replaced
+%token T_AMARI<TokenValue>;
 %token T_ASIN<TokenValue>;
 %token T_ASOUGI<TokenValue>;
 %token T_ATAN<TokenValue>;
@@ -170,6 +171,7 @@
 %token T_NO6<TokenValue>;       // no heihou, no nan-jou
 %token T_NO7<TokenValue>;       // no seigen, no yogen, no seisetu, etc.
 %token T_NO8<TokenValue>;       // no ... percent
+%token T_NO9<TokenValue>;       // no amari
 %token T_OKU<TokenValue>;
 %token T_ONEGAI<TokenValue>;
 %token T_OSHIETE<TokenValue>;
@@ -611,6 +613,7 @@ mono<Mono>
     | [DoMono50] T_SORE T_NO4 T_KAKERARERU T_MONO
     | [DoMono51] T_SORE T_NO4 T_HIKARERU T_MONO
     | [DoMono52] T_SORE T_NO4 T_WARARERU T_MONO
+    | [DoMono71] T_SORE T_NO9 T_AMARI
     | [DoMono19] T_SORE
     | [DoMono20] mono(0) T_TO1 expression_list(1) T_NO2 T_WA
     | [DoMono21] mono(0) T_TO1 expression_list(1) T_NO2 T_SEKI
@@ -636,6 +639,7 @@ mono<Mono>
     | [DoMono66] suruto(0) T_SEKI
     | [DoMono67] suruto(0) T_SA
     | [DoMono68] suruto(0) T_SHOU
+    | [DoMono69] suruto(0) T_AMARI
     | [DoMono41] mono(0) T_NO5 T_TASARERU T_MONO
     | [DoMono42] mono(0) T_NO5 T_KAKERARERU T_MONO
     | [DoMono43] mono(0) T_NO5 T_HIKARERU T_MONO
@@ -648,6 +652,7 @@ mono<Mono>
     | [DoMono59] mono(0) T_WO1 T_RIPPOU T_SHITA T_MONO
     | [DoMono59] mono(0) T_NO6 T_RIPPOU
     | [DoMono60] mono(0) T_NO8 expression(1) T_PERCENT
+    | [DoMono70] mono(0) T_NO9 T_AMARI
     ;
 
 expression_list<ExprList>

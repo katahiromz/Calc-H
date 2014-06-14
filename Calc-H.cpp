@@ -439,6 +439,30 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
         v1 /= 100;
         return v1;
 
+    case Mono::MONO_MOD_EXPR:
+        v1 = ChCalcMono(mono->m_mono);
+        v2 = ChCalcExpr(mono->m_expr);
+        v1 %= v2;
+        return v1;
+
+    case Mono::EXPR_MOD_MONO:
+        v1 = ChCalcExpr(mono->m_expr);
+        v2 = ChCalcMono(mono->m_mono);
+        v1 %= v2;
+        return v1;
+
+    case Mono::SHITE_MOD_EXPR:
+        v1 = ChCalcShite(mono->m_shite);
+        v2 = ChCalcMono(mono->m_mono);
+        v1 %= v2;
+        return v1;
+
+    case Mono::TERM_MOD_FACT:
+        v1 = ChCalcTerm(mono->m_term);
+        v2 = ChCalcFact(mono->m_fact);
+        v1 %= v2;
+        return v1;
+
     default:
         assert(0);
         return 0;
@@ -626,6 +650,7 @@ void ChAnalyzeShite(shared_ptr<Shite>& shite);
 void ChAnalyzeSuruto(shared_ptr<Suruto>& suruto);
 void ChAnalyzeTerm(shared_ptr<Term>& term);
 void ChAnalyzeFact(shared_ptr<Fact>& fact);
+void ChAnalyzePrim(shared_ptr<Prim>& prim);
 
 void ChAnalyzeMonoTermTasukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term);
 void ChAnalyzeMonoTermKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term);
@@ -2891,6 +2916,264 @@ bool ChIsMonoWarizan(shared_ptr<Mono>& mono)
     }
 }
 
+void ChAnalyzeMonoMonoAmari(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2);
+
+void ChAnalyzeMonoSurutoAmari(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto)
+{
+    Mono *m;
+    switch (suruto->m_type)
+    {
+    case Suruto::MONO_DIV:
+        ChAnalyzeMono(suruto->m_mono);
+        ChAnalyzeExpr(suruto->m_expr);
+        m = new Mono;
+        m->m_type = Mono::MONO_MOD_EXPR;
+        m->m_mono = suruto->m_mono;
+        m->m_expr = suruto->m_expr;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Suruto::MONO_ONLY:
+        ChAnalyzeMonoMonoAmari(mono, suruto->m_mono);
+        break;
+
+    case Suruto::SHITE_WARUTO:
+        ChAnalyzeShite(suruto->m_shite);
+        ChAnalyzeExpr(suruto->m_expr);
+        m = new Mono;
+        m->m_type = Mono::SHITE_MOD_EXPR;
+        m->m_shite = suruto->m_shite;
+        m->m_expr = suruto->m_expr;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Suruto::MONO_DE_EXPR_DIV:
+        ChAnalyzeExpr(suruto->m_expr);
+        ChAnalyzeMono(suruto->m_mono);
+        m = new Mono;
+        m->m_type = Mono::EXPR_MOD_MONO;
+        m->m_expr = suruto->m_expr;
+        m->m_mono = suruto->m_mono;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    default:
+        Calc_H::s_message = "わりざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoShiteAmari(shared_ptr<Mono> mono, shared_ptr<Shite>& shite)
+{
+    Mono *m;
+    switch (shite->m_type)
+    {
+    case Shite::MONO_DIV:
+        ChAnalyzeMono(shite->m_mono);
+        ChAnalyzeExpr(shite->m_expr);
+        m = new Mono;
+        m->m_type = Mono::MONO_MOD_EXPR;
+        m->m_mono = shite->m_mono;
+        m->m_expr = shite->m_expr;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Shite::MONO_ONLY:
+        ChAnalyzeMono(shite->m_mono);
+        ChAnalyzeMonoMonoAmari(mono, shite->m_mono);
+        break;
+
+    case Shite::SHITE_DIV:
+        ChAnalyzeShite(shite->m_shite);
+        ChAnalyzeExpr(shite->m_expr);
+        m = new Mono;
+        m->m_type = Mono::SHITE_MOD_EXPR;
+        m->m_shite = shite->m_shite;
+        m->m_expr = shite->m_expr;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Shite::MONO_WO_EXPR_DIV:
+        ChAnalyzeMono(shite->m_mono);
+        ChAnalyzeExpr(shite->m_expr);
+        m = new Mono;
+        m->m_type = Mono::MONO_MOD_EXPR;
+        m->m_mono = shite->m_mono;
+        m->m_expr = shite->m_expr;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    default:
+        Calc_H::s_message = "わりざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoPrimAmari(shared_ptr<Mono>& mono, shared_ptr<Prim>& prim)
+{
+    switch (prim->m_type)
+    {
+    case Prim::MONO:
+        ChAnalyzeMono(prim->m_mono);
+        ChAnalyzeMonoMonoAmari(mono, prim->m_mono);
+        break;
+
+    default:
+        Calc_H::s_message = "わりざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoFactAmari(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
+{
+    switch (fact->m_type)
+    {
+    case Fact::SINGLE:
+        ChAnalyzePrim(fact->m_prim);
+        ChAnalyzeMonoPrimAmari(mono, fact->m_prim);
+        break;
+
+    default:
+        Calc_H::s_message = "わりざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoTermAmari(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
+{
+    Mono *m;
+    switch (term->m_type)
+    {
+    case Term::DIV:
+        ChAnalyzeTerm(term->m_term);
+        ChAnalyzeFact(term->m_fact);
+        m = new Mono;
+        m->m_type = Mono::TERM_MOD_FACT;
+        m->m_term = term->m_term;
+        m->m_fact = term->m_fact;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Term::FACT_ONLY:
+        ChAnalyzeFact(term->m_fact);
+        ChAnalyzeMonoFactAmari(mono, term->m_fact);
+        break;
+
+    default:
+        Calc_H::s_message = "わりざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoExprAmari(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+{
+    switch (expr->m_type)
+    {
+    case Expr::TERM_ONLY:
+        ChAnalyzeTerm(expr->m_term);
+        ChAnalyzeMonoTermAmari(mono, expr->m_term);
+        break;
+
+    default:
+        Calc_H::s_message = "わりざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoMonoAmari(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
+{
+    Mono *m;
+    switch (mono2->m_type)
+    {
+    //case Mono::EXPRLIST_DIV: // TODO
+
+    case Mono::MONO_DIV:
+    case Mono::MONO_TO_EXPR_DIV:
+        ChAnalyzeMono(mono2->m_mono);
+        ChAnalyzeExpr(mono2->m_expr);
+        m = new Mono;
+        m->m_type = Mono::MONO_MOD_EXPR;
+        m->m_mono = mono2->m_mono;
+        m->m_expr = mono2->m_expr;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Mono::MONO_ONLY:
+        ChAnalyzeMonoMonoAmari(mono, mono2->m_mono);
+        break;
+
+    case Mono::SHITE_DIV:
+        ChAnalyzeShite(mono2->m_shite);
+        ChAnalyzeExpr(mono2->m_expr);
+        m = new Mono;
+        m->m_type = Mono::SHITE_MOD_EXPR;
+        m->m_shite = mono2->m_shite;
+        m->m_expr = mono2->m_expr;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Mono::SHITE_ONLY:
+        ChAnalyzeMonoShiteAmari(mono, mono2->m_shite);
+        break;
+
+    case Mono::EXPR_ONLY:
+        ChAnalyzeExpr(mono2->m_expr);
+        ChAnalyzeMonoExprAmari(mono, mono2->m_expr);
+        break;
+
+    case Mono::MONO_DE_EXPR_WO_DIV:
+        ChAnalyzeMono(mono2->m_mono);
+        ChAnalyzeExpr(mono2->m_expr);
+        m = new Mono;
+        m->m_type = Mono::EXPR_MOD_MONO;
+        m->m_expr = mono2->m_expr;
+        m->m_mono = mono2->m_mono;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Mono::TERM_ONLY:
+        ChAnalyzeTerm(mono2->m_term);
+        ChAnalyzeMonoTermAmari(mono, mono2->m_term);
+        break;
+
+    case Mono::FACT_ONLY:
+        ChAnalyzeFact(mono2->m_fact);
+        ChAnalyzeMonoFactAmari(mono, mono2->m_fact);
+        break;
+
+    case Mono::SURUTO_ONLY:
+        ChAnalyzeSuruto(mono2->m_suruto);
+        ChAnalyzeMonoSurutoAmari(mono, mono2->m_suruto);
+        break;
+
+    default:
+        Calc_H::s_message = "わりざんではありません。";
+    }
+}
+
+void ChAnalyzeMonoSonoAmari(shared_ptr<Mono>& mono)
+{
+    Sentence *sentence = Calc_H::s_sentence_prev.get();
+    switch (sentence->m_type)
+    {
+    case Sentence::MONO:
+        ChAnalyzeMono(sentence->m_mono);
+        ChAnalyzeMonoMonoAmari(mono, sentence->m_mono);
+        break;
+
+    case Sentence::EXPR:
+        ChAnalyzeExpr(sentence->m_expr);
+        ChAnalyzeMonoExprAmari(mono, sentence->m_expr);
+        break;
+
+    case Sentence::SURUTO:
+        ChAnalyzeSuruto(sentence->m_suruto);
+        ChAnalyzeMonoSurutoAmari(mono, sentence->m_suruto);
+        break;
+
+    case Sentence::SHITE:
+        ChAnalyzeShite(sentence->m_shite);
+        ChAnalyzeMonoShiteAmari(mono, sentence->m_shite);
+        break;
+
+    default:
+        Calc_H::s_message = "わりざんではありません。";
+    }
+}
 
 void ChAnalyzeMono(shared_ptr<Mono>& mono)
 {
@@ -3374,6 +3657,19 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         mono = shared_ptr<Mono>(m);
         break;
 
+    case Mono::SURUTO_AMARI:
+        ChAnalyzeSuruto(mono->m_suruto);
+        ChAnalyzeMonoSurutoAmari(mono, mono->m_suruto);
+        break;
+
+    case Mono::MONO_NO_AMARI:
+        ChAnalyzeMono(mono->m_mono);
+        ChAnalyzeMonoMonoAmari(mono, mono->m_mono);
+        break;
+
+    case Mono::SORE_NO_AMARI:
+        ChAnalyzeMonoSonoAmari(mono);
+        break;
 
     default:
         break;

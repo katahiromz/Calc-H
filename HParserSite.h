@@ -1282,6 +1282,38 @@ namespace Calc_H
             return shared_ptr<Mono>(m);
         }
 
+        shared_ptr<Mono> DoMono69(shared_ptr<Suruto>& suruto)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono69" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SURUTO_AMARI;
+            m->m_suruto = suruto;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono70(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono70" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_NO_AMARI;
+            m->m_mono = mono;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono71()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono71" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SORE_NO_AMARI;
+            return shared_ptr<Mono>(m);
+        }
+
         shared_ptr<Expr> DoExpr1(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG

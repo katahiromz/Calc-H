@@ -118,7 +118,9 @@ namespace Calc_H
             MONO_EXPR_JOU, MONO_HEIHOU, MONO_RIPPOU,
             MONO_NO_EXPR_PERCENT,
             TASHIZAN, KAKEZAN, HIKIZAN, WARIZAN,
-            SURUTO_WA, SURUTO_SEKI, SURUTO_SA, SURUTO_SHOU
+            SURUTO_WA, SURUTO_SEKI, SURUTO_SA, SURUTO_SHOU,
+            SURUTO_AMARI, MONO_NO_AMARI, SORE_NO_AMARI,
+            MONO_MOD_EXPR, EXPR_MOD_MONO, SHITE_MOD_EXPR, TERM_MOD_FACT
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;

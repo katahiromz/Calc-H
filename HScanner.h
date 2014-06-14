@@ -527,6 +527,7 @@ namespace Calc_H
             if (lexeme("すべて"))                       return (T_ALL);
             if (lexeme("じょー"))                       return (T_JOU1);
             if (lexeme("じょざん"))                     return (T_WARIZAN);
+            if (lexeme("じょうよ"))                     return (T_AMARI);
             if (lexeme("じょうざん"))                   return (T_KAKEZAN);
             if (lexeme("じょう"))                       return (T_JOU1);
             if (lexeme("じょ"))                         return (T_JO);
@@ -760,6 +761,7 @@ namespace Calc_H
             if (lexeme("あーくたんじぇんと"))           return (T_ATAN);
             if (lexeme("あーくさいん"))                 return (T_ASIN);
             if (lexeme("あーくこさいん"))               return (T_ACOS);
+            if (lexeme("あまり"))                       return (T_AMARI);
             if (lexeme("あそうぎ"))                     return (T_ASOUGI);
             if (lexeme("〕"))                           return (T_R_PAREN);
             if (lexeme("〔"))                           return (T_L_PAREN);
@@ -1004,9 +1006,10 @@ namespace Calc_H
         // T_NO3: 「何の何倍」の「の」。「何の（...）」の「の」。
         // T_NO4: 「かけざん」「けいさん」「こたえ」などの直前の「の」。
         // T_NO5: 「のたすかず」「のたされるかず」「のかけるかず」の「の」
-        // T_NO6: 「の何乗」の「の」。
+        // T_NO6: 「の何乗」「の平方」「の立方」の「の」。
         // T_NO7: 三角関数「正弦」「余弦」「正接」の直前の「の」。
         // T_NO8: 「の何ぱーせんと」の「の」。
+        // T_NO9: 「の余り」の「の」。
         // T_NO1: それ以外。
         void resynth2(std::vector<info_type>& infos)
         {
@@ -1178,6 +1181,16 @@ namespace Calc_H
                     flag = false;
                     break;
 
+                case T_AMARI:
+                    if (no1 != std::string::npos)
+                    {
+                        (newinfos.begin() + no1)->set_token(T_NO9);
+                        no1 = std::string::npos;
+                    }
+                    jou1 = std::string::npos;
+                    flag = false;
+                    break;
+
                 case T_SIN:
                 case T_COS:
                 case T_TAN:
@@ -1318,6 +1331,9 @@ namespace Calc_H
                 case T_NO4:
                 case T_NO5:
                 case T_NO6:
+                case T_NO7:
+                case T_NO8:
+                case T_NO9:
                 case T_PLUS:
                 case T_SHITA:
                 case T_SHITE:
