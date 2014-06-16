@@ -18,6 +18,11 @@ namespace Calc_H
     };
 }
 
+static const char * const ch_not_tashizan = "たしざんではありません。";
+static const char * const ch_not_kakezan = "かけざんではありません。";
+static const char * const ch_not_hikizan = "ひきざんではありません。";
+static const char * const ch_not_warizan = "わりざんではありません。";
+
 using namespace Calc_H;
 
 CH_Value ChCalcExpr(const shared_ptr<Expr>& expr);
@@ -463,6 +468,16 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
         v1 %= v2;
         return v1;
 
+    case Mono::SHOUSUU:
+        v1 = ChCalcShite(mono->m_shite);
+        v1 += 0.0;
+        return v1;
+
+    case Mono::MONO_NO_SHOUSUU:
+        v1 = ChCalcMono(mono->m_mono);
+        v1 += 0.0;
+        return v1;
+
     default:
         assert(0);
         return 0;
@@ -532,6 +547,11 @@ CH_Value ChCalcShite(const shared_ptr<Shite>& shite)
         v1 = ChCalcShite(shite->m_shite);
         return v1 * v1 * v1;
 
+    case Shite::SHOUSUU:
+        v1 = ChCalcShite(shite->m_shite);
+        v1 += 0.0;
+        return v1;
+
     default:
         assert(0);
         return 0;
@@ -600,6 +620,16 @@ CH_Value ChCalcSuruto(const shared_ptr<Suruto>& suruto)
     case Suruto::MONO_WO_RIPPOU:
         v1 = ChCalcMono(suruto->m_mono);
         return v1 * v1 * v1;
+
+    case Suruto::SHOUSUU:
+        v1 = ChCalcShite(suruto->m_shite);
+        v1 += 0.0;
+        return v1;
+
+    case Suruto::MONO_WO_SHOUSUU:
+        v1 = ChCalcMono(suruto->m_mono);
+        v1 += 0.0;
+        return v1;
 
     default:
         assert(0);
@@ -696,7 +726,7 @@ void ChAnalyzeMonoTermTasukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
         break;
 
     default:
-        Calc_H::s_message = "たしざんではありません。";
+        Calc_H::s_message = ch_not_tashizan;
     }
 }
 
@@ -709,7 +739,7 @@ void ChAnalyzeMonoTermHikukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
         break;
 
     default:
-        Calc_H::s_message = "ひきざんではありません。";
+        Calc_H::s_message = ch_not_hikizan;
     }
 }
 
@@ -722,7 +752,7 @@ void ChAnalyzeMonoTermTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& ter
         break;
 
     default:
-        Calc_H::s_message = "たしざんではありません。";
+        Calc_H::s_message = ch_not_tashizan;
     }
 }
 
@@ -735,7 +765,7 @@ void ChAnalyzeMonoTermHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& ter
         break;
 
     default:
-        Calc_H::s_message = "たしざんではありません。";
+        Calc_H::s_message = ch_not_tashizan;
     }
 }
 
@@ -772,7 +802,7 @@ void ChAnalyzeMonoShiteTasukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite
         break;
 
     default:
-        Calc_H::s_message = "たしざんではありません。";
+        Calc_H::s_message = ch_not_tashizan;
     }
 }
 
@@ -809,7 +839,7 @@ void ChAnalyzeMonoShiteKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shi
         break;
 
     default:
-        Calc_H::s_message = "かけざんではありません。";
+        Calc_H::s_message = ch_not_kakezan;
     }
 }
 
@@ -833,7 +863,7 @@ void ChAnalyzeMonoShiteHikukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite
         break;
 
     default:
-        Calc_H::s_message = "ひきざんではありません。";
+        Calc_H::s_message = ch_not_hikizan;
     }
 }
 
@@ -857,7 +887,7 @@ void ChAnalyzeMonoShiteWarukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite
         break;
 
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -923,7 +953,7 @@ void ChAnalyzeMonoMonoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
         break;
 
     default:
-        Calc_H::s_message = "たしざんではありません。";
+        Calc_H::s_message = ch_not_tashizan;
     }
 }
 
@@ -984,7 +1014,7 @@ void ChAnalyzeMonoMonoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2
         break;
 
     default:
-        Calc_H::s_message = "かけざんではありません。";
+        Calc_H::s_message = ch_not_kakezan;
     }
 }
 
@@ -1049,7 +1079,7 @@ void ChAnalyzeMonoMonoHikukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
         break;
 
     default:
-        Calc_H::s_message = "ひきざんではありません。";
+        Calc_H::s_message = ch_not_hikizan;
     }
 }
 
@@ -1114,7 +1144,7 @@ void ChAnalyzeMonoMonoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
         break;
 
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -1123,7 +1153,7 @@ void ChAnalyzeMonoFactTasukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoTasukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = "たしざんではありません。";
+        Calc_H::s_message = ch_not_tashizan;
 }
 
 void ChAnalyzeMonoFactKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
@@ -1131,7 +1161,7 @@ void ChAnalyzeMonoFactKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoKakerukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = "かけざんではありません。";
+        Calc_H::s_message = ch_not_kakezan;
 }
 
 void ChAnalyzeMonoFactHikukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
@@ -1139,7 +1169,7 @@ void ChAnalyzeMonoFactHikukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoHikukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = "ひきざんではありません。";
+        Calc_H::s_message = ch_not_hikizan;
 }
 
 void ChAnalyzeMonoFactWarukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
@@ -1147,7 +1177,7 @@ void ChAnalyzeMonoFactWarukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoWarukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
 }
 
 void ChAnalyzeMonoFactTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
@@ -1155,7 +1185,7 @@ void ChAnalyzeMonoFactTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fac
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoTasarerukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = "たしざんではありません。";
+        Calc_H::s_message = ch_not_tashizan;
 }
 
 void ChAnalyzeMonoFactKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
@@ -1163,7 +1193,7 @@ void ChAnalyzeMonoFactKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& f
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoKakerarerukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = "かけざんではありません。";
+        Calc_H::s_message = ch_not_kakezan;
 }
 
 void ChAnalyzeMonoFactHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
@@ -1171,7 +1201,7 @@ void ChAnalyzeMonoFactHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fac
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoHikarerukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = "ひきざんではありません。";
+        Calc_H::s_message = ch_not_hikizan;
 }
 
 void ChAnalyzeMonoFactWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
@@ -1179,7 +1209,7 @@ void ChAnalyzeMonoFactWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fac
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoWararerukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
 }
 
 void ChAnalyzeMonoTermKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
@@ -1196,7 +1226,7 @@ void ChAnalyzeMonoTermKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
         break;
 
     case Term::DIV:
-        Calc_H::s_message = "かけざんではありません。";
+        Calc_H::s_message = ch_not_kakezan;
         break;
 
     case Term::FACT_ONLY:
@@ -1211,7 +1241,7 @@ void ChAnalyzeMonoTermWarukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
     switch (term->m_type)
     {
     case Term::MUL:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
         break;
 
     case Term::DIV:
@@ -1247,7 +1277,7 @@ void ChAnalyzeMonoExprTasukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         break;
 
     default:
-        Calc_H::s_message = "たしざんではありません。";
+        Calc_H::s_message = ch_not_tashizan;
         break;
     }
 }
@@ -1259,7 +1289,7 @@ void ChAnalyzeMonoExprKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
     {
     case Expr::ADD:
     case Expr::SUB:
-        Calc_H::s_message = "かけざんではありません。";
+        Calc_H::s_message = ch_not_kakezan;
         break;
 
     case Expr::TERM_ONLY:
@@ -1275,7 +1305,7 @@ void ChAnalyzeMonoExprHikukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
     switch (expr->m_type)
     {
     case Expr::ADD:
-        Calc_H::s_message = "ひきざんではありません。";
+        Calc_H::s_message = ch_not_hikizan;
         break;
 
     case Expr::SUB:
@@ -1299,7 +1329,7 @@ void ChAnalyzeMonoExprWarukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
     {
     case Expr::ADD:
     case Expr::SUB:
-        Calc_H::s_message = "かけざんではありません。";
+        Calc_H::s_message = ch_not_kakezan;
         break;
 
     case Expr::TERM_ONLY:
@@ -1323,7 +1353,7 @@ void ChAnalyzeMonoTermKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& t
 
     case Term::DIV:
     case Term::FACT_ONLY:
-        Calc_H::s_message = "かけざんではありません。";
+        Calc_H::s_message = ch_not_kakezan;
         break;
     }
 }
@@ -1344,7 +1374,7 @@ void ChAnalyzeMonoExprTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& exp
 
     case Expr::SUB:
     case Expr::TERM_ONLY:
-        Calc_H::s_message = "たしざんではありません。";
+        Calc_H::s_message = ch_not_tashizan;
         break;
     }
 }
@@ -1364,7 +1394,7 @@ void ChAnalyzeMonoTermWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& ter
 
     case Term::MUL:
     case Term::FACT_ONLY:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
         break;
     }
 }
@@ -1376,7 +1406,7 @@ void ChAnalyzeMonoExprKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& e
     {
     case Expr::ADD:
     case Expr::SUB:
-        Calc_H::s_message = "かけざんではありません。";
+        Calc_H::s_message = ch_not_kakezan;
         break;
 
     case Expr::TERM_ONLY:
@@ -1401,7 +1431,7 @@ void ChAnalyzeMonoExprHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& exp
 
     case Expr::ADD:
     case Expr::TERM_ONLY:
-        Calc_H::s_message = "ひきざんではありません。";
+        Calc_H::s_message = ch_not_hikizan;
         break;
     }
 }
@@ -1413,7 +1443,7 @@ void ChAnalyzeMonoExprWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& exp
     {
     case Expr::ADD:
     case Expr::SUB:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
         break;
 
     case Expr::TERM_ONLY:
@@ -1451,7 +1481,7 @@ void ChAnalyzeMonoSurutoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
         break;
 
     default:
-        Calc_H::s_message = "たしざんではありません。";
+        Calc_H::s_message = ch_not_tashizan;
     }
 }
 
@@ -1484,7 +1514,7 @@ void ChAnalyzeMonoSurutoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& s
         break;
 
     default:
-        Calc_H::s_message = "かけざんではありません。";
+        Calc_H::s_message = ch_not_kakezan;
     }
 }
 
@@ -1511,7 +1541,7 @@ void ChAnalyzeMonoSurutoHikukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
         break;
 
     default:
-        Calc_H::s_message = "ひきざんではありません。";
+        Calc_H::s_message = ch_not_hikizan;
     }
 }
 
@@ -1538,7 +1568,7 @@ void ChAnalyzeMonoSurutoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
         break;
 
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -1578,7 +1608,7 @@ void ChAnalyzeMonoSurutoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
         break;
 
     default:
-        Calc_H::s_message = "たしざんではありません。";
+        Calc_H::s_message = ch_not_tashizan;
     }
 }
 
@@ -1618,7 +1648,7 @@ void ChAnalyzeMonoSurutoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto
         break;
 
     default:
-        Calc_H::s_message = "かけざんではありません。";
+        Calc_H::s_message = ch_not_kakezan;
     }
 }
 
@@ -1652,7 +1682,7 @@ void ChAnalyzeMonoSurutoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
         break;
 
     default:
-        Calc_H::s_message = "ひきざんではありません。";
+        Calc_H::s_message = ch_not_hikizan;
     }
 }
 
@@ -1686,7 +1716,7 @@ void ChAnalyzeMonoSurutoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
         break;
 
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -1733,7 +1763,7 @@ void ChAnalyzeMonoPrevSentenceTasukazu(shared_ptr<Mono>& mono)
 
     case Sentence::EXPRLIST_MUL:
     default:
-        Calc_H::s_message = "たしざんではありません。";
+        Calc_H::s_message = ch_not_tashizan;
     }
 }
 
@@ -1780,7 +1810,7 @@ void ChAnalyzeMonoPrevSentenceKakerukazu(shared_ptr<Mono>& mono)
 
     case Sentence::EXPRLIST_ADD:
     default:
-        Calc_H::s_message = "かけざんではありません。";
+        Calc_H::s_message = ch_not_kakezan;
     }
 }
 
@@ -1813,7 +1843,7 @@ void ChAnalyzeMonoPrevSentenceHikukazu(shared_ptr<Mono>& mono)
     case Sentence::EXPRLIST_ADD:
     case Sentence::EXPRLIST_MUL:
     default:
-        Calc_H::s_message = "ひきざんではありません。";
+        Calc_H::s_message = ch_not_hikizan;
     }
 }
 
@@ -1846,7 +1876,7 @@ void ChAnalyzeMonoPrevSentenceWarukazu(shared_ptr<Mono>& mono)
     case Sentence::EXPRLIST_ADD:
     case Sentence::EXPRLIST_MUL:
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -1893,7 +1923,7 @@ void ChAnalyzeMonoPrevSentenceTasarerukazu(shared_ptr<Mono>& mono)
 
     case Sentence::EXPRLIST_MUL:
     default:
-        Calc_H::s_message = "たしざんではありません。";
+        Calc_H::s_message = ch_not_tashizan;
     }
 }
 
@@ -1940,7 +1970,7 @@ void ChAnalyzeMonoPrevSentenceKakerarerukazu(shared_ptr<Mono>& mono)
 
     case Sentence::EXPRLIST_ADD:
     default:
-        Calc_H::s_message = "かけざんではありません。";
+        Calc_H::s_message = ch_not_kakezan;
     }
 }
 
@@ -1973,7 +2003,7 @@ void ChAnalyzeMonoPrevSentenceHikarerukazu(shared_ptr<Mono>& mono)
     case Sentence::EXPRLIST_ADD:
     case Sentence::EXPRLIST_MUL:
     default:
-        Calc_H::s_message = "ひきざんではありません。";
+        Calc_H::s_message = ch_not_hikizan;
     }
 }
 
@@ -2006,7 +2036,7 @@ void ChAnalyzeMonoPrevSentenceWararerukazu(shared_ptr<Mono>& mono)
     case Sentence::EXPRLIST_ADD:
     case Sentence::EXPRLIST_MUL:
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -2075,7 +2105,7 @@ void ChAnalyzeMonoMonoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
         break;
 
     default:
-        Calc_H::s_message = "たしざんではありません。";
+        Calc_H::s_message = ch_not_tashizan;
     }
 }
 
@@ -2144,7 +2174,7 @@ void ChAnalyzeMonoMonoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& m
         break;
 
     default:
-        Calc_H::s_message = "かけざんではありません。";
+        Calc_H::s_message = ch_not_kakezan;
     }
 }
 
@@ -2220,7 +2250,7 @@ void ChAnalyzeMonoMonoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
         break;
 
     default:
-        Calc_H::s_message = "ひきざんではありません。";
+        Calc_H::s_message = ch_not_hikizan;
     }
 }
 
@@ -2292,7 +2322,7 @@ void ChAnalyzeMonoMonoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
         break;
 
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -2332,7 +2362,7 @@ void ChAnalyzeMonoShiteTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
         break;
 
     default:
-        Calc_H::s_message = "たしざんではありません。";
+        Calc_H::s_message = ch_not_tashizan;
     }
 }
 
@@ -2372,7 +2402,7 @@ void ChAnalyzeMonoShiteKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>&
         break;
 
     default:
-        Calc_H::s_message = "かけざんではありません。";
+        Calc_H::s_message = ch_not_kakezan;
     }
 }
 
@@ -2399,7 +2429,7 @@ void ChAnalyzeMonoShiteHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
         break;
 
     default:
-        Calc_H::s_message = "ひきざんではありません。";
+        Calc_H::s_message = ch_not_hikizan;
     }
 }
 
@@ -2426,7 +2456,7 @@ void ChAnalyzeMonoShiteWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
         break;
 
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -2958,7 +2988,7 @@ void ChAnalyzeMonoSurutoAmari(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto
         break;
 
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -3003,7 +3033,7 @@ void ChAnalyzeMonoShiteAmari(shared_ptr<Mono> mono, shared_ptr<Shite>& shite)
         break;
 
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -3017,7 +3047,7 @@ void ChAnalyzeMonoPrimAmari(shared_ptr<Mono>& mono, shared_ptr<Prim>& prim)
         break;
 
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -3031,7 +3061,7 @@ void ChAnalyzeMonoFactAmari(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
         break;
 
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -3056,7 +3086,7 @@ void ChAnalyzeMonoTermAmari(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
         break;
 
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -3070,7 +3100,7 @@ void ChAnalyzeMonoExprAmari(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         break;
 
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -3079,8 +3109,6 @@ void ChAnalyzeMonoMonoAmari(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
     Mono *m;
     switch (mono2->m_type)
     {
-    //case Mono::EXPRLIST_DIV: // TODO
-
     case Mono::MONO_DIV:
     case Mono::MONO_TO_EXPR_DIV:
         ChAnalyzeMono(mono2->m_mono);
@@ -3141,7 +3169,7 @@ void ChAnalyzeMonoMonoAmari(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
         break;
 
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -3171,7 +3199,7 @@ void ChAnalyzeMonoSonoAmari(shared_ptr<Mono>& mono)
         break;
 
     default:
-        Calc_H::s_message = "わりざんではありません。";
+        Calc_H::s_message = ch_not_warizan;
     }
 }
 
@@ -3210,7 +3238,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = "たしざんではありません。";
+            Calc_H::s_message = ch_not_tashizan;
             break;
         }
         break;
@@ -3245,7 +3273,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = "かけざんではありません。";
+            Calc_H::s_message = ch_not_kakezan;
             break;
         }
         break;
@@ -3272,7 +3300,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = "ひきざんではありません。";
+            Calc_H::s_message = ch_not_hikizan;
             break;
         }
         break;
@@ -3299,7 +3327,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = "ひきざんではありません。";
+            Calc_H::s_message = ch_not_hikizan;
             break;
         }
         break;
@@ -3380,7 +3408,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = "たしざんではありません。";
+            Calc_H::s_message = ch_not_tashizan;
             break;
         }
         break;
@@ -3429,7 +3457,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = "かけざんではありません。";
+            Calc_H::s_message = ch_not_kakezan;
             break;
         }
         break;
@@ -3485,7 +3513,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = "ひきざんではありません。";
+            Calc_H::s_message = ch_not_hikizan;
             break;
         }
         break;
@@ -3541,7 +3569,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = "わりざんではありません。";
+            Calc_H::s_message = ch_not_warizan;
             break;
         }
         break;
@@ -3592,35 +3620,35 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
     case Mono::TASHIZAN:
         ChAnalyzeMono(mono->m_mono);
         if (!ChIsMonoTashizan(mono->m_mono))
-            Calc_H::s_message = "たしざんではありません。";
+            Calc_H::s_message = ch_not_tashizan;
         mono = mono->m_mono;
         break;
 
     case Mono::KAKEZAN:
         ChAnalyzeMono(mono->m_mono);
         if (!ChIsMonoKakezan(mono->m_mono))
-            Calc_H::s_message = "かけざんではありません。";
+            Calc_H::s_message = ch_not_kakezan;
         mono = mono->m_mono;
         break;
 
     case Mono::HIKIZAN:
         ChAnalyzeMono(mono->m_mono);
         if (!ChIsMonoHikizan(mono->m_mono))
-            Calc_H::s_message = "ひきざんではありません。";
+            Calc_H::s_message = ch_not_hikizan;
         mono = mono->m_mono;
         break;
 
     case Mono::WARIZAN:
         ChAnalyzeMono(mono->m_mono);
         if (!ChIsMonoWarizan(mono->m_mono))
-            Calc_H::s_message = "わりざんではありません。";
+            Calc_H::s_message = ch_not_warizan;
         mono = mono->m_mono;
         break;
 
     case Mono::SURUTO_WA:
         ChAnalyzeSuruto(mono->m_suruto);
         if (!ChIsSurutoTashizan(mono->m_suruto))
-            Calc_H::s_message = "たしざんではありません。";
+            Calc_H::s_message = ch_not_tashizan;
         m = new Mono;
         m->m_type = Mono::SURUTO_ONLY;
         m->m_suruto = mono->m_suruto;
@@ -3630,7 +3658,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
     case Mono::SURUTO_SEKI:
         ChAnalyzeSuruto(mono->m_suruto);
         if (!ChIsSurutoKakezan(mono->m_suruto))
-            Calc_H::s_message = "かけざんではありません。";
+            Calc_H::s_message = ch_not_kakezan;
         m = new Mono;
         m->m_type = Mono::SURUTO_ONLY;
         m->m_suruto = mono->m_suruto;
@@ -3640,7 +3668,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
     case Mono::SURUTO_SA:
         ChAnalyzeSuruto(mono->m_suruto);
         if (!ChIsSurutoHikizan(mono->m_suruto))
-            Calc_H::s_message = "ひきざんではありません。";
+            Calc_H::s_message = ch_not_hikizan;
         m = new Mono;
         m->m_type = Mono::SURUTO_ONLY;
         m->m_suruto = mono->m_suruto;
@@ -3650,7 +3678,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
     case Mono::SURUTO_SHOU:
         ChAnalyzeSuruto(mono->m_suruto);
         if (!ChIsSurutoWarizan(mono->m_suruto))
-            Calc_H::s_message = "わりざんではありません。";
+            Calc_H::s_message = ch_not_warizan;
         m = new Mono;
         m->m_type = Mono::SURUTO_ONLY;
         m->m_suruto = mono->m_suruto;
@@ -3787,6 +3815,7 @@ void ChAnalyzeShite(shared_ptr<Shite>& shite)
     case Shite::SHITE_BAI:
     case Shite::SHITE_HEIHOU:
     case Shite::SHITE_RIPPOU:
+    case Shite::SHOUSUU:
         ChAnalyzeShite(shite->m_shite);
         break;
     }
@@ -3825,6 +3854,7 @@ void ChAnalyzeSuruto(shared_ptr<Suruto>& suruto)
 
     case Suruto::MONO_ONLY:
     case Suruto::MONO_WO_BAI:
+    case Suruto::MONO_WO_SHOUSUU:
         ChAnalyzeMono(suruto->m_mono);
         break;
 
@@ -3834,6 +3864,10 @@ void ChAnalyzeSuruto(shared_ptr<Suruto>& suruto)
     case Suruto::SHITE_WARUTO:
         ChAnalyzeShite(suruto->m_shite);
         ChAnalyzeExpr(suruto->m_expr);
+        break;
+
+    case Suruto::SHOUSUU:
+        ChAnalyzeShite(suruto->m_shite);
         break;
 
     default:

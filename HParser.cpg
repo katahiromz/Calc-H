@@ -193,6 +193,7 @@
 %token T_SHITA<TokenValue>;
 %token T_SHITE<TokenValue>;
 %token T_SHOU<TokenValue>;
+%token T_SHOUSUU<TokenValue>;
 %token T_SIN<TokenValue>;
 %token T_SONO<TokenValue>;    // replaced
 %token T_SORE<TokenValue>;
@@ -335,6 +336,7 @@ suruto<Suruto>
     | [DoSuruto18] mono(0) T_WO1 expression(1) T_JOU1 T_SURUTO
     | [DoSuruto19] mono(0) T_WO1 T_HEIHOU T_SURUTO
     | [DoSuruto20] mono(0) T_WO1 T_RIPPOU T_SURUTO
+    | [DoSuruto22] mono(0) T_WO1 T_SHOUSUU T_NI T_SURUTO
     | [DoSuruto10] shite(0) T_SORE T_NI T_COMMA expression(1) T_WO1 T_TASUTO
     | [DoSuruto10] shite(0) T_SORE T_NI T_COMMA expression(1) T_NO4 T_TASHIZAN T_SURUTO
     | [DoSuruto10] shite(0) T_SORE T_NI T_COMMA expression(1) T_NO4 T_TASHIZAN T_WO2 T_SURUTO
@@ -372,8 +374,10 @@ suruto<Suruto>
     | [DoSuruto12] shite(0)               expression(1) T_NO4 T_HIKIZAN T_WO2 T_SURUTO
     | [DoSuruto13] shite(0) T_SORE T_WO1 expression(1) T_DE T_WARUTO
     | [DoSuruto13] shite(0) T_SORE T_WO1 expression(1) T_DE T_WARIZAN T_SURUTO
-    | [DoSuruto13] shite(0)             expression(1) T_DE T_WARUTO
-    | [DoSuruto13] shite(0)             expression(1) T_DE T_WARIZAN T_SURUTO
+    | [DoSuruto13] shite(0)              expression(1) T_DE T_WARUTO
+    | [DoSuruto13] shite(0)              expression(1) T_DE T_WARIZAN T_SURUTO
+    | [DoSuruto21] shite(0) T_SORE T_WO1 T_SHOUSUU T_NI T_SURUTO
+    | [DoSuruto21] shite(0)              T_SHOUSUU T_NI T_SURUTO
     ;
 
 shite<Shite>
@@ -495,6 +499,8 @@ shite<Shite>
     | [DoShite19] shite(0)              T_HEIHOU T_SHITE
     | [DoShite20] shite(0) T_SORE T_WO1 T_RIPPOU T_SHITE
     | [DoShite20] shite(0)              T_RIPPOU T_SHITE
+    | [DoShite21] shite(0) T_SORE T_WO1 T_SHOUSUU T_NI T_SHITE
+    | [DoShite21] shite(0)              T_SHOUSUU T_NI T_SHITE
     ;
 
 mono<Mono>
@@ -604,6 +610,8 @@ mono<Mono>
     | [DoMono55] shite(0)              T_HEIHOU T_SHITA T_MONO
     | [DoMono58] shite(0) T_SORE T_WO1 T_RIPPOU T_SHITA T_MONO
     | [DoMono58] shite(0)              T_RIPPOU T_SHITA T_MONO
+    | [DoMono72] shite(0) T_SORE T_WO1 T_SHOUSUU T_NI T_SHITA T_MONO
+    | [DoMono72] shite(0)              T_SHOUSUU T_NI T_SHITA T_MONO
     | [DoMono18] expression(0)
     | [DoMono45] T_SORE T_NO4 T_TASU T_MONO
     | [DoMono46] T_SORE T_NO4 T_KAKERU T_MONO
@@ -629,17 +637,22 @@ mono<Mono>
     | [DoMono33] suruto(0) T_KAKERU T_MONO
     | [DoMono34] suruto(0) T_HIKU T_MONO
     | [DoMono35] suruto(0) T_WARU T_MONO
-    | [DoMono9] mono(0) T_NO4 T_KOTAE
-    | [DoMono36] suruto(0) T_KOTAE
+    | [DoMono36] suruto(0) T_SORE T_NO4 T_KOTAE
+    | [DoMono36] suruto(0)              T_KOTAE
     | [DoMono37] suruto(0) T_TASARERU T_MONO
     | [DoMono38] suruto(0) T_KAKERARERU T_MONO
     | [DoMono39] suruto(0) T_HIKARERU T_MONO
     | [DoMono40] suruto(0) T_WARARERU T_MONO
-    | [DoMono65] suruto(0) T_WA
-    | [DoMono66] suruto(0) T_SEKI
-    | [DoMono67] suruto(0) T_SA
-    | [DoMono68] suruto(0) T_SHOU
-    | [DoMono69] suruto(0) T_AMARI
+    | [DoMono65] suruto(0) T_SORE T_NO2 T_WA
+    | [DoMono65] suruto(0)              T_WA
+    | [DoMono66] suruto(0) T_SORE T_NO2 T_SEKI
+    | [DoMono66] suruto(0)              T_SEKI
+    | [DoMono67] suruto(0) T_SORE T_NO2 T_SA
+    | [DoMono67] suruto(0)              T_SA
+    | [DoMono68] suruto(0) T_SORE T_NO2 T_SHOU
+    | [DoMono68] suruto(0)              T_SHOU
+    | [DoMono69] suruto(0) T_SORE T_NO9 T_AMARI
+    | [DoMono69] suruto(0)              T_AMARI
     | [DoMono41] mono(0) T_NO5 T_TASARERU T_MONO
     | [DoMono42] mono(0) T_NO5 T_KAKERARERU T_MONO
     | [DoMono43] mono(0) T_NO5 T_HIKARERU T_MONO
@@ -653,6 +666,8 @@ mono<Mono>
     | [DoMono59] mono(0) T_NO6 T_RIPPOU
     | [DoMono60] mono(0) T_NO8 expression(1) T_PERCENT
     | [DoMono70] mono(0) T_NO9 T_AMARI
+    | [DoMono9] mono(0) T_NO4 T_KOTAE
+    | [DoMono74] mono(0) T_WO1 T_SHOUSUU T_NI T_SHITA T_MONO
     ;
 
 expression_list<ExprList>

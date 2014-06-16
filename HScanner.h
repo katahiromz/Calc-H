@@ -507,9 +507,11 @@ namespace Calc_H
             if (lexeme("それがしの"))                   return (T_SONO);
             if (lexeme("それがし"))                     return (T_SORE);
             if (lexeme("それ"))                         return (T_SORE);
+            if (lexeme("そやつ"))                       return (T_SORE);
             if (lexeme("そのとき"))                     return (T_SURUTO);
             if (lexeme("そのこたえ"))                   return (T_KOTAE);
             if (lexeme("その"))                         return (T_SONO);
+            if (lexeme("そいつ"))                       return (T_SORE);
             if (lexeme("ぜんぶ"))                       return (T_ALL);
             if (lexeme("ぜん"))                         return (T_SEN);
             if (lexeme("ぜろ"))                         return (T_ZERO);
@@ -543,6 +545,10 @@ namespace Calc_H
             if (lexeme("しろ"))                         return (T_SURUTO);
             if (lexeme("しらん"))                       return (T_WAKARAN);
             if (lexeme("しらない"))                     return (T_WAKARAN);
+            if (lexeme("しょーすー"))                   return (T_SHOUSUU);
+            if (lexeme("しょーすう"))                   return (T_SHOUSUU);
+            if (lexeme("しょうすー"))                   return (T_SHOUSUU);
+            if (lexeme("しょうすう"))                   return (T_SHOUSUU);
             if (lexeme("しょう"))                       return (T_SHOU);
             if (lexeme("しなさい"))                     return (T_SURUTO);
             if (lexeme("してよ"))                       return (T_SHITE);
@@ -587,6 +593,7 @@ namespace Calc_H
             if (lexeme("ご"))                           return (T_GO);
             if (lexeme("これの"))                       return (T_SONO);
             if (lexeme("これ"))                         return (T_SORE);
+            if (lexeme("こやつ"))                       return (T_SORE);
             if (lexeme("このとき"))                     return (T_SURUTO);
             if (lexeme("こたえろよ"))                   return (T_OSHIETE);
             if (lexeme("こたえろや"))                   return (T_OSHIETE);
@@ -604,6 +611,7 @@ namespace Calc_H
             if (lexeme("こたえ"))                       return (T_KOTAE);
             if (lexeme("こさいん"))                     return (T_COS);
             if (lexeme("こう"))                         return (T_KOU);
+            if (lexeme("こいつ"))                       return (T_SORE);
             if (lexeme("げんざん"))                     return (T_HIKIZAN);
             if (lexeme("けいさん"))                     return (T_KEISAN);
             if (lexeme("けい"))                         return (T_KEI);
@@ -1313,9 +1321,14 @@ namespace Calc_H
             {
                 switch (it->get_token())
                 {
+                case T_AMARI:
+                case T_BAI:
+                case T_BUNNO:
                 case T_DE:
                 case T_HA:
+                case T_HEIHOU:
                 case T_HIITE:
+                case T_HIKIZAN:
                 case T_HIKU:
                 case T_HIKUTO:
                 case T_IKURA:
@@ -1323,7 +1336,11 @@ namespace Calc_H
                 case T_KAKERU:
                 case T_KAKERUTO:
                 case T_KAKETE:
+                case T_KAKEZAN:
                 case T_KARA:
+                case T_KEISAN:
+                case T_KOTAE:
+                case T_L_PAREN:
                 case T_MINUS:
                 case T_NO1:
                 case T_NO2:
@@ -1334,14 +1351,22 @@ namespace Calc_H
                 case T_NO7:
                 case T_NO8:
                 case T_NO9:
+                case T_OSHIETE:
+                case T_PERCENT:
                 case T_PLUS:
+                case T_SA:
+                case T_SEKI:
                 case T_SHITA:
                 case T_SHITE:
+                case T_SHOU:
                 case T_SURUTO:
                 case T_TASHITE:
+                case T_TASHIZAN:
                 case T_TASU:
                 case T_TASUTO:
                 case T_TO1:
+                case T_WA:
+                case T_WARIZAN:
                 case T_WARU:
                 case T_WARUTO:
                 case T_WATTE:
@@ -1483,25 +1508,47 @@ namespace Calc_H
                 {
                     switch ((it + 1)->get_token())
                     {
-                    case T_TASU:
-                    case T_TASHITE:
-                    case T_TASHITA:
-                    case T_TASUTO:
-                    case T_HIKU:
-                    case T_HIITE:
+                    case T_AMARI:
+                    case T_BAI:
+                    case T_DE:
                     case T_HIITA:
+                    case T_HIITE:
+                    case T_HIKIZAN:
+                    case T_HIKU:
                     case T_HIKUTO:
+                    case T_IKURA:
+                    case T_KA:
                     case T_KAKERU:
+                    case T_KAKERUTO:
                     case T_KAKETA:
                     case T_KAKETE:
-                    case T_KAKERUTO:
-                    case T_WARU:
-                    case T_WATTA:
-                    case T_WATTE:
-                    case T_WARUTO:
+                    case T_KAKEZAN:
+                    case T_KARA:
+                    case T_KEISAN:
+                    case T_KOTAE:
+                    case T_ONEGAI:
+                    case T_OSHIETE:
+                    case T_PERCENT:
+                    case T_R_PAREN:
+                    case T_SA:
+                    case T_SEKI:
                     case T_SHITA:
                     case T_SHITE:
+                    case T_SHOU:
                     case T_SURUTO:
+                    case T_TASHITA:
+                    case T_TASHITE:
+                    case T_TASHIZAN:
+                    case T_TASU:
+                    case T_TASUTO:
+                    case T_WA:
+                    case T_WARIZAN:
+                    case T_WARU:
+                    case T_WARUTO:
+                    case T_WATTA:
+                    case T_WATTE:
+                    case T_WO1:
+                    case T_WO2:
                         ++it;
                         break;
 
