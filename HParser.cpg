@@ -286,9 +286,13 @@ suruto<Suruto>
     : [DoSuruto1] expression_list(0) T_WO1 T_TASUTO
     | [DoSuruto1] expression_list(0) T_NO4 T_TASHIZAN T_SURUTO
     | [DoSuruto1] expression_list(0) T_NO4 T_TASHIZAN T_WO2 T_SURUTO
+    | [DoSuruto1] expression_list(0) T_TASHIZAN T_SURUTO
+    | [DoSuruto1] expression_list(0) T_TASHIZAN T_WO2 T_SURUTO
     | [DoSuruto2] expression_list(0) T_WO1 T_KAKERUTO
     | [DoSuruto2] expression_list(0) T_NO4 T_KAKEZAN T_SURUTO
     | [DoSuruto2] expression_list(0) T_NO4 T_KAKEZAN T_WO2 T_SURUTO
+    | [DoSuruto2] expression_list(0) T_KAKEZAN T_SURUTO
+    | [DoSuruto2] expression_list(0) T_KAKEZAN T_WO2 T_SURUTO
     | [DoSuruto3] mono(0) T_NI T_COMMA expression(1) T_WO2 T_TASUTO
     | [DoSuruto3] mono(0) T_NI T_COMMA expression(1) T_NO4 T_TASHIZAN T_SURUTO
     | [DoSuruto3] mono(0) T_NI expression(1) T_WO1 T_TASUTO
@@ -384,9 +388,13 @@ shite<Shite>
     : [DoShite1] expression_list(0) T_WO1 T_TASHITE
     | [DoShite1] expression_list(0) T_NO4 T_TASHIZAN T_SHITE
     | [DoShite1] expression_list(0) T_NO4 T_TASHIZAN T_WO2 T_SHITE
+    | [DoShite1] expression_list(0) T_TASHIZAN T_WO2 T_SHITE
+    | [DoShite1] expression_list(0) T_TASHIZAN T_SHITE
     | [DoShite2] expression_list(0) T_WO1 T_KAKETE
     | [DoShite2] expression_list(0) T_NO4 T_KAKEZAN T_SHITE
     | [DoShite2] expression_list(0) T_NO4 T_KAKEZAN T_WO2 T_SHITE
+    | [DoShite2] expression_list(0) T_KAKEZAN T_WO2 T_SHITE
+    | [DoShite2] expression_list(0) T_KAKEZAN T_SHITE
     | [DoShite3] mono(0) T_NI T_COMMA expression(1) T_WO1 T_TASHITE
     | [DoShite3] mono(0) T_NI expression(1) T_WO1 T_TASHITE
     | [DoShite3] mono(0) T_NI expression(1) T_TASHITE
@@ -506,10 +514,16 @@ shite<Shite>
 mono<Mono>
     : [DoMono1] expression_list(0) T_WO1 T_TASHITA T_MONO
     | [DoMono1] expression_list(0) T_TASHITA T_MONO
+    | [DoMono1] expression_list(0) T_NO4 T_TASHIZAN T_SHITA T_MONO
+    | [DoMono1] expression_list(0) T_TASHIZAN T_SHITA T_MONO
     | [DoMono1] expression_list(0) T_NO2 T_WA
+    | [DoMono1] expression_list(0) T_NO4 T_TASHIZAN
     | [DoMono2] expression_list(0) T_WO1 T_KAKETA T_MONO
-    | [DoMono2] expression_list(0) T_WO1 T_MONO
+    | [DoMono2] expression_list(0) T_KAKETA T_MONO
+    | [DoMono2] expression_list(0) T_NO4 T_KAKEZAN T_SHITA T_MONO
+    | [DoMono2] expression_list(0) T_KAKEZAN T_SHITA T_MONO
     | [DoMono2] expression_list(0) T_NO2 T_SEKI
+    | [DoMono2] expression_list(0) T_NO4 T_KAKEZAN
     | [DoMono3] expression_list(0) T_NO2 T_SA
     | [DoMono4] expression_list(0) T_NO2 T_SHOU
     | [DoMono5] mono(0) T_NI T_COMMA expression(1) T_WO1 T_TASHITA T_MONO

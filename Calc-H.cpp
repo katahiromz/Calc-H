@@ -3208,6 +3208,120 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
     Mono *m;
     switch (mono->m_type)
     {
+    case Mono::EXPRLIST_ADD:
+        ChAnalyzeExprList(mono->m_exprlist);
+        break;
+
+    case Mono::EXPRLIST_MUL:
+        ChAnalyzeExprList(mono->m_exprlist);
+        break;
+
+    case Mono::EXPRLIST_SUB:
+        ChAnalyzeExprList(mono->m_exprlist);
+        break;
+
+    case Mono::EXPRLIST_DIV:
+        ChAnalyzeExprList(mono->m_exprlist);
+        break;
+
+    case Mono::MONO_ADD:
+    case Mono::MONO_MUL:
+    case Mono::MONO_SUB:
+    case Mono::MONO_DIV:
+    case Mono::MONO_EXPR_BAI:
+    case Mono::MONO_TO_EXPR_ADD:
+    case Mono::MONO_TO_EXPR_MUL:
+    case Mono::MONO_TO_EXPR_SUB:
+    case Mono::MONO_TO_EXPR_DIV:
+    case Mono::MONO_WO_EXPR_KARA_SUB:
+    case Mono::MONO_DE_EXPR_WO_DIV:
+    case Mono::MONO_EXPR_JOU:
+    case Mono::MONO_NO_EXPR_PERCENT:
+    case Mono::MONO_MOD_EXPR:
+    case Mono::EXPR_MOD_MONO:
+        ChAnalyzeMono(mono->m_mono);
+        ChAnalyzeExpr(mono->m_expr);
+        break;
+
+    case Mono::MONO_ONLY:
+        ChAnalyzeMono(mono->m_mono);
+        mono = mono->m_mono;
+        break;
+
+    case Mono::MONO_BAI:
+        ChAnalyzeMono(mono->m_mono);
+        break;
+
+    case Mono::SHITE_ADD:
+    case Mono::SHITE_MUL:
+    case Mono::SHITE_SUB:
+    case Mono::SHITE_DIV:
+    case Mono::SHITE_EXPR_BAI:
+        ChAnalyzeShite(mono->m_shite);
+        ChAnalyzeExpr(mono->m_expr);
+        break;
+
+    case Mono::SHITE_BAI:
+    case Mono::SHITE_ONLY:
+        ChAnalyzeShite(mono->m_shite);
+        break;
+
+    case Mono::EXPR_ONLY:
+        ChAnalyzeExpr(mono->m_expr);
+        break;
+
+    case Mono::MONO_TO_EXPRLIST_ADD:
+    case Mono::MONO_TO_EXPRLIST_MUL:
+        ChAnalyzeMono(mono->m_mono);
+        ChAnalyzeExprList(mono->m_exprlist);
+        break;
+
+    case Mono::TERM_ONLY:
+        ChAnalyzeTerm(mono->m_term);
+        break;
+
+    case Mono::FACT_ONLY:
+        ChAnalyzeFact(mono->m_fact);
+        break;
+
+    case Mono::SURUTO_ONLY:
+        ChAnalyzeSuruto(mono->m_suruto);
+        break;
+
+    case Mono::SHITE_EXPR_JOU:
+        ChAnalyzeShite(mono->m_shite);
+        ChAnalyzeExpr(mono->m_expr);
+        break;
+
+    case Mono::SHITE_HEIHOU:
+    case Mono::SHITE_RIPPOU:
+        ChAnalyzeShite(mono->m_shite);
+        break;
+
+    case Mono::MONO_HEIHOU:
+    case Mono::MONO_RIPPOU:
+    case Mono::MONO_FUNC1ARG:
+        ChAnalyzeMono(mono->m_mono);
+        break;
+
+    case Mono::SHITE_MOD_EXPR:
+        ChAnalyzeShite(mono->m_shite);
+        ChAnalyzeMono(mono->m_mono);
+        break;
+
+    case Mono::TERM_MOD_FACT:
+        ChAnalyzeTerm(mono->m_term);
+        ChAnalyzeFact(mono->m_fact);
+        break;
+
+    case Mono::SHOUSUU:
+        ChAnalyzeShite(mono->m_shite);
+        break;
+
+    case Mono::MONO_NO_SHOUSUU:
+        ChAnalyzeMono(mono->m_mono);
+        break;
+
     case Mono::MONO_NO_TASUKAZU:
         switch (mono->m_mono->m_type)
         {
@@ -3604,17 +3718,6 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
 
     case Mono::SORE_NO_WARARERUKAZU:
         ChAnalyzeMonoPrevSentenceWararerukazu(mono);
-        break;
-
-    case Mono::MONO_FUNC1ARG:
-    case Mono::MONO_HEIHOU:
-        ChAnalyzeMono(mono->m_mono);
-        break;
-
-    case Mono::MONO_EXPR_JOU:
-    case Mono::MONO_NO_EXPR_PERCENT:
-        ChAnalyzeMono(mono->m_mono);
-        ChAnalyzeExpr(mono->m_expr);
         break;
 
     case Mono::TASHIZAN:

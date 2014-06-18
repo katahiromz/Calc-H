@@ -52,6 +52,7 @@ namespace Calc_H
             resynth9(infos);
             resynth10(infos);
             resynth11(infos);
+            resynth12(infos);
         }
 
         std::string token_to_string(const info_type& info)
@@ -239,6 +240,47 @@ namespace Calc_H
             if (lexeme("（"))                           return (T_L_PAREN);
             if (lexeme("％"))                           return (T_PERCENT);
             if (lexeme("！"))                           return (T_PERIOD);
+            if (lexeme("零"))                           return (T_ZERO);
+            if (lexeme("陸"))                           return (T_ROKU);
+            if (lexeme("阿僧祗"))                       return (T_ASOUGI);
+            if (lexeme("阡"))                           return (T_SEN);
+            if (lexeme("那由多"))                       return (T_NAYUTA);
+            if (lexeme("那由他"))                       return (T_NAYUTA);
+            if (lexeme("載"))                           return (T_SAI);
+            if (lexeme("肆"))                           return (T_YON);
+            if (lexeme("穣"))                           return (T_JOU2);
+            if (lexeme("百"))                           return (T_HYAKU);
+            if (lexeme("玖"))                           return (T_KYUU);
+            if (lexeme("無量大数"))                     return (T_MURYOUTAISUU);
+            if (lexeme("澗"))                           return (T_KAN);
+            if (lexeme("漆"))                           return (T_NANA);
+            if (lexeme("溝"))                           return (T_KOU);
+            if (lexeme("正"))                           return (T_SEI);
+            if (lexeme("極"))                           return (T_GOKU);
+            if (lexeme("拾"))                           return (T_JUU);
+            if (lexeme("恒河沙"))                       return (T_GOUGASHA);
+            if (lexeme("弐"))                           return (T_NI);
+            if (lexeme("壱"))                           return (T_ICHI);
+            if (lexeme("垓"))                           return (T_GAI);
+            if (lexeme("四"))                           return (T_YON);
+            if (lexeme("参"))                           return (T_SAN);
+            if (lexeme("千"))                           return (T_SEN);
+            if (lexeme("十"))                           return (T_JUU);
+            if (lexeme("六"))                           return (T_ROKU);
+            if (lexeme("八"))                           return (T_HACHI);
+            if (lexeme("兆"))                           return (T_CHOU);
+            if (lexeme("億"))                           return (T_OKU);
+            if (lexeme("伍"))                           return (T_GO);
+            if (lexeme("仟"))                           return (T_SEN);
+            if (lexeme("京"))                           return (T_KEI);
+            if (lexeme("五"))                           return (T_GO);
+            if (lexeme("二"))                           return (T_NI);
+            if (lexeme("九"))                           return (T_KYUU);
+            if (lexeme("不可思議"))                     return (T_FUKASHIGI);
+            if (lexeme("三"))                           return (T_SAN);
+            if (lexeme("万"))                           return (T_MAN);
+            if (lexeme("七"))                           return (T_NANA);
+            if (lexeme("一"))                           return (T_ICHI);
             if (lexeme("・"))                           return (T_DOT);
             if (lexeme("をわることの"))                 return (T_WARU);
             if (lexeme("をひくことの"))                 return (T_HIKU);
@@ -783,6 +825,7 @@ namespace Calc_H
             if (lexeme("《"))                           return (T_L_PAREN);
             if (lexeme("〉"))                           return (T_R_PAREN);
             if (lexeme("〈"))                           return (T_L_PAREN);
+            if (lexeme("〇"))                           return (T_ZERO);
             if (lexeme("。"))                           return (T_PERIOD);
             if (lexeme("、"))                           return (T_COMMA);
             if (lexeme("☆"))                           return (T_PERIOD);
@@ -1496,8 +1539,43 @@ namespace Calc_H
             }
         }
 
-        // 特定の語句直前の「、」を取り除く。
+        // 「たした。」「ひいた。」「かけた。」「わった。」の
+        // 「。」を「、」に変える。
+        // 「たした～」「ひいた～」「かけた～」「わった～」を
+        // 「たしたら～」「ひいたら～」「かけたら～」「わったら～」に変える。
         void resynth9(std::vector<info_type>& infos)
+        {
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            for (; it != end; ++it)
+            {
+                if ((it->get_token() == T_TASHITA ||
+                     it->get_token() == T_HIITA ||
+                     it->get_token() == T_KAKETA ||
+                     it->get_token() == T_WATTA) &&
+                    (it + 1)->get_token() == T_PERIOD)
+                {
+                    (it + 1)->set_token(T_COMMA);
+                }
+                if ((it + 1)->get_token() == T_COMMA ||
+                    (it + 1)->get_token() == T_KOTAE ||
+                    (it + 1)->get_token() == T_AMARI ||
+                    (it + 1)->get_token() == T_SORE)
+                {
+                    if (it->get_token() == T_TASHITA)
+                        it->set_token(T_TASUTO);
+                    else if (it->get_token() == T_HIITA)
+                        it->set_token(T_HIKUTO);
+                    else if (it->get_token() == T_KAKETA)
+                        it->set_token(T_KAKERUTO);
+                    else if (it->get_token() == T_WATTA)
+                        it->set_token(T_WARUTO);
+                }
+            }
+        }
+
+        // 特定の語句直前の「、」を取り除く。
+        void resynth10(std::vector<info_type>& infos)
         {
             std::vector<info_type> newinfos;
             std::vector<info_type>::iterator it = infos.begin();
@@ -1562,7 +1640,7 @@ namespace Calc_H
         }
 
         // 括弧の対応を修正する。
-        void resynth10(std::vector<info_type>& infos)
+        void resynth11(std::vector<info_type>& infos)
         {
             std::vector<info_type> newinfos;
             std::vector<info_type>::iterator it = infos.begin();
@@ -1599,7 +1677,7 @@ namespace Calc_H
         }
 
         // 「それのかず」を「それ」に変換する。
-        void resynth11(std::vector<info_type>& infos)
+        void resynth12(std::vector<info_type>& infos)
         {
             std::vector<info_type> newinfos;
             std::vector<info_type>::iterator it = infos.begin();
