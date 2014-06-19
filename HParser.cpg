@@ -105,16 +105,20 @@
 %token T_9X9<TokenValue>;
 
 %token T_ACOS<TokenValue>;
+%token T_ACOSH<TokenValue>;
 %token T_ALL<TokenValue>;       // replaced
 %token T_AMARI<TokenValue>;
 %token T_ASIN<TokenValue>;
+%token T_ASINH<TokenValue>;
 %token T_ASOUGI<TokenValue>;
 %token T_ATAN<TokenValue>;
+%token T_ATANH<TokenValue>;
 %token T_BAI<TokenValue>;
 %token T_BUNNO<TokenValue>;
 %token T_CHOU<TokenValue>;
 %token T_COMMA<TokenValue>;
 %token T_COS<TokenValue>;
+%token T_COSH<TokenValue>;
 %token T_DE<TokenValue>;
 %token T_DO<TokenValue>;
 %token T_DOT<TokenValue>;
@@ -199,10 +203,12 @@
 %token T_SHOU<TokenValue>;
 %token T_SHOUSUU<TokenValue>;
 %token T_SIN<TokenValue>;
+%token T_SINH<TokenValue>;
 %token T_SONO<TokenValue>;    // replaced
 %token T_SORE<TokenValue>;
 %token T_SURUTO<TokenValue>;
 %token T_TAN<TokenValue>;
+%token T_TANH<TokenValue>;
 %token T_TASARERU<TokenValue>;
 %token T_TASHITA<TokenValue>;
 %token T_TASHITE<TokenValue>;
@@ -1076,4 +1082,7 @@ func1arg<Func1Arg>
     | [DoFunc1Arg10] T_EXP
     | [DoFunc1Arg11] T_LOG
     | [DoFunc1Arg12] T_LOG10
+    | [DoFunc1Arg13] T_SINH
+    | [DoFunc1Arg14] T_COSH
+    | [DoFunc1Arg15] T_TANH
     ;

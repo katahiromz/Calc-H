@@ -424,6 +424,14 @@ namespace Calc_H
             if (lexeme("ばい"))                         return (T_BAI);
             if (lexeme("はっ"))                         return (T_HACHI);
             if (lexeme("はち"))                         return (T_HACHI);
+            if (lexeme("はいぱぼりっく・たんぜんと"))   return (T_TANH);
+            if (lexeme("はいぱぼりっく・たんじぇんと")) return (T_TANH);
+            if (lexeme("はいぱぼりっく・さいん"))       return (T_SINH);
+            if (lexeme("はいぱぼりっく・こさいん"))     return (T_COSH);
+            if (lexeme("はいぱぼりっくたんぜんと"))     return (T_TANH);
+            if (lexeme("はいぱぼりっくたんじぇんと"))   return (T_TANH);
+            if (lexeme("はいぱぼりっくさいん"))         return (T_SINH);
+            if (lexeme("はいぱぼりっくこさいん"))       return (T_COSH);
             if (lexeme("は"))                           return (T_HA);
             if (lexeme("の"))                           return (T_NO1);
             if (lexeme("ねん"))                         return (T_KA);
@@ -558,6 +566,13 @@ namespace Calc_H
             if (lexeme("そのとき"))                     return (T_SURUTO);
             if (lexeme("そのこたえ"))                   return (T_KOTAE);
             if (lexeme("その"))                         return (T_SONO);
+            if (lexeme("そうきょくせんよげん"))         return (T_COSH);
+            if (lexeme("そうきょくせんたんぜんと"))     return (T_TANH);
+            if (lexeme("そうきょくせんたんじぇんと"))   return (T_TANH);
+            if (lexeme("そうきょくせんせいせつ"))       return (T_TANH);
+            if (lexeme("そうきょくせんせいげん"))       return (T_SINH);
+            if (lexeme("そうきょくせんさいん"))         return (T_SINH);
+            if (lexeme("そうきょくせんこさいん"))       return (T_COSH);
             if (lexeme("そいつ"))                       return (T_SORE);
             if (lexeme("ぜんぶ"))                       return (T_ALL);
             if (lexeme("ぜん"))                         return (T_SEN);
@@ -848,13 +863,16 @@ namespace Calc_H
             if (lexeme("×"))                           return (T_KAKERU);
             if (lexeme("}"))                            return (T_R_PAREN);
             if (lexeme("{"))                            return (T_L_PAREN);
+            if (lexeme("tanh"))                         return (T_TANH);
             if (lexeme("tan"))                          return (T_TAN);
+            if (lexeme("sinh"))                         return (T_SINH);
             if (lexeme("sin"))                          return (T_SIN);
             if (lexeme("log10"))                        return (T_LOG10);
             if (lexeme("log"))                          return (T_LOG);
             if (lexeme("ln"))                           return (T_LOG);
             if (lexeme("fabs"))                         return (T_ZETTAICHI);
             if (lexeme("exp"))                          return (T_EXP);
+            if (lexeme("cosh"))                         return (T_COSH);
             if (lexeme("cos"))                          return (T_COS);
             if (lexeme("atan"))                         return (T_ATAN);
             if (lexeme("asin"))                         return (T_ASIN);
@@ -1308,6 +1326,9 @@ namespace Calc_H
                 case T_ASIN:
                 case T_ACOS:
                 case T_ATAN:
+                case T_SINH:
+                case T_COSH:
+                case T_TANH:
                 case T_ROOT:
                 case T_ZETTAICHI:
                 case T_GYAKUSUU:
