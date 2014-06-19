@@ -124,6 +124,7 @@
 %token T_GO<TokenValue>;
 %token T_GOKU<TokenValue>;
 %token T_GOUGASHA<TokenValue>;
+%token T_GYAKUSUU<TokenValue>;
 %token T_HA<TokenValue>;
 %token T_HACHI<TokenValue>;
 %token T_HEIHOU<TokenValue>;
@@ -219,6 +220,7 @@
 %token T_WO2<TokenValue>;   // do verb
 %token T_YON<TokenValue>;
 %token T_ZERO<TokenValue>;
+%token T_ZETTAICHI<TokenValue>;
 
 %namespace Calc_H;
 
@@ -1066,4 +1068,6 @@ func1arg<Func1Arg>
     | [DoFunc1Arg5] T_ACOS
     | [DoFunc1Arg6] T_ATAN
     | [DoFunc1Arg7] T_ROOT
+    | [DoFunc1Arg8] T_ZETTAICHI
+    | [DoFunc1Arg9] T_GYAKUSUU
     ;

@@ -559,6 +559,7 @@ namespace Calc_H
             if (lexeme("‚º‚ñ‚Ô"))                       return (T_ALL);
             if (lexeme("‚º‚ñ"))                         return (T_SEN);
             if (lexeme("‚º‚ë"))                         return (T_ZERO);
+            if (lexeme("‚º‚Á‚½‚¢‚¿"))                   return (T_ZETTAICHI);
             if (lexeme("‚¹‚ñ"))                         return (T_SEN);
             if (lexeme("‚¹‚æ"))                         return (T_SURUTO);
             if (lexeme("‚¹‚«"))                         return (T_SEKI);
@@ -690,6 +691,7 @@ namespace Calc_H
             if (lexeme("‚¬‚á‚­‚½‚ñ‚¶‚¥‚ñ‚Æ"))           return (T_ATAN);
             if (lexeme("‚¬‚á‚­‚¹‚¢‚¹‚Â"))               return (T_ATAN);
             if (lexeme("‚¬‚á‚­‚¹‚¢‚°‚ñ"))               return (T_ASIN);
+            if (lexeme("‚¬‚á‚­‚·‚¤"))                   return (T_GYAKUSUU);
             if (lexeme("‚¬‚á‚­‚³‚¢‚ñ"))                 return (T_ASIN);
             if (lexeme("‚¬‚á‚­‚±‚³‚¢‚ñ"))               return (T_ACOS);
             if (lexeme("‚«‚ã["))                       return (T_KYUU);
@@ -840,6 +842,7 @@ namespace Calc_H
             if (lexeme("{"))                            return (T_L_PAREN);
             if (lexeme("tan"))                          return (T_TAN);
             if (lexeme("sin"))                          return (T_SIN);
+            if (lexeme("fabs"))                         return (T_ZETTAICHI);
             if (lexeme("cos"))                          return (T_COS);
             if (lexeme("atan"))                         return (T_ATAN);
             if (lexeme("asin"))                         return (T_ASIN);
@@ -847,6 +850,7 @@ namespace Calc_H
             if (lexeme("arcsin"))                       return (T_ASIN);
             if (lexeme("arccos"))                       return (T_ACOS);
             if (lexeme("acos"))                         return (T_ACOS);
+            if (lexeme("abs"))                          return (T_ZETTAICHI);
             if (lexeme("]"))                            return (T_R_PAREN);
             if (lexeme("["))                            return (T_L_PAREN);
             if (lexeme("?"))                            return (T_PERIOD);
@@ -1079,8 +1083,6 @@ namespace Calc_H
                     break;
 
                 case T_HA:
-                case T_WO1:
-                case T_WO2:
                 case T_PERIOD:
                 case eof:
                     info = *it;
@@ -1295,6 +1297,8 @@ namespace Calc_H
                 case T_ACOS:
                 case T_ATAN:
                 case T_ROOT:
+                case T_ZETTAICHI:
+                case T_GYAKUSUU:
                     if (no1 != std::string::npos)
                     {
                         (newinfos.begin() + no1)->set_token(T_NO7);

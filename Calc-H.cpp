@@ -25,6 +25,27 @@ static const char * const ch_not_warizan = "ÇÌÇËÇ¥ÇÒÇ≈ÇÕÇ†ÇËÇ‹ÇπÇÒÅB";
 
 using namespace Calc_H;
 
+CH_Value ch_inv(const CH_Value& value)
+{
+    CH_Value result;
+    switch (value.type())
+    {
+    case pmp::Number::INTEGER:
+        result = pmp::Number(1, value.get_i());
+        break;
+
+    case pmp::Number::FLOATING:
+        result = 1;
+        result /= value;
+        break;
+
+    case pmp::Number::RATIONAL:
+        result = pmp::Number(pmp::denominator(value), pmp::numerator(value));
+        break;
+    }
+    return result;
+}
+
 CH_Value ChCalcExpr(const shared_ptr<Expr>& expr);
 CH_Value ChCalcMono(const shared_ptr<Mono>& mono);
 CH_Value ChCalcFact(const shared_ptr<Fact>& fact);
@@ -120,6 +141,14 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
 
             case Func1Arg::SQRT:
                 value = pmp::sqrt(value);
+                break;
+
+            case Func1Arg::ABS:
+                value = pmp::abs(value);
+                break;
+
+            case Func1Arg::INV:
+                value = ch_inv(value);
                 break;
             }
             if (prim->m_type == Prim::FUNC1ARG_HEIHOU)
@@ -405,6 +434,12 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
 
         case Func1Arg::SQRT:
             return pmp::sqrt(v1);
+
+        case Func1Arg::ABS:
+            return pmp::abs(v1);
+
+        case Func1Arg::INV:
+            return ch_inv(v1);
 
         default:
             assert(0);

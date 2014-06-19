@@ -3584,6 +3584,26 @@ namespace Calc_H
             return shared_ptr<Func1Arg>(f);
         }
 
+        shared_ptr<Func1Arg> DoFunc1Arg8()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFunc1Arg8" << std::endl;
+            #endif
+            Func1Arg *f = new Func1Arg;
+            f->m_type = Func1Arg::ABS;
+            return shared_ptr<Func1Arg>(f);
+        }
+
+        shared_ptr<Func1Arg> DoFunc1Arg9()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFunc1Arg9" << std::endl;
+            #endif
+            Func1Arg *f = new Func1Arg;
+            f->m_type = Func1Arg::INV;
+            return shared_ptr<Func1Arg>(f);
+        }
+
     public:
               CH_Location& location()       { return m_location; }
         const CH_Location& location() const { return m_location; }
