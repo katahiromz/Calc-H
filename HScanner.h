@@ -293,6 +293,7 @@ namespace Calc_H
             if (lexeme("éµ"))                           return (T_NANA);
             if (lexeme("àÍ"))                           return (T_ICHI);
             if (lexeme("ÅE"))                           return (T_DOT);
+            if (lexeme("ÇÒÇ‚"))                         return (T_KA);
             if (lexeme("ÇÇÌÇÈÇ±Ç∆ÇÃ"))                 return (T_WARU);
             if (lexeme("ÇÇ–Ç≠Ç±Ç∆ÇÃ"))                 return (T_HIKU);
             if (lexeme("Ç"))                           return (T_WO1);
@@ -459,6 +460,7 @@ namespace Calc_H
             if (lexeme("ÇÕÇ¢ÇœÅ[Ç⁄ÇËÇ¡Ç≠"))             return (T_HYPERBOLIC);
             if (lexeme("ÇÕÇ¢ÇœÇ⁄ÇËÇ¡Ç≠"))               return (T_HYPERBOLIC);
             if (lexeme("ÇÕ"))                           return (T_HA);
+            if (lexeme("ÇÃÇ‚"))                         return (T_KA);
             if (lexeme("ÇÃ"))                           return (T_NO1);
             if (lexeme("ÇÀÇÒ"))                         return (T_KA);
             if (lexeme("ÇÀÇ¢Ç“Ç†Ç∑Ç§"))                 return (T_E);
