@@ -221,8 +221,16 @@ namespace Calc_H
             // ÅyÇ±Ç±Ç©ÇÁÅzçsÇç~èáÇ…ï¿Ç—ë÷Ç¶ÇƒÇ®Ç≠ÅB
             if (lexeme("Åp"))                           return (T_R_PAREN);
             if (lexeme("Åo"))                           return (T_L_PAREN);
+            if (lexeme("ÇîÇÅÇéÇà"))                     return (T_TANH);
             if (lexeme("ÇîÇÅÇé"))                       return (T_TAN);
+            if (lexeme("ÇìÇâÇéÇà"))                     return (T_SINH);
             if (lexeme("ÇìÇâÇé"))                       return (T_SIN);
+            if (lexeme("ÇåÇèÇáÇPÇO"))                   return (T_LOG10);
+            if (lexeme("ÇåÇèÇá"))                       return (T_LOG);
+            if (lexeme("ÇåÇé"))                         return (T_LOG);
+            if (lexeme("ÇÜÇÅÇÇÇì"))                     return (T_ZETTAICHI);
+            if (lexeme("ÇÖÇòÇê"))                       return (T_EXP);
+            if (lexeme("ÇÉÇèÇìÇà"))                     return (T_COSH);
             if (lexeme("ÇÉÇèÇì"))                       return (T_COS);
             if (lexeme("ÇÅÇîÇÅÇé"))                     return (T_ATAN);
             if (lexeme("ÇÅÇìÇâÇé"))                     return (T_ASIN);
@@ -230,6 +238,7 @@ namespace Calc_H
             if (lexeme("ÇÅÇíÇÉÇìÇâÇé"))                 return (T_ASIN);
             if (lexeme("ÇÅÇíÇÉÇÉÇèÇì"))                 return (T_ACOS);
             if (lexeme("ÇÅÇÉÇèÇì"))                     return (T_ACOS);
+            if (lexeme("ÇÅÇÇÇì"))                       return (T_ZETTAICHI);
             if (lexeme("Ån"))                           return (T_R_PAREN);
             if (lexeme("Åm"))                           return (T_L_PAREN);
             if (lexeme("ÅH"))                           return (T_PERIOD);
