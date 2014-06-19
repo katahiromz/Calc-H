@@ -34,19 +34,27 @@ int main(int argc, char **argv)
     else
     {
         std::fstream fin(argv[1], std::ios_base::in);
-        for (;;)
+        if (fin.is_open())
         {
-            if (!std::getline(fin, query))
-                break;
+            for (;;)
+            {
+                if (!std::getline(fin, query))
+                    break;
 
-            std::string input = query;
+                std::string input = query;
 
-            std::string result = ChJustDoIt(query);
-            std::cout << "にゅうりょく：" << input << std::endl;
-            std::cout << result << std::endl;
+                std::string result = ChJustDoIt(query);
+                std::cout << "にゅうりょく：" << input << std::endl;
+                std::cout << result << std::endl;
 
-            if (result.find("しゅうりょうします") != std::string::npos)
-                break;
+                if (result.find("しゅうりょうします") != std::string::npos)
+                    break;
+            }
+        }
+        else
+        {
+            std::cerr << "ファイル「" << argv[1] << "」が開けませんでした。" <<
+                         std::endl;
         }
     }
 

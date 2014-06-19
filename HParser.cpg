@@ -119,6 +119,7 @@
 %token T_DO<TokenValue>;
 %token T_DOT<TokenValue>;
 %token T_E<TokenValue>;
+%token T_EXP<TokenValue>;
 %token T_FUKASHIGI<TokenValue>;
 %token T_GAI<TokenValue>;
 %token T_GO<TokenValue>;
@@ -155,6 +156,8 @@
 %token T_KOTAE<TokenValue>;
 %token T_KOU<TokenValue>;
 %token T_KYUU<TokenValue>;
+%token T_LOG10<TokenValue>;
+%token T_LOG<TokenValue>;
 %token T_L_PAREN<TokenValue>;
 %token T_MAN<TokenValue>;
 %token T_MINUS<TokenValue>;
@@ -1070,4 +1073,7 @@ func1arg<Func1Arg>
     | [DoFunc1Arg7] T_ROOT
     | [DoFunc1Arg8] T_ZETTAICHI
     | [DoFunc1Arg9] T_GYAKUSUU
+    | [DoFunc1Arg10] T_EXP
+    | [DoFunc1Arg11] T_LOG
+    | [DoFunc1Arg12] T_LOG10
     ;

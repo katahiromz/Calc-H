@@ -209,7 +209,7 @@ namespace Calc_H
     struct Func1Arg : Node
     {
         enum {
-            SIN, COS, TAN, ASIN, ACOS, ATAN, SQRT, ABS, INV
+            SIN, COS, TAN, ASIN, ACOS, ATAN, SQRT, ABS, INV, EXP, LOG, LOG10
         } m_type;
     };
 

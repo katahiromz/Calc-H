@@ -150,6 +150,18 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
             case Func1Arg::INV:
                 value = ch_inv(value);
                 break;
+
+            case Func1Arg::EXP:
+                value = pmp::exp(value);
+                break;
+
+            case Func1Arg::LOG:
+                value = pmp::log(value);
+                break;
+
+            case Func1Arg::LOG10:
+                value = pmp::log10(value);
+                break;
             }
             if (prim->m_type == Prim::FUNC1ARG_HEIHOU)
                 value *= value;
@@ -440,6 +452,15 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
 
         case Func1Arg::INV:
             return ch_inv(v1);
+
+        case Func1Arg::EXP:
+            return pmp::exp(v1);
+
+        case Func1Arg::LOG:
+            return pmp::log(v1);
+
+        case Func1Arg::LOG10:
+            return pmp::log10(v1);
 
         default:
             assert(0);
