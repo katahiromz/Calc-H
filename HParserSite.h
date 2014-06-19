@@ -3593,7 +3593,7 @@ namespace Calc_H
         //
         void message(const std::string& str)
         {
-			error() = location().str();
+            error() = location().str();
             error() += ": ";
             error() += str;
         }

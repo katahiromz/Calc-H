@@ -31,20 +31,23 @@ namespace Calc_H
 
         Parser<shared_ptr<Node>, ParserSite> parser(ps);
         std::vector<TokenValue>::iterator it, end2 = infos.end();
-        for (it = infos.begin(); it != end2; ++it)
+        if (ps.error().empty())
         {
-            #if 0
-                std::cerr << scanner.token_to_string(*it) << std::endl;
-            #endif
-            if (parser.post(it->m_token, make_shared<TokenValue>(*it)))
+            for (it = infos.begin(); it != end2; ++it)
             {
-                if (parser.error())
+                #if 0
+                    std::cerr << scanner.token_to_string(*it) << std::endl;
+                #endif
+                if (parser.post(it->m_token, make_shared<TokenValue>(*it)))
                 {
-                    ps.location() = it->location();
-                    ps.message(std::string("文法エラー: ") +
-                               scanner.token_to_string(*it));
+                    if (parser.error())
+                    {
+                        ps.location() = it->location();
+                        ps.message(std::string("文法エラー: ") +
+                                   scanner.token_to_string(*it));
+                    }
+                    break;
                 }
-                break;
             }
         }
 

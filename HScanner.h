@@ -42,17 +42,19 @@ namespace Calc_H
             } while (token != Calc_H::eof);
 
             resynth1(infos);
-            resynth2(infos);
-            resynth3(infos);
-            resynth4(infos);
-            resynth5(infos);
-            resynth6(infos);
-            resynth7(infos);
-            resynth8(infos);
-            resynth9(infos);
-            resynth10(infos);
-            resynth11(infos);
-            resynth12(infos);
+            if (resynth2(infos))
+            {
+                resynth3(infos);
+                resynth4(infos);
+                resynth5(infos);
+                resynth6(infos);
+                resynth7(infos);
+                resynth8(infos);
+                resynth9(infos);
+                resynth10(infos);
+                resynth11(infos);
+                resynth12(infos);
+            }
         }
 
         std::string token_to_string(const info_type& info)
@@ -873,8 +875,7 @@ namespace Calc_H
                 ch = getch();
             } while (ch != EOF);
 
-            message(std::string("エラー：文字列「") +
-                    str + "」がわかりません。\n");
+            message(str + "がわかりません。");
 
             return commit_token(eof);
         }   // get_token
@@ -1051,6 +1052,51 @@ namespace Calc_H
             infos = newinfos;
         }
 
+        // 括弧の対応を修正する。
+        bool resynth2(std::vector<info_type>& infos)
+        {
+            std::vector<info_type> newinfos;
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            info_type info;
+            int nest = 0;
+            for (; it != end; ++it)
+            {
+                switch (it->get_token())
+                {
+                case T_L_PAREN:
+                    ++nest;
+                    assert(nest >= 0);
+                    break;
+
+                case T_R_PAREN:
+                    --nest;
+                    if (nest < 0)
+                    {
+                        message("かっこの対応がおかしいです。");
+                        return false;
+                    }
+                    break;
+
+                case T_HA:
+                case T_WO1:
+                case T_WO2:
+                case T_PERIOD:
+                case eof:
+                    info = *it;
+                    for (info.set_token(T_R_PAREN); nest > 0; --nest)
+                        newinfos.push_back(info);
+                    break;
+
+                default:
+                    break;
+                }
+                newinfos.push_back(*it);
+            }
+            infos = newinfos;
+            return true;
+        }
+
         // 「の」をT_NO1, T_NO2, ..., T_NO7に分類する。
         // 数の単位「穣」をT_JOU2に分類する。
         // T_NO2: 「わ」「さ」「せき」「しょう」の直前の「の」。
@@ -1062,7 +1108,7 @@ namespace Calc_H
         // T_NO8: 「の何ぱーせんと」の「の」。
         // T_NO9: 「の余り」の「の」。
         // T_NO1: それ以外。
-        void resynth2(std::vector<info_type>& infos)
+        void resynth3(std::vector<info_type>& infos)
         {
             std::vector<info_type> newinfos;
             std::vector<info_type> subinfos;
@@ -1266,7 +1312,7 @@ namespace Calc_H
         }
 
         // 小数点の後の数字にしるしをつける。
-        void resynth3(std::vector<info_type>& infos)
+        void resynth4(std::vector<info_type>& infos)
         {
             std::vector<info_type>::iterator it = infos.begin();
             std::vector<info_type>::iterator end = infos.end();
@@ -1300,7 +1346,7 @@ namespace Calc_H
         // 「と」をT_TO1, T_TO2に分類する。
         // T_TO2: 「なんとなんぶんのなに」の「と」。
         // T_TO1: それ以外。
-        void resynth4(std::vector<info_type>& infos)
+        void resynth5(std::vector<info_type>& infos)
         {
             std::vector<info_type>::iterator it = infos.begin();
             std::vector<info_type>::iterator end = infos.end();
@@ -1354,7 +1400,7 @@ namespace Calc_H
         }
 
         // 特定の語句の後のT_COMMAを削除する。
-        void resynth5(std::vector<info_type>& infos)
+        void resynth6(std::vector<info_type>& infos)
         {
             std::vector<info_type> newinfos;
             std::vector<info_type>::iterator it = infos.begin();
@@ -1435,7 +1481,7 @@ namespace Calc_H
         }
 
         // 「計算し」「をし」などの「し」を修正する。
-        void resynth6(std::vector<info_type>& infos)
+        void resynth7(std::vector<info_type>& infos)
         {
             std::vector<info_type>::iterator it = infos.begin();
             std::vector<info_type>::iterator end = infos.end();
@@ -1474,7 +1520,7 @@ namespace Calc_H
         // 「を」をT_WO1とT_WO2に分類する。
         // T_WO2: 「たしざん」「けいさん」などの直後の「を」。
         // T_WO1: そのほかの「を」。
-        void resynth7(std::vector<info_type>& infos)
+        void resynth8(std::vector<info_type>& infos)
         {
             std::vector<info_type>::iterator it = infos.begin();
             std::vector<info_type>::iterator end = infos.end();
@@ -1508,7 +1554,7 @@ namespace Calc_H
 
         // 「を」の直後に「けいさん」「たしざん」などがあれば、
         // 「を」を「の」に変える。
-        void resynth8(std::vector<info_type>& infos)
+        void resynth9(std::vector<info_type>& infos)
         {
             std::vector<info_type>::iterator it = infos.begin();
             std::vector<info_type>::iterator end = infos.end();
@@ -1529,6 +1575,7 @@ namespace Calc_H
                     break;
 
                 case T_WO1:
+                case T_WO2:
                     it_save = it;
                     break;
 
@@ -1543,7 +1590,7 @@ namespace Calc_H
         // 「。」を「、」に変える。
         // 「たした～」「ひいた～」「かけた～」「わった～」を
         // 「たしたら～」「ひいたら～」「かけたら～」「わったら～」に変える。
-        void resynth9(std::vector<info_type>& infos)
+        void resynth10(std::vector<info_type>& infos)
         {
             std::vector<info_type>::iterator it = infos.begin();
             std::vector<info_type>::iterator end = infos.end();
@@ -1575,7 +1622,7 @@ namespace Calc_H
         }
 
         // 特定の語句直前の「、」を取り除く。
-        void resynth10(std::vector<info_type>& infos)
+        void resynth11(std::vector<info_type>& infos)
         {
             std::vector<info_type> newinfos;
             std::vector<info_type>::iterator it = infos.begin();
@@ -1633,43 +1680,6 @@ namespace Calc_H
                     default:
                         break;
                     }
-                }
-                newinfos.push_back(*it);
-            }
-            infos = newinfos;
-        }
-
-        // 括弧の対応を修正する。
-        void resynth11(std::vector<info_type>& infos)
-        {
-            std::vector<info_type> newinfos;
-            std::vector<info_type>::iterator it = infos.begin();
-            std::vector<info_type>::iterator end = infos.end();
-            info_type info;
-            int nest = 0;
-            for (; it != end; ++it)
-            {
-                switch (it->get_token())
-                {
-                case T_L_PAREN:
-                    ++nest;
-                    assert(nest >= 0);
-                    break;
-
-                case T_R_PAREN:
-                    --nest;
-                    assert(nest >= 0);
-                    break;
-
-                case T_PERIOD:
-                case eof:
-                    info = *it;
-                    for (info.set_token(T_R_PAREN); nest > 0; --nest)
-                        newinfos.push_back(info);
-                    break;
-
-                default:
-                    break;
                 }
                 newinfos.push_back(*it);
             }
