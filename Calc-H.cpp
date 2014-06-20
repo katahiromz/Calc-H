@@ -42,6 +42,18 @@ CH_Value ChInverse(const CH_Value& value)
     case pmp::Number::RATIONAL:
         result = pmp::Number(pmp::denominator(value), pmp::numerator(value));
         break;
+
+#ifndef PMP_DISABLE_VECTOR
+    case pmp::Number::VECTOR:
+        {
+            pmp::vector_type v;
+            for (std::size_t i = 0; i < value.size(); ++i)
+            {
+                v.push_back(value[i]);
+            }
+            result = CH_Value(v);
+        }
+#endif  // ndef PMP_DISABLE_VECTOR
     }
     return result;
 }
