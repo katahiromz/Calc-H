@@ -25,7 +25,7 @@ static const char * const ch_not_warizan = "ÇÌÇËÇ¥ÇÒÇ≈ÇÕÇ†ÇËÇ‹ÇπÇÒÅB";
 
 using namespace Calc_H;
 
-CH_Value ch_inv(const CH_Value& value)
+CH_Value ChInverse(const CH_Value& value)
 {
     CH_Value result;
     switch (value.type())
@@ -148,7 +148,7 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
                 break;
 
             case Func1Arg::INV:
-                value = ch_inv(value);
+                value = ChInverse(value);
                 break;
 
             case Func1Arg::EXP:
@@ -463,7 +463,7 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
             return pmp::abs(v1);
 
         case Func1Arg::INV:
-            return ch_inv(v1);
+            return ChInverse(v1);
 
         case Func1Arg::EXP:
             return pmp::exp(v1);
