@@ -261,12 +261,12 @@ namespace Calc_H
             m_token = token;
         }
 
-        std::string text()
+        std::string& text()
         {
             return m_text;
         }
 
-        const std::string text() const
+        const std::string& text() const
         {
             return m_text;
         }
