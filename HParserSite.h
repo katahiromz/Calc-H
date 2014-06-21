@@ -1369,6 +1369,18 @@ namespace Calc_H
             return shared_ptr<Mono>(m);
         }
 
+        shared_ptr<Mono> DoMono75(shared_ptr<ExprList>& exprlist, shared_ptr<VecFunc>& vf)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono75" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::EXPRLIST_VECFUNC;
+            m->m_exprlist = exprlist;
+            m->m_vecfunc = vf;
+            return shared_ptr<Mono>(m);
+        }
+
         shared_ptr<Expr> DoExpr1(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG
@@ -3662,6 +3674,46 @@ namespace Calc_H
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::TANH;
             return shared_ptr<Func1Arg>(f);
+        }
+
+        shared_ptr<VecFunc> DoVecFunc1()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoVecFunc1" << std::endl;
+            #endif
+            VecFunc *f = new VecFunc;
+            f->m_type = VecFunc::COUNT;
+            return shared_ptr<VecFunc>(f);
+        }
+
+        shared_ptr<VecFunc> DoVecFunc2()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoVecFunc2" << std::endl;
+            #endif
+            VecFunc *f = new VecFunc;
+            f->m_type = VecFunc::MAX;
+            return shared_ptr<VecFunc>(f);
+        }
+
+        shared_ptr<VecFunc> DoVecFunc3()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoVecFunc3" << std::endl;
+            #endif
+            VecFunc *f = new VecFunc;
+            f->m_type = VecFunc::MIN;
+            return shared_ptr<VecFunc>(f);
+        }
+
+        shared_ptr<VecFunc> DoVecFunc4()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoVecFunc4" << std::endl;
+            #endif
+            VecFunc *f = new VecFunc;
+            f->m_type = VecFunc::AVERAGE;
+            return shared_ptr<VecFunc>(f);
         }
 
     public:

@@ -104,7 +104,6 @@
 %token T_9X8<TokenValue>;
 %token T_9X9<TokenValue>;
 
-%token T_HYPERBOLIC<TokenValue>;
 %token T_ACOS<TokenValue>;
 %token T_ACOSH<TokenValue>;
 %token T_ALL<TokenValue>;       // replaced
@@ -114,13 +113,16 @@
 %token T_ASOUGI<TokenValue>;
 %token T_ATAN<TokenValue>;
 %token T_ATANH<TokenValue>;
+%token T_AVERAGE<TokenValue>;
 %token T_BAI<TokenValue>;
 %token T_BUNNO<TokenValue>;
 %token T_CHOU<TokenValue>;
 %token T_COMMA<TokenValue>;
 %token T_COS<TokenValue>;
 %token T_COSH<TokenValue>;
+%token T_COUNT<TokenValue>;
 %token T_DE<TokenValue>;
+%token T_DIFF<TokenValue>;
 %token T_DO<TokenValue>;
 %token T_DOT<TokenValue>;
 %token T_E<TokenValue>;
@@ -141,6 +143,7 @@
 %token T_HIKU<TokenValue>;
 %token T_HIKUTO<TokenValue>;
 %token T_HYAKU<TokenValue>;
+%token T_HYPERBOLIC<TokenValue>;
 %token T_ICHI<TokenValue>;
 %token T_IKURA<TokenValue>;
 %token T_JO<TokenValue>;
@@ -165,6 +168,8 @@
 %token T_LOG<TokenValue>;
 %token T_L_PAREN<TokenValue>;
 %token T_MAN<TokenValue>;
+%token T_MAX<TokenValue>;
+%token T_MIN<TokenValue>;
 %token T_MINUS<TokenValue>;
 %token T_MIRUTO<TokenValue>;    // replaced
 %token T_MONO<TokenValue>;
@@ -181,6 +186,7 @@
 %token T_NO7<TokenValue>;       // no seigen, no yogen, no seisetu, etc.
 %token T_NO8<TokenValue>;       // no ... percent
 %token T_NO9<TokenValue>;       // no amari
+%token T_NOUCHI<TokenValue>;
 %token T_OKU<TokenValue>;
 %token T_ONEGAI<TokenValue>;
 %token T_OSHIETE<TokenValue>;
@@ -188,25 +194,25 @@
 %token T_PERIOD<TokenValue>;
 %token T_PI<TokenValue>;
 %token T_PLUS<TokenValue>;
+%token T_PROD<TokenValue>;
+%token T_QUOT<TokenValue>;
 %token T_RIPPOU<TokenValue>;
 %token T_ROKU<TokenValue>;
 %token T_ROOT<TokenValue>;
 %token T_R_PAREN<TokenValue>;
-%token T_SA<TokenValue>;
 %token T_SAI<TokenValue>;
 %token T_SAN<TokenValue>;
 %token T_SEI<TokenValue>;
-%token T_SEKI<TokenValue>;
 %token T_SEN<TokenValue>;
 %token T_SHI<TokenValue>;
 %token T_SHITA<TokenValue>;
 %token T_SHITE<TokenValue>;
-%token T_SHOU<TokenValue>;
 %token T_SHOUSUU<TokenValue>;
 %token T_SIN<TokenValue>;
 %token T_SINH<TokenValue>;
 %token T_SONO<TokenValue>;    // replaced
 %token T_SORE<TokenValue>;
+%token T_SUM<TokenValue>;
 %token T_SURUTO<TokenValue>;
 %token T_TAN<TokenValue>;
 %token T_TANH<TokenValue>;
@@ -218,7 +224,6 @@
 %token T_TASUTO<TokenValue>;
 %token T_TO1<TokenValue>;
 %token T_TO2<TokenValue>;   // taibunsuu
-%token T_WA<TokenValue>;
 %token T_WAKARAN<TokenValue>;
 %token T_WARARERU<TokenValue>;
 %token T_WARIZAN<TokenValue>;
@@ -528,16 +533,18 @@ mono<Mono>
     | [DoMono1] expression_list(0) T_TASHITA T_MONO
     | [DoMono1] expression_list(0) T_NO4 T_TASHIZAN T_SHITA T_MONO
     | [DoMono1] expression_list(0) T_TASHIZAN T_SHITA T_MONO
-    | [DoMono1] expression_list(0) T_NO2 T_WA
+    | [DoMono1] expression_list(0) T_NO2 T_SUM
     | [DoMono1] expression_list(0) T_NO4 T_TASHIZAN
     | [DoMono2] expression_list(0) T_WO1 T_KAKETA T_MONO
     | [DoMono2] expression_list(0) T_KAKETA T_MONO
     | [DoMono2] expression_list(0) T_NO4 T_KAKEZAN T_SHITA T_MONO
     | [DoMono2] expression_list(0) T_KAKEZAN T_SHITA T_MONO
-    | [DoMono2] expression_list(0) T_NO2 T_SEKI
+    | [DoMono2] expression_list(0) T_NO2 T_PROD
     | [DoMono2] expression_list(0) T_NO4 T_KAKEZAN
-    | [DoMono3] expression_list(0) T_NO2 T_SA
-    | [DoMono4] expression_list(0) T_NO2 T_SHOU
+    | [DoMono3] expression_list(0) T_NO2 T_DIFF
+    | [DoMono4] expression_list(0) T_NO2 T_QUOT
+    | [DoMono75] expression_list(0) T_NO2 vector_function(1)
+    | [DoMono75] expression_list(0) T_NOUCHI vector_function(1)
     | [DoMono5] mono(0) T_NI T_COMMA expression(1) T_WO1 T_TASHITA T_MONO
     | [DoMono5] mono(0) T_NI T_COMMA expression(1) T_TASHITA T_MONO
     | [DoMono5] mono(0) T_NI expression(1) T_WO1 T_TASHITA T_MONO
@@ -559,19 +566,19 @@ mono<Mono>
     | [DoMono61] mono(0) T_NO4 T_TASHIZAN T_WO2 T_SHITA T_MONO
     | [DoMono61] mono(0) T_NO4 T_TASHIZAN T_SHITA T_MONO
     | [DoMono61] mono(0) T_NO4 T_TASHIZAN
-    | [DoMono61] mono(0) T_NO2 T_WA
+    | [DoMono61] mono(0) T_NO2 T_SUM
     | [DoMono62] mono(0) T_NO4 T_KAKEZAN T_WO2 T_SHITA T_MONO
     | [DoMono62] mono(0) T_NO4 T_KAKEZAN T_SHITA T_MONO
     | [DoMono62] mono(0) T_NO4 T_KAKEZAN
-    | [DoMono62] mono(0) T_NO2 T_SEKI
+    | [DoMono62] mono(0) T_NO2 T_PROD
     | [DoMono63] mono(0) T_NO4 T_HIKIZAN T_WO2 T_SHITA T_MONO
     | [DoMono63] mono(0) T_NO4 T_HIKIZAN T_SHITA T_MONO
     | [DoMono63] mono(0) T_NO4 T_HIKIZAN
-    | [DoMono63] mono(0) T_NO2 T_SA
+    | [DoMono63] mono(0) T_NO2 T_DIFF
     | [DoMono64] mono(0) T_NO4 T_WARIZAN T_WO2 T_SHITA T_MONO
     | [DoMono64] mono(0) T_NO4 T_WARIZAN T_SHITA T_MONO
     | [DoMono64] mono(0) T_NO4 T_WARIZAN
-    | [DoMono64] mono(0) T_NO2 T_SHOU
+    | [DoMono64] mono(0) T_NO2 T_QUOT
     | [DoMono9] mono(0) T_NO4 T_KEISAN T_WO2 T_SHITA T_MONO
     | [DoMono9] mono(0) T_NO4 T_KEISAN T_SHITA T_MONO
     | [DoMono9] mono(0) T_WO1 T_SHITA T_MONO
@@ -649,12 +656,12 @@ mono<Mono>
     | [DoMono52] T_SORE T_NO4 T_WARARERU T_MONO
     | [DoMono71] T_SORE T_NO9 T_AMARI
     | [DoMono19] T_SORE
-    | [DoMono20] mono(0) T_TO1 expression_list(1) T_NO2 T_WA
-    | [DoMono21] mono(0) T_TO1 expression_list(1) T_NO2 T_SEKI
-    | [DoMono22] mono(0) T_TO1 expression(1) T_NO2 T_WA
-    | [DoMono23] mono(0) T_TO1 expression(1) T_NO2 T_SEKI
-    | [DoMono24] mono(0) T_TO1 expression(1) T_NO2 T_SA
-    | [DoMono25] mono(0) T_TO1 expression(1) T_NO2 T_SHOU
+    | [DoMono20] mono(0) T_TO1 expression_list(1) T_NO2 T_SUM
+    | [DoMono21] mono(0) T_TO1 expression_list(1) T_NO2 T_PROD
+    | [DoMono22] mono(0) T_TO1 expression(1) T_NO2 T_SUM
+    | [DoMono23] mono(0) T_TO1 expression(1) T_NO2 T_PROD
+    | [DoMono24] mono(0) T_TO1 expression(1) T_NO2 T_DIFF
+    | [DoMono25] mono(0) T_TO1 expression(1) T_NO2 T_QUOT
     | [DoMono28] mono(0) T_NO5 T_TASU T_MONO
     | [DoMono29] mono(0) T_NO5 T_KAKERU T_MONO
     | [DoMono30] mono(0) T_NO5 T_HIKU T_MONO
@@ -669,14 +676,14 @@ mono<Mono>
     | [DoMono38] suruto(0) T_KAKERARERU T_MONO
     | [DoMono39] suruto(0) T_HIKARERU T_MONO
     | [DoMono40] suruto(0) T_WARARERU T_MONO
-    | [DoMono65] suruto(0) T_SORE T_NO2 T_WA
-    | [DoMono65] suruto(0)              T_WA
-    | [DoMono66] suruto(0) T_SORE T_NO2 T_SEKI
-    | [DoMono66] suruto(0)              T_SEKI
-    | [DoMono67] suruto(0) T_SORE T_NO2 T_SA
-    | [DoMono67] suruto(0)              T_SA
-    | [DoMono68] suruto(0) T_SORE T_NO2 T_SHOU
-    | [DoMono68] suruto(0)              T_SHOU
+    | [DoMono65] suruto(0) T_SORE T_NO2 T_SUM
+    | [DoMono65] suruto(0)              T_SUM
+    | [DoMono66] suruto(0) T_SORE T_NO2 T_PROD
+    | [DoMono66] suruto(0)              T_PROD
+    | [DoMono67] suruto(0) T_SORE T_NO2 T_DIFF
+    | [DoMono67] suruto(0)              T_DIFF
+    | [DoMono68] suruto(0) T_SORE T_NO2 T_QUOT
+    | [DoMono68] suruto(0)              T_QUOT
     | [DoMono69] suruto(0) T_SORE T_NO9 T_AMARI
     | [DoMono69] suruto(0)              T_AMARI
     | [DoMono41] mono(0) T_NO5 T_TASARERU T_MONO
@@ -1092,4 +1099,11 @@ func1arg<Func1Arg>
     | [DoFunc1Arg15] T_TANH
     | [DoFunc1Arg15] T_HYPERBOLIC T_DOT T_TAN
     | [DoFunc1Arg15] T_HYPERBOLIC T_TAN
+    ;
+
+vector_function<VecFunc>
+    : [DoVecFunc1] T_COUNT
+    | [DoVecFunc2] T_MAX
+    | [DoVecFunc3] T_MIN
+    | [DoVecFunc4] T_AVERAGE
     ;

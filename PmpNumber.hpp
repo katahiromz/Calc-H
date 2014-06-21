@@ -329,10 +329,10 @@ namespace pmp
         {
 #ifndef PMP_DISABLE_VECTOR
             if (is_v())
-                return size() != 0;
+                return size() == 0;
             else
 #endif
-                return 1;
+                return false;
         }
 
     public: // friend functions

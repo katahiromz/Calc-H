@@ -348,6 +348,15 @@ CH_Value ChDivExprList(const shared_ptr<ExprList>& exprlist)
     return value;
 }
 
+void ChNumberFromExprList(pmp::Number& num, shared_ptr<ExprList>& exprlist)
+{
+    pmp::vector_type vec;
+    ExprList *el = exprlist.get();
+    for (std::size_t i = 0; i < el->size(); ++i)
+        vec.push_back(ChCalcExpr((*el)[i]));
+    num.assign(vec);
+}
+
 CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
 {
     CH_Value v1, v2;
@@ -566,6 +575,33 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
         v1 = ChCalcMono(mono->m_mono);
         v1 += 0.0;
         return v1;
+
+    case Mono::EXPRLIST_VECFUNC:
+        {
+            pmp::Number num;
+            switch (mono->m_vecfunc->m_type)
+            {
+            case VecFunc::COUNT:
+                ChNumberFromExprList(num, mono->m_exprlist);
+                return pmp::count(num);
+
+            case VecFunc::MAX:
+                ChNumberFromExprList(num, mono->m_exprlist);
+                return pmp::max(num);
+
+            case VecFunc::MIN:
+                ChNumberFromExprList(num, mono->m_exprlist);
+                return pmp::min(num);
+
+            case VecFunc::AVERAGE:
+                ChNumberFromExprList(num, mono->m_exprlist);
+                return pmp::average(num);
+
+            default:
+                assert(0);
+            }
+        }
+        return 0;
 
     default:
         assert(0);
@@ -3891,6 +3927,10 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         ChAnalyzeMonoSonoAmari(mono);
         break;
 
+    case Mono::EXPRLIST_VECFUNC:
+        ChAnalyzeExprList(mono->m_exprlist);
+        break;
+
     default:
         break;
     }
@@ -4447,6 +4487,26 @@ std::string ChGetJpnNumberFixed2(CH_Value num)
     return str;
 }
 
+std::string ChGetJpnNumberFixed3(CH_Value num)
+{
+    if (num.is_v())
+    {
+        if (num.empty())
+            return "‚È‚µ";
+
+        std::string str;
+        str += ChGetJpnNumberFixed2(num[0]);
+        for (std::size_t i = 1; i < num.size(); ++i)
+        {
+            str += "A";
+            str += ChGetJpnNumberFixed2(num[i]);
+        }
+        return str;
+    }
+    else
+        return ChGetJpnNumberFixed2(num);
+}
+
 ////////////////////////////////////////////////////////////////////////////
 
 void CrTrimString(std::string& str)
@@ -4536,7 +4596,7 @@ std::string ChJustDoIt(std::string& query)
                 value.trim();
                 if (s_message.empty())
                 {
-                    sstream << ChGetJpnNumberFixed2(value) <<
+                    sstream << ChGetJpnNumberFixed3(value) <<
                         " (" << value.str(ch_precision) <<
                                 ") " << "‚Å‚·B" << std::endl;
                     s_sore = value;

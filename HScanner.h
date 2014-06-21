@@ -219,6 +219,7 @@ namespace Calc_H
 
             // ç≈í∑àÍívñ@ÅB
             // ÅyÇ±Ç±Ç©ÇÁÅzçsÇç~èáÇ…ï¿Ç—ë÷Ç¶ÇƒÇ®Ç≠ÅB
+            if (lexeme("Å`"))                           return (T_KARA);
             if (lexeme("Åp"))                           return (T_R_PAREN);
             if (lexeme("Åo"))                           return (T_L_PAREN);
             if (lexeme("ÇîÇÅÇéÇà"))                     return (T_TANH);
@@ -328,7 +329,7 @@ namespace Calc_H
             if (lexeme("ÇÌÇ©ÇÁÇ»Ç¢ÇÊÇ®"))               return (T_WAKARAN);
             if (lexeme("ÇÌÇ©ÇÁÇ»Ç¢ÇÊ"))                 return (T_WAKARAN);
             if (lexeme("ÇÌÇ©ÇÁÇ»Ç¢"))                   return (T_WAKARAN);
-            if (lexeme("ÇÌ"))                           return (T_WA);
+            if (lexeme("ÇÌ"))                           return (T_SUM);
             if (lexeme("ÇÎÇ¡"))                         return (T_ROKU);
             if (lexeme("ÇÎÇÆ"))                         return (T_LOG);
             if (lexeme("ÇÎÇ≠"))                         return (T_ROKU);
@@ -405,6 +406,8 @@ namespace Calc_H
             if (lexeme("Ç‹Ç¢Ç»Ç∑Ç≥ÇÍÇÈ"))               return (T_HIKARERU);
             if (lexeme("Ç‹Ç¢Ç»Ç∑"))                     return (T_MINUS);
             if (lexeme("Ç÷Ç¢ÇŸÇ§"))                     return (T_HEIHOU);
+            if (lexeme("Ç÷Ç¢Ç´ÇÒÇø"))                   return (T_AVERAGE);
+            if (lexeme("Ç÷Ç¢Ç´ÇÒ"))                     return (T_AVERAGE);
             if (lexeme("Ç÷"))                           return (T_NI);
             if (lexeme("Ç’ÇÁÇ∑Ç∑ÇÈÇ∆Ç´ÇÃ"))             return (T_TASUTO);
             if (lexeme("Ç’ÇÁÇ∑Ç∑ÇÈÇ∆Ç´"))               return (T_TASUTO);
@@ -461,6 +464,9 @@ namespace Calc_H
             if (lexeme("ÇÕÇ¢ÇœÇ⁄ÇËÇ¡Ç≠"))               return (T_HYPERBOLIC);
             if (lexeme("ÇÕ"))                           return (T_HA);
             if (lexeme("ÇÃÇ‚"))                         return (T_KA);
+            if (lexeme("ÇÃÇ»Ç©Ç≈"))                     return (T_NOUCHI);
+            if (lexeme("ÇÃÇ§ÇøÇ≈"))                     return (T_NOUCHI);
+            if (lexeme("ÇÃÇ§Çø"))                       return (T_NOUCHI);
             if (lexeme("ÇÃ"))                           return (T_NO1);
             if (lexeme("ÇÀÇÒ"))                         return (T_KA);
             if (lexeme("ÇÀÇ¢Ç“Ç†Ç∑Ç§"))                 return (T_E);
@@ -629,7 +635,7 @@ namespace Calc_H
             if (lexeme("Ç∫Ç¡ÇΩÇ¢Çø"))                   return (T_ZETTAICHI);
             if (lexeme("ÇπÇÒ"))                         return (T_SEN);
             if (lexeme("ÇπÇÊ"))                         return (T_SURUTO);
-            if (lexeme("ÇπÇ´"))                         return (T_SEKI);
+            if (lexeme("ÇπÇ´"))                         return (T_PROD);
             if (lexeme("ÇπÇ¢Ç‚"))                       return (T_SURUTO);
             if (lexeme("ÇπÇ¢ÇπÇ¬"))                     return (T_TAN);
             if (lexeme("ÇπÇ¢Ç∞ÇÒ"))                     return (T_SIN);
@@ -660,9 +666,10 @@ namespace Calc_H
             if (lexeme("ÇµÇÁÇ»Ç¢"))                     return (T_WAKARAN);
             if (lexeme("ÇµÇÂÅ[Ç∑Å["))                   return (T_SHOUSUU);
             if (lexeme("ÇµÇÂÅ[Ç∑Ç§"))                   return (T_SHOUSUU);
+            if (lexeme("ÇµÇÂÅ["))                       return (T_QUOT);
             if (lexeme("ÇµÇÂÇ§Ç∑Å["))                   return (T_SHOUSUU);
             if (lexeme("ÇµÇÂÇ§Ç∑Ç§"))                   return (T_SHOUSUU);
-            if (lexeme("ÇµÇÂÇ§"))                       return (T_SHOU);
+            if (lexeme("ÇµÇÂÇ§"))                       return (T_QUOT);
             if (lexeme("ÇµÇ»Ç≥Ç¢"))                     return (T_SURUTO);
             if (lexeme("ÇµÇƒÇÊ"))                       return (T_SHITE);
             if (lexeme("ÇµÇƒÇ‚"))                       return (T_SHITE);
@@ -710,9 +717,13 @@ namespace Calc_H
             if (lexeme("Ç≥ÇµÇ–Ç¢ÇΩÇ∆Ç´"))               return (T_HIKUTO);
             if (lexeme("Ç≥ÇµÇ–Ç¢ÇΩ"))                   return (T_HIITA);
             if (lexeme("Ç≥Ç¢ÇÒ"))                       return (T_SIN);
+            if (lexeme("Ç≥Ç¢ÇæÇ¢Çø"))                   return (T_MAX);
+            if (lexeme("Ç≥Ç¢ÇµÇÂÅ[Çø"))                 return (T_MIN);
+            if (lexeme("Ç≥Ç¢ÇµÇÂÇ§Çø"))                 return (T_MIN);
             if (lexeme("Ç≥Ç¢"))                         return (T_SAI);
-            if (lexeme("Ç≥"))                           return (T_SA);
+            if (lexeme("Ç≥"))                           return (T_DIFF);
             if (lexeme("Ç≤Ç≠"))                         return (T_GOKU);
+            if (lexeme("Ç≤Ç§ÇØÇ¢"))                     return (T_SUM);
             if (lexeme("Ç≤Ç§Ç™ÇµÇ·"))                   return (T_GOUGASHA);
             if (lexeme("Ç≤Ç§"))                         return (T_GO);
             if (lexeme("Ç≤"))                           return (T_GO);
@@ -739,6 +750,7 @@ namespace Calc_H
             if (lexeme("Ç±ÇΩÇ¶ÇƒÇ≠ÇæÇ≥Ç¢"))             return (T_OSHIETE);
             if (lexeme("Ç±ÇΩÇ¶Çƒ"))                     return (T_OSHIETE);
             if (lexeme("Ç±ÇΩÇ¶"))                       return (T_KOTAE);
+            if (lexeme("Ç±Ç∑Ç§"))                       return (T_COUNT);
             if (lexeme("Ç±Ç≥Ç¢ÇÒ"))                     return (T_COS);
             if (lexeme("Ç±Ç§"))                         return (T_KOU);
             if (lexeme("Ç±Ç¢Ç¬"))                       return (T_SORE);
@@ -939,6 +951,7 @@ namespace Calc_H
             if (lexeme("Åù"))                           return (T_PERIOD);
             if (lexeme("ÅÄ"))                           return (T_WARU);
             if (lexeme("Å~"))                           return (T_KAKERU);
+            if (lexeme("~"))                            return (T_KARA);
             if (lexeme("}"))                            return (T_R_PAREN);
             if (lexeme("{"))                            return (T_L_PAREN);
             if (lexeme("tanh"))                         return (T_TANH);
@@ -1277,10 +1290,14 @@ namespace Calc_H
                     flag = false;
                     break;
 
-                case T_WA:
-                case T_SEKI:
-                case T_SA:
-                case T_SHOU:
+                case T_COUNT:
+                case T_SUM:
+                case T_DIFF:
+                case T_PROD:
+                case T_QUOT:
+                case T_MAX:
+                case T_MIN:
+                case T_AVERAGE:
                     if (no1 != std::string::npos)
                     {
                         (newinfos.begin() + no1)->set_token(T_NO2);
@@ -1514,7 +1531,7 @@ namespace Calc_H
             }
         }
 
-        // ì¡íËÇÃåÍãÂÇÃå„ÇÃT_COMMAÇçÌèúÇ∑ÇÈÅB
+        // ì¡íËÇÃåÍãÂÇÃíºå„ÇÃT_COMMAÇçÌèúÇ∑ÇÈÅB
         void resynth6(std::vector<info_type>& infos)
         {
             std::vector<info_type> newinfos;
@@ -1529,6 +1546,7 @@ namespace Calc_H
                 case T_BAI:
                 case T_BUNNO:
                 case T_DE:
+                case T_DIFF:
                 case T_HA:
                 case T_HEIHOU:
                 case T_HIITE:
@@ -1555,21 +1573,21 @@ namespace Calc_H
                 case T_NO7:
                 case T_NO8:
                 case T_NO9:
+                case T_NOUCHI:
                 case T_OSHIETE:
                 case T_PERCENT:
                 case T_PLUS:
-                case T_SA:
-                case T_SEKI:
+                case T_PROD:
+                case T_QUOT:
                 case T_SHITA:
                 case T_SHITE:
-                case T_SHOU:
+                case T_SUM:
                 case T_SURUTO:
                 case T_TASHITE:
                 case T_TASHIZAN:
                 case T_TASU:
                 case T_TASUTO:
                 case T_TO1:
-                case T_WA:
                 case T_WARIZAN:
                 case T_WARU:
                 case T_WARUTO:
@@ -1751,6 +1769,7 @@ namespace Calc_H
                     case T_AMARI:
                     case T_BAI:
                     case T_DE:
+                    case T_DIFF:
                     case T_HIITA:
                     case T_HIITE:
                     case T_HIKIZAN:
@@ -1766,22 +1785,22 @@ namespace Calc_H
                     case T_KARA:
                     case T_KEISAN:
                     case T_KOTAE:
+                    case T_NOUCHI:
                     case T_ONEGAI:
                     case T_OSHIETE:
                     case T_PERCENT:
+                    case T_PROD:
+                    case T_QUOT:
                     case T_R_PAREN:
-                    case T_SA:
-                    case T_SEKI:
                     case T_SHITA:
                     case T_SHITE:
-                    case T_SHOU:
+                    case T_SUM:
                     case T_SURUTO:
                     case T_TASHITA:
                     case T_TASHITE:
                     case T_TASHIZAN:
                     case T_TASU:
                     case T_TASUTO:
-                    case T_WA:
                     case T_WARIZAN:
                     case T_WARU:
                     case T_WARUTO:

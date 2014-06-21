@@ -19,6 +19,7 @@ namespace Calc_H
     struct Digit;
     struct Digits;
     struct Func1Arg;
+    struct VecFunc;
 
     //
     // Node
@@ -123,7 +124,7 @@ namespace Calc_H
             SURUTO_WA, SURUTO_SEKI, SURUTO_SA, SURUTO_SHOU,
             SURUTO_AMARI, MONO_NO_AMARI, SORE_NO_AMARI,
             MONO_MOD_EXPR, EXPR_MOD_MONO, SHITE_MOD_EXPR, TERM_MOD_FACT,
-            SHOUSUU, MONO_NO_SHOUSUU
+            SHOUSUU, MONO_NO_SHOUSUU, EXPRLIST_VECFUNC
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
@@ -133,6 +134,7 @@ namespace Calc_H
         shared_ptr<Term>        m_term;
         shared_ptr<Fact>        m_fact;
         shared_ptr<Func1Arg>    m_func1arg;
+        shared_ptr<VecFunc>     m_vecfunc;
     };
 
     struct Expr : Node
@@ -211,6 +213,13 @@ namespace Calc_H
         enum {
             SIN, COS, TAN, ASIN, ACOS, ATAN, SQRT, ABS, INV, EXP, LOG, LOG10,
             SINH, COSH, TANH
+        } m_type;
+    };
+
+    struct VecFunc : Node
+    {
+        enum {
+            COUNT, MAX, MIN, AVERAGE
         } m_type;
     };
 
