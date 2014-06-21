@@ -872,8 +872,49 @@ namespace pmp
     }
 #endif  // ndef PMP_DISABLE_VECTOR
 
+    void Number::compare(const Number& num, bool comparisons[3]) const
+    {
+#ifndef PMP_DISABLE_VECTOR
+        if (is_v() || num.is_v())
+        {
+            comparisons[0] = comparisons[1] = comparisons[2] = true;
+            for (std::size_t i = 0; i < size(); ++i)
+            {
+                for (std::size_t j = 0; j < num.size(); ++j)
+                {
+                    bool comps[3];
+                    (*this)[i].compare(num[i], comps);
+                    if (!comps[0]) comparisons[0] = false;
+                    if (!comps[1]) comparisons[1] = false;
+                    if (!comps[2]) comparisons[2] = false;
+                }
+            }
+        }
+        else
+#endif  // ndef PMP_DISABLE_VECTOR
+        {
+            comparisons[0] = comparisons[1] = comparisons[2] = false;
+            int comp = compare(num);
+            if (comp == -1)     comparisons[0] = true;
+            else if (comp == 0) comparisons[1] = true;
+            else if (comp == 1) comparisons[2] = true;
+        }
+    }
+
     int Number::compare(const Number& num) const
     {
+#ifndef PMP_DISABLE_VECTOR
+        if (is_v() || num.is_v())
+        {
+            bool comparisons[3];
+            compare(num, comparisons);
+            if (comparisons[0])      return -1;
+            else if (comparisons[1]) return 0;
+            else if (comparisons[2]) return 1;
+            else return -2;
+        }
+#endif
+
         floating_type f;
         switch (type())
         {
@@ -931,36 +972,6 @@ namespace pmp
                 assert(0);
                 return 0;
             }
-
-#ifndef PMP_DISABLE_VECTOR
-        case Number::VECTOR:
-            if (num.is_v())
-            {
-                std::size_t siz;
-                if (size() < num.size())
-                    siz = size();
-                else
-                    siz = num.size();
-
-                for (std::size_t i = 0; i < siz; ++i)
-                {
-                    int comp = get_v()[i].compare(get_v()[i]);
-                    if (comp != 0)
-                        return comp;
-                }
-                if (size() < num.size())
-                    return -1;
-                else if (size() > num.size())
-                    return 1;
-                else
-                    return 0;
-            }
-            else
-            {
-                assert(0);
-                return 0;
-            }
-#endif  // ndef PMP_DISABLE_VECTOR
 
         default:
             assert(0);

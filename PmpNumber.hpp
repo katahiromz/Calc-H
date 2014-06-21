@@ -280,6 +280,7 @@ namespace pmp
             return compare(static_cast<Number>(d));
         }
 
+        void compare(const Number& num, bool comparisons[3]) const;
         int compare(const Number& num) const;
 
         void swap(Number& num)
@@ -407,32 +408,38 @@ namespace pmp
 
         friend inline bool operator==(const Number& num1, const Number& num2)
         {
-            return num1.compare(num2) == 0;
+            int comp = num1.compare(num2);
+            return comp == 0;
         }
 
         friend inline bool operator!=(const Number& num1, const Number& num2)
         {
-            return num1.compare(num2) != 0;
+            int comp = num1.compare(num2);
+            return comp == -1 || comp == 1;
         }
 
         friend inline bool operator<(const Number& num1, const Number& num2)
         {
-            return num1.compare(num2) < 0;
+            int comp = num1.compare(num2);
+            return comp == -1;
         }
 
         friend inline bool operator>(const Number& num1, const Number& num2)
         {
-            return num1.compare(num2) > 0;
+            int comp = num1.compare(num2);
+            return comp == 1;
         }
 
         friend inline bool operator<=(const Number& num1, const Number& num2)
         {
-            return num1.compare(num2) <= 0;
+            int comp = num1.compare(num2);
+            return comp == -1 || comp == 0;
         }
 
         friend inline bool operator>=(const Number& num1, const Number& num2)
         {
-            return num1.compare(num2) >= 0;
+            int comp = num1.compare(num2);
+            return comp == 0 || comp == 1;
         }
 
     public:
