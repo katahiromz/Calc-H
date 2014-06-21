@@ -92,6 +92,9 @@ namespace pmp
         vec.push_back(str.substr(i, -1));
     }
 
+    //
+    // pmp::Number
+    //
     class Number
     {
     public:
@@ -227,13 +230,16 @@ namespace pmp
               rational_type&  get_r()       { assert(is_r()); return *m_inner.get()->m_rational; }
         const rational_type&  get_r() const { assert(is_r()); return *m_inner->m_rational;       }
 #ifndef PMP_DISABLE_VECTOR
-                 vector_type& get_v()       { assert(is_v()); return *m_inner.get()->m_vector; }
-           const vector_type& get_v() const { assert(is_v()); return *m_inner->m_vector; }
+                 vector_type& get_v()       { assert(is_v()); return *m_inner.get()->m_vector;   }
+           const vector_type& get_v() const { assert(is_v()); return *m_inner->m_vector;         }
 #endif
 
         integer_type    to_i() const;   // to integer
         floating_type   to_f() const;   // to floating
         rational_type   to_r() const;   // to rational
+#ifndef PMP_DISABLE_VECTOR
+        vector_type     to_v() const;   // to vector
+#endif
 
         floating_type   i_to_f() const    { return pmp::i_to_f(get_i()); }
         rational_type   i_to_r() const    { return pmp::i_to_r(get_i()); }
@@ -284,7 +290,7 @@ namespace pmp
 #ifndef PMP_DISABLE_VECTOR
         Number& operator[](std::size_t index)
         {
-            if (type() == pmp::Number::VECTOR)
+            if (type() == Number::VECTOR)
                 return get_v()[index];
             else
                 return *this;
@@ -292,7 +298,7 @@ namespace pmp
 
         const Number& operator[](std::size_t index) const
         {
-            if (type() == pmp::Number::VECTOR)
+            if (type() == Number::VECTOR)
                 return get_v()[index];
             else
                 return *this;
@@ -300,30 +306,34 @@ namespace pmp
 
         void push_back(const Number& num)
         {
-            if (type() == pmp::Number::VECTOR)
+            if (type() == Number::VECTOR)
             {
                 vector_type v = get_v();
                 v.push_back(num);
                 assign(v);
             }
         }
+#endif  // ndef PMP_DISABLE_VECTOR
 
         std::size_t size() const
         {
-            if (type() == pmp::Number::VECTOR)
+#ifndef PMP_DISABLE_VECTOR
+            if (is_v())
                 return get_v().size();
             else
+#endif
                 return 1;
         }
 
         bool empty() const
         {
-            if (type() == pmp::Number::VECTOR)
+#ifndef PMP_DISABLE_VECTOR
+            if (is_v())
                 return size() != 0;
             else
+#endif
                 return 1;
         }
-#endif  // ndef PMP_DISABLE_VECTOR
 
     public: // friend functions
         friend inline Number operator+(const Number& num1)
@@ -335,22 +345,22 @@ namespace pmp
         {
             switch (num1.type())
             {
-            case pmp::Number::INTEGER:
+            case Number::INTEGER:
                 return Number(static_cast<integer_type>(-(*num1.m_inner->m_integer)));
 
-            case pmp::Number::FLOATING:
+            case Number::FLOATING:
                 return Number(static_cast<floating_type>(-(*num1.m_inner->m_floating)));
 
-            case pmp::Number::RATIONAL:
+            case Number::RATIONAL:
                 return Number(static_cast<rational_type>(-(*num1.m_inner->m_rational)));
 
 #ifndef PMP_DISABLE_VECTOR
-            case pmp::Number::VECTOR:
+            case Number::VECTOR:
                 {
-                    pmp::Number vec;
+                    vector_type vec;
                     for (std::size_t i = 0; i < num1.size(); ++i)
                         vec.push_back(-num1.get_v()[i]);
-                    return vec;
+                    return Number(vec);
                 }
 #endif
 
@@ -773,7 +783,7 @@ namespace pmp
     inline Number sqrt(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (num1.type() == pmp::Number::VECTOR)
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -791,7 +801,7 @@ namespace pmp
     inline Number exp(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (num1.type() == pmp::Number::VECTOR)
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -806,7 +816,7 @@ namespace pmp
     inline Number log(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (num1.type() == pmp::Number::VECTOR)
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -821,7 +831,7 @@ namespace pmp
     inline Number log10(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (num1.type() == pmp::Number::VECTOR)
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -836,7 +846,7 @@ namespace pmp
     inline Number cos(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (num1.type() == pmp::Number::VECTOR)
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -851,7 +861,7 @@ namespace pmp
     inline Number sin(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (num1.type() == pmp::Number::VECTOR)
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -866,7 +876,7 @@ namespace pmp
     inline Number tan(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (num1.type() == pmp::Number::VECTOR)
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -881,7 +891,7 @@ namespace pmp
     inline Number acos(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (num1.type() == pmp::Number::VECTOR)
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -896,7 +906,7 @@ namespace pmp
     inline Number asin(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (num1.type() == pmp::Number::VECTOR)
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -911,7 +921,7 @@ namespace pmp
     inline Number atan(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (num1.type() == pmp::Number::VECTOR)
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -926,7 +936,7 @@ namespace pmp
     inline Number cosh(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (num1.type() == pmp::Number::VECTOR)
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -941,7 +951,7 @@ namespace pmp
     inline Number sinh(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (num1.type() == pmp::Number::VECTOR)
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -956,7 +966,7 @@ namespace pmp
     inline Number tanh(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (num1.type() == pmp::Number::VECTOR)
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -971,8 +981,8 @@ namespace pmp
     inline Number pow(const Number& num1, const Number& num2)
     {
 #ifndef PMP_DISABLE_VECTOR
-        assert(num2.type() != pmp::Number::VECTOR);
-        if (num1.type() == pmp::Number::VECTOR)
+        assert(num2.type() != Number::VECTOR);
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -987,8 +997,8 @@ namespace pmp
     inline Number fmod(const Number& num1, const Number& num2)
     {
 #ifndef PMP_DISABLE_VECTOR
-        assert(num2.type() != pmp::Number::VECTOR);
-        if (num1.type() == pmp::Number::VECTOR)
+        assert(num2.type() != Number::VECTOR);
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -1003,8 +1013,8 @@ namespace pmp
     inline Number atan2(const Number& num1, const Number& num2)
     {
 #ifndef PMP_DISABLE_VECTOR
-        assert(num2.type() != pmp::Number::VECTOR);
-        if (num1.type() == pmp::Number::VECTOR)
+        assert(num2.type() != Number::VECTOR);
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -1019,7 +1029,7 @@ namespace pmp
     inline Number numerator(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (num1.type() == pmp::Number::VECTOR)
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -1036,7 +1046,7 @@ namespace pmp
     inline Number denominator(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (num1.type() == pmp::Number::VECTOR)
+        if (num1.is_v())
         {
             vector_type vec;
             for (std::size_t i = 0; i < num1.size(); ++i)
@@ -1049,7 +1059,99 @@ namespace pmp
         else
             return 1;
     }
-}
+
+    inline Number count(const Number& num1)
+    {
+#ifndef PMP_DISABLE_VECTOR
+        Number n = 0;
+        if (num1.is_v())
+        {
+            for (std::size_t i = 0; i < num1.size(); ++i)
+            {
+                n += pmp::count(num1[i]);
+            }
+            return n;
+        }
+#endif
+        return 1;
+    }
+
+    inline Number sum(const Number& num1)
+    {
+#ifndef PMP_DISABLE_VECTOR
+        Number n(0);
+        if (num1.is_v())
+        {
+            for (std::size_t i = 0; i < num1.size(); ++i)
+            {
+                n += pmp::sum(num1[i]);
+            }
+            return n;
+        }
+#endif
+        return num1;
+    }
+
+    inline Number prod(const Number& num1)
+    {
+#ifndef PMP_DISABLE_VECTOR
+        Number n(1);
+        if (num1.is_v())
+        {
+            for (std::size_t i = 0; i < num1.size(); ++i)
+            {
+                n *= pmp::sum(num1[i]);
+            }
+            return n;
+        }
+#endif
+        return num1;
+    }
+
+    inline Number average(const Number& num1)
+    {
+        Number n = pmp::sum(num1);
+        n += 0.0;
+        n /= pmp::count(num1);
+        return n;
+    }
+
+    #undef max
+    inline Number max(const Number& num1)
+    {
+#ifndef PMP_DISABLE_VECTOR
+        if (num1.is_v() && !num1.empty())
+        {
+            Number m = num1[0];
+            for (std::size_t i = 1; i < num1.size(); ++i)
+            {
+                if (m < num1[i])
+                    m = num1[i];
+            }
+            return m;
+        }
+#endif
+        return num1;
+    }
+
+    #undef min
+    inline Number min(const Number& num1)
+    {
+#ifndef PMP_DISABLE_VECTOR
+        if (num1.is_v() && !num1.empty())
+        {
+            Number m = num1[0];
+            for (std::size_t i = 1; i < num1.size(); ++i)
+            {
+                if (m > num1[i])
+                    m = num1[i];
+            }
+            return m;
+        }
+#endif
+        return num1;
+    }
+} // namespace pmp
 
 namespace std
 {

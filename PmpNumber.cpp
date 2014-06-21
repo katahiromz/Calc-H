@@ -61,16 +61,22 @@ namespace pmp
     Number& Number::operator+=(const Number& num)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (type() == Number::VECTOR)
+        if (is_v() || num.is_v())
         {
+            vector_type vec;
             for (std::size_t i = 0; i < size(); ++i)
             {
-                (*this)[i] += num;
+                for (std::size_t j = 0; j < num.size(); ++j)
+                {
+                    Number tmp((*this)[i]);
+                    tmp += num[j];
+                    vec.push_back(tmp);
+                }
             }
+            assign(vec);
             return *this;
         }
-        assert(num.type() != Number::VECTOR);
-#endif
+#endif  // ndef PMP_DISABLE_VECTOR
         integer_type    i;
         floating_type   f;
         rational_type   r;
@@ -167,15 +173,21 @@ namespace pmp
     Number& Number::operator-=(const Number& num)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (type() == Number::VECTOR)
+        if (is_v() || num.is_v())
         {
+            vector_type vec;
             for (std::size_t i = 0; i < size(); ++i)
             {
-                (*this)[i] -= num;
+                for (std::size_t j = 0; j < num.size(); ++j)
+                {
+                    Number tmp((*this)[i]);
+                    tmp -= num[j];
+                    vec.push_back(tmp);
+                }
             }
+            assign(vec);
             return *this;
         }
-        assert(num.type() != Number::VECTOR);
 #endif
         integer_type    i;
         floating_type   f;
@@ -273,15 +285,21 @@ namespace pmp
     Number& Number::operator*=(const Number& num)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (type() == Number::VECTOR)
+        if (is_v() || num.is_v())
         {
+            vector_type vec;
             for (std::size_t i = 0; i < size(); ++i)
             {
-                (*this)[i] *= num;
+                for (std::size_t j = 0; j < num.size(); ++j)
+                {
+                    Number tmp((*this)[i]);
+                    tmp *= num[j];
+                    vec.push_back(tmp);
+                }
             }
+            assign(vec);
             return *this;
         }
-        assert(num.type() != Number::VECTOR);
 #endif
         integer_type    i;
         floating_type   f;
@@ -379,15 +397,21 @@ namespace pmp
     Number& Number::operator/=(const Number& num)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (type() == Number::VECTOR)
+        if (is_v() || num.is_v())
         {
+            vector_type vec;
             for (std::size_t i = 0; i < size(); ++i)
             {
-                (*this)[i] /= num;
+                for (std::size_t j = 0; j < num.size(); ++j)
+                {
+                    Number tmp((*this)[i]);
+                    tmp /= num[j];
+                    vec.push_back(tmp);
+                }
             }
+            assign(vec);
             return *this;
         }
-        assert(num.type() != Number::VECTOR);
 #endif
         integer_type    i;
         floating_type   f;
@@ -512,15 +536,21 @@ namespace pmp
     Number& Number::operator%=(const Number& num)
     {
 #ifndef PMP_DISABLE_VECTOR
-        if (type() == Number::VECTOR)
+        if (is_v() || num.is_v())
         {
+            vector_type vec;
             for (std::size_t i = 0; i < size(); ++i)
             {
-                (*this)[i] %= num;
+                for (std::size_t j = 0; j < num.size(); ++j)
+                {
+                    Number tmp((*this)[i]);
+                    tmp %= num[j];
+                    vec.push_back(tmp);
+                }
             }
+            assign(vec);
             return *this;
         }
-        assert(num.type() != Number::VECTOR);
 #endif
         integer_type    i;
         floating_type   f;
@@ -814,6 +844,34 @@ namespace pmp
         }
     }
 
+#ifndef PMP_DISABLE_VECTOR
+    vector_type Number::to_v() const
+    {
+        vector_type vec;
+        switch (type())
+        {
+        case Number::INTEGER:
+            vec.push_back(*this);
+            break;
+
+        case Number::FLOATING:
+            vec.push_back(*this);
+            break;
+
+        case Number::RATIONAL:
+            vec.push_back(*this);
+            break;
+
+        case Number::VECTOR:
+            return get_v();
+
+        default:
+            assert(0);
+        }
+        return vec;
+    }
+#endif  // ndef PMP_DISABLE_VECTOR
+
     int Number::compare(const Number& num) const
     {
         floating_type f;
@@ -876,7 +934,7 @@ namespace pmp
 
 #ifndef PMP_DISABLE_VECTOR
         case Number::VECTOR:
-            if (num.type() == Number::VECTOR)
+            if (num.is_v())
             {
                 std::size_t siz;
                 if (size() < num.size())
@@ -912,26 +970,26 @@ namespace pmp
 
     void Number::trim()
     {
-        integer_type    i;
-        floating_type   f;
-        rational_type   r;
-
         switch (type())
         {
         case Number::INTEGER:
             break;
 
         case Number::FLOATING:
-            i = to_i();
-            f = static_cast<floating_type>(i);
-            if (f == get_f())
-                assign(i);
+            {
+                integer_type i = to_i();
+                floating_type f = static_cast<floating_type>(i);
+                if (f == get_f())
+                    assign(i);
+            }
             break;
 
         case Number::RATIONAL:
-            r = get_r();
-            if (b_mp::denominator(r) == 1)
-                assign(b_mp::numerator(r));
+            {
+                rational_type r = get_r();
+                if (b_mp::denominator(r) == 1)
+                    assign(b_mp::numerator(r));
+            }
             break;
 
 #ifndef PMP_DISABLE_VECTOR
