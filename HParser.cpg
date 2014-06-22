@@ -599,6 +599,7 @@ mono<Mono>
     | [DoMono68] suruto(0)              T_QUOT
     | [DoMono69] suruto(0) T_SORE T_NO9 T_AMARI
     | [DoMono69] suruto(0)              T_AMARI
+    | [DoMono77] suruto(0)              T_QUOT T_TO1 T_AMARI
     | [DoMono41] mono(0) T_NO5 T_TASARERU T_MONO
     | [DoMono42] mono(0) T_NO5 T_KAKERARERU T_MONO
     | [DoMono43] mono(0) T_NO5 T_HIKARERU T_MONO

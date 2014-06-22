@@ -4159,9 +4159,14 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         ChAnalyzeExprList(mono->m_exprlist);
         break;
 
-    case Mono::SHOU_TO_AMARI:
+    case Mono::MONO_SHOU_TO_AMARI:
         ChAnalyzeMono(mono->m_mono);
         ChAnalyzeMonoMonoShouToAmari(mono, mono->m_mono);
+        break;
+
+    case Mono::SURUTO_SHOU_TO_AMARI:
+        ChAnalyzeSuruto(mono->m_suruto);
+        ChAnalyzeMonoSurutoShouToAmari(mono, mono->m_suruto);
         break;
 
     default:

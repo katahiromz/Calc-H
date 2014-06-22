@@ -1376,8 +1376,19 @@ namespace Calc_H
                 std::cerr << "DoMono76" << std::endl;
             #endif
             Mono *m = new Mono;
-            m->m_type = Mono::SHOU_TO_AMARI;
+            m->m_type = Mono::MONO_SHOU_TO_AMARI;
             m->m_mono = mono;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono77(shared_ptr<Suruto>& suruto)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono77" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SURUTO_SHOU_TO_AMARI;
+            m->m_suruto = suruto;
             return shared_ptr<Mono>(m);
         }
 

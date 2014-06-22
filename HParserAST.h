@@ -125,8 +125,8 @@ namespace Calc_H
             SURUTO_AMARI, MONO_NO_AMARI, SORE_NO_AMARI,
             MONO_MOD_EXPR, EXPR_MOD_MONO, SHITE_MOD_EXPR, TERM_MOD_FACT,
             SHOUSUU, MONO_NO_SHOUSUU, EXPRLIST_VECFUNC,
-            SHOU_TO_AMARI, MONO_DIVMOD_EXPR, SHITE_DIVMOD_EXPR, EXPR_DIVMOD_MONO,
-            TERM_DIVMOD_FACT
+            MONO_SHOU_TO_AMARI, MONO_DIVMOD_EXPR, SHITE_DIVMOD_EXPR, EXPR_DIVMOD_MONO,
+            TERM_DIVMOD_FACT, SURUTO_SHOU_TO_AMARI
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
