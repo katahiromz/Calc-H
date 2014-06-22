@@ -302,6 +302,7 @@ namespace Calc_H
             if (lexeme("‚Ü‚¢‚È‚·‚µ"))                   return set_info(info, T_HIITE);
             if (lexeme("‚Ü‚¢‚È‚·‚³‚ê‚é"))               return set_info(info, T_HIKARERU);
             if (lexeme("‚Ü‚¢‚È‚·"))                     return set_info(info, T_MINUS);
+            if (lexeme("‚Ö‚¢‚Ù‚¤‚±‚ñ"))                 return set_info(info, T_HEIHOUKON);
             if (lexeme("‚Ö‚¢‚Ù‚¤"))                     return set_info(info, T_HEIHOU);
             if (lexeme("‚Ö‚¢‚«‚ñ‚¿"))                   return set_info(info, T_AVERAGE);
             if (lexeme("‚Ö‚¢‚«‚ñ"))                     return set_info(info, T_AVERAGE);
@@ -1211,6 +1212,7 @@ namespace Calc_H
                 case T_MAX:
                 case T_MIN:
                 case T_AVERAGE:
+                case T_HEIHOUKON:
                     if (no1 != std::string::npos)
                     {
                         (newinfos.begin() + no1)->set_token(T_NO2);
@@ -1462,16 +1464,17 @@ namespace Calc_H
                 case T_DIFF:
                 case T_HA:
                 case T_HEIHOU:
+                case T_HEIHOUKON:
                 case T_HIITE:
                 case T_HIKIZAN:
                 case T_HIKU:
                 case T_HIKUTO:
                 case T_IKURA:
-                case T_KANA:
                 case T_KAKERU:
                 case T_KAKERUTO:
                 case T_KAKETE:
                 case T_KAKEZAN:
+                case T_KANA:
                 case T_KARA:
                 case T_KEISAN:
                 case T_KOTAE:
@@ -1683,18 +1686,19 @@ namespace Calc_H
                     case T_BAI:
                     case T_DE:
                     case T_DIFF:
+                    case T_HEIHOUKON:
                     case T_HIITA:
                     case T_HIITE:
                     case T_HIKIZAN:
                     case T_HIKU:
                     case T_HIKUTO:
                     case T_IKURA:
-                    case T_KANA:
                     case T_KAKERU:
                     case T_KAKERUTO:
                     case T_KAKETA:
                     case T_KAKETE:
                     case T_KAKEZAN:
+                    case T_KANA:
                     case T_KARA:
                     case T_KEISAN:
                     case T_KOTAE:

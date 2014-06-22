@@ -590,6 +590,17 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
             return pmp::Number(vec);
         }
 
+    case Mono::MONO_HEIHOUKON:
+        {
+            pmp::vector_type vec;
+            v2 = ChCalcMono(mono->m_mono);
+            v1 = pmp::sqrt(v2);
+            vec.push_back(-v1);
+            vec.push_back(v1);
+            return pmp::Number(vec);
+        }
+        break;
+
     default:
         assert(0);
         return 0;
@@ -4159,6 +4170,10 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
     case Mono::SURUTO_SHOU_TO_AMARI:
         ChAnalyzeSuruto(mono->m_suruto);
         ChAnalyzeMonoSurutoShouToAmari(mono, mono->m_suruto);
+        break;
+
+    case Mono::MONO_HEIHOUKON:
+        ChAnalyzeMono(mono->m_mono);
         break;
 
     default:

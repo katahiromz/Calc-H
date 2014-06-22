@@ -46,6 +46,7 @@
 %token T_HA<TokenValue>;
 %token T_HACHI<TokenValue>;
 %token T_HEIHOU<TokenValue>;
+%token T_HEIHOUKON<TokenValue>;
 %token T_HIITA<TokenValue>;
 %token T_HIITE<TokenValue>;
 %token T_HIKARERU<TokenValue>;
@@ -492,6 +493,7 @@ mono<Mono>
     | [DoMono64] mono(0) T_NO4 T_WARIZAN
     | [DoMono64] mono(0) T_NO2 T_QUOT
     | [DoMono76] mono(0) T_NO2 T_QUOT T_TO1 T_AMARI
+    | [DoMono78] mono(0) T_NO2 T_HEIHOUKON
     | [DoMono9] mono(0) T_NO4 T_KEISAN T_WO2 T_SHITA T_MONO
     | [DoMono9] mono(0) T_NO4 T_KEISAN T_SHITA T_MONO
     | [DoMono9] mono(0) T_WO1 T_SHITA T_MONO
