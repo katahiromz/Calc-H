@@ -108,11 +108,11 @@ namespace Calc_H
             if (lexeme("\n"))
             {
                 newline();
-                return commit_token(T_PERIOD);
+                return set_info(info, T_PERIOD);
             }
 
-            if (!lexeme("Ç≈ÇÕÇø", false) && lexeme("Ç≈ÇÕ")) return (T_HA);
-            if (!lexeme("Ç…Ç¢Çø", false) && lexeme("Ç…Ç¢")) return (T_NI);
+            if (!lexeme("Ç≈ÇÕÇø", false) && lexeme("Ç≈ÇÕ")) return set_info(info, T_HA);
+            if (!lexeme("Ç…Ç¢Çø", false) && lexeme("Ç…Ç¢")) return set_info(info, T_NI);
 
             // ç≈í∑àÍívñ@ÅB
             // ÅyÇ±Ç±Ç©ÇÁÅzçsÇç~èáÇ…ï¿Ç—ë÷Ç¶ÇƒÇ®Ç≠ÅB

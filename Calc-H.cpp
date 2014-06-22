@@ -4743,7 +4743,7 @@ std::string ChGetJpnNumberFixed3(CH_Value num)
         str += ChGetJpnNumberFixed2(num[0]);
         for (std::size_t i = 1; i < num.size(); ++i)
         {
-            str += "A";
+            str += "‚ÆA";
             str += ChGetJpnNumberFixed2(num[i]);
         }
         return str;
