@@ -6,6 +6,7 @@ HWND        ch_hMainWnd = NULL;
 WNDPROC     ch_fnOldEditWndProc = NULL;
 MResizable  ch_resizable;
 HBRUSH      ch_hbrBack = NULL;
+bool        ch_is_running = false;
 
 std::vector<std::string> ch_history;
 std::size_t              ch_history_index = 0;
@@ -237,16 +238,20 @@ unsigned __stdcall CalcThreadProc(void *p)
         ::EndDialog(hwnd, IDCANCEL);
     }
 
+    ch_is_running = false;
+
     return 0;
 }
 
-BOOL ChOnOK(HWND hwnd)
+void ChOnOK(HWND hwnd)
 {
+    if (ch_is_running)
+        return;
+
+    ch_is_running = true;
     HANDLE hCalcThread = reinterpret_cast<HANDLE>(
         _beginthreadex(NULL, 0, CalcThreadProc, hwnd, 0, NULL));
     ::CloseHandle(hCalcThread);
-
-    return TRUE;
 }
 
 void ChOnSize(HWND hwnd)
