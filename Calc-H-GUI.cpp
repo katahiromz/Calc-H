@@ -170,6 +170,8 @@ BOOL ChOnInitDialog(HWND hwnd)
             ::GetSystemMetrics(SM_CYSMICON), 0));
     ::SendMessageA(hwnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(hIcon));
 
+    ::SendDlgItemMessageA(hwnd, edt2, EM_SETLIMITTEXT, 1000, 0);
+
     HWND hwndEdt2 = ::GetDlgItem(hwnd, edt2);
     ch_fnOldEditWndProc =
         reinterpret_cast<WNDPROC>(
@@ -186,13 +188,28 @@ BOOL ChOnInitDialog(HWND hwnd)
     return FALSE;
 }
 
-BOOL ChOnOK(HWND hwnd)
+void ChOnExit(HWND hwnd)
 {
+    ::DeleteObject(ch_hbrBack);
+    ch_hbrBack = NULL;
+
+    HWND hwndEdt2 = ::GetDlgItem(hwnd, edt2);
+    ::SetWindowLongPtr(hwndEdt2, GWLP_WNDPROC,
+                       reinterpret_cast<LONG_PTR>(ch_fnOldEditWndProc));
+    ch_fnOldEditWndProc = NULL;
+}
+
+unsigned __stdcall CalcThreadProc(void *p)
+{
+    HWND hwnd = reinterpret_cast<HWND>(p);
+    ::EnableWindow(::GetDlgItem(hwnd, IDOK), FALSE);
+
     CHAR buffer[1024];
     ::GetDlgItemTextA(hwnd, edt2, buffer, 1024);
+    ::SetDlgItemTextA(hwnd, edt2, "ŒvŽZ’†‚Å‚·...");
+    ::EnableWindow(::GetDlgItem(hwnd, edt2), FALSE);
 
     std::string str(buffer);
-
     std::string query = str;
     CrTrimString(query);
     if (query.empty())
@@ -210,10 +227,24 @@ BOOL ChOnOK(HWND hwnd)
     contents += '\n';
     ChAddOutput(hwnd, contents.c_str());
 
-    if (result.find("‚µ‚ã‚¤‚è‚å‚¤‚µ‚Ü‚·") != std::string::npos)
-        return FALSE;
-
     ::SetDlgItemTextA(hwnd, edt2, NULL);
+    ::EnableWindow(::GetDlgItem(hwnd, edt2), TRUE);
+    ::EnableWindow(::GetDlgItem(hwnd, IDOK), TRUE);
+
+    if (result.find("‚µ‚ã‚¤‚è‚å‚¤‚µ‚Ü‚·") != std::string::npos)
+    {
+        ChOnExit(hwnd);
+        ::EndDialog(hwnd, IDCANCEL);
+    }
+
+    return 0;
+}
+
+BOOL ChOnOK(HWND hwnd)
+{
+    HANDLE hCalcThread = reinterpret_cast<HANDLE>(
+        _beginthreadex(NULL, 0, CalcThreadProc, hwnd, 0, NULL));
+    ::CloseHandle(hCalcThread);
 
     return TRUE;
 }
@@ -221,17 +252,6 @@ BOOL ChOnOK(HWND hwnd)
 void ChOnSize(HWND hwnd)
 {
     ch_resizable.OnSize();
-}
-
-void ChOnExit(HWND hwnd)
-{
-    ::DeleteObject(ch_hbrBack);
-    ch_hbrBack = NULL;
-
-    HWND hwndEdt2 = ::GetDlgItem(hwnd, edt2);
-    ::SetWindowLongPtr(hwndEdt2, GWLP_WNDPROC,
-                       reinterpret_cast<LONG_PTR>(ch_fnOldEditWndProc));
-    ch_fnOldEditWndProc = NULL;
 }
 
 extern "C"
@@ -255,11 +275,7 @@ ChDialogProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         switch (LOWORD(wParam))
         {
         case IDOK:
-            if (!ChOnOK(hwnd))
-            {
-                ChOnExit(hwnd);
-                ::EndDialog(hwnd, IDOK);
-            }
+            ChOnOK(hwnd);
             break;
 
         case IDCANCEL:

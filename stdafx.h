@@ -8,7 +8,8 @@
 #include <cassert>  // for assert
 
 #ifdef _WIN32
-	#include <windows.h>
+    #include <windows.h>
+    #include <process.h>
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
