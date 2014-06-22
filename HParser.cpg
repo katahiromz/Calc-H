@@ -613,6 +613,7 @@ mono<Mono>
     | [DoMono70] mono(0) T_NO9 T_AMARI
     | [DoMono9] mono(0) T_NO4 T_KOTAE
     | [DoMono74] mono(0) T_WO1 T_SHOUSUU T_NI T_SHITA T_MONO
+    | [DoMono71] T_AMARI
     ;
 
 expression_list<ExprList>

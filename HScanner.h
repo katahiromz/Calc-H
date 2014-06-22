@@ -522,7 +522,6 @@ namespace Calc_H
             if (lexeme("‚»‚â‚Â"))                       return set_info(info, T_SORE);
             if (lexeme("‚»‚Ì‚Æ‚«"))                     return set_info(info, T_SURUTO);
             if (lexeme("‚»‚Ì‚±‚½‚¦"))                   return set_info(info, T_KOTAE);
-            if (lexeme("‚»‚Ì‚ ‚Ü‚è"))                   return set_info(info, T_AMARI);
             if (lexeme("‚»‚Ì"))                         return set_info(info, T_SONO);
             if (lexeme("‚»‚¤‚«‚å‚­‚¹‚ñ"))               return set_info(info, T_HYPERBOLIC);
             if (lexeme("‚»‚¢‚Â"))                       return set_info(info, T_SORE);
