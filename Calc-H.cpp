@@ -288,68 +288,9 @@ CH_Value ChCalcExpr(const shared_ptr<Expr>& expr)
     }
 }
 
-CH_Value ChAddExprList(const shared_ptr<ExprList>& exprlist)
-{
-    CH_Value value = 0;
-    assert(exprlist.get());
-    ExprList *el = exprlist.get();
-    ExprList::iterator it = el->begin();
-    ExprList::iterator end = el->end();
-    for (; it != end; ++it)
-    {
-        value += ChCalcExpr(*it);
-    }
-    return value;
-}
-
-CH_Value ChMulExprList(const shared_ptr<ExprList>& exprlist)
-{
-    CH_Value value = 1;
-    assert(exprlist.get());
-    ExprList *el = exprlist.get();
-    ExprList::iterator it = el->begin();
-    ExprList::iterator end = el->end();
-    for (; it != end; ++it)
-    {
-        value *= ChCalcExpr(*it);
-    }
-    return value;
-}
-
-CH_Value ChSubExprList(const shared_ptr<ExprList>& exprlist)
-{
-    assert(exprlist.get());
-    ExprList *el = exprlist.get();
-    if (el->size() >= 3)
-        Calc_H::s_message = "三つ以上の対象がある差は求められません。";
-    ExprList::iterator it = el->begin();
-    ExprList::iterator end = el->end();
-    CH_Value value = ChCalcExpr(*it);
-    for (++it; it != end; ++it)
-    {
-        value -= ChCalcExpr(*it);
-    }
-    return value;
-}
-
-CH_Value ChDivExprList(const shared_ptr<ExprList>& exprlist)
-{
-    assert(exprlist.get());
-    ExprList *el = exprlist.get();
-    if (el->size() >= 3)
-        Calc_H::s_message = "三つ以上の対象がある商は求められません。";
-    ExprList::iterator it = el->begin();
-    ExprList::iterator end = el->end();
-    CH_Value value = ChCalcExpr(*it);
-    for (++it; it != end; ++it)
-    {
-        value /= ChCalcExpr(*it);
-    }
-    return value;
-}
-
 void ChNumberFromExprList(pmp::Number& num, shared_ptr<ExprList>& exprlist)
 {
+    assert(exprlist);
     pmp::vector_type vec;
     ExprList *el = exprlist.get();
     for (std::size_t i = 0; i < el->size(); ++i)
@@ -363,16 +304,20 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
     switch (mono->m_type)
     {
     case Mono::EXPRLIST_ADD:
-        return ChAddExprList(mono->m_exprlist);
+        ChNumberFromExprList(v1, mono->m_exprlist);
+        return pmp::sum(v1);
 
     case Mono::EXPRLIST_MUL:
-        return ChMulExprList(mono->m_exprlist);
+        ChNumberFromExprList(v1, mono->m_exprlist);
+        return pmp::prod(v1);
 
     case Mono::EXPRLIST_SUB:
-        return ChSubExprList(mono->m_exprlist);
+        ChNumberFromExprList(v1, mono->m_exprlist);
+        return pmp::diff(v1);
 
     case Mono::EXPRLIST_DIV:
-        return ChDivExprList(mono->m_exprlist);
+        ChNumberFromExprList(v1, mono->m_exprlist);
+        return pmp::quot(v1);
 
     case Mono::MONO_ADD:
         return ChCalcMono(mono->m_mono) + ChCalcExpr(mono->m_expr);
@@ -423,10 +368,12 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
         return s_sore;
 
     case Mono::MONO_TO_EXPRLIST_ADD:
-        return ChCalcMono(mono->m_mono) + ChAddExprList(mono->m_exprlist);
+        ChNumberFromExprList(v1, mono->m_exprlist);
+        return ChCalcMono(mono->m_mono) + pmp::sum(v1);
 
     case Mono::MONO_TO_EXPRLIST_MUL:
-        return ChCalcMono(mono->m_mono) * ChMulExprList(mono->m_exprlist);
+        ChNumberFromExprList(v1, mono->m_exprlist);
+        return ChCalcMono(mono->m_mono) * pmp::prod(v1);
         
     case Mono::MONO_TO_EXPR_ADD:
         return ChCalcMono(mono->m_mono) + ChCalcExpr(mono->m_expr);
@@ -615,10 +562,12 @@ CH_Value ChCalcShite(const shared_ptr<Shite>& shite)
     switch (shite->m_type)
     {
     case Shite::EXPRLIST_ADD:
-        return ChAddExprList(shite->m_exprlist);
+        ChNumberFromExprList(v1, shite->m_exprlist);
+        return pmp::sum(v1);
 
     case Shite::EXPRLIST_MUL:
-        return ChMulExprList(shite->m_exprlist);
+        ChNumberFromExprList(v1, shite->m_exprlist);
+        return pmp::prod(v1);
 
     case Shite::MONO_ADD:
         return ChCalcMono(shite->m_mono) + ChCalcExpr(shite->m_expr);
@@ -689,10 +638,12 @@ CH_Value ChCalcSuruto(const shared_ptr<Suruto>& suruto)
     switch (suruto->m_type)
     {
     case Suruto::EXPRLIST_ADD:
-        return ChAddExprList(suruto->m_exprlist);
+        ChNumberFromExprList(v1, suruto->m_exprlist);
+        return pmp::sum(v1);
 
     case Suruto::EXPRLIST_MUL:
-        return ChMulExprList(suruto->m_exprlist);
+        ChNumberFromExprList(v1, suruto->m_exprlist);
+        return pmp::prod(v1);
 
     case Suruto::MONO_ADD:
         return ChCalcMono(suruto->m_mono) + ChCalcExpr(suruto->m_expr);
@@ -764,6 +715,7 @@ CH_Value ChCalcSuruto(const shared_ptr<Suruto>& suruto)
 
 CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
 {
+    CH_Value v1;
     switch (sentence->m_type)
     {
     case Sentence::MONO:
@@ -782,10 +734,12 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
         return s_sore;
 
     case Sentence::EXPRLIST_ADD:
-        return ChAddExprList(sentence->m_exprlist);
+        ChNumberFromExprList(v1, sentence->m_exprlist);
+        return pmp::sum(v1);
 
     case Sentence::EXPRLIST_MUL:
-        return ChMulExprList(sentence->m_exprlist);
+        ChNumberFromExprList(v1, sentence->m_exprlist);
+        return pmp::prod(v1);
 
     case Sentence::SHITE:
         return ChCalcShite(sentence->m_shite);

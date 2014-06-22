@@ -1099,6 +1099,7 @@ namespace pmp
         return num1;
     }
 
+    // product
     inline Number prod(const Number& num1)
     {
 #ifndef PMP_DISABLE_VECTOR
@@ -1107,7 +1108,43 @@ namespace pmp
         {
             for (std::size_t i = 0; i < num1.size(); ++i)
             {
-                n *= pmp::sum(num1[i]);
+                n *= pmp::prod(num1[i]);
+            }
+            return n;
+        }
+#endif
+        return num1;
+    }
+
+    // difference
+    inline Number diff(const Number& num1)
+    {
+#ifndef PMP_DISABLE_VECTOR
+        Number n;
+        if (num1.is_v())
+        {
+            n = num1[0];
+            for (std::size_t i = 1; i < num1.size(); ++i)
+            {
+                n -= num1[i];
+            }
+            return n;
+        }
+#endif
+        return num1;
+    }
+
+    // quotient
+    inline Number quot(const Number& num1)
+    {
+#ifndef PMP_DISABLE_VECTOR
+        Number n;
+        if (num1.is_v())
+        {
+            n = num1[0];
+            for (std::size_t i = 1; i < num1.size(); ++i)
+            {
+                n /= num1[i];
             }
             return n;
         }
