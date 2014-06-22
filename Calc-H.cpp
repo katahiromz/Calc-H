@@ -555,9 +555,7 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
             pmp::vector_type vec;
             v1 = ChCalcMono(mono->m_mono);
             v2 = ChCalcExpr(mono->m_expr);
-            pmp::Number::Type type_old = pmp::SetIntDivType(pmp::Number::INTEGER);
-            vec.push_back(v1 / v2);
-            pmp::SetIntDivType(type_old);
+            vec.push_back((v1 / v2).to_i());
             vec.push_back(v1 % v2);
             return pmp::Number(vec);
         }
@@ -567,9 +565,7 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
             pmp::vector_type vec;
             v1 = ChCalcShite(mono->m_shite);
             v2 = ChCalcExpr(mono->m_expr);
-            pmp::Number::Type type_old = pmp::SetIntDivType(pmp::Number::INTEGER);
-            vec.push_back(v1 / v2);
-            pmp::SetIntDivType(type_old);
+            vec.push_back((v1 / v2).to_i());
             vec.push_back(v1 % v2);
             return pmp::Number(vec);
         }
@@ -579,9 +575,7 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
             pmp::vector_type vec;
             v1 = ChCalcExpr(mono->m_expr);
             v2 = ChCalcMono(mono->m_mono);
-            pmp::Number::Type type_old = pmp::SetIntDivType(pmp::Number::INTEGER);
-            vec.push_back(v1 / v2);
-            pmp::SetIntDivType(type_old);
+            vec.push_back((v1 / v2).to_i());
             vec.push_back(v1 % v2);
             return pmp::Number(vec);
         }
@@ -591,9 +585,7 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
             pmp::vector_type vec;
             v1 = ChCalcTerm(mono->m_term);
             v2 = ChCalcFact(mono->m_fact);
-            pmp::Number::Type type_old = pmp::SetIntDivType(pmp::Number::INTEGER);
-            vec.push_back(v1 / v2);
-            pmp::SetIntDivType(type_old);
+            vec.push_back((v1 / v2).to_i());
             vec.push_back(v1 % v2);
             return pmp::Number(vec);
         }
