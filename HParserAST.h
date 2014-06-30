@@ -143,7 +143,7 @@ namespace Calc_H
     struct Expr : Node
     {
         enum {
-            ADD, SUB, TERM_ONLY
+            ADD, SUB, TERM_ONLY, ZERO
         } m_type;
         shared_ptr<Expr>    m_expr;
         shared_ptr<Term>    m_term;

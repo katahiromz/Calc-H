@@ -282,6 +282,9 @@ CH_Value ChCalcExpr(const shared_ptr<Expr>& expr)
     case Expr::TERM_ONLY:
         return ChCalcTerm(expr->m_term);
 
+    case Expr::ZERO:
+        return 0;
+
     default:
         assert(0);
         return 0;
@@ -1419,6 +1422,7 @@ void ChAnalyzeMonoExprKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
     {
     case Expr::ADD:
     case Expr::SUB:
+    case Expr::ZERO:
         Calc_H::s_message = ch_not_kakezan;
         break;
 
@@ -1435,6 +1439,7 @@ void ChAnalyzeMonoExprHikukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
     switch (expr->m_type)
     {
     case Expr::ADD:
+    case Expr::ZERO:
         Calc_H::s_message = ch_not_hikizan;
         break;
 
@@ -1459,6 +1464,7 @@ void ChAnalyzeMonoExprWarukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
     {
     case Expr::ADD:
     case Expr::SUB:
+    case Expr::ZERO:
         Calc_H::s_message = ch_not_kakezan;
         break;
 
@@ -1504,6 +1510,7 @@ void ChAnalyzeMonoExprTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& exp
 
     case Expr::SUB:
     case Expr::TERM_ONLY:
+    case Expr::ZERO:
         Calc_H::s_message = ch_not_tashizan;
         break;
     }
@@ -1536,6 +1543,7 @@ void ChAnalyzeMonoExprKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& e
     {
     case Expr::ADD:
     case Expr::SUB:
+    case Expr::ZERO:
         Calc_H::s_message = ch_not_kakezan;
         break;
 
@@ -1561,6 +1569,7 @@ void ChAnalyzeMonoExprHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& exp
 
     case Expr::ADD:
     case Expr::TERM_ONLY:
+    case Expr::ZERO:
         Calc_H::s_message = ch_not_hikizan;
         break;
     }
@@ -1573,6 +1582,7 @@ void ChAnalyzeMonoExprWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& exp
     {
     case Expr::ADD:
     case Expr::SUB:
+    case Expr::ZERO:
         Calc_H::s_message = ch_not_warizan;
         break;
 
@@ -2805,6 +2815,7 @@ bool ChIsExprTashizan(shared_ptr<Expr>& expr)
         return true;
 
     case Expr::SUB:
+    case Expr::ZERO:
         return false;
 
     case Expr::TERM_ONLY:
@@ -2821,6 +2832,7 @@ bool ChIsExprKakezan(shared_ptr<Expr>& expr)
     {
     case Expr::ADD:
     case Expr::SUB:
+    case Expr::ZERO:
         return false;
 
     case Expr::TERM_ONLY:
@@ -2836,6 +2848,7 @@ bool ChIsExprHikizan(shared_ptr<Expr>& expr)
     switch (expr->m_type)
     {
     case Expr::ADD:
+    case Expr::ZERO:
         return false;
 
     case Expr::SUB:
@@ -2855,6 +2868,7 @@ bool ChIsExprWarizan(shared_ptr<Expr>& expr)
     {
     case Expr::ADD:
     case Expr::SUB:
+    case Expr::ZERO:
         return false;
 
     case Expr::TERM_ONLY:
