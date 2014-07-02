@@ -152,9 +152,6 @@ BOOL ChOnInitDialog(HWND hwnd)
     contents += ch_logo;
     contents += "\n";
     ChAddOutput(hwnd, contents.c_str());
-    contents = ch_comment;
-    contents += "\n\n";
-    ChAddOutput(hwnd, contents.c_str());
 
     ch_resizable.OnParentCreate(hwnd, TRUE);
     ch_resizable.SetLayoutAnchor(edt1, mzcLA_TOP_LEFT, mzcLA_BOTTOM_RIGHT);

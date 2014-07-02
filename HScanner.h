@@ -113,6 +113,9 @@ namespace Calc_H
 
             if (!lexeme("‚Å‚Í‚¿", false) && lexeme("‚Å‚Í")) return set_info(info, T_HA);
             if (!lexeme("‚É‚¢‚¿", false) && lexeme("‚É‚¢")) return set_info(info, T_NI);
+            if (!lexeme("‚ð‚È‚È", false) && lexeme("‚ð‚È")) return set_info(info, T_WO1);
+            if (!lexeme("‚É‚È‚È", false) && lexeme("‚É‚È")) return set_info(info, T_NI);
+            if (!lexeme("‚Ì‚È‚È", false) && lexeme("‚Ì‚È")) return set_info(info, T_NO1);
 
             // Å’·ˆê’v–@B
             // y‚±‚±‚©‚çzs‚ð~‡‚É•À‚Ñ‘Ö‚¦‚Ä‚¨‚­B
@@ -148,7 +151,7 @@ namespace Calc_H
             if (lexeme("j"))                           return set_info(info, T_R_PAREN);
             if (lexeme("i"))                           return set_info(info, T_L_PAREN);
             if (lexeme("“"))                           return set_info(info, T_PERCENT);
-            if (lexeme("I"))                           return set_info(info, T_PERIOD);
+            if (lexeme("I"))                           return set_info(info, T_FACTORIAL);
             if (lexeme("—ë"))                           return set_info(info, T_ZERO);
             if (lexeme("—¤"))                           return set_info(info, T_ROKU);
             if (lexeme("ˆ¢‘mâL"))                       return set_info(info, T_ASOUGI);
@@ -194,6 +197,7 @@ namespace Calc_H
             if (lexeme("‚ñ‚â"))                         return set_info(info, T_KANA);
             if (lexeme("‚ð‚í‚é‚±‚Æ‚Ì"))                 return set_info(info, T_WARU);
             if (lexeme("‚ð‚Ð‚­‚±‚Æ‚Ì"))                 return set_info(info, T_HIKU);
+            if (lexeme("‚ð‚Ë"))                         return set_info(info, T_WO1);
             if (lexeme("‚ð"))                           return set_info(info, T_WO1);
             if (lexeme("‚í‚ê‚æ"))                       return set_info(info, T_WARUTO);
             if (lexeme("‚í‚ê‚â"))                       return set_info(info, T_WARUTO);
@@ -220,11 +224,12 @@ namespace Calc_H
             if (lexeme("‚í‚©‚é"))                       return set_info(info, T_WAKARAN);
             if (lexeme("‚í‚©‚è‚Ü‚¹‚ñ"))                 return set_info(info, T_WAKARAN);
             if (lexeme("‚í‚©‚è‚Ü‚·"))                   return set_info(info, T_WAKARAN);
-            if (lexeme("‚í‚©‚ç‚ñ‚Æ‚æ"))                 return set_info(info, T_WAKARAN);
+            if (lexeme("‚í‚©‚ç‚ñ‚Ì"))                   return set_info(info, T_WAKARAN);
+            if (lexeme("‚í‚©‚ç‚ñ‚Æ"))                   return set_info(info, T_WAKARAN);
             if (lexeme("‚í‚©‚ç‚ñ"))                     return set_info(info, T_WAKARAN);
-            if (lexeme("‚í‚©‚ç‚È‚¢‚æ["))               return set_info(info, T_WAKARAN);
-            if (lexeme("‚í‚©‚ç‚È‚¢‚æ‚¨"))               return set_info(info, T_WAKARAN);
-            if (lexeme("‚í‚©‚ç‚È‚¢‚æ"))                 return set_info(info, T_WAKARAN);
+            if (lexeme("‚í‚©‚ç‚Ö‚ñ‚Ì"))                 return set_info(info, T_WAKARAN);
+            if (lexeme("‚í‚©‚ç‚Ö‚ñ"))                   return set_info(info, T_WAKARAN);
+            if (lexeme("‚í‚©‚ç‚È‚¢‚Ì"))                 return set_info(info, T_WAKARAN);
             if (lexeme("‚í‚©‚ç‚È‚¢"))                   return set_info(info, T_WAKARAN);
             if (lexeme("‚í"))                           return set_info(info, T_SUM);
             if (lexeme("‚ë‚Á"))                         return set_info(info, T_ROKU);
@@ -362,6 +367,7 @@ namespace Calc_H
             if (lexeme("‚Í‚¢‚Ï‚Ú‚è‚Á‚­"))               return set_info(info, T_HYPERBOLIC);
             if (lexeme("‚Í"))                           return set_info(info, T_HA);
             if (lexeme("‚Ì‚â"))                         return set_info(info, T_KANA);
+            if (lexeme("‚Ì‚Ë"))                         return set_info(info, T_NO1);
             if (lexeme("‚Ì‚È‚©‚Å"))                     return set_info(info, T_NOUCHI);
             if (lexeme("‚Ì‚¤‚¿‚Å"))                     return set_info(info, T_NOUCHI);
             if (lexeme("‚Ì‚¤‚¿"))                       return set_info(info, T_NOUCHI);
@@ -370,6 +376,7 @@ namespace Calc_H
             if (lexeme("‚Ë‚¢‚Ò‚ ‚·‚¤"))                 return set_info(info, T_E);
             if (lexeme("‚Ë"))                           return set_info(info, T_KANA);
             if (lexeme("‚É["))                         return set_info(info, T_NI);
+            if (lexeme("‚É‚Ë"))                         return set_info(info, T_NI);
             if (lexeme("‚É‚½‚·‚±‚Æ‚Ì"))                 return set_info(info, T_TASU);
             if (lexeme("‚É‚­‚í‚¦‚é‚±‚Æ‚Ì"))             return set_info(info, T_TASU);
             if (lexeme("‚É‚©‚¯‚é‚±‚Æ‚Ì"))               return set_info(info, T_KAKERU);
@@ -766,6 +773,7 @@ namespace Calc_H
             if (lexeme("‚©‚¯‚ ‚í‚µ‚½‚Æ‚«"))             return set_info(info, T_KAKERUTO);
             if (lexeme("‚©‚¯‚ ‚í‚³‚ê‚é"))               return set_info(info, T_KAKERARERU);
             if (lexeme("‚©‚¯"))                         return set_info(info, T_KAKERU);
+            if (lexeme("‚©‚¢‚¶‚å‚¤"))                   return set_info(info, T_KAIJOU);
             if (lexeme("‚©‚¢"))                         return set_info(info, T_KANA);
             if (lexeme("‚©‚ "))                         return set_info(info, T_KANA);
             if (lexeme("‚©‚Ÿ"))                         return set_info(info, T_KANA);
@@ -892,7 +900,7 @@ namespace Calc_H
             if (lexeme(")"))                            return set_info(info, T_R_PAREN);
             if (lexeme("("))                            return set_info(info, T_L_PAREN);
             if (lexeme("%"))                            return set_info(info, T_PERCENT);
-            if (lexeme("!"))                            return set_info(info, T_PERIOD);
+            if (lexeme("!"))                            return set_info(info, T_FACTORIAL);
             // y‚±‚±‚Ü‚Åzs‚ð~‡‚É•À‚Ñ‘Ö‚¦‚Ä‚¨‚­B
 
             char ch = getch();
@@ -1213,6 +1221,7 @@ namespace Calc_H
                 case T_MIN:
                 case T_AVERAGE:
                 case T_HEIHOUKON:
+                case T_KAIJOU:
                     if (no1 != std::string::npos)
                     {
                         (newinfos.begin() + no1)->set_token(T_NO2);
@@ -1465,6 +1474,7 @@ namespace Calc_H
                 case T_HA:
                 case T_HEIHOU:
                 case T_HEIHOUKON:
+                case T_KAIJOU:
                 case T_HIITE:
                 case T_HIKIZAN:
                 case T_HIKU:
@@ -1687,6 +1697,7 @@ namespace Calc_H
                     case T_DE:
                     case T_DIFF:
                     case T_HEIHOUKON:
+                    case T_KAIJOU:
                     case T_HIITA:
                     case T_HIITE:
                     case T_HIKIZAN:

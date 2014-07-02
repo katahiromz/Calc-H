@@ -127,7 +127,7 @@ namespace Calc_H
             SHOUSUU, MONO_NO_SHOUSUU, EXPRLIST_VECFUNC,
             MONO_SHOU_TO_AMARI, MONO_DIVMOD_EXPR, SHITE_DIVMOD_EXPR, EXPR_DIVMOD_MONO,
             TERM_DIVMOD_FACT, SURUTO_SHOU_TO_AMARI,
-            MONO_HEIHOUKON
+            MONO_HEIHOUKON, MONO_KAIJOU
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
@@ -162,7 +162,7 @@ namespace Calc_H
     {
         enum {
             MONO, MINUS, NUM, BUNSUU, TAIBUNSUU, FUNC1ARG, DO,
-            PI, E, FUNC1ARG_HEIHOU, FUNC1ARG_RIPPOU, FUNC1ARG_JOU
+            PI, E, FUNC1ARG_HEIHOU, FUNC1ARG_RIPPOU, FUNC1ARG_JOU, FACTORIAL
         } m_type;
         shared_ptr<Expr>        m_expr;
         shared_ptr<Prim>        m_prim;
@@ -175,7 +175,7 @@ namespace Calc_H
     struct Fact : Node
     {
         enum {
-            POW, POW2, POW3, SINGLE
+            POW, POW2, POW3, KAIJOU, SINGLE
         } m_type;
         shared_ptr<Fact>    m_fact;
         shared_ptr<Prim>    m_prim;

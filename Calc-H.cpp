@@ -58,6 +58,16 @@ CH_Value ChInverse(const CH_Value& value)
     return result;
 }
 
+CH_Value ChCalcFactorial(const pmp::integer_type& value)
+{
+    pmp::integer_type i(1), result(1);
+    for (; i <= value; ++i)
+    {
+        result *= i;
+    }
+    return result;
+}
+
 CH_Value ChCalcExpr(const shared_ptr<Expr>& expr);
 CH_Value ChCalcMono(const shared_ptr<Mono>& mono);
 CH_Value ChCalcFact(const shared_ptr<Fact>& fact);
@@ -92,7 +102,7 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
                 return 0;
             if (denom.is_zero())
             {
-                Calc_H::s_message = "分母がゼロになったので計算できません。";
+                Calc_H::s_message = "ぶんぼがぜろになのでけいさんできません。";
                 return 0;
             }
             if (num.is_i() && denom.is_i())
@@ -110,7 +120,7 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
                 return seisuu;
             if (denom.is_zero())
             {
-                Calc_H::s_message = "分母がゼロになったので計算できません。";
+                Calc_H::s_message = "ぶんぼがぜろになのでけいさんできません。";
                 return 0;
             }
             if (num.is_i() && denom.is_i())
@@ -209,6 +219,21 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
     case Prim::E:
         return pmp::exp(1);
 
+    case Prim::FACTORIAL:
+        {
+            CH_Value value = ChCalcPrim(prim->m_prim);
+            value.trim();
+            if (value.is_i() && value.get_i() >= 0)
+            {
+                return ChCalcFactorial(value.get_i());
+            }
+            else
+            {
+                Calc_H::s_message = "かいじょうがけいさんできるのはしぜんすうのみです。";
+                return 0;
+            }
+        }
+
     default:
         assert(0);
         return 0;
@@ -239,6 +264,16 @@ CH_Value ChCalcFact(const shared_ptr<Fact>& fact)
         {
             CH_Value value = ChCalcFact(fact->m_fact);
             return value * value * value;
+        }
+
+    case Fact::KAIJOU:
+        {
+            CH_Value value = ChCalcFact(fact->m_fact);
+            if (value.is_i() && value.get_i() >= 0)
+                value = ChCalcFactorial(value.get_i());
+            else
+                Calc_H::s_message = "かいじょうがけいさんできるのはしぜんすうのみです。";
+            return value;
         }
 
     case Fact::SINGLE:
@@ -602,7 +637,15 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
             vec.push_back(v1);
             return pmp::Number(vec);
         }
-        break;
+
+    case Mono::MONO_KAIJOU:
+        v1 = ChCalcMono(mono->m_mono);
+        v1.trim();
+        if (v1.is_i() && v1.get_i() >= 0)
+            v2 = ChCalcFactorial(v1.get_i());
+        else
+            Calc_H::s_message = "かいじょうがけいさんできるのはしぜんすうのみです。";
+        return v2;
 
     default:
         assert(0);
@@ -4187,6 +4230,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         break;
 
     case Mono::MONO_HEIHOUKON:
+    case Mono::MONO_KAIJOU:
         ChAnalyzeMono(mono->m_mono);
         break;
 
@@ -4226,6 +4270,7 @@ void ChAnalyzePrim(shared_ptr<Prim>& prim)
     case Prim::FUNC1ARG_HEIHOU:
     case Prim::FUNC1ARG_RIPPOU:
     case Prim::FUNC1ARG_JOU:
+    case Prim::FACTORIAL:
         ChAnalyzePrim(prim->m_prim);
         break;
 
@@ -4245,6 +4290,7 @@ void ChAnalyzeFact(shared_ptr<Fact>& fact)
 
     case Fact::POW2:
     case Fact::POW3:
+    case Fact::KAIJOU:
         ChAnalyzeFact(fact->m_fact);
         break;
 
@@ -4324,6 +4370,9 @@ void ChAnalyzeExpr(shared_ptr<Expr>& expr)
 
     case Expr::TERM_ONLY:
         ChAnalyzeTerm(expr->m_term);
+        break;
+
+    case Expr::ZERO:
         break;
     }
 }
@@ -4704,15 +4753,15 @@ std::string ChGetJpnNumberBunsuu(CH_Value num)
 {
     // bunsuu is fraction
     std::string str;
-    pmp::Number bunshi = pmp::numerator(num);
-    pmp::Number bunbo = pmp::denominator(num);
+    CH_Value bunshi = pmp::numerator(num);
+    CH_Value bunbo = pmp::denominator(num);
     bool minus = false;
     if (bunshi.sign() < 0)
     {
         minus = true;
         bunshi = -bunshi;
     }
-    pmp::Number seisuu(0);
+    CH_Value seisuu(0);
     if (bunshi >= bunbo)
     {
         pmp::Number::Type old_type = pmp::SetIntDivType(pmp::Number::INTEGER);

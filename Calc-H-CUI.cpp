@@ -12,8 +12,6 @@ int main(int argc, char **argv)
 
     if (argc <= 1)
     {
-        std::cerr << ch_comment << std::endl << std::endl;
-
         std::cerr << "「exit」か「おわる」でしゅうりょうできます。" << std::endl;
         std::cerr << std::endl;
 

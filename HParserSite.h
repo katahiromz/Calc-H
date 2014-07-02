@@ -1403,6 +1403,17 @@ namespace Calc_H
             return shared_ptr<Mono>(m);
         }
 
+        shared_ptr<Mono> DoMono79(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono79" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_KAIJOU;
+            m->m_mono = mono;
+            return shared_ptr<Mono>(m);
+        }
+
         shared_ptr<Expr> DoExpr1(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG
@@ -1538,6 +1549,17 @@ namespace Calc_H
             #endif
             Fact *f = new Fact;
             f->m_type = Fact::POW3;
+            f->m_fact = fact;
+            return shared_ptr<Fact>(f);
+        }
+
+        shared_ptr<Fact> DoFact5(shared_ptr<Fact>& fact)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFact5" << std::endl;
+            #endif
+            Fact *f = new Fact;
+            f->m_type = Fact::KAIJOU;
             f->m_fact = fact;
             return shared_ptr<Fact>(f);
         }
@@ -1682,6 +1704,17 @@ namespace Calc_H
             Prim *p = new Prim;
             p->m_type = Prim::FUNC1ARG_RIPPOU;
             p->m_func1arg = func1arg;
+            p->m_prim = prim;
+            return shared_ptr<Prim>(p);
+        }
+
+        shared_ptr<Prim> DoPrim13(shared_ptr<Prim>& prim)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrim13" << std::endl;
+            #endif
+            Prim *p = new Prim;
+            p->m_type = Prim::FACTORIAL;
             p->m_prim = prim;
             return shared_ptr<Prim>(p);
         }
