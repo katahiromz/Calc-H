@@ -128,6 +128,7 @@
 %token T_SONO<TokenValue>;    // replaced
 %token T_SORE<TokenValue>;
 %token T_SUM<TokenValue>;
+%token T_SURU<TokenValue>;    // replaced
 %token T_SURUTO<TokenValue>;
 %token T_TAN<TokenValue>;
 %token T_TANH<TokenValue>;

@@ -55,6 +55,7 @@ namespace Calc_H
                 resynth11(infos);
                 resynth12(infos);
                 resynth13(infos);
+                resynth14(infos);
             }
         }
 
@@ -343,6 +344,25 @@ namespace Calc_H
             if (lexeme("まいなすし"))                   return set_info(info, T_HIITE);
             if (lexeme("まいなすされる"))               return set_info(info, T_HIKARERU);
             if (lexeme("まいなす"))                     return set_info(info, T_MINUS);
+            if (lexeme("へらせよ"))                     return set_info(info, T_HIKUTO);
+            if (lexeme("へらせや"))                     return set_info(info, T_HIKUTO);
+            if (lexeme("へらせば"))                     return set_info(info, T_HIKUTO);
+            if (lexeme("へらせ"))                       return set_info(info, T_HIKUTO);
+            if (lexeme("へらすときの"))                 return set_info(info, T_HIKUTO);
+            if (lexeme("へらすとき"))                   return set_info(info, T_HIKUTO);
+            if (lexeme("へらすと"))                     return set_info(info, T_HIKUTO);
+            if (lexeme("へらす"))                       return set_info(info, T_HIKU);
+            if (lexeme("へらしなさい"))                 return set_info(info, T_HIKUTO);
+            if (lexeme("へらしてみよ"))                 return set_info(info, T_HIKUTO);
+            if (lexeme("へらしてみい"))                 return set_info(info, T_HIKUTO);
+            if (lexeme("へらしてみぃ"))                 return set_info(info, T_HIKUTO);
+            if (lexeme("へらしてみ"))                   return set_info(info, T_HIKUTO);
+            if (lexeme("へらして"))                     return set_info(info, T_HIITE);
+            if (lexeme("へらしたら"))                   return set_info(info, T_HIKUTO);
+            if (lexeme("へらしたときの"))               return set_info(info, T_HIKUTO);
+            if (lexeme("へらしたとき"))                 return set_info(info, T_HIKUTO);
+            if (lexeme("へらした"))                     return set_info(info, T_HIITA);
+            if (lexeme("へらし"))                       return set_info(info, T_HIITE);
             if (lexeme("へいほうこん"))                 return set_info(info, T_HEIHOUKON);
             if (lexeme("へいほう"))                     return set_info(info, T_HEIHOU);
             if (lexeme("へいきんち"))                   return set_info(info, T_AVERAGE);
@@ -366,6 +386,23 @@ namespace Calc_H
             if (lexeme("ぷらすされる"))                 return set_info(info, T_TASARERU);
             if (lexeme("ぷらす"))                       return set_info(info, T_PLUS);
             if (lexeme("ぶんの"))                       return set_info(info, T_BUNNO);
+            if (lexeme("ふやせよ"))                     return set_info(info, T_TASUTO);
+            if (lexeme("ふやせや"))                     return set_info(info, T_TASUTO);
+            if (lexeme("ふやせば"))                     return set_info(info, T_TASUTO);
+            if (lexeme("ふやせ"))                       return set_info(info, T_TASUTO);
+            if (lexeme("ふやすとき"))                   return set_info(info, T_TASUTO);
+            if (lexeme("ふやすと"))                     return set_info(info, T_TASUTO);
+            if (lexeme("ふやす"))                       return set_info(info, T_TASU);
+            if (lexeme("ふやしなさい"))                 return set_info(info, T_TASUTO);
+            if (lexeme("ふやしてみよ"))                 return set_info(info, T_TASUTO);
+            if (lexeme("ふやしてみい"))                 return set_info(info, T_TASUTO);
+            if (lexeme("ふやしてみぃ"))                 return set_info(info, T_TASUTO);
+            if (lexeme("ふやしてみ"))                   return set_info(info, T_TASUTO);
+            if (lexeme("ふやして"))                     return set_info(info, T_TASHITE);
+            if (lexeme("ふやしたら"))                   return set_info(info, T_TASUTO);
+            if (lexeme("ふやしたときの"))               return set_info(info, T_TASUTO);
+            if (lexeme("ふやしたとき"))                 return set_info(info, T_TASUTO);
+            if (lexeme("ふやした"))                     return set_info(info, T_TASHITA);
             if (lexeme("ふかしぎ"))                     return set_info(info, T_FUKASHIGI);
             if (lexeme("ぴゃく"))                       return set_info(info, T_HYAKU);
             if (lexeme("びゃく"))                       return set_info(info, T_HYAKU);
@@ -584,6 +621,7 @@ namespace Calc_H
             if (lexeme("するときの"))                   return set_info(info, T_SURUTO);
             if (lexeme("するとき"))                     return set_info(info, T_SURUTO);
             if (lexeme("すると"))                       return set_info(info, T_SURUTO);
+            if (lexeme("する"))                         return set_info(info, T_SURU);
             if (lexeme("すべて"))                       return set_info(info, T_ALL);
             if (lexeme("じょー"))                       return set_info(info, T_JOU1);
             if (lexeme("じょざん"))                     return set_info(info, T_WARIZAN);
@@ -1829,6 +1867,47 @@ namespace Calc_H
                 case T_WARUTO:
                     if ((it + 1)->get_token() == T_KA)
                         (it + 1)->set_token(T_KANA);
+                    break;
+
+                default:
+                    break;
+                }
+            }
+        }
+
+        // 文末の「たす」「ひく」「かける」「わる」を
+        // 「たすと」「ひくと」「かけると」「わると」にする。
+        void resynth14(std::vector<info_type>& infos)
+        {
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            for (; it != end; ++it)
+            {
+                switch (it->get_token())
+                {
+                case T_TASU:
+                    if ((it + 1)->get_token() == T_PERIOD)
+                        it->set_token(T_TASUTO);
+                    break;
+
+                case T_HIKU:
+                    if ((it + 1)->get_token() == T_PERIOD)
+                        it->set_token(T_HIKUTO);
+                    break;
+
+                case T_KAKERU:
+                    if ((it + 1)->get_token() == T_PERIOD)
+                        it->set_token(T_KAKERUTO);
+                    break;
+
+                case T_WARU:
+                    if ((it + 1)->get_token() == T_PERIOD)
+                        it->set_token(T_WARUTO);
+                    break;
+
+                case T_SURU:
+                    if ((it + 1)->get_token() == T_PERIOD)
+                        it->set_token(T_SURUTO);
                     break;
 
                 default:
