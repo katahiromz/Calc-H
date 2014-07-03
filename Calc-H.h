@@ -57,3 +57,7 @@ static const CH_Value ch_muryoutaisuu   ("10000000000000000000000000000000000000
 
 #include "Location.h"
 #include "HParserAST.h"
+
+void ChReplaceString(std::string& str,
+                     const std::string& from,
+                     const std::string& to);

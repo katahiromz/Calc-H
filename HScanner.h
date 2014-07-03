@@ -92,7 +92,7 @@ namespace Calc_H
                        lexeme("Ç†ÅA") || lexeme("Ç†Ç¡") ||
                        lexeme("Ç§ÇÒÇ∆ÇÀÅA") || lexeme("Ç¶Ç¡Ç∆ÇÀÅA") || 
                        lexeme("Ç§ÇÒÇ∆ÇÀÅ[ÅA") || lexeme("Ç¶Ç¡Ç∆ÇÀÅ[ÅA") || 
-                       lexeme("Ç∆ÇÒÇ≈") || lexeme("ÇªÇ§ÇªÇ§"))
+                       lexeme("Ç∆ÇÒÇ≈"))
                 {
                     flag = true;
                 }
@@ -104,6 +104,42 @@ namespace Calc_H
 
             if (space_count >= 2)
                 return commit_token(T_COMMA);
+
+            // arabic numeral
+            std::string strNum;
+            if (lexeme("0") || lexeme("1") || lexeme("2") || lexeme("3") || lexeme("4") ||
+                lexeme("5") || lexeme("6") || lexeme("7") || lexeme("8") || lexeme("9") ||
+                lexeme("ÇO") || lexeme("ÇP") || lexeme("ÇQ") || lexeme("ÇR") || lexeme("ÇS") ||
+                lexeme("ÇT") || lexeme("ÇU") || lexeme("ÇV") || lexeme("ÇW") || lexeme("ÇX"))
+            {
+                bool has_dot = false;
+                strNum = m_saved_str;
+                while (lexeme("0") || lexeme("1") || lexeme("2") || lexeme("3") || lexeme("4") ||
+                       lexeme("5") || lexeme("6") || lexeme("7") || lexeme("8") || lexeme("9") ||
+                       lexeme("ÇO") || lexeme("ÇP") || lexeme("ÇQ") || lexeme("ÇR") || lexeme("ÇS") ||
+                       lexeme("ÇT") || lexeme("ÇU") || lexeme("ÇV") || lexeme("ÇW") || lexeme("ÇX") ||
+                       (!has_dot && (lexeme(".") || lexeme("ÅD"))))
+                {
+                    strNum += m_saved_str;
+                    if (m_saved_str == "." || m_saved_str == "ÅD")
+                    {
+                        has_dot = true;
+                    }
+                }
+                ChReplaceString(strNum, "ÇO", "0");
+                ChReplaceString(strNum, "ÇP", "1");
+                ChReplaceString(strNum, "ÇQ", "2");
+                ChReplaceString(strNum, "ÇR", "3");
+                ChReplaceString(strNum, "ÇS", "4");
+                ChReplaceString(strNum, "ÇT", "5");
+                ChReplaceString(strNum, "ÇU", "6");
+                ChReplaceString(strNum, "ÇV", "7");
+                ChReplaceString(strNum, "ÇW", "8");
+                ChReplaceString(strNum, "ÇX", "9");
+                ChReplaceString(strNum, "ÅD", ".");
+                m_saved_str = strNum;
+                return set_info(info, T_NUMBER);
+            }
 
             if (lexeme("\n"))
             {

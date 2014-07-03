@@ -101,6 +101,7 @@
 %token T_NO8<TokenValue>;       // no ... percent
 %token T_NO9<TokenValue>;       // no amari
 %token T_NOUCHI<TokenValue>;
+%token T_NUMBER<TokenValue>;
 %token T_OKU<TokenValue>;
 %token T_ONEGAI<TokenValue>;
 %token T_OSHIETE<TokenValue>;
@@ -673,6 +674,7 @@ number<Num>
     | [DoNum2] T_ZERO T_DOT digits(0)
     | [DoNum3] muryoutaisuu_le_number(0)
     | [DoNum4] T_ZERO
+    | [DoNum5] T_NUMBER(0)
     ;
 
 muryoutaisuu_le_number<Num>
