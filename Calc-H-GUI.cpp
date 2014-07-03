@@ -116,6 +116,7 @@ ChEditWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             ::GetClientRect(hwnd, &rcClient);
             HDC hdc = ::GetDC(hwnd);
             ::SetTextColor(hdc, ::GetSysColor(COLOR_GRAYTEXT));
+            ::SetBkColor(hdc, ::GetSysColor(COLOR_WINDOW));
             ::DrawTextA(hdc, "‚Ð‚ç‚ª‚È‚Å“ü—Í‚µ‚Ä‰º‚³‚¢", -1,
                         &rcClient, DT_LEFT | DT_VCENTER);
             ReleaseDC(hwnd, hdc);
