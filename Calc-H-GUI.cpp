@@ -261,13 +261,23 @@ extern "C"
 INT_PTR CALLBACK 
 ChDialogProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    const COLORREF clrBack = RGB(255, 255, 192);
-    const COLORREF clrFore = RGB(0, 0, 0);
+    static COLORREF s_clrBack = RGB(255, 255, 192);
+    static COLORREF s_clrFore = RGB(0, 0, 0);
 
     switch (uMsg)
     {
     case WM_INITDIALOG:
-        ch_hbrBack = ::CreateSolidBrush(clrBack);
+        if (::GetSysColor(COLOR_WINDOW) == RGB(0, 0, 0))
+        {
+            s_clrBack = RGB(0, 0, 0);
+            s_clrFore = ::GetSysColor(COLOR_WINDOWTEXT);
+        }
+        else
+        {
+            s_clrBack = RGB(255, 255, 192);
+            s_clrFore = RGB(0, 0, 0);
+        }
+        ch_hbrBack = ::CreateSolidBrush(s_clrBack);
         return ChOnInitDialog(hwnd);
 
     case WM_SIZE:
@@ -286,6 +296,22 @@ ChDialogProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             ::EndDialog(hwnd, IDCANCEL);
             break;
         }
+        break;
+
+    case WM_SYSCOLORCHANGE:
+        if (::GetSysColor(COLOR_WINDOW) == RGB(0, 0, 0))
+        {
+            s_clrBack = RGB(0, 0, 0);
+            s_clrFore = ::GetSysColor(COLOR_WINDOWTEXT);
+        }
+        else
+        {
+            s_clrBack = RGB(255, 255, 192);
+            s_clrFore = RGB(0, 0, 0);
+        }
+        ::DeleteObject(ch_hbrBack);
+        ch_hbrBack = ::CreateSolidBrush(s_clrBack);
+        break;
 
     case WM_CTLCOLOREDIT:
     case WM_CTLCOLORSTATIC:
@@ -294,8 +320,8 @@ ChDialogProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             if (hwndCtrl == ::GetDlgItem(hwnd, edt1))
             {
                 HDC hdc = reinterpret_cast<HDC>(wParam);
-                ::SetTextColor(hdc, clrFore);
-                ::SetBkColor(hdc, clrBack);
+                ::SetTextColor(hdc, s_clrFore);
+                ::SetBkColor(hdc, s_clrBack);
                 return reinterpret_cast<INT_PTR>(ch_hbrBack);
             }
         }
