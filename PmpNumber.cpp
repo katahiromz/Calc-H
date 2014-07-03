@@ -979,7 +979,7 @@ namespace pmp
         }
     }
 
-    void Number::trim()
+    void Number::trim(unsigned precision/* = s_default_precision*/)
     {
         switch (type())
         {
@@ -988,6 +988,8 @@ namespace pmp
 
         case Number::FLOATING:
             {
+                assign(str(precision, std::ios_base::fixed));
+
                 integer_type i = to_i();
                 floating_type f = static_cast<floating_type>(i);
                 if (f == get_f())
@@ -1006,7 +1008,7 @@ namespace pmp
 #ifndef PMP_DISABLE_VECTOR
         case Number::VECTOR:
             for (std::size_t i = 0; i < get_v().size(); ++i)
-                get_v()[i].trim();
+                get_v()[i].trim(precision);
             if (size() == 1)
                 assign(get_v()[0]);
             break;

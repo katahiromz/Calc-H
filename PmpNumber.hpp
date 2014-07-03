@@ -248,7 +248,7 @@ namespace pmp
         integer_type    r_to_i() const    { return pmp::r_to_i(get_r()); }
         floating_type   r_to_f() const    { return pmp::r_to_f(get_r()); }
 
-        void trim();
+        void trim(unsigned precision = s_default_precision);
 
         template <typename T>
         T convert_to();

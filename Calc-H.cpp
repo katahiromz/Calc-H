@@ -4711,17 +4711,10 @@ std::string ChGetJpnNumber1(
     return str;
 }
 
-std::string ChGetJpnNumber2(CH_Value num)
+std::string ChGetJpnNumberFixed1(CH_Value num)
 {
-    std::string str;
-    str = num.str(ch_precision, std::ios_base::fixed);
-    CH_Value value(str);
-    return ChGetJpnNumber1(value);
-}
-
-std::string ChGetJpnNumberFixed(CH_Value num)
-{
-    std::string str = ChGetJpnNumber2(num);
+    num.trim(ch_precision);
+    std::string str = ChGetJpnNumber1(num);
     ChReplaceString(str, "‚¢‚¿‚Ä‚ñ", "‚¢‚Á‚Ä‚ñ");
     ChReplaceString(str, "‚É‚Ä‚ñ", "‚É‚¢‚Ä‚ñ");
     ChReplaceString(str, "‚²‚Ä‚ñ", "‚²‚¤‚Ä‚ñ");
@@ -4774,36 +4767,25 @@ std::string ChGetJpnNumberBunsuu(CH_Value num)
         str += "‚Ü‚¢‚È‚·";
     if (!seisuu.is_zero())
     {
-        str += ChGetJpnNumberFixed(seisuu);
+        str += ChGetJpnNumberFixed1(seisuu);
         str += "‚Æ";
     }
-    str += ChGetJpnNumberFixed(bunbo);
+    str += ChGetJpnNumberFixed1(bunbo);
     str += "‚Ô‚ñ‚Ì";
-    str += ChGetJpnNumberFixed(bunshi);
+    str += ChGetJpnNumberFixed1(bunshi);
     return str;
 }
 
 std::string ChGetJpnNumberFixed2(CH_Value num)
 {
     std::string str;
-    pmp::Number::Type old_type = pmp::SetIntDivType(pmp::Number::INTEGER);
-    if (num.type() == pmp::Number::RATIONAL)
-        str = ChGetJpnNumberBunsuu(num);
-    else
-        str = ChGetJpnNumberFixed(num);
-    pmp::SetIntDivType(old_type);
-    return str;
-}
-
-std::string ChGetJpnNumberFixed3(CH_Value num)
-{
+    num.trim(ch_precision);
     if (num.is_v())
     {
         if (num.empty())
             return "‚È‚µ";
 
-        std::string str;
-        str += ChGetJpnNumberFixed2(num[0]);
+        str = ChGetJpnNumberFixed2(num[0]);
         for (std::size_t i = 1; i < num.size(); ++i)
         {
             str += "‚ÆA";
@@ -4811,8 +4793,13 @@ std::string ChGetJpnNumberFixed3(CH_Value num)
         }
         return str;
     }
+    pmp::Number::Type old_type = pmp::SetIntDivType(pmp::Number::INTEGER);
+    if (num.type() == pmp::Number::RATIONAL)
+        str = ChGetJpnNumberBunsuu(num);
     else
-        return ChGetJpnNumberFixed2(num);
+        str = ChGetJpnNumberFixed1(num);
+    pmp::SetIntDivType(old_type);
+    return str;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -4904,7 +4891,7 @@ std::string ChJustDoIt(std::string& query)
                 value.trim();
                 if (s_message.empty())
                 {
-                    sstream << ChGetJpnNumberFixed3(value) <<
+                    sstream << ChGetJpnNumberFixed2(value) <<
                         " (" << value.str(ch_precision) <<
                                 ") " << "‚Å‚·B" << std::endl;
                     s_sore = value;
