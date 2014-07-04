@@ -518,7 +518,7 @@ mono<Mono>
     | [DoMono64] mono(0) T_NO2 T_QUOT
     | [DoMono76] mono(0) T_NO2 T_QUOT T_TO1 T_AMARI
     | [DoMono78] mono(0) T_NO2 T_HEIHOUKON
-    | [DoMono79] mono(0) T_NO2 T_KAIJOU
+    | [DoMono79] mono(0) T_NO4 T_KAIJOU
     | [DoMono9] mono(0) T_NO4 T_KEISAN T_WO2 T_SHITA T_MONO
     | [DoMono9] mono(0) T_NO4 T_KEISAN       T_SHITA T_MONO
     | [DoMono9] mono(0) T_WO1 T_SHITA T_MONO
@@ -670,7 +670,7 @@ factor<Fact>
     : [DoFact1] factor(0) T_NO6 primary(1) T_JOU1
     | [DoFact2] factor(0) T_NO6 T_HEIHOU
     | [DoFact4] factor(0) T_NO6 T_RIPPOU
-    | [DoFact5] factor(0) T_NO2 T_KAIJOU
+    | [DoFact5] factor(0) T_NO6 T_KAIJOU
     | [DoFact3] primary(0)
     ;
 

@@ -56,6 +56,7 @@ namespace Calc_H
                 resynth12(infos);
                 resynth13(infos);
                 resynth14(infos);
+                resynth15(infos);
             }
         }
 
@@ -731,8 +732,12 @@ namespace Calc_H
             if (lexeme("さしひいたとき"))                   return set_info(info, T_HIKUTO);
             if (lexeme("さしひいた"))                       return set_info(info, T_HIITA);
             if (lexeme("さいん"))                           return set_info(info, T_SIN);
+            if (lexeme("さいだいとなるもの"))               return set_info(info, T_MAX);
+            if (lexeme("さいだいとなるかず"))               return set_info(info, T_MAX);
             if (lexeme("さいだいち"))                       return set_info(info, T_MAX);
+            if (lexeme("さいしょーとなるかず"))             return set_info(info, T_MIN);
             if (lexeme("さいしょーち"))                     return set_info(info, T_MIN);
+            if (lexeme("さいしょうとなるかず"))             return set_info(info, T_MIN);
             if (lexeme("さいしょうち"))                     return set_info(info, T_MIN);
             if (lexeme("さい"))                             return set_info(info, T_SAI);
             if (lexeme("さ"))                               return set_info(info, T_DIFF);
@@ -924,6 +929,10 @@ namespace Calc_H
             if (lexeme("えんしゅうりつ"))                   return set_info(info, T_PI);
             if (lexeme("いー"))                             return set_info(info, T_E);
             if (lexeme("いっ"))                             return set_info(info, T_ICHI);
+            if (lexeme("いちばんちいさいもの"))             return set_info(info, T_MIN);
+            if (lexeme("いちばんちいさいかず"))             return set_info(info, T_MIN);
+            if (lexeme("いちばんおおきいもの"))             return set_info(info, T_MAX);
+            if (lexeme("いちばんおおきいかず"))             return set_info(info, T_MAX);
             if (lexeme("いち"))                             return set_info(info, T_ICHI);
             if (lexeme("いくらになるでしょう"))             return set_info(info, T_IKURA);
             if (lexeme("いくらになる"))                     return set_info(info, T_IKURA);
@@ -1254,7 +1263,7 @@ namespace Calc_H
 
         // 「の」をT_NO1, T_NO2, ..., T_NO7に分類する。
         // 数の単位「穣」をT_JOU2に分類する。
-        // T_NO2: 「わ」「さ」「せき」「しょう」の直前の「の」。
+        // T_NO2: 「わ」「さ」「せき」「しょう」の「の」。
         // T_NO3: 「何の何倍」の「の」。「何の（...）」の「の」。
         // T_NO4: 「かけざん」「けいさん」「こたえ」などの直前の「の」。
         // T_NO5: 「のたすかず」「のたされるかず」「のかけるかず」の「の」
@@ -1331,10 +1340,18 @@ namespace Calc_H
                 case T_MIN:
                 case T_AVERAGE:
                 case T_HEIHOUKON:
-                case T_KAIJOU:
                     if (no1 != std::string::npos)
                     {
                         (newinfos.begin() + no1)->set_token(T_NO2);
+                        no1 = std::string::npos;
+                    }
+                    jou1 = std::string::npos;
+                    break;
+
+                case T_KAIJOU:
+                    if (no1 != std::string::npos)
+                    {
+                        (newinfos.begin() + no1)->set_token(T_NO6);
                         no1 = std::string::npos;
                     }
                     jou1 = std::string::npos;
@@ -1946,6 +1963,62 @@ namespace Calc_H
                 case T_SURU:
                     if ((it + 1)->get_token() == T_PERIOD)
                         it->set_token(T_SURUTO);
+                    break;
+
+                default:
+                    break;
+                }
+            }
+        }
+
+        // 式の中ではない、文章の中の「のかいじょう」の「の」(T_NO6)をT_NO4にする。
+        void resynth15(std::vector<info_type>& infos)
+        {
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            for (; it != end; ++it)
+            {
+                switch (it->get_token())
+                {
+                case T_ACOS:
+                case T_AMARI:
+                case T_ASIN:
+                case T_ATAN:
+                case T_AVERAGE:
+                case T_BAI:
+                case T_COS:
+                case T_COUNT:
+                case T_DIFF:
+                case T_EXP:
+                case T_GYAKUSUU:
+                case T_HEIHOU:
+                case T_HEIHOUKON:
+                case T_HIKIZAN:
+                case T_KAIJOU:
+                case T_KAKEZAN:
+                case T_KEISAN:
+                case T_KOTAE:
+                case T_LOG:
+                case T_LOG10:
+                case T_MAX:
+                case T_MIN:
+                case T_MONO:
+                case T_PROD:
+                case T_QUOT:
+                case T_RIPPOU:
+                case T_ROOT:
+                case T_SIN:
+                case T_SINH:
+                case T_SUM:
+                case T_TAN:
+                case T_TASHIZAN:
+                case T_WARIZAN:
+                case T_ZETTAICHI:
+                    if ((it + 1)->get_token() == T_NO6 &&
+                        (it + 2)->get_token() == T_KAIJOU)
+                    {
+                        (it + 1)->set_token(T_NO4);
+                    }
                     break;
 
                 default:
