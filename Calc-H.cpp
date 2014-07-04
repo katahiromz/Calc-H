@@ -812,7 +812,7 @@ CH_Value ChCalcSuruto(const shared_ptr<Suruto>& suruto)
 
 CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
 {
-    CH_Value v1;
+    CH_Value v1, v2;
     switch (sentence->m_type)
     {
     case Sentence::MONO:
@@ -840,6 +840,17 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
 
     case Sentence::SHITE:
         return ChCalcShite(sentence->m_shite);
+
+    case Sentence::WARIKIRU:
+        v1 = ChCalcMono(sentence->m_mono);
+        v2 = ChCalcExpr(sentence->m_expr);
+        v1 %= v2;
+        v1.trim(ch_precision);
+        if (v1.is_zero())
+            Calc_H::s_message = "ÇÌÇËÇ´ÇÍÇ‹Ç∑ÅB";
+        else
+            Calc_H::s_message = "ÇÌÇËÇ´ÇÍÇ‹ÇπÇÒÅB";
+        return 0;
 
     default:
         assert(0);
@@ -4438,6 +4449,11 @@ void ChAnalyzeSentence(shared_ptr<Sentence>& sentence)
 
     case Sentence::SHITE:
         ChAnalyzeShite(sentence->m_shite);
+        break;
+
+    case Sentence::WARIKIRU:
+        ChAnalyzeMono(sentence->m_mono);
+        ChAnalyzeExpr(sentence->m_expr);
         break;
 
     default:

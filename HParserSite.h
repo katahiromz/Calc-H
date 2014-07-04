@@ -90,6 +90,18 @@ namespace Calc_H
             return shared_ptr<Sentence>(s);
         }
 
+        shared_ptr<Sentence> DoSent7(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent7" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::WARIKIRU;
+            s->m_mono = mono;
+            s->m_expr = expr;
+            return shared_ptr<Sentence>(s);
+        }
+
         shared_ptr<Suruto> DoSuruto1(shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG

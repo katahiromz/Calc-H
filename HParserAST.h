@@ -47,7 +47,7 @@ namespace Calc_H
         enum {
             MONO, EXPR, SURUTO, NUM, EMPTY,
             EXPRLIST_ADD, EXPRLIST_MUL,
-            SHITE
+            SHITE, WARIKIRU
         } m_type;
         shared_ptr<Mono>        m_mono;
         shared_ptr<Expr>        m_expr;

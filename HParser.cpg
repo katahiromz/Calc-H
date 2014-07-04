@@ -142,6 +142,8 @@
 %token T_TO2<TokenValue>;   // taibunsuu
 %token T_WAKARAN<TokenValue>;
 %token T_WARARERU<TokenValue>;
+%token T_WARIKIRENAI<TokenValue>;
+%token T_WARIKIRU<TokenValue>;
 %token T_WARIZAN<TokenValue>;
 %token T_WARU<TokenValue>;
 %token T_WARUTO<TokenValue>;
@@ -187,6 +189,14 @@ sentence<Sentence>
     | [DoSent1] mono(0) T_HA T_IKURA T_PERIOD
     | [DoSent1] mono(0) T_HA T_PERIOD
     | [DoSent1] mono(0) T_PERIOD
+    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRU T_KANA T_OSHIETE T_ONEGAI T_PERIOD
+    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRU T_KANA T_OSHIETE T_PERIOD
+    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRU T_KANA T_PERIOD
+    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRU T_PERIOD
+    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRENAI T_KANA T_OSHIETE T_ONEGAI T_PERIOD
+    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRENAI T_KANA T_OSHIETE T_PERIOD
+    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRENAI T_KANA T_PERIOD
+    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRENAI T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KANA T_WO1 T_OSHIETE T_ONEGAI T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KANA T_WO1 T_OSHIETE T_KANA T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KANA T_WO1 T_OSHIETE T_PERIOD
