@@ -1790,6 +1790,30 @@ namespace Calc_H
                 {
                     (it + 1)->set_token(T_COMMA);
                 }
+                else if (it->get_token() == T_TASU &&
+                         (it + 1)->get_token() == T_PERIOD)
+                {
+                    it->set_token(T_TASUTO);
+                    (it + 1)->set_token(T_COMMA);
+                }
+                else if (it->get_token() == T_HIKU &&
+                         (it + 1)->get_token() == T_PERIOD)
+                {
+                    it->set_token(T_HIKUTO);
+                    (it + 1)->set_token(T_COMMA);
+                }
+                else if (it->get_token() == T_KAKERU &&
+                         (it + 1)->get_token() == T_PERIOD)
+                {
+                    it->set_token(T_KAKERUTO);
+                    (it + 1)->set_token(T_COMMA);
+                }
+                else if (it->get_token() == T_WARU &&
+                         (it + 1)->get_token() == T_PERIOD)
+                {
+                    it->set_token(T_WARUTO);
+                    (it + 1)->set_token(T_COMMA);
+                }
                 if ((it + 1)->get_token() == T_COMMA ||
                     (it + 1)->get_token() == T_KOTAE ||
                     (it + 1)->get_token() == T_AMARI ||
