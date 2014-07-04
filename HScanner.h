@@ -57,6 +57,7 @@ namespace Calc_H
                 resynth13(infos);
                 resynth14(infos);
                 resynth15(infos);
+                resynth16(infos);
             }
         }
 
@@ -2049,6 +2050,32 @@ namespace Calc_H
                     break;
                 }
             }
+        }
+
+        // T_TASUTO, T_HIKUTO, T_KAKERUTO, T_WARUTOÇÃå„ÇÃT_SURUTOÇéÊÇËèúÇ≠ÅB
+        void resynth16(std::vector<info_type>& infos)
+        {
+            std::vector<info_type> newinfos;
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            for (; it != end; ++it)
+            {
+                switch (it->get_token())
+                {
+                case T_TASUTO:
+                case T_HIKUTO:
+                case T_KAKERUTO:
+                case T_WARUTO:
+                    newinfos.push_back(*it);
+                    if ((it + 1)->get_token() == T_SURUTO)
+                        it++;
+                    break;
+
+                default:
+                    newinfos.push_back(*it);
+                }
+            }
+            infos = newinfos;
         }
 
     private:
