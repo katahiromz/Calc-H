@@ -40,17 +40,23 @@
 %token T_FACTORIAL<TokenValue>;
 %token T_FUKASHIGI<TokenValue>;
 %token T_GAI<TokenValue>;
+%token T_GENSUU<TokenValue>;    // replaced
 %token T_GO<TokenValue>;
 %token T_GOKU<TokenValue>;
 %token T_GOUGASHA<TokenValue>;
 %token T_GYAKUSUU<TokenValue>;
 %token T_HA<TokenValue>;
 %token T_HACHI<TokenValue>;
+%token T_HATA<TokenValue>;  // replaced
 %token T_HEIHOU<TokenValue>;
 %token T_HEIHOUKON<TokenValue>;
+%token T_HIGENSUU<TokenValue>;  // replaced
 %token T_HIITA<TokenValue>;
 %token T_HIITE<TokenValue>;
+%token T_HIJOSUU<TokenValue>;   // replaced
+%token T_HIJOUSUU<TokenValue>;  // replaced
 %token T_HIKARERU<TokenValue>;
+%token T_HIKASUU<TokenValue>;   // replaced
 %token T_HIKIZAN<TokenValue>;
 %token T_HIKU<TokenValue>;
 %token T_HIKUTO<TokenValue>;
@@ -58,9 +64,13 @@
 %token T_HYPERBOLIC<TokenValue>;
 %token T_ICHI<TokenValue>;
 %token T_IKURA<TokenValue>;
+%token T_IO<TokenValue>;    // replaced
+%token T_ISO<TokenValue>;   // replaced
 %token T_JO<TokenValue>;
+%token T_JOSUU<TokenValue>;     // replaced
 %token T_JOU1<TokenValue>;  // exponent
 %token T_JOU2<TokenValue>;  // number unit
+%token T_JOUSUU<TokenValue>;    // replaced
 %token T_JUU<TokenValue>;
 %token T_KA<TokenValue>;
 %token T_KAIJOU<TokenValue>;
@@ -73,6 +83,7 @@
 %token T_KAN<TokenValue>;
 %token T_KANA<TokenValue>;
 %token T_KARA<TokenValue>;
+%token T_KASUU<TokenValue>;     // replaced
 %token T_KEI<TokenValue>;
 %token T_KEISAN<TokenValue>;
 %token T_KOTAE<TokenValue>;
@@ -151,7 +162,9 @@
 %token T_WATTE<TokenValue>;
 %token T_WO1<TokenValue>;   // do object
 %token T_WO2<TokenValue>;   // do verb
+%token T_YAO<TokenValue>;   // replaced
 %token T_YON<TokenValue>;
+%token T_YOSO<TokenValue>;      // replaced
 %token T_ZERO<TokenValue>;
 %token T_ZETTAICHI<TokenValue>;
 
