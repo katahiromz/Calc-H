@@ -1809,16 +1809,6 @@ namespace Calc_H
             return shared_ptr<Num>(n);
         }
 
-        shared_ptr<Num> DoNum5(shared_ptr<TokenValue>& num)
-        {
-            #ifdef DEEPDEBUG
-                std::cerr << "DoNum5" << std::endl;
-            #endif
-            Num *n = new Num;
-            n->m_value = CH_Value(num->text());
-            return shared_ptr<Num>(n);
-        }
-
         shared_ptr<Num> DoMuryoutaisuuLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
@@ -2671,6 +2661,16 @@ namespace Calc_H
             #endif
             Num *n = new Num;
             n->m_value = 9;
+            return shared_ptr<Num>(n);
+        }
+
+        shared_ptr<Num> DoIchiNum10(shared_ptr<TokenValue>& num)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoIchiNum10" << std::endl;
+            #endif
+            Num *n = new Num;
+            n->m_value = CH_Value(num->text());
             return shared_ptr<Num>(n);
         }
 

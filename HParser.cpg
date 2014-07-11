@@ -708,7 +708,6 @@ number<Num>
     | [DoNum2] T_ZERO T_DOT digits(0)
     | [DoNum3] muryoutaisuu_le_number(0)
     | [DoNum4] T_ZERO
-    | [DoNum5] T_NUMBER(0)
     ;
 
 muryoutaisuu_le_number<Num>
@@ -931,6 +930,7 @@ ichi_number<Num>
     | [DoIchiNum7] T_NANA
     | [DoIchiNum8] T_HACHI
     | [DoIchiNum9] T_KYUU
+    | [DoIchiNum10] T_NUMBER(0)
     ;
 
 digits<Digits>
