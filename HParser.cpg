@@ -1017,6 +1017,7 @@ vector_function<VecFunc>
 domains<Doms>
     : [DoDoms2] domain(0)
     | [DoDoms1] domains(0) T_MATAHA domain(1)
+    | [DoDoms1] domains(0) T_KA domain(1)
     ;
 
 domain<Dom>
@@ -1042,6 +1043,7 @@ primary_domain<PrimDom>
 
 constraint<Cnstr>
     : [DoCnstr1] constraint(0) T_MATAHA and_constraint(1)
+    | [DoCnstr1] constraint(0) T_KA and_constraint(1)
     | [DoCnstr2] and_constraint(0)
     ;
 

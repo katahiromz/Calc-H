@@ -1191,7 +1191,7 @@ void ChAnalyzeDomainsOfCnstr(
         ChAnalyzeDomainsOfCnstr(domains1, cnstr->m_cnstr);
         ChAnalyzeDomainsOfAndCnstr(domains2, cnstr->m_andcnstr);
         d1->Union(*d2);
-        delete d2;
+		domains2 = shared_ptr<Domains>();
         domains = domains1;
         break;
 
