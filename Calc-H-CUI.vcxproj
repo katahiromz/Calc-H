@@ -166,6 +166,7 @@
   <ItemGroup>
     <ClCompile Include="Calc-H.cpp" />
     <ClCompile Include="Calc-H-CUI.cpp" />
+    <ClCompile Include="Ndrr1D.cpp" />
     <ClCompile Include="PmpNumber.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +176,7 @@
     <ClInclude Include="HParserSite.h" />
     <ClInclude Include="HScanner.h" />
     <ClInclude Include="Location.h" />
+    <ClInclude Include="Ndrr1D.hpp" />
     <ClInclude Include="PmpNumber.hpp" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>

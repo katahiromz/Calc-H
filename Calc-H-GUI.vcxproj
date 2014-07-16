@@ -166,6 +166,7 @@
   <ItemGroup>
     <ClCompile Include="Calc-H.cpp" />
     <ClCompile Include="Calc-H-GUI.cpp" />
+    <ClCompile Include="Ndrr1D.cpp" />
     <ClCompile Include="PmpNumber.cpp" />
     <ClCompile Include="PointSizeRect.cpp" />
     <ClCompile Include="Resizable.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="HParserSite.h" />
     <ClInclude Include="HScanner.h" />
     <ClInclude Include="Location.h" />
+    <ClInclude Include="Ndrr1D.hpp" />
     <ClInclude Include="PmpNumber.hpp" />
     <ClInclude Include="PointSizeRect.h" />
     <ClInclude Include="PointSizeRect_inl.h" />
