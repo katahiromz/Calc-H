@@ -3,6 +3,8 @@
 #ifndef HPARSER_AST_H_
 #define HPARSER_AST_H_
 
+#include "Ndrr1D.hpp"
+
 namespace Calc_H
 {
     struct Node;
@@ -20,6 +22,12 @@ namespace Calc_H
     struct Digits;
     struct Func1Arg;
     struct VecFunc;
+    struct Dom;
+    struct Doms;
+    struct PrimDom;
+    struct Cnstr;
+    struct AndCnstr;
+    struct PrimCnstr;
 
     //
     // Node
@@ -47,7 +55,11 @@ namespace Calc_H
         enum {
             MONO, EXPR, SURUTO, NUM, EMPTY,
             EXPRLIST_ADD, EXPRLIST_MUL,
-            SHITE, WARIKIRU
+            SHITE, WARIKIRU,
+            DOMS_IS_DOMS, DOMS_IS_CNSTR,
+            MONO_IS_DOMS, MONO_IS_CNSTR,
+            MONO_IS_CNSTRED_BUNSUU, MONO_IS_BUNSUU,
+            MONO_IS_CNSTRED_SHOUSUU, MONO_IS_SHOUSUU
         } m_type;
         shared_ptr<Mono>        m_mono;
         shared_ptr<Expr>        m_expr;
@@ -55,6 +67,9 @@ namespace Calc_H
         shared_ptr<Num>         m_num;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Shite>       m_shite;
+        shared_ptr<Doms>        m_doms1;
+        shared_ptr<Doms>        m_doms2;
+        shared_ptr<Cnstr>       m_cnstr;
     };
 
     struct Suruto : Node
@@ -224,6 +239,60 @@ namespace Calc_H
         enum {
             COUNT, MAX, MIN, AVERAGE
         } m_type;
+    };
+
+    struct Dom : Node
+    {
+        enum {
+            CNSTRED_PRIMDOM, PRIMDOM_ONLY, DOM_OF_DOM
+        } m_type;
+        shared_ptr<Dom>         m_dom;
+        shared_ptr<Cnstr>       m_cnstr;
+        shared_ptr<PrimDom>     m_primdom;
+    };
+
+    struct Doms : Node, std::vector<shared_ptr<Dom> >
+    {
+        shared_ptr<Ndrr1D::Domains> m_domains;
+    };
+
+    struct PrimDom : Node
+    {
+        enum {
+            POSITIVE, NEGATIVE,
+            SHIZENSUU, SEISUU, GUUSUU, KISUU, JISSUU,
+            SOSUU
+        } m_type;
+        shared_ptr<PrimDom>     m_primdom;
+    };
+
+    struct Cnstr : Node
+    {
+        enum {
+            MATAHA, SINGLE
+        } m_type;
+        shared_ptr<Cnstr>           m_cnstr;
+        shared_ptr<AndCnstr>        m_andcnstr;
+        shared_ptr<Ndrr1D::Domains> m_domains;
+    };
+
+    struct AndCnstr : Node
+    {
+        enum {
+            IJOU, IKA, CHIISAI, OOKII, CNSTR_ONLY, PRIMCNSTR_ONLY
+        } m_type;
+        shared_ptr<Expr>        m_expr;
+        shared_ptr<AndCnstr>    m_andcnstr;
+        shared_ptr<Cnstr>       m_cnstr;
+        shared_ptr<PrimCnstr>   m_primcnstr;
+    };
+
+    struct PrimCnstr : Node
+    {
+        enum {
+            IJOU, IKA, CHIISAI, OOKII
+        } m_type;
+        shared_ptr<Expr>        m_expr;
     };
 
     //

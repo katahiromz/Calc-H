@@ -24,17 +24,19 @@
     #if (__cplusplus >= 201103L)
         #include <memory>
         using std::shared_ptr;
+        using std::static_pointer_cast;
+        using std::dynamic_pointer_cast;
         using std::make_shared;
     #else
-        // boost::shared_ptr
-        #include <Boost/shared_ptr.hpp>
-        using boost::shared_ptr;
-
-        // boost::make_shared
+        #include <boost/shared_ptr.hpp>
         #include <boost/make_shared.hpp>
+        using boost::shared_ptr;
+        using boost::static_pointer_cast;
+        using boost::dynamic_pointer_cast;
         using boost::make_shared;
     #endif
-#endif  // ndef shared_ptr
+    #define shared_ptr shared_ptr
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // Boost.Multiprecision

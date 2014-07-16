@@ -1,11 +1,13 @@
 // stdafx.h
 
-#include <string>   // for std::string
-#include <vector>   // for std::vector
-#include <iostream> // for std::cin, std::cout, std::cerr, std::endl
-#include <fstream>  // for std::fstream
-#include <sstream>  // for std::stringstream
-#include <cassert>  // for assert
+#include <string>       // for std::string
+#include <vector>       // for std::vector
+#include <iostream>     // for std::cin, std::cout, std::cerr, std::endl
+#include <fstream>      // for std::fstream
+#include <sstream>      // for std::stringstream
+#include <cassert>      // for assert
+#include <algorithm>    // for std::sort, std::unique
+#include <cmath>        // for math functions
 
 #ifdef _WIN32
     #include <windows.h>
@@ -36,6 +38,9 @@ inline int MzcGetLParamY(LPARAM lParam)
     #include "PointSizeRect.h"
     #include "Resizable.h"
 #endif
+
+#include "PmpNumber.hpp"
+#include "Ndrr1D.hpp"
 
 ////////////////////////////////////////////////////////////////////////////
 

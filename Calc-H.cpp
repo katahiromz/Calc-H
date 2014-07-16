@@ -2,6 +2,8 @@
 // (Japanese, Shift_JIS)
 // Linuxの場合は、UTF-8に変換して下さい。
 
+#include "PmpNumber.hpp"
+#include "Ndrr1D.hpp"
 #include "Calc-H.h"
 #include "HParseHeader.h"
 
@@ -18,12 +20,21 @@ namespace Calc_H
     };
 }
 
+void ChSetMessage(const std::string& str)
+{
+    if (Calc_H::s_message.empty())
+        Calc_H::s_message = str;
+}
+
 static const char * const ch_not_tashizan = "たしざんではありません。";
 static const char * const ch_not_kakezan = "かけざんではありません。";
 static const char * const ch_not_hikizan = "ひきざんではありません。";
 static const char * const ch_not_warizan = "わりざんではありません。";
+static const char * const ch_right = "はい、そうです。";
+static const char * const ch_wrong = "いいえ、ちがいます。";
 
 using namespace Calc_H;
+using namespace Ndrr1D;
 
 CH_Value ChInverse(const CH_Value& value)
 {
@@ -68,6 +79,7 @@ CH_Value ChCalcFactorial(const pmp::integer_type& value)
     return result;
 }
 
+void ChAnalyzeExpr(shared_ptr<Expr>& expr);
 CH_Value ChCalcExpr(const shared_ptr<Expr>& expr);
 CH_Value ChCalcMono(const shared_ptr<Mono>& mono);
 CH_Value ChCalcFact(const shared_ptr<Fact>& fact);
@@ -102,7 +114,7 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
                 return 0;
             if (denom.is_zero())
             {
-                Calc_H::s_message = "ぶんぼがぜろになのでけいさんできません。";
+                ChSetMessage("ぶんぼがぜろになのでけいさんできません。");
                 return 0;
             }
             if (num.is_i() && denom.is_i())
@@ -120,7 +132,7 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
                 return seisuu;
             if (denom.is_zero())
             {
-                Calc_H::s_message = "ぶんぼがぜろになのでけいさんできません。";
+                ChSetMessage("ぶんぼがぜろになのでけいさんできません。");
                 return 0;
             }
             if (num.is_i() && denom.is_i())
@@ -229,7 +241,7 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
             }
             else
             {
-                Calc_H::s_message = "かいじょうがけいさんできるのはしぜんすうのみです。";
+                ChSetMessage("かいじょうがけいさんできるのはしぜんすうのみです。");
                 return 0;
             }
         }
@@ -272,7 +284,7 @@ CH_Value ChCalcFact(const shared_ptr<Fact>& fact)
             if (value.is_i() && value.get_i() >= 0)
                 value = ChCalcFactorial(value.get_i());
             else
-                Calc_H::s_message = "かいじょうがけいさんできるのはしぜんすうのみです。";
+                ChSetMessage("かいじょうがけいさんできるのはしぜんすうのみです。");
             return value;
         }
 
@@ -644,7 +656,7 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
         if (v1.is_i() && v1.get_i() >= 0)
             v2 = ChCalcFactorial(v1.get_i());
         else
-            Calc_H::s_message = "かいじょうがけいさんできるのはしぜんすうのみです。";
+            ChSetMessage("かいじょうがけいさんできるのはしぜんすうのみです。");
         return v2;
 
     default:
@@ -810,9 +822,13 @@ CH_Value ChCalcSuruto(const shared_ptr<Suruto>& suruto)
     }
 }
 
+void ChAnalyzeMono(shared_ptr<Mono>& mono);
+
 CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
 {
     CH_Value v1, v2;
+    std::vector<CH_Value> values;
+
     switch (sentence->m_type)
     {
     case Sentence::MONO:
@@ -847,20 +863,488 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
         v1 %= v2;
         v1.trim(ch_precision);
         if (v1.is_zero())
-            Calc_H::s_message = "わりきれます。";
+            ChSetMessage("わりきれます。");
         else
-            Calc_H::s_message = "わりきれません。";
+            ChSetMessage("わりきれません。");
         return 0;
+
+    case Sentence::DOMS_IS_DOMS:
+        assert(sentence->m_doms1);
+        assert(sentence->m_doms1->m_domains);
+        assert(sentence->m_doms2);
+        assert(sentence->m_doms2->m_domains);
+        if (sentence->m_doms1->m_domains->GetValues(values))
+        {
+            bool flag = true;
+            std::size_t i, siz = values.size();
+            for (i = 0; i < siz; ++i)
+            {
+                if (!sentence->m_doms2->m_domains->Contains(values[i]))
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag)
+                ChSetMessage(ch_right);
+            else
+                ChSetMessage(ch_wrong);
+            break;
+        }
+        sentence->m_doms1->m_domains.get()->FixNarrower();
+        sentence->m_doms2->m_domains.get()->FixWider();
+        #ifdef _DEBUG
+            sentence->m_doms1->m_domains->print();
+            std::cout << std::endl;
+            sentence->m_doms2->m_domains->print();
+            std::cout << std::endl;
+        #endif
+        if (sentence->m_doms2->m_domains->Includes(*sentence->m_doms1->m_domains.get()))
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::DOMS_IS_CNSTR:
+        assert(sentence->m_doms1);
+        assert(sentence->m_doms1->m_domains);
+        assert(sentence->m_cnstr);
+        assert(sentence->m_cnstr->m_domains);
+        sentence->m_doms1->m_domains.get()->FixNarrower();
+        if (sentence->m_cnstr->m_domains->Includes(*sentence->m_doms1->m_domains.get()))
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::MONO_IS_DOMS:
+        assert(sentence->m_mono);
+        assert(sentence->m_doms2);
+        assert(sentence->m_doms2->m_domains);
+        ChAnalyzeMono(sentence->m_mono);
+        if (sentence->m_doms2->m_domains->Contains(ChCalcMono(sentence->m_mono)))
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::MONO_IS_CNSTR:
+        assert(sentence->m_mono);
+        assert(sentence->m_cnstr);
+        assert(sentence->m_cnstr->m_domains);
+        ChAnalyzeMono(sentence->m_mono);
+        if (sentence->m_cnstr->m_domains->Contains(ChCalcMono(sentence->m_mono)))
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::MONO_IS_CNSTRED_BUNSUU:
+        assert(sentence->m_mono);
+        assert(sentence->m_cnstr);
+        assert(sentence->m_cnstr->m_domains);
+        ChAnalyzeMono(sentence->m_mono);
+        if (ChCalcMono(sentence->m_mono).is_r() &&
+            sentence->m_cnstr->m_domains->Contains(ChCalcMono(sentence->m_mono)))
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::MONO_IS_BUNSUU:
+        assert(sentence->m_mono);
+        ChAnalyzeMono(sentence->m_mono);
+        if (ChCalcMono(sentence->m_mono).is_r())
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::MONO_IS_CNSTRED_SHOUSUU:
+        assert(sentence->m_mono);
+        assert(sentence->m_cnstr);
+        assert(sentence->m_cnstr->m_domains);
+        ChAnalyzeMono(sentence->m_mono);
+        if (ChCalcMono(sentence->m_mono).is_f() &&
+            sentence->m_cnstr->m_domains->Contains(ChCalcMono(sentence->m_mono)))
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::MONO_IS_SHOUSUU:
+        assert(sentence->m_mono);
+        ChAnalyzeMono(sentence->m_mono);
+        if (ChCalcMono(sentence->m_mono).is_f())
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
 
     default:
         assert(0);
-        return 0;
+    }
+    return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////
+
+void ChAnalyzeDomainsOfPrimDom(
+    shared_ptr<Domains>& domains, shared_ptr<PrimDom>& primdom)
+{
+    Range *r;
+    assert(domains);
+    assert(primdom);
+    Domain *d = Domain::Whole();
+    switch (primdom->m_type)
+    {
+    case PrimDom::POSITIVE:
+        d->m_afnContains.push_back(IsPositiveNumber);
+        r = new Range;
+        r->m_has_min = false;
+        r->m_pnLBound = new CH_Value(0);
+        d->Intersect(*r);
+        delete r;
+        domains.get()->Intersect(*d);
+        assert(primdom->m_primdom);
+        ChAnalyzeDomainsOfPrimDom(domains, primdom->m_primdom);
+        break;
+
+    case PrimDom::NEGATIVE:
+        d->m_afnContains.push_back(IsNegativeNumber);
+        r = new Range;
+        r->m_has_max = false;
+        r->m_pnUBound = new CH_Value(0);
+        d->Intersect(*r);
+        delete r;
+        domains.get()->Intersect(*d);
+        assert(primdom->m_primdom);
+        ChAnalyzeDomainsOfPrimDom(domains, primdom->m_primdom);
+        break;
+
+    case PrimDom::SHIZENSUU:
+        d->m_afnContains.push_back(IsNaturalNumber);
+        d->RestrictTo(Domain::SEISUU);
+        r = new Range;
+        r->m_has_min = true;
+        r->m_pnLBound = new CH_Value(0);
+        d->Intersect(*r);
+        delete r;
+        domains.get()->Intersect(*d);
+        break;
+
+    case PrimDom::SEISUU:
+        d->m_afnContains.push_back(IsRegularNumber);
+        d->RestrictTo(Domain::SEISUU);
+        domains.get()->Intersect(*d);
+        break;
+
+    case PrimDom::GUUSUU:
+        d->m_afnContains.push_back(IsEvenNumber);
+        d->RestrictTo(Domain::GUUSUU);
+        domains.get()->Intersect(*d);
+        break;
+
+    case PrimDom::KISUU:
+        d->m_afnContains.push_back(IsOddNumber);
+        d->RestrictTo(Domain::KISUU);
+        domains.get()->Intersect(*d);
+        break;
+
+    case PrimDom::JISSUU:
+        break;
+
+    case PrimDom::SOSUU:
+        d->m_afnContains.push_back(IsPrimeNumber);
+        d->RestrictTo(Domain::SOSUU);
+        r = new Range;
+        r->m_has_min = true;
+        r->m_pnLBound = new CH_Value(2);
+        d->Intersect(*r);
+        delete r;
+        domains.get()->Intersect(*d);
+        break;
+
+    default:
+        assert(0);
+    }
+    delete d;
+}
+
+void ChAnalyzeDomainsOfPrimCnstr(
+    shared_ptr<Domains>& domains,
+    shared_ptr<PrimCnstr>& primcnstr)
+{
+    assert(domains);
+    assert(primcnstr);
+    Range *r = new Range;
+    switch (primcnstr->m_type)
+    {
+    case PrimCnstr::IJOU:
+        r->m_has_min = true;
+        ChAnalyzeExpr(primcnstr->m_expr);
+        r->m_pnLBound = new CH_Value(ChCalcExpr(primcnstr->m_expr));
+        domains.get()->Intersect(*r);
+        break;
+
+    case PrimCnstr::IKA:
+        r->m_has_max = true;
+        ChAnalyzeExpr(primcnstr->m_expr);
+        r->m_pnUBound = new CH_Value(ChCalcExpr(primcnstr->m_expr));
+        domains.get()->Intersect(*r);
+        break;
+
+    case PrimCnstr::CHIISAI:
+        r->m_has_max = false;
+        ChAnalyzeExpr(primcnstr->m_expr);
+        r->m_pnUBound = new CH_Value(ChCalcExpr(primcnstr->m_expr));
+        domains.get()->Intersect(*r);
+        break;
+
+    case PrimCnstr::OOKII:
+        r->m_has_min = false;
+        ChAnalyzeExpr(primcnstr->m_expr);
+        r->m_pnLBound = new CH_Value(ChCalcExpr(primcnstr->m_expr));
+        domains.get()->Intersect(*r);
+        break;
+
+    default:
+        assert(0);
+    }
+    delete r;
+}
+
+void ChAnalyzeDomainsOfCnstr(
+    shared_ptr<Domains>& domains,
+    shared_ptr<Cnstr>& cnstr);
+
+void ChAnalyzeDomainsOfAndCnstr(
+    shared_ptr<Domains>& domains,
+    shared_ptr<AndCnstr>& andcnstr)
+{
+    assert(domains);
+    assert(andcnstr);
+    Range *r = new Range;
+    switch (andcnstr->m_type)
+    {
+    case AndCnstr::IJOU:
+        r->m_has_min = true;
+        ChAnalyzeExpr(andcnstr->m_expr);
+        r->m_pnLBound = new CH_Value(ChCalcExpr(andcnstr->m_expr));
+        domains.get()->Intersect(*r);
+        ChAnalyzeDomainsOfAndCnstr(domains, andcnstr->m_andcnstr);
+        break;
+
+    case AndCnstr::IKA:
+        r->m_has_max = true;
+        ChAnalyzeExpr(andcnstr->m_expr);
+        r->m_pnUBound = new CH_Value(ChCalcExpr(andcnstr->m_expr));
+        domains.get()->Intersect(*r);
+        ChAnalyzeDomainsOfAndCnstr(domains, andcnstr->m_andcnstr);
+        break;
+
+    case AndCnstr::CHIISAI:
+        r->m_has_max = false;
+        ChAnalyzeExpr(andcnstr->m_expr);
+        r->m_pnUBound = new CH_Value(ChCalcExpr(andcnstr->m_expr));
+        domains.get()->Intersect(*r);
+        ChAnalyzeDomainsOfAndCnstr(domains, andcnstr->m_andcnstr);
+        break;
+
+    case AndCnstr::OOKII:
+        r->m_has_min = false;
+        ChAnalyzeExpr(andcnstr->m_expr);
+        r->m_pnLBound = new CH_Value(ChCalcExpr(andcnstr->m_expr));
+        domains.get()->Intersect(*r);
+        ChAnalyzeDomainsOfAndCnstr(domains, andcnstr->m_andcnstr);
+        break;
+
+    case AndCnstr::CNSTR_ONLY:
+        ChAnalyzeDomainsOfCnstr(domains, andcnstr->m_cnstr);
+        break;
+
+    case AndCnstr::PRIMCNSTR_ONLY:
+        ChAnalyzeDomainsOfPrimCnstr(domains, andcnstr->m_primcnstr);
+        break;
+
+    default:
+        assert(0);
+    }
+    delete r;
+}
+
+void ChAnalyzeDomainsOfCnstr(
+    shared_ptr<Domains>& domains,
+    shared_ptr<Cnstr>& cnstr)
+{
+    assert(domains);
+    assert(cnstr);
+    Domains *d1, *d2;
+    shared_ptr<Domains> domains1, domains2;
+    switch (cnstr->m_type)
+    {
+    case Cnstr::MATAHA:
+        d1 = Domains::Whole();
+        domains1 = shared_ptr<Domains>(d1);
+        d2 = Domains::Whole();
+        domains2 = shared_ptr<Domains>(d2);
+        ChAnalyzeDomainsOfCnstr(domains1, cnstr->m_cnstr);
+        ChAnalyzeDomainsOfAndCnstr(domains2, cnstr->m_andcnstr);
+        d1->Union(*d2);
+        delete d2;
+        domains = domains1;
+        break;
+
+    case Cnstr::SINGLE:
+        ChAnalyzeDomainsOfAndCnstr(domains, cnstr->m_andcnstr);
+        break;
+
+    default:
+        assert(0);
+    }
+}
+
+void ChAnalyzeDomainsOfCnstredPrimDom(
+    shared_ptr<Domains>& domains,
+    shared_ptr<Cnstr>& cnstr,
+    shared_ptr<PrimDom>& primdom)
+{
+    assert(domains);
+    assert(cnstr);
+    assert(primdom);
+    ChAnalyzeDomainsOfCnstr(domains, cnstr);
+    ChAnalyzeDomainsOfPrimDom(domains, primdom);
+}
+
+////////////////////////////////////////////////////////////////////////////
+
+void ChAnalyzeNum(shared_ptr<Num>& num)
+{
+}
+
+void ChAnalyzeAndCnstr(shared_ptr<AndCnstr>& andcnstr)
+{
+    switch (andcnstr->m_type)
+    {
+    case AndCnstr::IJOU:
+        ChAnalyzeExpr(andcnstr->m_expr);
+        ChAnalyzeAndCnstr(andcnstr->m_andcnstr);
+        break;
+
+    case AndCnstr::IKA:
+        ChAnalyzeExpr(andcnstr->m_expr);
+        ChAnalyzeAndCnstr(andcnstr->m_andcnstr);
+        break;
+
+    case AndCnstr::CHIISAI:
+        ChAnalyzeExpr(andcnstr->m_expr);
+        ChAnalyzeAndCnstr(andcnstr->m_andcnstr);
+        break;
+
+    case AndCnstr::OOKII:
+        ChAnalyzeExpr(andcnstr->m_expr);
+        ChAnalyzeAndCnstr(andcnstr->m_andcnstr);
+        break;
+
+    case AndCnstr::CNSTR_ONLY:
+        ChAnalyzeExpr(andcnstr->m_expr);
+        ChAnalyzeAndCnstr(andcnstr->m_andcnstr);
+        break;
+
+    case AndCnstr::PRIMCNSTR_ONLY:
+        ChAnalyzeExpr(andcnstr->m_expr);
+        ChAnalyzeAndCnstr(andcnstr->m_andcnstr);
+        break;
+
+    default:
+        assert(0);
+    }
+}
+
+void ChAnalyzeCnstr(shared_ptr<Cnstr>& cnstr)
+{
+    if (!cnstr->m_domains)
+    {
+        Domains *d = Domains::Whole();
+        cnstr->m_domains = shared_ptr<Domains>(d);
+    }
+
+    switch (cnstr->m_type)
+    {
+    case Cnstr::MATAHA:
+        ChAnalyzeDomainsOfCnstr(cnstr->m_domains, cnstr);
+        break;
+
+    case Cnstr::SINGLE:
+        ChAnalyzeDomainsOfAndCnstr(cnstr->m_domains, cnstr->m_andcnstr);
+        break;
+
+    default:
+        assert(0);
+    }
+}
+
+void ChAnalyzePrimDom(shared_ptr<PrimDom>& primdom)
+{
+    switch (primdom->m_type)
+    {
+    case PrimDom::POSITIVE:
+        ChAnalyzePrimDom(primdom->m_primdom);
+        break;
+
+    case PrimDom::NEGATIVE:
+        ChAnalyzePrimDom(primdom->m_primdom);
+        break;
+
+    case PrimDom::SHIZENSUU:
+    case PrimDom::SEISUU:
+    case PrimDom::GUUSUU:
+    case PrimDom::KISUU:
+    case PrimDom::JISSUU:
+        break;
+
+    default:
+        assert(0);
+    }
+}
+
+void ChAnalyzeDomainsOfDom(shared_ptr<Domains>& domains, shared_ptr<Dom>& dom)
+{
+    switch (dom->m_type)
+    {
+    case Dom::CNSTRED_PRIMDOM:
+        ChAnalyzeDomainsOfCnstredPrimDom(domains, dom->m_cnstr, dom->m_primdom);
+        break;
+
+    case Dom::PRIMDOM_ONLY:
+        ChAnalyzeDomainsOfPrimDom(domains, dom->m_primdom);
+        break;
+
+    case Dom::DOM_OF_DOM:
+        ChAnalyzeDomainsOfDom(domains, dom->m_dom);
+        ChAnalyzeDomainsOfPrimDom(domains, dom->m_primdom);
+        break;
+
+    default:
+        assert(0);
+    }
+}
+
+void ChAnalyzeDoms(shared_ptr<Doms>& doms)
+{
+    doms->m_domains = shared_ptr<Domains>(new Domains);
+    std::size_t i, siz = doms->size();
+    for (i = 0; i < siz; ++i)
+    {
+        Domains *d = Domains::Whole();
+        shared_ptr<Domains> domains(d);
+        ChAnalyzeDomainsOfDom(domains, (*doms.get())[i]);
+        doms->m_domains.get()->Union(*domains.get());
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////
 
-void ChAnalyzeExpr(shared_ptr<Expr>& expr);
 void ChAnalyzeExprList(shared_ptr<ExprList>& exprlist);
 void ChAnalyzeMono(shared_ptr<Mono>& mono);
 void ChAnalyzeShite(shared_ptr<Shite>& shite);
@@ -913,7 +1397,7 @@ void ChAnalyzeMonoTermTasukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
         break;
 
     default:
-        Calc_H::s_message = ch_not_tashizan;
+        ChSetMessage(ch_not_tashizan);
     }
 }
 
@@ -926,7 +1410,7 @@ void ChAnalyzeMonoTermHikukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
         break;
 
     default:
-        Calc_H::s_message = ch_not_hikizan;
+        ChSetMessage(ch_not_hikizan);
     }
 }
 
@@ -939,7 +1423,7 @@ void ChAnalyzeMonoTermTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& ter
         break;
 
     default:
-        Calc_H::s_message = ch_not_tashizan;
+        ChSetMessage(ch_not_tashizan);
     }
 }
 
@@ -952,7 +1436,7 @@ void ChAnalyzeMonoTermHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& ter
         break;
 
     default:
-        Calc_H::s_message = ch_not_tashizan;
+        ChSetMessage(ch_not_tashizan);
     }
 }
 
@@ -989,7 +1473,7 @@ void ChAnalyzeMonoShiteTasukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite
         break;
 
     default:
-        Calc_H::s_message = ch_not_tashizan;
+        ChSetMessage(ch_not_tashizan);
     }
 }
 
@@ -1026,7 +1510,7 @@ void ChAnalyzeMonoShiteKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shi
         break;
 
     default:
-        Calc_H::s_message = ch_not_kakezan;
+        ChSetMessage(ch_not_kakezan);
     }
 }
 
@@ -1050,7 +1534,7 @@ void ChAnalyzeMonoShiteHikukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite
         break;
 
     default:
-        Calc_H::s_message = ch_not_hikizan;
+        ChSetMessage(ch_not_hikizan);
     }
 }
 
@@ -1074,7 +1558,7 @@ void ChAnalyzeMonoShiteWarukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -1140,7 +1624,7 @@ void ChAnalyzeMonoMonoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
         break;
 
     default:
-        Calc_H::s_message = ch_not_tashizan;
+        ChSetMessage(ch_not_tashizan);
     }
 }
 
@@ -1201,7 +1685,7 @@ void ChAnalyzeMonoMonoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2
         break;
 
     default:
-        Calc_H::s_message = ch_not_kakezan;
+        ChSetMessage(ch_not_kakezan);
     }
 }
 
@@ -1266,7 +1750,7 @@ void ChAnalyzeMonoMonoHikukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
         break;
 
     default:
-        Calc_H::s_message = ch_not_hikizan;
+        ChSetMessage(ch_not_hikizan);
     }
 }
 
@@ -1331,7 +1815,7 @@ void ChAnalyzeMonoMonoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -1340,7 +1824,7 @@ void ChAnalyzeMonoFactTasukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoTasukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = ch_not_tashizan;
+        ChSetMessage(ch_not_tashizan);
 }
 
 void ChAnalyzeMonoFactKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
@@ -1348,7 +1832,7 @@ void ChAnalyzeMonoFactKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoKakerukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = ch_not_kakezan;
+        ChSetMessage(ch_not_kakezan);
 }
 
 void ChAnalyzeMonoFactHikukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
@@ -1356,7 +1840,7 @@ void ChAnalyzeMonoFactHikukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoHikukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = ch_not_hikizan;
+        ChSetMessage(ch_not_hikizan);
 }
 
 void ChAnalyzeMonoFactWarukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
@@ -1364,7 +1848,7 @@ void ChAnalyzeMonoFactWarukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoWarukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
 }
 
 void ChAnalyzeMonoFactTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
@@ -1372,7 +1856,7 @@ void ChAnalyzeMonoFactTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fac
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoTasarerukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = ch_not_tashizan;
+        ChSetMessage(ch_not_tashizan);
 }
 
 void ChAnalyzeMonoFactKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
@@ -1380,7 +1864,7 @@ void ChAnalyzeMonoFactKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& f
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoKakerarerukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = ch_not_kakezan;
+        ChSetMessage(ch_not_kakezan);
 }
 
 void ChAnalyzeMonoFactHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
@@ -1388,7 +1872,7 @@ void ChAnalyzeMonoFactHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fac
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoHikarerukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = ch_not_hikizan;
+        ChSetMessage(ch_not_hikizan);
 }
 
 void ChAnalyzeMonoFactWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
@@ -1396,7 +1880,7 @@ void ChAnalyzeMonoFactWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fac
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoWararerukazu(mono, fact->m_prim->m_mono);
     else
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
 }
 
 void ChAnalyzeMonoTermKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
@@ -1413,7 +1897,7 @@ void ChAnalyzeMonoTermKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
         break;
 
     case Term::DIV:
-        Calc_H::s_message = ch_not_kakezan;
+        ChSetMessage(ch_not_kakezan);
         break;
 
     case Term::FACT_ONLY:
@@ -1428,7 +1912,7 @@ void ChAnalyzeMonoTermWarukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
     switch (term->m_type)
     {
     case Term::MUL:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
         break;
 
     case Term::DIV:
@@ -1464,7 +1948,7 @@ void ChAnalyzeMonoExprTasukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         break;
 
     default:
-        Calc_H::s_message = ch_not_tashizan;
+        ChSetMessage(ch_not_tashizan);
         break;
     }
 }
@@ -1477,7 +1961,7 @@ void ChAnalyzeMonoExprKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
     case Expr::ADD:
     case Expr::SUB:
     case Expr::ZERO:
-        Calc_H::s_message = ch_not_kakezan;
+        ChSetMessage(ch_not_kakezan);
         break;
 
     case Expr::TERM_ONLY:
@@ -1494,7 +1978,7 @@ void ChAnalyzeMonoExprHikukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
     {
     case Expr::ADD:
     case Expr::ZERO:
-        Calc_H::s_message = ch_not_hikizan;
+        ChSetMessage(ch_not_hikizan);
         break;
 
     case Expr::SUB:
@@ -1519,7 +2003,7 @@ void ChAnalyzeMonoExprWarukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
     case Expr::ADD:
     case Expr::SUB:
     case Expr::ZERO:
-        Calc_H::s_message = ch_not_kakezan;
+        ChSetMessage(ch_not_kakezan);
         break;
 
     case Expr::TERM_ONLY:
@@ -1543,7 +2027,7 @@ void ChAnalyzeMonoTermKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& t
 
     case Term::DIV:
     case Term::FACT_ONLY:
-        Calc_H::s_message = ch_not_kakezan;
+        ChSetMessage(ch_not_kakezan);
         break;
     }
 }
@@ -1565,7 +2049,7 @@ void ChAnalyzeMonoExprTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& exp
     case Expr::SUB:
     case Expr::TERM_ONLY:
     case Expr::ZERO:
-        Calc_H::s_message = ch_not_tashizan;
+        ChSetMessage(ch_not_tashizan);
         break;
     }
 }
@@ -1585,7 +2069,7 @@ void ChAnalyzeMonoTermWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& ter
 
     case Term::MUL:
     case Term::FACT_ONLY:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
         break;
     }
 }
@@ -1598,7 +2082,7 @@ void ChAnalyzeMonoExprKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& e
     case Expr::ADD:
     case Expr::SUB:
     case Expr::ZERO:
-        Calc_H::s_message = ch_not_kakezan;
+        ChSetMessage(ch_not_kakezan);
         break;
 
     case Expr::TERM_ONLY:
@@ -1624,7 +2108,7 @@ void ChAnalyzeMonoExprHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& exp
     case Expr::ADD:
     case Expr::TERM_ONLY:
     case Expr::ZERO:
-        Calc_H::s_message = ch_not_hikizan;
+        ChSetMessage(ch_not_hikizan);
         break;
     }
 }
@@ -1637,7 +2121,7 @@ void ChAnalyzeMonoExprWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& exp
     case Expr::ADD:
     case Expr::SUB:
     case Expr::ZERO:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
         break;
 
     case Expr::TERM_ONLY:
@@ -1675,7 +2159,7 @@ void ChAnalyzeMonoSurutoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
         break;
 
     default:
-        Calc_H::s_message = ch_not_tashizan;
+        ChSetMessage(ch_not_tashizan);
     }
 }
 
@@ -1708,7 +2192,7 @@ void ChAnalyzeMonoSurutoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& s
         break;
 
     default:
-        Calc_H::s_message = ch_not_kakezan;
+        ChSetMessage(ch_not_kakezan);
     }
 }
 
@@ -1735,7 +2219,7 @@ void ChAnalyzeMonoSurutoHikukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
         break;
 
     default:
-        Calc_H::s_message = ch_not_hikizan;
+        ChSetMessage(ch_not_hikizan);
     }
 }
 
@@ -1762,7 +2246,7 @@ void ChAnalyzeMonoSurutoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -1802,7 +2286,7 @@ void ChAnalyzeMonoSurutoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
         break;
 
     default:
-        Calc_H::s_message = ch_not_tashizan;
+        ChSetMessage(ch_not_tashizan);
     }
 }
 
@@ -1842,7 +2326,7 @@ void ChAnalyzeMonoSurutoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto
         break;
 
     default:
-        Calc_H::s_message = ch_not_kakezan;
+        ChSetMessage(ch_not_kakezan);
     }
 }
 
@@ -1876,7 +2360,7 @@ void ChAnalyzeMonoSurutoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
         break;
 
     default:
-        Calc_H::s_message = ch_not_hikizan;
+        ChSetMessage(ch_not_hikizan);
     }
 }
 
@@ -1910,7 +2394,7 @@ void ChAnalyzeMonoSurutoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -1957,7 +2441,7 @@ void ChAnalyzeMonoPrevSentenceTasukazu(shared_ptr<Mono>& mono)
 
     case Sentence::EXPRLIST_MUL:
     default:
-        Calc_H::s_message = ch_not_tashizan;
+        ChSetMessage(ch_not_tashizan);
     }
 }
 
@@ -2004,7 +2488,7 @@ void ChAnalyzeMonoPrevSentenceKakerukazu(shared_ptr<Mono>& mono)
 
     case Sentence::EXPRLIST_ADD:
     default:
-        Calc_H::s_message = ch_not_kakezan;
+        ChSetMessage(ch_not_kakezan);
     }
 }
 
@@ -2037,7 +2521,7 @@ void ChAnalyzeMonoPrevSentenceHikukazu(shared_ptr<Mono>& mono)
     case Sentence::EXPRLIST_ADD:
     case Sentence::EXPRLIST_MUL:
     default:
-        Calc_H::s_message = ch_not_hikizan;
+        ChSetMessage(ch_not_hikizan);
     }
 }
 
@@ -2070,7 +2554,7 @@ void ChAnalyzeMonoPrevSentenceWarukazu(shared_ptr<Mono>& mono)
     case Sentence::EXPRLIST_ADD:
     case Sentence::EXPRLIST_MUL:
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -2117,7 +2601,7 @@ void ChAnalyzeMonoPrevSentenceTasarerukazu(shared_ptr<Mono>& mono)
 
     case Sentence::EXPRLIST_MUL:
     default:
-        Calc_H::s_message = ch_not_tashizan;
+        ChSetMessage(ch_not_tashizan);
     }
 }
 
@@ -2164,7 +2648,7 @@ void ChAnalyzeMonoPrevSentenceKakerarerukazu(shared_ptr<Mono>& mono)
 
     case Sentence::EXPRLIST_ADD:
     default:
-        Calc_H::s_message = ch_not_kakezan;
+        ChSetMessage(ch_not_kakezan);
     }
 }
 
@@ -2197,7 +2681,7 @@ void ChAnalyzeMonoPrevSentenceHikarerukazu(shared_ptr<Mono>& mono)
     case Sentence::EXPRLIST_ADD:
     case Sentence::EXPRLIST_MUL:
     default:
-        Calc_H::s_message = ch_not_hikizan;
+        ChSetMessage(ch_not_hikizan);
     }
 }
 
@@ -2230,7 +2714,7 @@ void ChAnalyzeMonoPrevSentenceWararerukazu(shared_ptr<Mono>& mono)
     case Sentence::EXPRLIST_ADD:
     case Sentence::EXPRLIST_MUL:
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -2299,7 +2783,7 @@ void ChAnalyzeMonoMonoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
         break;
 
     default:
-        Calc_H::s_message = ch_not_tashizan;
+        ChSetMessage(ch_not_tashizan);
     }
 }
 
@@ -2368,7 +2852,7 @@ void ChAnalyzeMonoMonoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& m
         break;
 
     default:
-        Calc_H::s_message = ch_not_kakezan;
+        ChSetMessage(ch_not_kakezan);
     }
 }
 
@@ -2444,7 +2928,7 @@ void ChAnalyzeMonoMonoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
         break;
 
     default:
-        Calc_H::s_message = ch_not_hikizan;
+        ChSetMessage(ch_not_hikizan);
     }
 }
 
@@ -2516,7 +3000,7 @@ void ChAnalyzeMonoMonoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -2556,7 +3040,7 @@ void ChAnalyzeMonoShiteTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
         break;
 
     default:
-        Calc_H::s_message = ch_not_tashizan;
+        ChSetMessage(ch_not_tashizan);
     }
 }
 
@@ -2596,7 +3080,7 @@ void ChAnalyzeMonoShiteKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>&
         break;
 
     default:
-        Calc_H::s_message = ch_not_kakezan;
+        ChSetMessage(ch_not_kakezan);
     }
 }
 
@@ -2623,7 +3107,7 @@ void ChAnalyzeMonoShiteHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
         break;
 
     default:
-        Calc_H::s_message = ch_not_hikizan;
+        ChSetMessage(ch_not_hikizan);
     }
 }
 
@@ -2650,7 +3134,7 @@ void ChAnalyzeMonoShiteWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3187,7 +3671,7 @@ void ChAnalyzeMonoSurutoAmari(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3232,7 +3716,7 @@ void ChAnalyzeMonoShiteAmari(shared_ptr<Mono> mono, shared_ptr<Shite>& shite)
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3246,7 +3730,7 @@ void ChAnalyzeMonoPrimAmari(shared_ptr<Mono>& mono, shared_ptr<Prim>& prim)
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3260,7 +3744,7 @@ void ChAnalyzeMonoFactAmari(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3285,7 +3769,7 @@ void ChAnalyzeMonoTermAmari(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3299,7 +3783,7 @@ void ChAnalyzeMonoExprAmari(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3368,7 +3852,7 @@ void ChAnalyzeMonoMonoAmari(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3413,7 +3897,7 @@ void ChAnalyzeMonoShiteShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Shite>& sh
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3427,7 +3911,7 @@ void ChAnalyzeMonoPrimShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Prim>& prim
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3441,7 +3925,7 @@ void ChAnalyzeMonoFactShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3466,7 +3950,7 @@ void ChAnalyzeMonoTermShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Term>& term
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3480,7 +3964,7 @@ void ChAnalyzeMonoExprShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3524,7 +4008,7 @@ void ChAnalyzeMonoSurutoShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Suruto>& 
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3593,7 +4077,7 @@ void ChAnalyzeMonoMonoShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3623,7 +4107,7 @@ void ChAnalyzeMonoSonoAmari(shared_ptr<Mono>& mono)
         break;
 
     default:
-        Calc_H::s_message = ch_not_warizan;
+        ChSetMessage(ch_not_warizan);
     }
 }
 
@@ -3776,7 +4260,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = ch_not_tashizan;
+            ChSetMessage(ch_not_tashizan);
             break;
         }
         break;
@@ -3811,7 +4295,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = ch_not_kakezan;
+            ChSetMessage(ch_not_kakezan);
             break;
         }
         break;
@@ -3838,7 +4322,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = ch_not_hikizan;
+            ChSetMessage(ch_not_hikizan);
             break;
         }
         break;
@@ -3865,7 +4349,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = ch_not_hikizan;
+            ChSetMessage(ch_not_hikizan);
             break;
         }
         break;
@@ -3946,7 +4430,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = ch_not_tashizan;
+            ChSetMessage(ch_not_tashizan);
             break;
         }
         break;
@@ -3995,7 +4479,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = ch_not_kakezan;
+            ChSetMessage(ch_not_kakezan);
             break;
         }
         break;
@@ -4051,7 +4535,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = ch_not_hikizan;
+            ChSetMessage(ch_not_hikizan);
             break;
         }
         break;
@@ -4107,7 +4591,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         default:
-            Calc_H::s_message = ch_not_warizan;
+            ChSetMessage(ch_not_warizan);
             break;
         }
         break;
@@ -4147,35 +4631,35 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
     case Mono::TASHIZAN:
         ChAnalyzeMono(mono->m_mono);
         if (!ChIsMonoTashizan(mono->m_mono))
-            Calc_H::s_message = ch_not_tashizan;
+            ChSetMessage(ch_not_tashizan);
         mono = mono->m_mono;
         break;
 
     case Mono::KAKEZAN:
         ChAnalyzeMono(mono->m_mono);
         if (!ChIsMonoKakezan(mono->m_mono))
-            Calc_H::s_message = ch_not_kakezan;
+            ChSetMessage(ch_not_kakezan);
         mono = mono->m_mono;
         break;
 
     case Mono::HIKIZAN:
         ChAnalyzeMono(mono->m_mono);
         if (!ChIsMonoHikizan(mono->m_mono))
-            Calc_H::s_message = ch_not_hikizan;
+            ChSetMessage(ch_not_hikizan);
         mono = mono->m_mono;
         break;
 
     case Mono::WARIZAN:
         ChAnalyzeMono(mono->m_mono);
         if (!ChIsMonoWarizan(mono->m_mono))
-            Calc_H::s_message = ch_not_warizan;
+            ChSetMessage(ch_not_warizan);
         mono = mono->m_mono;
         break;
 
     case Mono::SURUTO_WA:
         ChAnalyzeSuruto(mono->m_suruto);
         if (!ChIsSurutoTashizan(mono->m_suruto))
-            Calc_H::s_message = ch_not_tashizan;
+            ChSetMessage(ch_not_tashizan);
         m = new Mono;
         m->m_type = Mono::SURUTO_ONLY;
         m->m_suruto = mono->m_suruto;
@@ -4185,7 +4669,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
     case Mono::SURUTO_SEKI:
         ChAnalyzeSuruto(mono->m_suruto);
         if (!ChIsSurutoKakezan(mono->m_suruto))
-            Calc_H::s_message = ch_not_kakezan;
+            ChSetMessage(ch_not_kakezan);
         m = new Mono;
         m->m_type = Mono::SURUTO_ONLY;
         m->m_suruto = mono->m_suruto;
@@ -4195,7 +4679,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
     case Mono::SURUTO_SA:
         ChAnalyzeSuruto(mono->m_suruto);
         if (!ChIsSurutoHikizan(mono->m_suruto))
-            Calc_H::s_message = ch_not_hikizan;
+            ChSetMessage(ch_not_hikizan);
         m = new Mono;
         m->m_type = Mono::SURUTO_ONLY;
         m->m_suruto = mono->m_suruto;
@@ -4205,7 +4689,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
     case Mono::SURUTO_SHOU:
         ChAnalyzeSuruto(mono->m_suruto);
         if (!ChIsSurutoWarizan(mono->m_suruto))
-            Calc_H::s_message = ch_not_warizan;
+            ChSetMessage(ch_not_warizan);
         m = new Mono;
         m->m_type = Mono::SURUTO_ONLY;
         m->m_suruto = mono->m_suruto;
@@ -4454,6 +4938,44 @@ void ChAnalyzeSentence(shared_ptr<Sentence>& sentence)
     case Sentence::WARIKIRU:
         ChAnalyzeMono(sentence->m_mono);
         ChAnalyzeExpr(sentence->m_expr);
+        break;
+
+    case Sentence::DOMS_IS_DOMS:
+        ChAnalyzeDoms(sentence->m_doms1);
+        ChAnalyzeDoms(sentence->m_doms2);
+        break;
+
+    case Sentence::DOMS_IS_CNSTR:
+        ChAnalyzeDoms(sentence->m_doms1);
+        ChAnalyzeCnstr(sentence->m_cnstr);
+        break;
+
+    case Sentence::MONO_IS_DOMS:
+        ChAnalyzeMono(sentence->m_mono);
+        ChAnalyzeDoms(sentence->m_doms2);
+        break;
+
+    case Sentence::MONO_IS_CNSTR:
+        ChAnalyzeMono(sentence->m_mono);
+        ChAnalyzeCnstr(sentence->m_cnstr);
+        break;
+
+    case Sentence::MONO_IS_CNSTRED_BUNSUU:
+        ChAnalyzeMono(sentence->m_mono);
+        ChAnalyzeCnstr(sentence->m_cnstr);
+        break;
+
+    case Sentence::MONO_IS_BUNSUU:
+        ChAnalyzeMono(sentence->m_mono);
+        break;
+
+    case Sentence::MONO_IS_CNSTRED_SHOUSUU:
+        ChAnalyzeMono(sentence->m_mono);
+        ChAnalyzeCnstr(sentence->m_cnstr);
+        break;
+
+    case Sentence::MONO_IS_SHOUSUU:
+        ChAnalyzeMono(sentence->m_mono);
         break;
 
     default:

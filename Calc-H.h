@@ -7,21 +7,23 @@
 #include <sstream>  // for std::stringstream
 #include <cmath>    // for M_PI
 
-#if (__cplusplus >= 201103L)
-    #include <memory>
-    using std::shared_ptr;
-    using std::static_pointer_cast;
-    using std::dynamic_pointer_cast;
-    using std::make_shared;
-#else
-    #include <boost/shared_ptr.hpp>
-    #include <boost/make_shared.hpp>
-    using boost::shared_ptr;
-    using boost::static_pointer_cast;
-    using boost::dynamic_pointer_cast;
-    using boost::make_shared;
+#ifndef shared_ptr
+    #if (__cplusplus >= 201103L)
+        #include <memory>
+        using std::shared_ptr;
+        using std::static_pointer_cast;
+        using std::dynamic_pointer_cast;
+        using std::make_shared;
+    #else
+        #include <boost/shared_ptr.hpp>
+        #include <boost/make_shared.hpp>
+        using boost::shared_ptr;
+        using boost::static_pointer_cast;
+        using boost::dynamic_pointer_cast;
+        using boost::make_shared;
+    #endif
+    #define shared_ptr shared_ptr
 #endif
-#define shared_ptr shared_ptr
 
 #include <cstdlib>
 #include <cstdio>

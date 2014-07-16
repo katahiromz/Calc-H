@@ -102,6 +102,100 @@ namespace Calc_H
             return shared_ptr<Sentence>(s);
         }
 
+        shared_ptr<Sentence> DoSent8(shared_ptr<Doms>& doms1, shared_ptr<Doms>& doms2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent8" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::DOMS_IS_DOMS;
+            s->m_doms1 = doms1;
+            s->m_doms2 = doms2;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent9(shared_ptr<Doms>& doms1, shared_ptr<Cnstr>& cnstr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent9" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::DOMS_IS_CNSTR;
+            s->m_doms1 = doms1;
+            s->m_cnstr = cnstr;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent10(shared_ptr<Mono>& mono, shared_ptr<Doms>& doms2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent10" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::MONO_IS_DOMS;
+            s->m_mono = mono;
+            s->m_doms2 = doms2;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent11(shared_ptr<Mono>& mono, shared_ptr<Cnstr>& cnstr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent11" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::MONO_IS_CNSTR;
+            s->m_mono = mono;
+            s->m_cnstr = cnstr;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent12(shared_ptr<Mono>& mono, shared_ptr<Cnstr>& cnstr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent12" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::MONO_IS_CNSTRED_BUNSUU;
+            s->m_mono = mono;
+            s->m_cnstr = cnstr;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent13(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent13" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::MONO_IS_BUNSUU;
+            s->m_mono = mono;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent14(shared_ptr<Mono>& mono, shared_ptr<Cnstr>& cnstr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent14" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::MONO_IS_CNSTRED_SHOUSUU;
+            s->m_mono = mono;
+            s->m_cnstr = cnstr;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent15(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent15" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::MONO_IS_SHOUSUU;
+            s->m_mono = mono;
+            return shared_ptr<Sentence>(s);
+        }
+
         shared_ptr<Suruto> DoSuruto1(shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG
@@ -2981,6 +3075,279 @@ namespace Calc_H
             VecFunc *f = new VecFunc;
             f->m_type = VecFunc::AVERAGE;
             return shared_ptr<VecFunc>(f);
+        }
+
+        shared_ptr<Doms> DoDoms1(shared_ptr<Doms>& doms, shared_ptr<Dom>& dom)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDoms1" << std::endl;
+            #endif
+            doms.get()->push_back(dom);
+            return doms;
+        }
+
+        shared_ptr<Doms> DoDoms2(shared_ptr<Dom>& dom)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDoms2" << std::endl;
+            #endif
+            Doms *d = new Doms;
+            d->push_back(dom);
+            return shared_ptr<Doms>(d);
+        }
+
+        shared_ptr<Dom> DoDom1(shared_ptr<Cnstr>& cnstr, shared_ptr<PrimDom>& primdom)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDom1" << std::endl;
+            #endif
+            Dom *d = new Dom;
+            d->m_type = Dom::CNSTRED_PRIMDOM;
+            d->m_cnstr = cnstr;
+            d->m_primdom = primdom;
+            return shared_ptr<Dom>(d);
+        }
+
+        shared_ptr<Dom> DoDom2(shared_ptr<PrimDom>& primdom)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDom2" << std::endl;
+            #endif
+            Dom *d = new Dom;
+            d->m_type = Dom::PRIMDOM_ONLY;
+            d->m_primdom = primdom;
+            return shared_ptr<Dom>(d);
+        }
+
+        shared_ptr<Dom> DoDom3(shared_ptr<Dom>& dom, shared_ptr<PrimDom>& primdom)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDom3" << std::endl;
+            #endif
+            Dom *d = new Dom;
+            d->m_type = Dom::DOM_OF_DOM;
+            d->m_dom = dom;
+            d->m_primdom = primdom;
+            return shared_ptr<Dom>(d);
+        }
+
+        shared_ptr<PrimDom> DoPrimDom1(shared_ptr<PrimDom>& primdom)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrimDom1" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::POSITIVE;
+            pm->m_primdom = primdom;
+            return shared_ptr<PrimDom>(pm);
+        }
+
+        shared_ptr<PrimDom> DoPrimDom2(shared_ptr<PrimDom>& primdom)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrimDom2" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::NEGATIVE;
+            pm->m_primdom = primdom;
+            return shared_ptr<PrimDom>(pm);
+        }
+
+        shared_ptr<PrimDom> DoPrimDom3()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrimDom3" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::SHIZENSUU;
+            return shared_ptr<PrimDom>(pm);
+        }
+
+        shared_ptr<PrimDom> DoPrimDom4()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrimDom4" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::SEISUU;
+            return shared_ptr<PrimDom>(pm);
+        }
+
+        shared_ptr<PrimDom> DoPrimDom5()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrimDom5" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::GUUSUU;
+            return shared_ptr<PrimDom>(pm);
+        }
+
+        shared_ptr<PrimDom> DoPrimDom6()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrimDom6" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::KISUU;
+            return shared_ptr<PrimDom>(pm);
+        }
+
+        shared_ptr<PrimDom> DoPrimDom7()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrimDom7" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::JISSUU;
+            return shared_ptr<PrimDom>(pm);
+        }
+
+        shared_ptr<PrimDom> DoPrimDom8()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrimDom8" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::SOSUU;
+            return shared_ptr<PrimDom>(pm);
+        }
+
+        shared_ptr<Cnstr> DoCnstr1(shared_ptr<Cnstr>& cnstr, shared_ptr<AndCnstr>& andcnstr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoCnstr1" << std::endl;
+            #endif
+            Cnstr *c = new Cnstr;
+            c->m_type = Cnstr::MATAHA;
+            c->m_cnstr = cnstr;
+            c->m_andcnstr = andcnstr;
+            return shared_ptr<Cnstr>(c);
+        }
+
+        shared_ptr<Cnstr> DoCnstr2(shared_ptr<AndCnstr>& andcnstr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoCnstr2" << std::endl;
+            #endif
+            Cnstr *c = new Cnstr;
+            c->m_type = Cnstr::SINGLE;
+            c->m_andcnstr = andcnstr;
+            return shared_ptr<Cnstr>(c);
+        }
+
+        shared_ptr<AndCnstr> DoAndCnstr1(shared_ptr<Expr>& expr, shared_ptr<AndCnstr>& andcnstr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoAndCnstr1" << std::endl;
+            #endif
+            AndCnstr *ac = new AndCnstr;
+            ac->m_type = AndCnstr::IJOU;
+            ac->m_expr = expr;
+            ac->m_andcnstr = andcnstr;
+            return shared_ptr<AndCnstr>(ac);
+        }
+
+        shared_ptr<AndCnstr> DoAndCnstr2(shared_ptr<Expr>& expr, shared_ptr<AndCnstr>& andcnstr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoAndCnstr2" << std::endl;
+            #endif
+            AndCnstr *ac = new AndCnstr;
+            ac->m_type = AndCnstr::IKA;
+            ac->m_expr = expr;
+            ac->m_andcnstr = andcnstr;
+            return shared_ptr<AndCnstr>(ac);
+        }
+
+        shared_ptr<AndCnstr> DoAndCnstr3(shared_ptr<Expr>& expr, shared_ptr<AndCnstr>& andcnstr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoAndCnstr3" << std::endl;
+            #endif
+            AndCnstr *ac = new AndCnstr;
+            ac->m_type = AndCnstr::CHIISAI;
+            ac->m_expr = expr;
+            ac->m_andcnstr = andcnstr;
+            return shared_ptr<AndCnstr>(ac);
+        }
+
+        shared_ptr<AndCnstr> DoAndCnstr4(shared_ptr<Expr>& expr, shared_ptr<AndCnstr>& andcnstr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoAndCnstr4" << std::endl;
+            #endif
+            AndCnstr *ac = new AndCnstr;
+            ac->m_type = AndCnstr::OOKII;
+            ac->m_expr = expr;
+            ac->m_andcnstr = andcnstr;
+            return shared_ptr<AndCnstr>(ac);
+        }
+
+        shared_ptr<AndCnstr> DoAndCnstr5(shared_ptr<Cnstr>& cnstr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoAndCnstr5" << std::endl;
+            #endif
+            AndCnstr *ac = new AndCnstr;
+            ac->m_type = AndCnstr::CNSTR_ONLY;
+            ac->m_cnstr = cnstr;
+            return shared_ptr<AndCnstr>(ac);
+        }
+
+        shared_ptr<AndCnstr> DoAndCnstr6(shared_ptr<PrimCnstr>& primcnstr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoAndCnstr6" << std::endl;
+            #endif
+            AndCnstr *ac = new AndCnstr;
+            ac->m_type = AndCnstr::PRIMCNSTR_ONLY;
+            ac->m_primcnstr = primcnstr;
+            return shared_ptr<AndCnstr>(ac);
+        }
+
+        shared_ptr<PrimCnstr> DoPrimCnstr1(shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrimCnstr1" << std::endl;
+            #endif
+            PrimCnstr *pc = new PrimCnstr;
+            pc->m_type = PrimCnstr::IJOU;
+            pc->m_expr = expr;
+            return shared_ptr<PrimCnstr>(pc);
+        }
+
+        shared_ptr<PrimCnstr> DoPrimCnstr2(shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrimCnstr2" << std::endl;
+            #endif
+            PrimCnstr *pc = new PrimCnstr;
+            pc->m_type = PrimCnstr::IKA;
+            pc->m_expr = expr;
+            return shared_ptr<PrimCnstr>(pc);
+        }
+
+        shared_ptr<PrimCnstr> DoPrimCnstr3(shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrimCnstr3" << std::endl;
+            #endif
+            PrimCnstr *pc = new PrimCnstr;
+            pc->m_type = PrimCnstr::CHIISAI;
+            pc->m_expr = expr;
+            return shared_ptr<PrimCnstr>(pc);
+        }
+
+        shared_ptr<PrimCnstr> DoPrimCnstr4(shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoPrimCnstr4" << std::endl;
+            #endif
+            PrimCnstr *pc = new PrimCnstr;
+            pc->m_type = PrimCnstr::OOKII;
+            pc->m_expr = expr;
+            return shared_ptr<PrimCnstr>(pc);
         }
 
     public:

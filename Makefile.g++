@@ -14,8 +14,8 @@ DEFS = -std=c++0x -static -Wall -pedantic -D_SJIS -finput-charset=CP932 -fexec-c
 
 INCLUDES = -I$(BOOST_DIR)
 
-CXXFLAGS = $(DEFS) $(INCLUDES) -O9 -Ofast -DNDEBUG
-#CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG
+#CXXFLAGS = $(DEFS) $(INCLUDES) -O9 -Ofast -DNDEBUG
+CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG
 #CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG -DDEEPDEBUG
 
 CAPER = ./caper$(DOTEXE)
@@ -30,10 +30,12 @@ HEADERS = \
 	HScanner.h \
 	Location.h \
 	stdafx.h \
+	Ndrr1D.hpp \
 
 COMMON_OBJS = \
 	Calc-H$(DOTOBJ) \
 	PmpNumber$(DOTOBJ) \
+	Ndrr1D$(DOTOBJ) \
 
 GUI_OBJS = \
 	$(COMMON_OBJS) \
@@ -62,6 +64,8 @@ Calc-H$(DOTOBJ): $(HEADERS) Calc-H.cpp
 	$(CXX) -c $(CXXFLAGS) Calc-H.cpp
 PmpNumber$(DOTOBJ): PmpNumber.hpp PmpNumber.cpp
 	$(CXX) -c $(CXXFLAGS) PmpNumber.cpp
+Ndrr1D$(DOTOBJ): Ndrr1D.hpp Ndrr1D.cpp
+	$(CXX) -c $(CXXFLAGS) Ndrr1D.cpp
 Calc-H-CUI$(DOTOBJ): stdafx.h Calc-H-CUI.cpp
 	$(CXX) -c $(CXXFLAGS) Calc-H-CUI.cpp
 Calc-H-GUI$(DOTOBJ): stdafx.h Calc-H-GUI.cpp
