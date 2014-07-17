@@ -922,7 +922,9 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
         assert(sentence->m_doms2);
         assert(sentence->m_doms2->m_domains);
         ChAnalyzeMono(sentence->m_mono);
-        if (sentence->m_doms2->m_domains->Contains(ChCalcMono(sentence->m_mono)))
+        v1 = ChCalcMono(sentence->m_mono);
+        v1.trim();
+        if (sentence->m_doms2->m_domains->Contains(v1))
             ChSetMessage(ch_right);
         else
             ChSetMessage(ch_wrong);
@@ -933,7 +935,9 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
         assert(sentence->m_cnstr);
         assert(sentence->m_cnstr->m_domains);
         ChAnalyzeMono(sentence->m_mono);
-        if (sentence->m_cnstr->m_domains->Contains(ChCalcMono(sentence->m_mono)))
+        v1 = ChCalcMono(sentence->m_mono);
+        v1.trim();
+        if (sentence->m_cnstr->m_domains->Contains(v1))
             ChSetMessage(ch_right);
         else
             ChSetMessage(ch_wrong);
@@ -976,6 +980,21 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
         assert(sentence->m_mono);
         ChAnalyzeMono(sentence->m_mono);
         if (ChCalcMono(sentence->m_mono).is_f())
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::MONO_IS_MONO:
+        assert(sentence->m_mono);
+        ChAnalyzeMono(sentence->m_mono);
+        assert(sentence->m_mono2);
+        ChAnalyzeMono(sentence->m_mono2);
+        v1 = ChCalcMono(sentence->m_mono);
+        v2 = ChCalcMono(sentence->m_mono2);
+        v1.trim();
+        v2.trim();
+        if (v1 == v2)
             ChSetMessage(ch_right);
         else
             ChSetMessage(ch_wrong);
@@ -4976,6 +4995,11 @@ void ChAnalyzeSentence(shared_ptr<Sentence>& sentence)
 
     case Sentence::MONO_IS_SHOUSUU:
         ChAnalyzeMono(sentence->m_mono);
+        break;
+
+    case Sentence::MONO_IS_MONO:
+        ChAnalyzeMono(sentence->m_mono);
+        ChAnalyzeMono(sentence->m_mono2);
         break;
 
     default:

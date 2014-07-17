@@ -196,6 +196,18 @@ namespace Calc_H
             return shared_ptr<Sentence>(s);
         }
 
+        shared_ptr<Sentence> DoSent16(shared_ptr<Mono>& mono1, shared_ptr<Mono>& mono2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent16" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::MONO_IS_MONO;
+            s->m_mono = mono1;
+            s->m_mono2 = mono2;
+            return shared_ptr<Sentence>(s);
+        }
+
         shared_ptr<Suruto> DoSuruto1(shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG

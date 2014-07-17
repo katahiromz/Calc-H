@@ -59,9 +59,11 @@ namespace Calc_H
             DOMS_IS_DOMS, DOMS_IS_CNSTR,
             MONO_IS_DOMS, MONO_IS_CNSTR,
             MONO_IS_CNSTRED_BUNSUU, MONO_IS_BUNSUU,
-            MONO_IS_CNSTRED_SHOUSUU, MONO_IS_SHOUSUU
+            MONO_IS_CNSTRED_SHOUSUU, MONO_IS_SHOUSUU,
+            MONO_IS_MONO
         } m_type;
         shared_ptr<Mono>        m_mono;
+        shared_ptr<Mono>        m_mono2;
         shared_ptr<Expr>        m_expr;
         shared_ptr<Suruto>      m_suruto;
         shared_ptr<Num>         m_num;

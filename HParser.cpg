@@ -203,6 +203,7 @@ sentence<Sentence>
     | [DoSent14] mono(0) T_HA constraint(1) T_NO1 T_SHOUSUU T_KANA T_PERIOD
     | [DoSent14] mono(0) T_HA constraint(1) T_SHOUSUU T_KANA T_PERIOD
     | [DoSent15] mono(0) T_HA T_SHOUSUU T_KANA T_PERIOD
+    | [DoSent16] mono(0) T_HA mono(1) T_KANA T_PERIOD
     | [DoSent1] mono(0) T_HA T_WAKARAN T_KANA T_OSHIETE T_ONEGAI T_PERIOD
     | [DoSent1] mono(0) T_HA T_WAKARAN T_KANA T_OSHIETE T_KANA T_PERIOD
     | [DoSent1] mono(0) T_HA T_WAKARAN T_KANA T_OSHIETE T_PERIOD

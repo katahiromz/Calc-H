@@ -320,6 +320,7 @@ namespace Calc_H
             if (lexeme("ÇÊÇ£"))                             return set_info(info, T_KANA);
             if (lexeme("ÇÊ"))                               return set_info(info, T_KANA);
             if (lexeme("Ç‚Å["))                             return set_info(info, T_HACHI);
+            if (lexeme("Ç‚ÇÎÇ©"))                           return set_info(info, T_KANA);
             if (lexeme("Ç‚ÇÎ"))                             return set_info(info, T_KANA);
             if (lexeme("Ç‚ÇÍÇŒ"))                           return set_info(info, T_SURUTO);
             if (lexeme("Ç‚ÇÍ"))                             return set_info(info, T_SURUTO);
@@ -601,7 +602,9 @@ namespace Calc_H
             if (lexeme("Ç≈ÇÒÇÀÇÒ"))                         return set_info(info, T_KANA);
             if (lexeme("Ç≈Ç‚ÇÒÇ∑"))                         return set_info(info, T_DEARU);
             if (lexeme("Ç≈Ç‚Ç∑"))                           return set_info(info, T_DEARU);
+            if (lexeme("Ç≈Ç¡ÇµÇ·ÇÎ"))                       return set_info(info, T_DEARU);
             if (lexeme("Ç≈Ç¡"))                             return set_info(info, T_DEARU);
+            if (lexeme("Ç≈Ç∑Ç‚ÇÎ"))                         return set_info(info, T_DEARU);
             if (lexeme("Ç≈Ç∑"))                             return set_info(info, T_DEARU);
             if (lexeme("Ç≈ÇµÇÂÇ§"))                         return set_info(info, T_DEARU);
             if (lexeme("Ç≈Ç≤Ç¥Ç¢Ç‹Ç∑ÇÃÇ≈ÇµÇÂÇ§"))           return set_info(info, T_DEARU);
@@ -918,6 +921,7 @@ namespace Calc_H
             if (lexeme("Ç©ÇØÇ†ÇÌÇµÇΩÇ∆Ç´"))                 return set_info(info, T_KAKERUTO);
             if (lexeme("Ç©ÇØÇ†ÇÌÇ≥ÇÍÇÈ"))                   return set_info(info, T_KAKERARERU);
             if (lexeme("Ç©ÇØ"))                             return set_info(info, T_KAKERU);
+            if (lexeme("Ç©Ç¢Ç»"))                           return set_info(info, T_KANA);
             if (lexeme("Ç©Ç¢Ç∂ÇÂÇ§"))                       return set_info(info, T_KAIJOU);
             if (lexeme("Ç©Ç¢"))                             return set_info(info, T_KANA);
             if (lexeme("Ç©Ç†"))                             return set_info(info, T_KANA);
