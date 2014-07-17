@@ -320,6 +320,7 @@ namespace Calc_H
             if (lexeme("よぅ"))                             return set_info(info, T_KANA);
             if (lexeme("よ"))                               return set_info(info, T_KANA);
             if (lexeme("やー"))                             return set_info(info, T_HACHI);
+            if (lexeme("やろ"))                             return set_info(info, T_KANA);
             if (lexeme("やれば"))                           return set_info(info, T_SURUTO);
             if (lexeme("やれ"))                             return set_info(info, T_SURUTO);
             if (lexeme("やると"))                           return set_info(info, T_SURUTO);
@@ -508,8 +509,6 @@ namespace Calc_H
             if (lexeme("に"))                               return set_info(info, T_NI);
             if (lexeme("なーんだ"))                         return set_info(info, T_IKURA);
             if (lexeme("なーに"))                           return set_info(info, T_IKURA);
-            if (lexeme("なんよ"))                           return set_info(info, T_IKURA);
-            if (lexeme("なんや"))                           return set_info(info, T_IKURA);
             if (lexeme("なんぼになるん"))                   return set_info(info, T_IKURA);
             if (lexeme("なんぼになるの"))                   return set_info(info, T_IKURA);
             if (lexeme("なんぼになる"))                     return set_info(info, T_IKURA);
@@ -527,19 +526,34 @@ namespace Calc_H
             if (lexeme("なんでやんす"))                     return set_info(info, T_IKURA);
             if (lexeme("なんでやす"))                       return set_info(info, T_IKURA);
             if (lexeme("なんでっ"))                         return set_info(info, T_IKURA);
-            if (lexeme("なんです"))                         return set_info(info, T_IKURA);
-            if (lexeme("なんでしょう"))                     return set_info(info, T_IKURA);
-            if (lexeme("なんでございますの"))               return set_info(info, T_IKURA);
-            if (lexeme("なんでございます"))                 return set_info(info, T_IKURA);
-            if (lexeme("なんでございましょう"))             return set_info(info, T_IKURA);
-            if (lexeme("なんである"))                       return set_info(info, T_IKURA);
-            if (lexeme("なんでありんす"))                   return set_info(info, T_IKURA);
-            if (lexeme("なんであります"))                   return set_info(info, T_IKURA);
+            if (lexeme("なんです"))                         return set_info(info, T_DEARU);
+            if (lexeme("なんでしょう"))                     return set_info(info, T_DEARU);
+            if (lexeme("なんでございますのでしょう"))       return set_info(info, T_DEARU);
+            if (lexeme("なんでございますの"))               return set_info(info, T_DEARU);
+            if (lexeme("なんでございますでしょう"))         return set_info(info, T_DEARU);
+            if (lexeme("なんでございます"))                 return set_info(info, T_DEARU);
+            if (lexeme("なんでございましょう"))             return set_info(info, T_DEARU);
+            if (lexeme("なんである"))                       return set_info(info, T_DEARU);
+            if (lexeme("なんでありんす"))                   return set_info(info, T_DEARU);
+            if (lexeme("なんであります"))                   return set_info(info, T_DEARU);
             if (lexeme("なんだろう"))                       return set_info(info, T_IKURA);
             if (lexeme("なんだ"))                           return set_info(info, T_IKURA);
             if (lexeme("なん"))                             return set_info(info, T_DEARU);
             if (lexeme("なゆた"))                           return set_info(info, T_NAYUTA);
+            if (lexeme("なのでやんす"))                     return set_info(info, T_DEARU);
+            if (lexeme("なのでやす"))                       return set_info(info, T_DEARU);
+            if (lexeme("なのでっ"))                         return set_info(info, T_DEARU);
+            if (lexeme("なのです"))                         return set_info(info, T_DEARU);
             if (lexeme("なのでしょう"))                     return set_info(info, T_DEARU);
+            if (lexeme("なのでございますのでしょう"))       return set_info(info, T_DEARU);
+            if (lexeme("なのでございますの"))               return set_info(info, T_DEARU);
+            if (lexeme("なのでございますでしょう"))         return set_info(info, T_DEARU);
+            if (lexeme("なのでございます"))                 return set_info(info, T_DEARU);
+            if (lexeme("なのでございましょう"))             return set_info(info, T_DEARU);
+            if (lexeme("なのでありんす"))                   return set_info(info, T_DEARU);
+            if (lexeme("なのであります"))                   return set_info(info, T_DEARU);
+            if (lexeme("なのだろう"))                       return set_info(info, T_DEARU);
+            if (lexeme("なのだ"))                           return set_info(info, T_DEARU);
             if (lexeme("なの"))                             return set_info(info, T_DEARU);
             if (lexeme("なぬ"))                             return set_info(info, T_NANA);
             if (lexeme("なにになるん"))                     return set_info(info, T_IKURA);
@@ -590,8 +604,11 @@ namespace Calc_H
             if (lexeme("でっ"))                             return set_info(info, T_DEARU);
             if (lexeme("です"))                             return set_info(info, T_DEARU);
             if (lexeme("でしょう"))                         return set_info(info, T_DEARU);
+            if (lexeme("でございますのでしょう"))           return set_info(info, T_DEARU);
             if (lexeme("でございますの"))                   return set_info(info, T_DEARU);
+            if (lexeme("でございますでしょう"))             return set_info(info, T_DEARU);
             if (lexeme("でございます"))                     return set_info(info, T_DEARU);
+            if (lexeme("でございましょう"))                 return set_info(info, T_DEARU);
             if (lexeme("である"))                           return set_info(info, T_DEARU);
             if (lexeme("でありんす"))                       return set_info(info, T_DEARU);
             if (lexeme("であります"))                       return set_info(info, T_DEARU);
@@ -2234,7 +2251,7 @@ namespace Calc_H
             infos = newinfos;
         }
 
-        // T_HA T_KANA(なん/なんか)をT_HA T_IKURAに変換。
+        // T_HA T_KANA(なん...)をT_HA T_IKURAに変換。
         void resynth18(std::vector<info_type>& infos)
         {
             std::vector<info_type>::iterator it = infos.begin();
@@ -2242,7 +2259,8 @@ namespace Calc_H
             for (; it != end; ++it)
             {
                 if (it->get_token() == T_HA &&
-                    (it + 1)->get_token() == T_KANA)
+                    (it + 1)->get_token() == T_KANA &&
+                    (it + 1)->text().find("なん") == 0)
                 {
                     (it + 1)->set_token(T_IKURA);
                 }
