@@ -894,10 +894,8 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
         sentence->m_doms1->m_domains.get()->FixNarrower();
         sentence->m_doms2->m_domains.get()->FixWider();
         #ifdef _DEBUG
-            sentence->m_doms1->m_domains->print();
-            std::cout << std::endl;
-            sentence->m_doms2->m_domains->print();
-            std::cout << std::endl;
+            std::cout << *sentence->m_doms1->m_domains.get() << std::endl;
+            std::cout << *sentence->m_doms2->m_domains.get() << std::endl;
         #endif
         if (sentence->m_doms2->m_domains->Includes(*sentence->m_doms1->m_domains.get()))
             ChSetMessage(ch_right);
@@ -1096,34 +1094,43 @@ void ChAnalyzeDomainsOfPrimCnstr(
 {
     assert(domains);
     assert(primcnstr);
+    CH_Value v;
     Range *r = new Range;
     switch (primcnstr->m_type)
     {
     case PrimCnstr::IJOU:
         r->m_has_min = true;
         ChAnalyzeExpr(primcnstr->m_expr);
-        r->m_pnLBound = new CH_Value(ChCalcExpr(primcnstr->m_expr));
+        v = ChCalcExpr(primcnstr->m_expr);
+        v.trim();
+        r->m_pnLBound = new CH_Value(v);
         domains.get()->Intersect(*r);
         break;
 
     case PrimCnstr::IKA:
         r->m_has_max = true;
         ChAnalyzeExpr(primcnstr->m_expr);
-        r->m_pnUBound = new CH_Value(ChCalcExpr(primcnstr->m_expr));
+        v = ChCalcExpr(primcnstr->m_expr);
+        v.trim();
+        r->m_pnUBound = new CH_Value(v);
         domains.get()->Intersect(*r);
         break;
 
     case PrimCnstr::CHIISAI:
         r->m_has_max = false;
         ChAnalyzeExpr(primcnstr->m_expr);
-        r->m_pnUBound = new CH_Value(ChCalcExpr(primcnstr->m_expr));
+        v = ChCalcExpr(primcnstr->m_expr);
+        v.trim();
+        r->m_pnUBound = new CH_Value(v);
         domains.get()->Intersect(*r);
         break;
 
     case PrimCnstr::OOKII:
         r->m_has_min = false;
         ChAnalyzeExpr(primcnstr->m_expr);
-        r->m_pnLBound = new CH_Value(ChCalcExpr(primcnstr->m_expr));
+        v = ChCalcExpr(primcnstr->m_expr);
+        v.trim();
+        r->m_pnLBound = new CH_Value(v);
         domains.get()->Intersect(*r);
         break;
 
@@ -1144,6 +1151,7 @@ void ChAnalyzeDomainsOfAndCnstr(
     assert(domains);
     assert(andcnstr);
     Range *r = new Range;
+    CH_Value v;
     switch (andcnstr->m_type)
     {
     case AndCnstr::IJOU:
@@ -1157,7 +1165,9 @@ void ChAnalyzeDomainsOfAndCnstr(
     case AndCnstr::IKA:
         r->m_has_max = true;
         ChAnalyzeExpr(andcnstr->m_expr);
-        r->m_pnUBound = new CH_Value(ChCalcExpr(andcnstr->m_expr));
+        v = ChCalcExpr(andcnstr->m_expr);
+        v.trim();
+        r->m_pnUBound = new CH_Value(v);
         domains.get()->Intersect(*r);
         ChAnalyzeDomainsOfAndCnstr(domains, andcnstr->m_andcnstr);
         break;
@@ -1165,7 +1175,9 @@ void ChAnalyzeDomainsOfAndCnstr(
     case AndCnstr::CHIISAI:
         r->m_has_max = false;
         ChAnalyzeExpr(andcnstr->m_expr);
-        r->m_pnUBound = new CH_Value(ChCalcExpr(andcnstr->m_expr));
+        v = ChCalcExpr(andcnstr->m_expr);
+        v.trim();
+        r->m_pnUBound = new CH_Value(v);
         domains.get()->Intersect(*r);
         ChAnalyzeDomainsOfAndCnstr(domains, andcnstr->m_andcnstr);
         break;
@@ -1173,7 +1185,9 @@ void ChAnalyzeDomainsOfAndCnstr(
     case AndCnstr::OOKII:
         r->m_has_min = false;
         ChAnalyzeExpr(andcnstr->m_expr);
-        r->m_pnLBound = new CH_Value(ChCalcExpr(andcnstr->m_expr));
+        v = ChCalcExpr(andcnstr->m_expr);
+        v.trim();
+        r->m_pnLBound = new CH_Value(v);
         domains.get()->Intersect(*r);
         ChAnalyzeDomainsOfAndCnstr(domains, andcnstr->m_andcnstr);
         break;
@@ -1239,10 +1253,12 @@ void ChAnalyzeDomainsOfCnstredPrimDom(
 
 void ChAnalyzeNum(shared_ptr<Num>& num)
 {
+    assert(num);
 }
 
 void ChAnalyzeAndCnstr(shared_ptr<AndCnstr>& andcnstr)
 {
+    assert(andcnstr);
     switch (andcnstr->m_type)
     {
     case AndCnstr::IJOU:
@@ -1282,6 +1298,7 @@ void ChAnalyzeAndCnstr(shared_ptr<AndCnstr>& andcnstr)
 
 void ChAnalyzeCnstr(shared_ptr<Cnstr>& cnstr)
 {
+    assert(cnstr);
     if (!cnstr->m_domains)
     {
         Domains *d = Domains::Whole();
@@ -1305,6 +1322,7 @@ void ChAnalyzeCnstr(shared_ptr<Cnstr>& cnstr)
 
 void ChAnalyzePrimDom(shared_ptr<PrimDom>& primdom)
 {
+    assert(primdom);
     switch (primdom->m_type)
     {
     case PrimDom::POSITIVE:
@@ -1327,8 +1345,17 @@ void ChAnalyzePrimDom(shared_ptr<PrimDom>& primdom)
     }
 }
 
+void ChAnalyzeDomainsOfNum(shared_ptr<Domains>& domains, shared_ptr<Num>& num)
+{
+    assert(domains);
+    Range *range = new Range(num->m_value);
+    domains.get()->Intersect(*range);
+    delete range;
+}
+
 void ChAnalyzeDomainsOfDom(shared_ptr<Domains>& domains, shared_ptr<Dom>& dom)
 {
+    assert(domains);
     switch (dom->m_type)
     {
     case Dom::CNSTRED_PRIMDOM:
@@ -1344,6 +1371,10 @@ void ChAnalyzeDomainsOfDom(shared_ptr<Domains>& domains, shared_ptr<Dom>& dom)
         ChAnalyzeDomainsOfPrimDom(domains, dom->m_primdom);
         break;
 
+    case Dom::NUM_ONLY:
+        ChAnalyzeDomainsOfNum(domains, dom->m_num);
+        break;
+
     default:
         assert(0);
     }
@@ -1351,6 +1382,7 @@ void ChAnalyzeDomainsOfDom(shared_ptr<Domains>& domains, shared_ptr<Dom>& dom)
 
 void ChAnalyzeDoms(shared_ptr<Doms>& doms)
 {
+    assert(doms);
     doms->m_domains = shared_ptr<Domains>(new Domains);
     std::size_t i, siz = doms->size();
     for (i = 0; i < siz; ++i)
@@ -1409,6 +1441,8 @@ void ChAnalyzeMonoExprWarukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr);
 
 void ChAnalyzeMonoTermTasukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 {
+    assert(mono);
+    assert(term);
     switch (term->m_type)
     {
     case Term::FACT_ONLY:
@@ -1422,6 +1456,8 @@ void ChAnalyzeMonoTermTasukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 
 void ChAnalyzeMonoTermHikukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 {
+    assert(mono);
+    assert(term);
     switch (term->m_type)
     {
     case Term::FACT_ONLY:
@@ -1435,6 +1471,8 @@ void ChAnalyzeMonoTermHikukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 
 void ChAnalyzeMonoTermTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 {
+    assert(mono);
+    assert(term);
     switch (term->m_type)
     {
     case Term::FACT_ONLY:
@@ -1448,6 +1486,8 @@ void ChAnalyzeMonoTermTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& ter
 
 void ChAnalyzeMonoTermHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 {
+    assert(mono);
+    assert(term);
     switch (term->m_type)
     {
     case Term::FACT_ONLY:
@@ -1461,6 +1501,8 @@ void ChAnalyzeMonoTermHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& ter
 
 void ChAnalyzeMonoShiteTasukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite)
 {
+    assert(mono);
+    assert(shite);
     Mono *m;
     switch (shite->m_type)
     {
@@ -1498,6 +1540,8 @@ void ChAnalyzeMonoShiteTasukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite
 
 void ChAnalyzeMonoShiteKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite)
 {
+    assert(mono);
+    assert(shite);
     Mono *m;
     switch (shite->m_type)
     {
@@ -1535,6 +1579,8 @@ void ChAnalyzeMonoShiteKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shi
 
 void ChAnalyzeMonoShiteHikukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite)
 {
+    assert(mono);
+    assert(shite);
     Mono *m;
     switch (shite->m_type)
     {
@@ -1559,6 +1605,8 @@ void ChAnalyzeMonoShiteHikukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite
 
 void ChAnalyzeMonoShiteWarukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite)
 {
+    assert(mono);
+    assert(shite);
     Mono *m;
     switch (shite->m_type)
     {
@@ -1588,6 +1636,8 @@ void ChAnalyzeMonoShiteWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
 
 void ChAnalyzeMonoMonoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
 {
+    assert(mono);
+    assert(mono2);
     Mono *m;
     switch (mono2->m_type)
     {
@@ -1649,6 +1699,8 @@ void ChAnalyzeMonoMonoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
 
 void ChAnalyzeMonoMonoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
 {
+    assert(mono);
+    assert(mono2);
     Mono *m;
     switch (mono2->m_type)
     {
@@ -1710,6 +1762,8 @@ void ChAnalyzeMonoMonoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2
 
 void ChAnalyzeMonoMonoHikukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
 {
+    assert(mono);
+    assert(mono2);
     Mono *m;
     switch (mono2->m_type)
     {
@@ -1775,6 +1829,8 @@ void ChAnalyzeMonoMonoHikukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
 
 void ChAnalyzeMonoMonoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
 {
+    assert(mono);
+    assert(mono2);
     Mono *m;
     switch (mono2->m_type)
     {
@@ -1840,6 +1896,8 @@ void ChAnalyzeMonoMonoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
 
 void ChAnalyzeMonoFactTasukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 {
+    assert(mono);
+    assert(fact);
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoTasukazu(mono, fact->m_prim->m_mono);
     else
@@ -1848,6 +1906,8 @@ void ChAnalyzeMonoFactTasukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 
 void ChAnalyzeMonoFactKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 {
+    assert(mono);
+    assert(fact);
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoKakerukazu(mono, fact->m_prim->m_mono);
     else
@@ -1856,6 +1916,8 @@ void ChAnalyzeMonoFactKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 
 void ChAnalyzeMonoFactHikukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 {
+    assert(mono);
+    assert(fact);
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoHikukazu(mono, fact->m_prim->m_mono);
     else
@@ -1864,6 +1926,8 @@ void ChAnalyzeMonoFactHikukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 
 void ChAnalyzeMonoFactWarukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 {
+    assert(mono);
+    assert(fact);
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoWarukazu(mono, fact->m_prim->m_mono);
     else
@@ -1872,6 +1936,8 @@ void ChAnalyzeMonoFactWarukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 
 void ChAnalyzeMonoFactTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 {
+    assert(mono);
+    assert(fact);
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoTasarerukazu(mono, fact->m_prim->m_mono);
     else
@@ -1880,6 +1946,8 @@ void ChAnalyzeMonoFactTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fac
 
 void ChAnalyzeMonoFactKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 {
+    assert(mono);
+    assert(fact);
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoKakerarerukazu(mono, fact->m_prim->m_mono);
     else
@@ -1888,6 +1956,8 @@ void ChAnalyzeMonoFactKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& f
 
 void ChAnalyzeMonoFactHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 {
+    assert(mono);
+    assert(fact);
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoHikarerukazu(mono, fact->m_prim->m_mono);
     else
@@ -1896,6 +1966,8 @@ void ChAnalyzeMonoFactHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fac
 
 void ChAnalyzeMonoFactWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 {
+    assert(mono);
+    assert(fact);
     if (fact->m_type == Fact::SINGLE && fact->m_prim->m_type == Prim::MONO)
         ChAnalyzeMonoMonoWararerukazu(mono, fact->m_prim->m_mono);
     else
@@ -1904,6 +1976,8 @@ void ChAnalyzeMonoFactWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Fact>& fac
 
 void ChAnalyzeMonoTermKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 {
+    assert(mono);
+    assert(term);
     Mono *m;
     switch (term->m_type)
     {
@@ -1927,6 +2001,8 @@ void ChAnalyzeMonoTermKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 
 void ChAnalyzeMonoTermWarukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 {
+    assert(mono);
+    assert(term);
     Mono *m;
     switch (term->m_type)
     {
@@ -1950,6 +2026,8 @@ void ChAnalyzeMonoTermWarukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 
 void ChAnalyzeMonoExprTasukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
 {
+    assert(mono);
+    assert(expr);
     Mono *m;
     ChAnalyzeExpr(expr);
     switch (expr->m_type)
@@ -1974,6 +2052,8 @@ void ChAnalyzeMonoExprTasukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
 
 void ChAnalyzeMonoExprKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
 {
+    assert(mono);
+    assert(expr);
     ChAnalyzeExpr(expr);
     switch (expr->m_type)
     {
@@ -1991,6 +2071,8 @@ void ChAnalyzeMonoExprKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
 
 void ChAnalyzeMonoExprHikukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
 {
+    assert(mono);
+    assert(expr);
     Mono *m;
     ChAnalyzeExpr(expr);
     switch (expr->m_type)
@@ -2016,6 +2098,8 @@ void ChAnalyzeMonoExprHikukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
 
 void ChAnalyzeMonoExprWarukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
 {
+    assert(mono);
+    assert(expr);
     ChAnalyzeExpr(expr);
     switch (expr->m_type)
     {
@@ -2033,6 +2117,8 @@ void ChAnalyzeMonoExprWarukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
 
 void ChAnalyzeMonoTermKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 {
+    assert(mono);
+    assert(term);
     Mono *m;
     switch (term->m_type)
     {
@@ -2053,6 +2139,8 @@ void ChAnalyzeMonoTermKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& t
 
 void ChAnalyzeMonoExprTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
 {
+    assert(mono);
+    assert(expr);
     Mono *m;
     ChAnalyzeExpr(expr);
     switch (expr->m_type)
@@ -2075,6 +2163,8 @@ void ChAnalyzeMonoExprTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& exp
 
 void ChAnalyzeMonoTermWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 {
+    assert(mono);
+    assert(term);
     Mono *m;
     switch (term->m_type)
     {
@@ -2095,6 +2185,8 @@ void ChAnalyzeMonoTermWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& ter
 
 void ChAnalyzeMonoExprKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
 {
+    assert(mono);
+    assert(expr);
     ChAnalyzeExpr(expr);
     switch (expr->m_type)
     {
@@ -2112,6 +2204,8 @@ void ChAnalyzeMonoExprKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& e
 
 void ChAnalyzeMonoExprHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
 {
+    assert(mono);
+    assert(expr);
     Mono *m;
     ChAnalyzeExpr(expr);
     switch (expr->m_type)
@@ -2134,6 +2228,8 @@ void ChAnalyzeMonoExprHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& exp
 
 void ChAnalyzeMonoExprWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
 {
+    assert(mono);
+    assert(expr);
     ChAnalyzeExpr(expr);
     switch (expr->m_type)
     {
@@ -2151,6 +2247,8 @@ void ChAnalyzeMonoExprWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Expr>& exp
 
 void ChAnalyzeMonoSurutoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto)
 {
+    assert(mono);
+    assert(suruto);
     Mono *m;
     switch (suruto->m_type)
     {
@@ -2184,6 +2282,8 @@ void ChAnalyzeMonoSurutoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
 
 void ChAnalyzeMonoSurutoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto)
 {
+    assert(mono);
+    assert(suruto);
     Mono *m;
     switch (suruto->m_type)
     {
@@ -2217,6 +2317,8 @@ void ChAnalyzeMonoSurutoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& s
 
 void ChAnalyzeMonoSurutoHikukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto)
 {
+    assert(mono);
+    assert(suruto);
     Mono *m;
     switch (suruto->m_type)
     {
@@ -2244,6 +2346,8 @@ void ChAnalyzeMonoSurutoHikukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
 
 void ChAnalyzeMonoSurutoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto)
 {
+    assert(mono);
+    assert(suruto);
     Mono *m;
     switch (suruto->m_type)
     {
@@ -2271,6 +2375,8 @@ void ChAnalyzeMonoSurutoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
 
 void ChAnalyzeMonoSurutoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto)
 {
+    assert(mono);
+    assert(suruto);
     Mono *m;
     switch (suruto->m_type)
     {
@@ -2311,6 +2417,8 @@ void ChAnalyzeMonoSurutoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
 
 void ChAnalyzeMonoSurutoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto)
 {
+    assert(mono);
+    assert(suruto);
     Mono *m;
     switch (suruto->m_type)
     {
@@ -2351,6 +2459,8 @@ void ChAnalyzeMonoSurutoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto
 
 void ChAnalyzeMonoSurutoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto)
 {
+    assert(mono);
+    assert(suruto);
     Mono *m;
     switch (suruto->m_type)
     {
@@ -2385,6 +2495,8 @@ void ChAnalyzeMonoSurutoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
 
 void ChAnalyzeMonoSurutoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto)
 {
+    assert(mono);
+    assert(suruto);
     Mono *m;
     switch (suruto->m_type)
     {
@@ -2419,6 +2531,7 @@ void ChAnalyzeMonoSurutoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
 
 void ChAnalyzeMonoPrevSentenceTasukazu(shared_ptr<Mono>& mono)
 {
+    assert(mono);
     Mono *m;
     Sentence *sentence = Calc_H::s_sentence_prev.get();
 
@@ -2466,6 +2579,7 @@ void ChAnalyzeMonoPrevSentenceTasukazu(shared_ptr<Mono>& mono)
 
 void ChAnalyzeMonoPrevSentenceKakerukazu(shared_ptr<Mono>& mono)
 {
+    assert(mono);
     Mono *m;
     Sentence *sentence = Calc_H::s_sentence_prev.get();
 
@@ -2513,6 +2627,7 @@ void ChAnalyzeMonoPrevSentenceKakerukazu(shared_ptr<Mono>& mono)
 
 void ChAnalyzeMonoPrevSentenceHikukazu(shared_ptr<Mono>& mono)
 {
+    assert(mono);
     Sentence *sentence = Calc_H::s_sentence_prev.get();
 
     switch (sentence->m_type)
@@ -2546,6 +2661,7 @@ void ChAnalyzeMonoPrevSentenceHikukazu(shared_ptr<Mono>& mono)
 
 void ChAnalyzeMonoPrevSentenceWarukazu(shared_ptr<Mono>& mono)
 {
+    assert(mono);
     Sentence *sentence = Calc_H::s_sentence_prev.get();
 
     switch (sentence->m_type)
@@ -2579,6 +2695,7 @@ void ChAnalyzeMonoPrevSentenceWarukazu(shared_ptr<Mono>& mono)
 
 void ChAnalyzeMonoPrevSentenceTasarerukazu(shared_ptr<Mono>& mono)
 {
+    assert(mono);
     Mono *m;
     Sentence *sentence = Calc_H::s_sentence_prev.get();
 
@@ -2626,6 +2743,7 @@ void ChAnalyzeMonoPrevSentenceTasarerukazu(shared_ptr<Mono>& mono)
 
 void ChAnalyzeMonoPrevSentenceKakerarerukazu(shared_ptr<Mono>& mono)
 {
+    assert(mono);
     Mono *m;
     Sentence *sentence = Calc_H::s_sentence_prev.get();
 
@@ -2673,6 +2791,7 @@ void ChAnalyzeMonoPrevSentenceKakerarerukazu(shared_ptr<Mono>& mono)
 
 void ChAnalyzeMonoPrevSentenceHikarerukazu(shared_ptr<Mono>& mono)
 {
+    assert(mono);
     Sentence *sentence = Calc_H::s_sentence_prev.get();
 
     switch (sentence->m_type)
@@ -2706,6 +2825,7 @@ void ChAnalyzeMonoPrevSentenceHikarerukazu(shared_ptr<Mono>& mono)
 
 void ChAnalyzeMonoPrevSentenceWararerukazu(shared_ptr<Mono>& mono)
 {
+    assert(mono);
     Sentence *sentence = Calc_H::s_sentence_prev.get();
 
     switch (sentence->m_type)
@@ -2739,6 +2859,8 @@ void ChAnalyzeMonoPrevSentenceWararerukazu(shared_ptr<Mono>& mono)
 
 void ChAnalyzeMonoMonoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
 {
+    assert(mono);
+    assert(mono2);
     Mono *m;
     switch (mono2->m_type)
     {
@@ -2808,6 +2930,8 @@ void ChAnalyzeMonoMonoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
 
 void ChAnalyzeMonoMonoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
 {
+    assert(mono);
+    assert(mono2);
     Mono *m;
     switch (mono2->m_type)
     {
@@ -2877,6 +3001,8 @@ void ChAnalyzeMonoMonoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& m
 
 void ChAnalyzeMonoMonoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
 {
+    assert(mono);
+    assert(mono2);
     Mono *m;
     switch (mono2->m_type)
     {
@@ -2953,6 +3079,8 @@ void ChAnalyzeMonoMonoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
 
 void ChAnalyzeMonoMonoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
 {
+    assert(mono);
+    assert(mono2);
     Mono *m;
     switch (mono2->m_type)
     {
@@ -3025,6 +3153,8 @@ void ChAnalyzeMonoMonoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
 
 void ChAnalyzeMonoShiteTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite)
 {
+    assert(mono);
+    assert(shite);
     Mono *m;
     switch (shite->m_type)
     {
@@ -3065,6 +3195,8 @@ void ChAnalyzeMonoShiteTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
 
 void ChAnalyzeMonoShiteKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite)
 {
+    assert(mono);
+    assert(shite);
     Mono *m;
     switch (shite->m_type)
     {
@@ -3105,6 +3237,8 @@ void ChAnalyzeMonoShiteKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>&
 
 void ChAnalyzeMonoShiteHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite)
 {
+    assert(mono);
+    assert(shite);
     Mono *m;
     switch (shite->m_type)
     {
@@ -3132,6 +3266,8 @@ void ChAnalyzeMonoShiteHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
 
 void ChAnalyzeMonoShiteWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite)
 {
+    assert(mono);
+    assert(shite);
     Mono *m;
     switch (shite->m_type)
     {
@@ -3164,6 +3300,7 @@ bool ChIsMonoWarizan(shared_ptr<Mono>& mono);
 
 bool ChIsShiteTashizan(shared_ptr<Shite>& shite)
 {
+    assert(shite);
     switch (shite->m_type)
     {
     case Shite::EXPRLIST_ADD:
@@ -3181,6 +3318,7 @@ bool ChIsShiteTashizan(shared_ptr<Shite>& shite)
 
 bool ChIsShiteKakezan(shared_ptr<Shite>& shite)
 {
+    assert(shite);
     switch (shite->m_type)
     {
     case Shite::EXPRLIST_MUL:
@@ -3200,6 +3338,7 @@ bool ChIsShiteKakezan(shared_ptr<Shite>& shite)
 
 bool ChIsShiteHikizan(shared_ptr<Shite>& shite)
 {
+    assert(shite);
     switch (shite->m_type)
     {
     case Shite::MONO_SUB:
@@ -3217,6 +3356,7 @@ bool ChIsShiteHikizan(shared_ptr<Shite>& shite)
 
 bool ChIsShiteWarizan(shared_ptr<Shite>& shite)
 {
+    assert(shite);
     switch (shite->m_type)
     {
     case Shite::MONO_DIV:
@@ -3234,6 +3374,7 @@ bool ChIsShiteWarizan(shared_ptr<Shite>& shite)
 
 bool ChIsPrimTashizan(shared_ptr<Prim>& prim)
 {
+    assert(prim);
     if (prim->m_type == Prim::MONO)
         return ChIsMonoTashizan(prim->m_mono);
     else
@@ -3242,6 +3383,7 @@ bool ChIsPrimTashizan(shared_ptr<Prim>& prim)
 
 bool ChIsPrimKakezan(shared_ptr<Prim>& prim)
 {
+    assert(prim);
     if (prim->m_type == Prim::MONO)
         return ChIsMonoKakezan(prim->m_mono);
     else
@@ -3250,6 +3392,7 @@ bool ChIsPrimKakezan(shared_ptr<Prim>& prim)
 
 bool ChIsPrimHikizan(shared_ptr<Prim>& prim)
 {
+    assert(prim);
     if (prim->m_type == Prim::MONO)
         return ChIsMonoHikizan(prim->m_mono);
     else
@@ -3258,6 +3401,7 @@ bool ChIsPrimHikizan(shared_ptr<Prim>& prim)
 
 bool ChIsPrimWarizan(shared_ptr<Prim>& prim)
 {
+    assert(prim);
     if (prim->m_type == Prim::MONO)
         return ChIsMonoWarizan(prim->m_mono);
     else
@@ -3266,6 +3410,7 @@ bool ChIsPrimWarizan(shared_ptr<Prim>& prim)
 
 bool ChIsFactTashizan(shared_ptr<Fact>& fact)
 {
+    assert(fact);
     if (fact->m_type == Fact::SINGLE)
         return ChIsPrimTashizan(fact->m_prim);
     else
@@ -3274,6 +3419,7 @@ bool ChIsFactTashizan(shared_ptr<Fact>& fact)
 
 bool ChIsFactKakezan(shared_ptr<Fact>& fact)
 {
+    assert(fact);
     if (fact->m_type == Fact::SINGLE)
         return ChIsPrimKakezan(fact->m_prim);
     else
@@ -3282,6 +3428,7 @@ bool ChIsFactKakezan(shared_ptr<Fact>& fact)
 
 bool ChIsFactHikizan(shared_ptr<Fact>& fact)
 {
+    assert(fact);
     if (fact->m_type == Fact::SINGLE)
         return ChIsPrimHikizan(fact->m_prim);
     else
@@ -3290,6 +3437,7 @@ bool ChIsFactHikizan(shared_ptr<Fact>& fact)
 
 bool ChIsFactWarizan(shared_ptr<Fact>& fact)
 {
+    assert(fact);
     if (fact->m_type == Fact::SINGLE)
         return ChIsPrimWarizan(fact->m_prim);
     else
@@ -3298,6 +3446,7 @@ bool ChIsFactWarizan(shared_ptr<Fact>& fact)
 
 bool ChIsTermTashizan(shared_ptr<Term>& term)
 {
+    assert(term);
     switch (term->m_type)
     {
     case Term::MUL:
@@ -3314,6 +3463,7 @@ bool ChIsTermTashizan(shared_ptr<Term>& term)
 
 bool ChIsTermKakezan(shared_ptr<Term>& term)
 {
+    assert(term);
     switch (term->m_type)
     {
     case Term::MUL:
@@ -3332,6 +3482,7 @@ bool ChIsTermKakezan(shared_ptr<Term>& term)
 
 bool ChIsTermHikizan(shared_ptr<Term>& term)
 {
+    assert(term);
     switch (term->m_type)
     {
     case Term::MUL:
@@ -3348,6 +3499,7 @@ bool ChIsTermHikizan(shared_ptr<Term>& term)
 
 bool ChIsTermWarizan(shared_ptr<Term>& term)
 {
+    assert(term);
     switch (term->m_type)
     {
     case Term::MUL:
@@ -3366,6 +3518,7 @@ bool ChIsTermWarizan(shared_ptr<Term>& term)
 
 bool ChIsExprTashizan(shared_ptr<Expr>& expr)
 {
+    assert(expr);
     switch (expr->m_type)
     {
     case Expr::ADD:
@@ -3385,6 +3538,7 @@ bool ChIsExprTashizan(shared_ptr<Expr>& expr)
 
 bool ChIsExprKakezan(shared_ptr<Expr>& expr)
 {
+    assert(expr);
     switch (expr->m_type)
     {
     case Expr::ADD:
@@ -3402,6 +3556,7 @@ bool ChIsExprKakezan(shared_ptr<Expr>& expr)
 
 bool ChIsExprHikizan(shared_ptr<Expr>& expr)
 {
+    assert(expr);
     switch (expr->m_type)
     {
     case Expr::ADD:
@@ -3421,6 +3576,7 @@ bool ChIsExprHikizan(shared_ptr<Expr>& expr)
 
 bool ChIsExprWarizan(shared_ptr<Expr>& expr)
 {
+    assert(expr);
     switch (expr->m_type)
     {
     case Expr::ADD:
@@ -3438,6 +3594,7 @@ bool ChIsExprWarizan(shared_ptr<Expr>& expr)
 
 bool ChIsSurutoTashizan(shared_ptr<Suruto>& suruto)
 {
+    assert(suruto);
     switch (suruto->m_type)
     {
     case Suruto::EXPRLIST_ADD:
@@ -3455,6 +3612,7 @@ bool ChIsSurutoTashizan(shared_ptr<Suruto>& suruto)
 
 bool ChIsSurutoKakezan(shared_ptr<Suruto>& suruto)
 {
+    assert(suruto);
     switch (suruto->m_type)
     {
     case Suruto::EXPRLIST_MUL:
@@ -3474,6 +3632,7 @@ bool ChIsSurutoKakezan(shared_ptr<Suruto>& suruto)
 
 bool ChIsSurutoHikizan(shared_ptr<Suruto>& suruto)
 {
+    assert(suruto);
     switch (suruto->m_type)
     {
     case Suruto::MONO_SUB:
@@ -3491,6 +3650,7 @@ bool ChIsSurutoHikizan(shared_ptr<Suruto>& suruto)
 
 bool ChIsSurutoWarizan(shared_ptr<Suruto>& suruto)
 {
+    assert(suruto);
     switch (suruto->m_type)
     {
     case Suruto::MONO_DIV:
@@ -3508,6 +3668,7 @@ bool ChIsSurutoWarizan(shared_ptr<Suruto>& suruto)
 
 bool ChIsMonoTashizan(shared_ptr<Mono>& mono)
 {
+    assert(mono);
     switch (mono->m_type)
     {
     case Mono::EXPRLIST_ADD:
@@ -3542,6 +3703,7 @@ bool ChIsMonoTashizan(shared_ptr<Mono>& mono)
 
 bool ChIsMonoKakezan(shared_ptr<Mono>& mono)
 {
+    assert(mono);
     switch (mono->m_type)
     {
     case Mono::EXPRLIST_MUL:
@@ -3580,6 +3742,7 @@ bool ChIsMonoKakezan(shared_ptr<Mono>& mono)
 
 bool ChIsMonoHikizan(shared_ptr<Mono>& mono)
 {
+    assert(mono);
     switch (mono->m_type)
     {
     case Mono::EXPRLIST_SUB:
@@ -3614,9 +3777,9 @@ bool ChIsMonoHikizan(shared_ptr<Mono>& mono)
 
 bool ChIsMonoWarizan(shared_ptr<Mono>& mono)
 {
+    assert(mono);
     switch (mono->m_type)
     {
-
     case Mono::EXPRLIST_DIV:
     case Mono::MONO_DIV:
     case Mono::SHITE_DIV:
@@ -3652,6 +3815,8 @@ void ChAnalyzeMonoMonoShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono
 
 void ChAnalyzeMonoSurutoAmari(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto)
 {
+    assert(mono);
+    assert(suruto);
     Mono *m;
     switch (suruto->m_type)
     {
@@ -3696,6 +3861,8 @@ void ChAnalyzeMonoSurutoAmari(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto
 
 void ChAnalyzeMonoShiteAmari(shared_ptr<Mono> mono, shared_ptr<Shite>& shite)
 {
+    assert(mono);
+    assert(shite);
     Mono *m;
     switch (shite->m_type)
     {
@@ -3741,6 +3908,8 @@ void ChAnalyzeMonoShiteAmari(shared_ptr<Mono> mono, shared_ptr<Shite>& shite)
 
 void ChAnalyzeMonoPrimAmari(shared_ptr<Mono>& mono, shared_ptr<Prim>& prim)
 {
+    assert(mono);
+    assert(prim);
     switch (prim->m_type)
     {
     case Prim::MONO:
@@ -3755,6 +3924,8 @@ void ChAnalyzeMonoPrimAmari(shared_ptr<Mono>& mono, shared_ptr<Prim>& prim)
 
 void ChAnalyzeMonoFactAmari(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 {
+    assert(mono);
+    assert(fact);
     switch (fact->m_type)
     {
     case Fact::SINGLE:
@@ -3769,6 +3940,8 @@ void ChAnalyzeMonoFactAmari(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 
 void ChAnalyzeMonoTermAmari(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 {
+    assert(mono);
+    assert(term);
     Mono *m;
     switch (term->m_type)
     {
@@ -3794,6 +3967,8 @@ void ChAnalyzeMonoTermAmari(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 
 void ChAnalyzeMonoExprAmari(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
 {
+    assert(mono);
+    assert(expr);
     switch (expr->m_type)
     {
     case Expr::TERM_ONLY:
@@ -3808,6 +3983,8 @@ void ChAnalyzeMonoExprAmari(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
 
 void ChAnalyzeMonoMonoAmari(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
 {
+    assert(mono);
+    assert(mono2);
     Mono *m;
     switch (mono2->m_type)
     {
@@ -3877,6 +4054,8 @@ void ChAnalyzeMonoMonoAmari(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
 
 void ChAnalyzeMonoShiteShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite)
 {
+    assert(mono);
+    assert(shite);
     Mono *m;
     switch (shite->m_type)
     {
@@ -3922,6 +4101,8 @@ void ChAnalyzeMonoShiteShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Shite>& sh
 
 void ChAnalyzeMonoPrimShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Prim>& prim)
 {
+    assert(mono);
+    assert(prim);
     switch (prim->m_type)
     {
     case Prim::MONO:
@@ -3936,6 +4117,8 @@ void ChAnalyzeMonoPrimShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Prim>& prim
 
 void ChAnalyzeMonoFactShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact)
 {
+    assert(mono);
+    assert(fact);
     switch (fact->m_type)
     {
     case Fact::SINGLE:
@@ -3950,6 +4133,8 @@ void ChAnalyzeMonoFactShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Fact>& fact
 
 void ChAnalyzeMonoTermShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
 {
+    assert(mono);
+    assert(term);
     Mono *m;
     switch (term->m_type)
     {
@@ -3975,6 +4160,8 @@ void ChAnalyzeMonoTermShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Term>& term
 
 void ChAnalyzeMonoExprShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
 {
+    assert(mono);
+    assert(expr);
     switch (expr->m_type)
     {
     case Expr::TERM_ONLY:
@@ -3989,6 +4176,8 @@ void ChAnalyzeMonoExprShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr
 
 void ChAnalyzeMonoSurutoShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto)
 {
+    assert(mono);
+    assert(suruto);
     Mono *m;
     switch (suruto->m_type)
     {
@@ -4033,6 +4222,8 @@ void ChAnalyzeMonoSurutoShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Suruto>& 
 
 void ChAnalyzeMonoMonoShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
 {
+    assert(mono);
+    assert(mono2);
     Mono *m;
     switch (mono2->m_type)
     {
@@ -4102,6 +4293,7 @@ void ChAnalyzeMonoMonoShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono
 
 void ChAnalyzeMonoSonoAmari(shared_ptr<Mono>& mono)
 {
+    assert(mono);
     Sentence *sentence = Calc_H::s_sentence_prev.get();
     switch (sentence->m_type)
     {
@@ -4132,6 +4324,7 @@ void ChAnalyzeMonoSonoAmari(shared_ptr<Mono>& mono)
 
 void ChAnalyzeMono(shared_ptr<Mono>& mono)
 {
+    assert(mono);
     Mono *m;
     switch (mono->m_type)
     {
@@ -4755,6 +4948,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
 
 void ChAnalyzeExprList(shared_ptr<ExprList>& exprlist)
 {
+    assert(exprlist);
     ExprList *el = exprlist.get();
     ExprList::iterator it = el->begin();
     ExprList::iterator end = el->end();
@@ -4767,6 +4961,7 @@ void ChAnalyzeExprList(shared_ptr<ExprList>& exprlist)
 
 void ChAnalyzePrim(shared_ptr<Prim>& prim)
 {
+    assert(prim);
     switch (prim->m_type)
     {
     case Prim::MONO:
@@ -4795,6 +4990,7 @@ void ChAnalyzePrim(shared_ptr<Prim>& prim)
 
 void ChAnalyzeFact(shared_ptr<Fact>& fact)
 {
+    assert(fact);
     switch (fact->m_type)
     {
     case Fact::POW:
@@ -4816,6 +5012,7 @@ void ChAnalyzeFact(shared_ptr<Fact>& fact)
 
 void ChAnalyzeTerm(shared_ptr<Term>& term)
 {
+    assert(term);
     switch (term->m_type)
     {
     case Term::MUL:
@@ -4832,6 +5029,7 @@ void ChAnalyzeTerm(shared_ptr<Term>& term)
 
 void ChAnalyzeShite(shared_ptr<Shite>& shite)
 {
+    assert(shite);
     switch (shite->m_type)
     {
     case Shite::EXPRLIST_ADD:
@@ -4874,6 +5072,7 @@ void ChAnalyzeShite(shared_ptr<Shite>& shite)
 
 void ChAnalyzeExpr(shared_ptr<Expr>& expr)
 {
+    assert(expr);
     switch (expr->m_type)
     {
     case Expr::ADD:
@@ -4893,6 +5092,7 @@ void ChAnalyzeExpr(shared_ptr<Expr>& expr)
 
 void ChAnalyzeSuruto(shared_ptr<Suruto>& suruto)
 {
+    assert(suruto);
     switch (suruto->m_type)
     {
     case Suruto::MONO_ADD:
@@ -4931,6 +5131,7 @@ void ChAnalyzeSuruto(shared_ptr<Suruto>& suruto)
 
 void ChAnalyzeSentence(shared_ptr<Sentence>& sentence)
 {
+    assert(sentence);
     switch (sentence->m_type)
     {
     case Sentence::MONO:

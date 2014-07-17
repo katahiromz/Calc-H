@@ -1097,15 +1097,26 @@ void Domain::FixNarrower()
                 #else
                     DRR1D_VALUE v2 = std::ceil(v1);
                 #endif
+                // v1 == 2, v2 == 2, has_min == true
+                // result: 2, true
+                // v1 == 2, v2 == 2, has_min == false
+                // result: 3, true
+                // v1 == 1.5, v2 == 2, has_min == true
+                // result: 2, false
+                // v1 == 1.5, v2 == 2, has_min == false
+                // result: 2, false
                 *r.m_pnLBound = v2;
-                if (v1 != v2)
+                if (v1 == v2)
                 {
-                    r.m_has_min = true;
+                    if (!r.m_has_min)
+                    {
+                        (*r.m_pnLBound) += 1;
+                        r.m_has_min = true;
+                    }
                 }
-                else if (!r.m_has_min)
+                else
                 {
-                    r.m_has_min = true;
-                    (*r.m_pnLBound) += 1;
+                    r.m_has_min = false;
                 }
             }
             if (r.m_pnUBound)
@@ -1117,14 +1128,17 @@ void Domain::FixNarrower()
                     DRR1D_VALUE v2 = std::floor(v1);
                 #endif
                 *r.m_pnUBound = v2;
-                if (v1 != v2)
+                if (v1 == v2)
                 {
-                    r.m_has_max = true;
+                    if (!r.m_has_max)
+                    {
+                        (*r.m_pnUBound) -= 1;
+                        r.m_has_max = true;
+                    }
                 }
-                else if (!r.m_has_max)
+                else
                 {
-                    r.m_has_max = true;
-                    (*r.m_pnUBound) -= 1;
+                    r.m_has_max = false;
                 }
             }
             break;
@@ -1133,31 +1147,37 @@ void Domain::FixNarrower()
             if (r.m_pnLBound)
             {
                 DRR1D_VALUE v1 = *r.m_pnLBound;
-                DRR1D_VALUE v2 = GauseModFloor(v1, 2);
+                DRR1D_VALUE v2 = GauseModCeil(v1, 2);
                 *r.m_pnLBound = v2;
-                if (v1 != v2)
+                if (v1 == v2)
                 {
-                    r.m_has_min = true;
+                    if (!r.m_has_min)
+                    {
+                        (*r.m_pnLBound) += 2;
+                        r.m_has_min = true;
+                    }
                 }
-                else if (!r.m_has_min)
+                else
                 {
-                    r.m_has_min = true;
-                    (*r.m_pnLBound) += 2;
+                    r.m_has_min = false;
                 }
             }
             if (r.m_pnUBound)
             {
                 DRR1D_VALUE v1 = *r.m_pnUBound;
-                DRR1D_VALUE v2 = GauseModCeil(v1, 2);
+                DRR1D_VALUE v2 = GauseModFloor(v1, 2);
                 *r.m_pnUBound = v2;
-                if (v1 != v2)
+                if (v1 == v2)
                 {
-                    r.m_has_max = true;
+                    if (!r.m_has_max)
+                    {
+                        (*r.m_pnUBound) -= 2;
+                        r.m_has_max = true;
+                    }
                 }
-                else if (!r.m_has_max)
+                else
                 {
-                    r.m_has_max = true;
-                    (*r.m_pnUBound) -= 2;
+                    r.m_has_max = false;
                 }
             }
             break;
@@ -1166,31 +1186,37 @@ void Domain::FixNarrower()
             if (r.m_pnLBound)
             {
                 DRR1D_VALUE v1 = *r.m_pnLBound;
-                DRR1D_VALUE v2 = GauseModFloor(v1 + 1, 2) - 1;
+                DRR1D_VALUE v2 = GauseModCeil(v1 + 1, 2) - 1;
                 *r.m_pnLBound = v2;
-                if (v1 != v2)
+                if (v1 == v2)
                 {
-                    r.m_has_min = true;
+                    if (!r.m_has_min)
+                    {
+                        (*r.m_pnLBound) += 2;
+                        r.m_has_min = true;
+                    }
                 }
-                else if (!r.m_has_min)
+                else
                 {
-                    r.m_has_min = true;
-                    (*r.m_pnLBound) += 2;
+                    r.m_has_min = false;
                 }
             }
             if (r.m_pnUBound)
             {
                 DRR1D_VALUE v1 = *r.m_pnUBound;
-                DRR1D_VALUE v2 = GauseModCeil(v1 - 1, 2) + 1;
+                DRR1D_VALUE v2 = GauseModFloor(v1 - 1, 2) + 1;
                 *r.m_pnUBound = v2;
-                if (v1 != v2)
+                if (v1 == v2)
                 {
-                    r.m_has_max = true;
+                    if (!r.m_has_max)
+                    {
+                        (*r.m_pnUBound) -= 2;
+                        r.m_has_max = true;
+                    }
                 }
-                else if (!r.m_has_max)
+                else
                 {
-                    r.m_has_max = true;
-                    (*r.m_pnUBound) -= 2;
+                    r.m_has_max = false;
                 }
             }
             break;
@@ -1212,22 +1238,21 @@ void Domain::FixNarrower()
                 {
                     v2 += 1;
                 }
-                if (v1 != v2)
-                {
-                    r.m_has_min = true;
-                    *r.m_pnLBound = v2;
-                }
-                else
+                *r.m_pnLBound = v2;
+                if (v1 == v2)
                 {
                     if (!r.m_has_min)
                     {
-                        r.m_has_min = true;
-                        while (!IsPrimeNumber(v2))
+                        do 
                         {
                             v2 += 1;
-                        }
-                        (*r.m_pnLBound) = v2;
+                        } while (!IsPrimeNumber(v2));
+                        *r.m_pnLBound = v2;
                     }
+                }
+                else
+                {
+                    r.m_has_min = false;
                 }
             }
             if (r.m_pnUBound)
@@ -1247,27 +1272,22 @@ void Domain::FixNarrower()
                     r.empty();
                     break;
                 }
-                if (v1 != v2)
-                {
-                    r.m_has_max = true;
-                    *r.m_pnUBound = v2;
-                }
-                else
+                *r.m_pnUBound = v2;
+                if (v1 == v2)
                 {
                     if (!r.m_has_max)
                     {
-                        while (v2 >= 2 && !IsPrimeNumber(v2))
+                        do
                         {
                             v2 -= 1;
-                        }
-                        if (v2 < 2)
-                        {
-                            r.empty();
-                            break;
-                        }
-                        (*r.m_pnUBound) = v2;
+                        } while (v2 >= 2 && !IsPrimeNumber(v2));
+                        *r.m_pnUBound = v2;
                         r.m_has_max = true;
                     }
+                }
+                else
+                {
+                    r.m_has_max = false;
                 }
             }
             break;
@@ -1305,15 +1325,16 @@ void Domain::FixWider()
                 #else
                     DRR1D_VALUE v2 = std::floor(v1);
                 #endif
+                *r.m_pnLBound = v2;
                 if (v1 == v2 && r.m_has_min)
                 {
-                    *r.m_pnLBound = v2 - 1;
+                    r.m_has_min = false;
+                    (*r.m_pnLBound) -= 1;
                 }
                 else
                 {
-                    *r.m_pnLBound = v2;
+                    r.m_has_min = false;
                 }
-                r.m_has_min = false;
             }
             if (r.m_pnUBound)
             {
@@ -1323,15 +1344,16 @@ void Domain::FixWider()
                 #else
                     DRR1D_VALUE v2 = std::ceil(v1);
                 #endif
+                *r.m_pnUBound = v2;
                 if (v1 == v2 && r.m_has_max)
                 {
-                    *r.m_pnUBound = v2 + 1;
+                    r.m_has_max = false;
+                    (*r.m_pnUBound) += 1;
                 }
                 else
                 {
-                    *r.m_pnUBound = v2;
+                    r.m_has_max = false;
                 }
-                r.m_has_max = false;
             }
             break;
 
@@ -1340,15 +1362,16 @@ void Domain::FixWider()
             {
                 DRR1D_VALUE v1 = *r.m_pnLBound;
                 DRR1D_VALUE v2 = GauseModFloor(v1, 2);
+                *r.m_pnLBound = v2;
                 if (v1 == v2 && r.m_has_min)
                 {
-                    *r.m_pnLBound = v2 - 2;
+                    r.m_has_min = false;
+                    (*r.m_pnLBound) -= 2;
                 }
                 else
                 {
-                    *r.m_pnLBound = v2;
+                    r.m_has_min = false;
                 }
-                r.m_has_min = false;
             }
             if (r.m_pnUBound)
             {
@@ -1357,13 +1380,13 @@ void Domain::FixWider()
                 *r.m_pnUBound = v2;
                 if (v1 == v2 && r.m_has_max)
                 {
-                    *r.m_pnUBound = v2 + 2;
+                    r.m_has_max = false;
+                    (*r.m_pnUBound) += 2;
                 }
                 else
                 {
-                    *r.m_pnUBound = v2;
+                    r.m_has_max = false;
                 }
-                r.m_has_max = false;
             }
             break;
 
@@ -1372,70 +1395,90 @@ void Domain::FixWider()
             {
                 DRR1D_VALUE v1 = *r.m_pnLBound;
                 DRR1D_VALUE v2 = GauseModFloor(v1 + 1, 2) - 1;
+                *r.m_pnLBound = v2;
                 if (v1 == v2 && r.m_has_min)
                 {
-                    *r.m_pnLBound = v2 - 2;
+                    r.m_has_min = false;
+                    (*r.m_pnLBound) -= 2;
                 }
                 else
                 {
-                    *r.m_pnLBound = v2;
+                    r.m_has_min = false;
                 }
-                r.m_has_min = false;
             }
             if (r.m_pnUBound)
             {
                 DRR1D_VALUE v1 = *r.m_pnUBound;
                 DRR1D_VALUE v2 = GauseModCeil(v1 - 1, 2) + 1;
+                *r.m_pnUBound = v2;
                 if (v1 == v2 && r.m_has_max)
                 {
-                    *r.m_pnUBound = v2 + 2;
+                    r.m_has_max = false;
+                    (*r.m_pnUBound) += 2;
                 }
                 else
                 {
-                    *r.m_pnUBound = v2;
+                    r.m_has_max = false;
                 }
-                r.m_has_max = false;
             }
             break;
 
         case Domain::SOSUU:
+            if (r.m_pnLBound)
             {
-                if (r.m_pnLBound)
+                DRR1D_VALUE v1 = *r.m_pnLBound;
+                #ifdef DRR1D_USES_PMPNUMBER
+                    DRR1D_VALUE v2 = pmp::floor(v1);
+                #else
+                    DRR1D_VALUE v2 = std::floor(v1);
+                #endif
+                while (v2 > 2 && !IsPrimeNumber(v2))
                 {
-                    DRR1D_VALUE v1 = *r.m_pnLBound;
-                    #ifdef DRR1D_USES_PMPNUMBER
-                        DRR1D_VALUE v2 = pmp::floor(v1);
-                    #else
-                        DRR1D_VALUE v2 = std::floor(v1);
-                    #endif
-                    if (v2 > 2)
-                    {
-                        do {
-                            v2 -= 1;
-                        } while (v2 >= 2 && !IsPrimeNumber(v2));
-                        if (v1 != v2)
-                        {
-                            *r.m_pnLBound = v2;
-                            r.m_has_min = false;
-                        }
-                    }
+                    v2 -= 1;
                 }
-                if (r.m_pnUBound)
+                if (v2 < 2)
+                    break;
+                *r.m_pnLBound = v2;
+                if (v1 == v2 && r.m_has_min)
                 {
-                    DRR1D_VALUE v1 = *r.m_pnUBound;
-                    #ifdef DRR1D_USES_PMPNUMBER
-                        DRR1D_VALUE v2 = pmp::ceil(v1);
-                    #else
-                        DRR1D_VALUE v2 = std::ceil(v1);
-                    #endif
-                    do {
+                    do
+                    {
+                        v2 -= 1;
+                    }
+                    while (v2 > 2 && !IsPrimeNumber(v2));
+                    r.m_has_min = false;
+                    (*r.m_pnLBound) = v2;
+                }
+                else
+                {
+                    r.m_has_min = false;
+                }
+            }
+            if (r.m_pnUBound)
+            {
+                DRR1D_VALUE v1 = *r.m_pnUBound;
+                #ifdef DRR1D_USES_PMPNUMBER
+                    DRR1D_VALUE v2 = pmp::ceil(v1);
+                #else
+                    DRR1D_VALUE v2 = std::ceil(v1);
+                #endif
+                while (!IsPrimeNumber(v2))
+                {
+                    v2 += 1;
+                }
+                *r.m_pnUBound = v2;
+                if (v1 == v2 && r.m_has_max)
+                {
+                    r.m_has_max = false;
+                    do
+                    {
                         v2 += 1;
                     } while (!IsPrimeNumber(v2));
-                    if (v1 != v2)
-                    {
-                        *r.m_pnUBound = v2;
-                        r.m_has_max = false;
-                    }
+                    (*r.m_pnUBound) = v2;
+                }
+                else
+                {
+                    r.m_has_max = false;
                 }
             }
             break;
@@ -1544,7 +1587,6 @@ void Domains::Intersect(const Domains& domains)
 
 void Domains::Union(const Domain& domain)
 {
-    FixWider();
     std::size_t i, siz = size();
     for (i = 0; i < siz; ++i)
     {
@@ -1651,6 +1693,8 @@ void Domains::FixWider()
         ((*this)[i]).get()->FixWider();
         ((*this)[i]).get()->Optimize();
     }
+
+    bool flag = false;
     for (i = 0; i < siz; ++i)
     {
         Domain& domain1 = *((*this)[i]).get();
@@ -1666,8 +1710,35 @@ void Domains::FixWider()
                     domain2.m_dom_type == Domain::SOSUU)
                 {
                     domain2.m_ranges.get()->Union(*domain1.m_ranges.get());
+                    flag = true;
                 }
             }
+        }
+        else if (domain1.m_dom_type == Domain::JISSUU)
+        {
+            for (std::size_t j = 0; j < siz; ++j)
+            {
+                if (j == i)
+                    continue;
+                Domain& domain2 = *((*this)[j]).get();
+                if (domain2.m_dom_type == Domain::KISUU ||
+                    domain2.m_dom_type == Domain::GUUSUU ||
+                    domain2.m_dom_type == Domain::SOSUU ||
+                    domain2.m_dom_type == Domain::SEISUU)
+                {
+                    domain2.m_ranges.get()->Union(*domain1.m_ranges.get());
+                    flag = true;
+                }
+            }
+        }
+    }
+
+    if (flag)
+    {
+        for (i = 0; i < siz; ++i)
+        {
+            ((*this)[i]).get()->FixWider();
+            ((*this)[i]).get()->Optimize();
         }
     }
 }

@@ -3108,6 +3108,35 @@ namespace Calc_H
             return shared_ptr<Doms>(d);
         }
 
+        shared_ptr<Doms> DoDoms3(shared_ptr<Doms>& doms, shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDoms3" << std::endl;
+            #endif
+            Dom *dom = new Dom;
+            dom->m_type = Dom::NUM_ONLY;
+            dom->m_num = num2;
+            doms.get()->push_back(shared_ptr<Dom>(dom));
+            return doms;
+        }
+
+        shared_ptr<Doms> DoDoms4(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDoms4" << std::endl;
+            #endif
+            Dom *dom1 = new Dom;
+            dom1->m_type = Dom::NUM_ONLY;
+            dom1->m_num = num1;
+            Dom *dom2 = new Dom;
+            dom2->m_type = Dom::NUM_ONLY;
+            dom2->m_num = num2;
+            Doms *doms = new Doms;
+            doms->push_back(shared_ptr<Dom>(dom1));
+            doms->push_back(shared_ptr<Dom>(dom2));
+            return shared_ptr<Doms>(doms);
+        }
+
         shared_ptr<Dom> DoDom1(shared_ptr<Cnstr>& cnstr, shared_ptr<PrimDom>& primdom)
         {
             #ifdef DEEPDEBUG

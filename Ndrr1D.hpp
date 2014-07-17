@@ -86,6 +86,12 @@ namespace Ndrr1D
         {
         }
 
+        Range(const DRR1D_VALUE& value) :
+            m_has_min(true), m_has_max(true),
+            m_pnLBound(new DRR1D_VALUE(value)), m_pnUBound(new DRR1D_VALUE(value))
+        {
+        }
+
         ~Range()
         {
             delete m_pnLBound;
@@ -129,22 +135,6 @@ namespace Ndrr1D
             return m_pnUBound;
         }
 
-        void print() const
-        {
-            std::cout << "[";
-            if (m_pnLBound) {
-                if (m_has_min) std::cout << "(Closed)";
-                else std::cout << "(Open)";
-                std::cout << "lower: " << *m_pnLBound << " ";
-            }
-            if (m_pnUBound) {
-                if (m_has_max) std::cout << "(Closed)";
-                else std::cout << "(Open)";
-                std::cout << "upper: " << *m_pnUBound;
-            }
-            std::cout << "]";
-        }
-
         static Range *Whole()
         {
             return new Range;
@@ -183,15 +173,6 @@ namespace Ndrr1D
 
         DRR1D_VALUE *GetLBound(bool& has_min) const;
         DRR1D_VALUE *GetUBound(bool& has_max) const;
-        void print() const
-        {
-            std::cout << "[";
-            for (std::size_t i = 0; i < size(); ++i)
-            {
-                ((*this)[i])->print();
-            }
-            std::cout << "]";
-        }
         static Ranges *Whole();
 
     protected:
@@ -248,13 +229,6 @@ namespace Ndrr1D
         DRR1D_VALUE *GetLBound(bool& has_min) const;
         DRR1D_VALUE *GetUBound(bool& has_max) const;
         bool GetValues(std::vector<DRR1D_VALUE>& values) const;
-        void print() const
-        {
-            std::cout << "[";
-            std::cout << m_dom_type << ": ";
-            m_ranges->print();
-            std::cout << "]";
-        }
         void FixWider();
         void FixNarrower();
         static Domain *Whole();
@@ -299,15 +273,6 @@ namespace Ndrr1D
         void Union(const Domain& domain);
         void Union(const Domains& domains);
         bool GetValues(std::vector<DRR1D_VALUE>& values) const;
-        void print() const
-        {
-            std::cout << "[domains: ";
-            for (std::size_t i = 0; i < size(); ++i)
-            {
-                ((*this)[i])->print();
-            }
-            std::cout << "]";
-        }
         static Domains *Whole();
         void FixWider();
         void FixNarrower();
@@ -321,5 +286,61 @@ namespace Ndrr1D
         friend struct Domain;
     };
 } // namespace Ndrr1D
+
+template <class charT, class traits>
+std::basic_ostream<charT,traits>&
+operator<<(std::basic_ostream<charT,traits>& os, const Ndrr1D::Range& r)
+{
+    os << "[";
+    if (r.m_pnLBound)
+    {
+        if (r.m_has_min) os << "(Closed)";
+        else os << "(Open)";
+        os << "lower: " << *r.m_pnLBound << " ";
+    }
+    if (r.m_pnUBound)
+    {
+        if (r.m_has_max) os << "(Closed)";
+        else os << "(Open)";
+        os << "upper: " << *r.m_pnUBound;
+    }
+    os << "]";
+    return os;
+}
+
+template <class charT, class traits>
+std::basic_ostream<charT,traits>&
+operator<<(std::basic_ostream<charT,traits>& os, const Ndrr1D::Ranges& r)
+{
+    os << "[";
+    for (std::size_t i = 0; i < r.size(); ++i)
+    {
+        os << *(r[i].get());
+    }
+    os << "]";
+    return os;
+}
+
+template <class charT, class traits>
+std::basic_ostream<charT,traits>&
+operator<<(std::basic_ostream<charT,traits>& os, const Ndrr1D::Domain& d)
+{
+    os << "[" << d.m_dom_type << ": " <<
+        (*d.m_ranges.get()) << "]";
+    return os;
+}
+
+template <class charT, class traits>
+std::basic_ostream<charT,traits>&
+operator<<(std::basic_ostream<charT,traits>& os, const Ndrr1D::Domains& d)
+{
+    os << "[domains: ";
+    for (std::size_t i = 0; i < d.size(); ++i)
+    {
+        os << *(d[i].get());
+    }
+    os << "]";
+    return os;
+}
 
 #endif  // ndef __NDRR1D__

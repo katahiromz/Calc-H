@@ -510,6 +510,7 @@ namespace Calc_H
             if (lexeme("Ç…"))                               return set_info(info, T_NI);
             if (lexeme("Ç»Å[ÇÒÇæ"))                         return set_info(info, T_IKURA);
             if (lexeme("Ç»Å[Ç…"))                           return set_info(info, T_IKURA);
+            if (lexeme("Ç»ÇÒÇ‚"))                           return set_info(info, T_IKURA);
             if (lexeme("Ç»ÇÒÇ⁄Ç…Ç»ÇÈÇÒ"))                   return set_info(info, T_IKURA);
             if (lexeme("Ç»ÇÒÇ⁄Ç…Ç»ÇÈÇÃ"))                   return set_info(info, T_IKURA);
             if (lexeme("Ç»ÇÒÇ⁄Ç…Ç»ÇÈ"))                     return set_info(info, T_IKURA);

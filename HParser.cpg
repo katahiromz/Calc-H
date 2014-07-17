@@ -1018,7 +1018,13 @@ vector_function<VecFunc>
 domains<Doms>
     : [DoDoms2] domain(0)
     | [DoDoms1] domains(0) T_MATAHA domain(1)
-    | [DoDoms1] domains(0) T_KA domain(1)
+    | [DoDoms1] domains(0) T_KA     domain(1)
+    | [DoDoms3] domains(0) T_MATAHA number(1)
+    | [DoDoms3] domains(0) T_KA     number(1)
+    | [DoDoms3] number(1) T_MATAHA domains(0)
+    | [DoDoms3] number(1) T_KA     domains(0)
+    | [DoDoms4] number(0) T_MATAHA number(1)
+    | [DoDoms4] number(0) T_KA     number(1)
     ;
 
 domain<Dom>

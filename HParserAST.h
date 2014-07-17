@@ -246,11 +246,12 @@ namespace Calc_H
     struct Dom : Node
     {
         enum {
-            CNSTRED_PRIMDOM, PRIMDOM_ONLY, DOM_OF_DOM
+            CNSTRED_PRIMDOM, PRIMDOM_ONLY, DOM_OF_DOM, NUM_ONLY
         } m_type;
         shared_ptr<Dom>         m_dom;
         shared_ptr<Cnstr>       m_cnstr;
         shared_ptr<PrimDom>     m_primdom;
+        shared_ptr<Num>         m_num;
     };
 
     struct Doms : Node, std::vector<shared_ptr<Dom> >
