@@ -60,7 +60,11 @@ namespace Calc_H
             MONO_IS_DOMS, MONO_IS_CNSTR,
             MONO_IS_CNSTRED_BUNSUU, MONO_IS_BUNSUU,
             MONO_IS_CNSTRED_SHOUSUU, MONO_IS_SHOUSUU,
-            MONO_IS_MONO
+            MONO_IS_MONO,
+            MONO_IS_TASHIZAN, MONO_IS_HIKIZAN,
+            MONO_IS_KAKEZAN, MONO_IS_WARIZAN,
+            SURUTO_TASHIZAN, SURUTO_HIKIZAN,
+            SURUTO_KAKEZAN, SURUTO_WARIZAN
         } m_type;
         shared_ptr<Mono>        m_mono;
         shared_ptr<Mono>        m_mono2;

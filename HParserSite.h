@@ -208,6 +208,118 @@ namespace Calc_H
             return shared_ptr<Sentence>(s);
         }
 
+        shared_ptr<Sentence> DoSent17(shared_ptr<Sentence>& sentence)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent17" << std::endl;
+            #endif
+            return sentence;
+        }
+
+        shared_ptr<Sentence> DoSent18(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent18" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::MONO_IS_TASHIZAN;
+            s->m_mono = mono;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent19(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent19" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::MONO_IS_HIKIZAN;
+            s->m_mono = mono;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent20(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent20" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::MONO_IS_KAKEZAN;
+            s->m_mono = mono;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent21(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent21" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::MONO_IS_WARIZAN;
+            s->m_mono = mono;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent22(shared_ptr<Suruto>& suruto)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent22" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::SURUTO_TASHIZAN;
+            s->m_suruto = suruto;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent23(shared_ptr<Suruto>& suruto)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent23" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::SURUTO_HIKIZAN;
+            s->m_suruto = suruto;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent24(shared_ptr<Suruto>& suruto)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent24" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::SURUTO_KAKEZAN;
+            s->m_suruto = suruto;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent25(shared_ptr<Suruto>& suruto)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent25" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::SURUTO_WARIZAN;
+            s->m_suruto = suruto;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Node> DoWakaran1()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoWakaran1" << std::endl;
+            #endif
+            return shared_ptr<Node>();
+        }
+
+        shared_ptr<Node> DoOshiete1()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoOshiete1" << std::endl;
+            #endif
+            return shared_ptr<Node>();
+        }
+
         shared_ptr<Suruto> DoSuruto1(shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG

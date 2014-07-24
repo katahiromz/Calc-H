@@ -824,6 +824,16 @@ CH_Value ChCalcSuruto(const shared_ptr<Suruto>& suruto)
 
 void ChAnalyzeMono(shared_ptr<Mono>& mono);
 
+bool ChIsMonoTashizan(shared_ptr<Mono>& mono);
+bool ChIsMonoKakezan(shared_ptr<Mono>& mono);
+bool ChIsMonoHikizan(shared_ptr<Mono>& mono);
+bool ChIsMonoWarizan(shared_ptr<Mono>& mono);
+
+bool ChIsSurutoTashizan(shared_ptr<Suruto>& suruto);
+bool ChIsSurutoHikizan(shared_ptr<Suruto>& suruto);
+bool ChIsSurutoKakezan(shared_ptr<Suruto>& suruto);
+bool ChIsSurutoWarizan(shared_ptr<Suruto>& suruto);
+
 CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
 {
     CH_Value v1, v2;
@@ -993,6 +1003,62 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
         v1.trim();
         v2.trim();
         if (v1 == v2)
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::MONO_IS_TASHIZAN:
+        if (ChIsMonoTashizan(sentence->m_mono))
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::MONO_IS_HIKIZAN:
+        if (ChIsMonoHikizan(sentence->m_mono))
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::MONO_IS_KAKEZAN:
+        if (ChIsMonoKakezan(sentence->m_mono))
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::MONO_IS_WARIZAN:
+        if (ChIsMonoWarizan(sentence->m_mono))
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::SURUTO_TASHIZAN:
+        if (ChIsSurutoTashizan(sentence->m_suruto))
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::SURUTO_HIKIZAN:
+        if (ChIsSurutoHikizan(sentence->m_suruto))
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::SURUTO_KAKEZAN:
+        if (ChIsSurutoKakezan(sentence->m_suruto))
+            ChSetMessage(ch_right);
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::SURUTO_WARIZAN:
+        if (ChIsSurutoWarizan(sentence->m_suruto))
             ChSetMessage(ch_right);
         else
             ChSetMessage(ch_wrong);
@@ -3293,11 +3359,6 @@ void ChAnalyzeMonoShiteWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
     }
 }
 
-bool ChIsMonoTashizan(shared_ptr<Mono>& mono);
-bool ChIsMonoKakezan(shared_ptr<Mono>& mono);
-bool ChIsMonoHikizan(shared_ptr<Mono>& mono);
-bool ChIsMonoWarizan(shared_ptr<Mono>& mono);
-
 bool ChIsShiteTashizan(shared_ptr<Shite>& shite)
 {
     assert(shite);
@@ -5195,12 +5256,23 @@ void ChAnalyzeSentence(shared_ptr<Sentence>& sentence)
         break;
 
     case Sentence::MONO_IS_SHOUSUU:
+    case Sentence::MONO_IS_TASHIZAN:
+    case Sentence::MONO_IS_HIKIZAN:
+    case Sentence::MONO_IS_KAKEZAN:
+    case Sentence::MONO_IS_WARIZAN:
         ChAnalyzeMono(sentence->m_mono);
         break;
 
     case Sentence::MONO_IS_MONO:
         ChAnalyzeMono(sentence->m_mono);
         ChAnalyzeMono(sentence->m_mono2);
+        break;
+
+    case Sentence::SURUTO_TASHIZAN:
+    case Sentence::SURUTO_HIKIZAN:
+    case Sentence::SURUTO_KAKEZAN:
+    case Sentence::SURUTO_WARIZAN:
+        ChAnalyzeSuruto(sentence->m_suruto);
         break;
 
     default:

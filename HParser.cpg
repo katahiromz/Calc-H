@@ -53,7 +53,7 @@
 %token T_GYAKUSUU<TokenValue>;
 %token T_HA<TokenValue>;
 %token T_HACHI<TokenValue>;
-%token T_HATA<TokenValue>;  // replaced
+%token T_HATA<TokenValue>;      // replaced
 %token T_HEIHOU<TokenValue>;
 %token T_HEIHOUKON<TokenValue>;
 %token T_HIGENSUU<TokenValue>;  // replaced
@@ -72,13 +72,13 @@
 %token T_IJOU<TokenValue>;
 %token T_IKA<TokenValue>;
 %token T_IKURA<TokenValue>;
-%token T_IO<TokenValue>;    // replaced
-%token T_ISO<TokenValue>;   // replaced
+%token T_IO<TokenValue>;        // replaced
+%token T_ISO<TokenValue>;       // replaced
 %token T_JISSUU<TokenValue>;
 %token T_JO<TokenValue>;
 %token T_JOSUU<TokenValue>;     // replaced
-%token T_JOU1<TokenValue>;  // exponent
-%token T_JOU2<TokenValue>;  // number unit
+%token T_JOU1<TokenValue>;      // exponent
+%token T_JOU2<TokenValue>;      // number unit
 %token T_JOUSUU<TokenValue>;    // replaced
 %token T_JUU<TokenValue>;
 %token T_KA<TokenValue>;
@@ -99,6 +99,7 @@
 %token T_KISUU<TokenValue>;
 %token T_KOTAE<TokenValue>;
 %token T_KOU<TokenValue>;
+%token T_KURE<TokenValue>;
 %token T_KYUU<TokenValue>;
 %token T_LOG10<TokenValue>;
 %token T_LOG<TokenValue>;
@@ -154,11 +155,11 @@
 %token T_SHOUSUU<TokenValue>;
 %token T_SIN<TokenValue>;
 %token T_SINH<TokenValue>;
-%token T_SONO<TokenValue>;    // replaced
+%token T_SONO<TokenValue>;      // replaced
 %token T_SORE<TokenValue>;
 %token T_SOSUU<TokenValue>;
 %token T_SUM<TokenValue>;
-%token T_SURU<TokenValue>;    // replaced
+%token T_SURU<TokenValue>;      // replaced
 %token T_SURUTO<TokenValue>;
 %token T_TAN<TokenValue>;
 %token T_TANH<TokenValue>;
@@ -169,7 +170,7 @@
 %token T_TASU<TokenValue>;
 %token T_TASUTO<TokenValue>;
 %token T_TO1<TokenValue>;
-%token T_TO2<TokenValue>;   // taibunsuu
+%token T_TO2<TokenValue>;       // taibunsuu
 %token T_WAKARAN<TokenValue>;
 %token T_WARARERU<TokenValue>;
 %token T_WARIKIRENAI<TokenValue>;
@@ -179,9 +180,9 @@
 %token T_WARUTO<TokenValue>;
 %token T_WATTA<TokenValue>;
 %token T_WATTE<TokenValue>;
-%token T_WO1<TokenValue>;   // do object
-%token T_WO2<TokenValue>;   // do verb
-%token T_YAO<TokenValue>;   // replaced
+%token T_WO1<TokenValue>;       // do object
+%token T_WO2<TokenValue>;       // do verb
+%token T_YAO<TokenValue>;       // replaced
 %token T_YON<TokenValue>;
 %token T_YORI<TokenValue>;
 %token T_YOSO<TokenValue>;      // replaced
@@ -204,70 +205,66 @@ sentence<Sentence>
     | [DoSent14] mono(0) T_HA constraint(1) T_SHOUSUU T_KANA T_PERIOD
     | [DoSent15] mono(0) T_HA T_SHOUSUU T_KANA T_PERIOD
     | [DoSent16] mono(0) T_HA mono(1) T_KANA T_PERIOD
-    | [DoSent1] mono(0) T_HA T_WAKARAN T_KANA T_OSHIETE T_ONEGAI T_PERIOD
-    | [DoSent1] mono(0) T_HA T_WAKARAN T_KANA T_OSHIETE T_KANA T_PERIOD
-    | [DoSent1] mono(0) T_HA T_WAKARAN T_KANA T_OSHIETE T_PERIOD
-    | [DoSent1] mono(0) T_HA T_WAKARAN T_KANA T_PERIOD
-    | [DoSent1] mono(0) T_HA T_WAKARAN T_PERIOD
-    | [DoSent1] mono(0) T_WO1 T_OSHIETE T_KANA T_ONEGAI T_PERIOD
-    | [DoSent1] mono(0) T_WO1 T_OSHIETE T_ONEGAI T_PERIOD
-    | [DoSent1] mono(0) T_WO1 T_OSHIETE T_KANA T_PERIOD
-    | [DoSent1] mono(0) T_WO1 T_OSHIETE T_PERIOD
-    | [DoSent1] mono(0) T_WO1 T_ONEGAI T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_KANA T_WAKARAN T_KANA T_OSHIETE T_ONEGAI T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_KANA T_WAKARAN T_KANA T_OSHIETE T_KANA T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_KANA T_WAKARAN T_KANA T_OSHIETE T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_KANA T_WAKARAN T_KANA T_ONEGAI T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_KANA T_WAKARAN T_KANA T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_KANA T_WAKARAN T_OSHIETE T_ONEGAI T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_KANA T_WAKARAN T_OSHIETE T_KANA T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_KANA T_WAKARAN T_OSHIETE T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_KANA T_WAKARAN T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_KANA T_OSHIETE T_ONEGAI T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_KANA T_OSHIETE T_KANA T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_KANA T_OSHIETE T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_KANA T_ONEGAI T_PERIOD
+    | [DoSent18] mono(0) T_HA T_TASHIZAN T_KANA T_PERIOD
+    | [DoSent19] mono(0) T_HA T_HIKIZAN T_KANA T_PERIOD
+    | [DoSent20] mono(0) T_HA T_KAKEZAN T_KANA T_PERIOD
+    | [DoSent21] mono(0) T_HA T_WARIZAN T_KANA T_PERIOD
+    | [DoSent1] mono(0) T_HA T_IKURA T_KANA T_WO1 oshiete T_PERIOD
+    | [DoSent1] mono(0) T_HA T_IKURA T_KANA wakaran T_PERIOD
+    | [DoSent1] mono(0) T_HA T_IKURA T_KANA oshiete T_PERIOD
     | [DoSent1] mono(0) T_HA T_IKURA T_KANA T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_OSHIETE T_ONEGAI T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_OSHIETE T_KANA T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_OSHIETE T_PERIOD
-    | [DoSent1] mono(0) T_HA T_IKURA T_ONEGAI T_PERIOD
+    | [DoSent1] mono(0) T_HA T_IKURA wakaran T_PERIOD
+    | [DoSent1] mono(0) T_HA T_IKURA oshiete T_PERIOD
     | [DoSent1] mono(0) T_HA T_IKURA T_PERIOD
+    | [DoSent1] mono(0) T_HA wakaran T_PERIOD
     | [DoSent1] mono(0) T_HA T_PERIOD
+    | [DoSent1] mono(0) T_WO1 oshiete T_PERIOD
     | [DoSent1] mono(0) T_PERIOD
-    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRU T_KANA T_OSHIETE T_ONEGAI T_PERIOD
-    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRU T_KANA T_OSHIETE T_PERIOD
+    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRU T_KANA oshiete T_PERIOD
     | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRU T_KANA T_PERIOD
     | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRU T_PERIOD
-    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRENAI T_KANA T_OSHIETE T_ONEGAI T_PERIOD
-    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRENAI T_KANA T_OSHIETE T_PERIOD
+    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRENAI T_KANA oshiete T_PERIOD
     | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRENAI T_KANA T_PERIOD
     | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRENAI T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KANA T_WO1 T_OSHIETE T_ONEGAI T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KANA T_WO1 T_OSHIETE T_KANA T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KANA T_WO1 T_OSHIETE T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KANA T_WO1 T_ONEGAI T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KANA T_WAKARAN T_KANA T_OSHIETE T_ONEGAI T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KANA T_WAKARAN T_KANA T_OSHIETE T_KANA T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KANA T_WAKARAN T_KANA T_OSHIETE T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KANA T_WAKARAN T_KANA T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KANA T_WAKARAN T_OSHIETE T_ONEGAI T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KANA T_WAKARAN T_OSHIETE T_KANA T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KANA T_WAKARAN T_OSHIETE T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KANA T_WAKARAN T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KANA T_OSHIETE T_ONEGAI T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KANA T_OSHIETE T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_KANA T_ONEGAI T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_KANA T_WO1 oshiete T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_KANA wakaran T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA T_KANA oshiete T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KANA T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_OSHIETE T_ONEGAI T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_OSHIETE T_KANA T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_OSHIETE T_PERIOD
-    | [DoSent3] suruto(0) T_IKURA T_ONEGAI T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA wakaran T_PERIOD
+    | [DoSent3] suruto(0) T_IKURA oshiete T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_PERIOD
     | [DoSent3] suruto(0) T_PERIOD
+    | [DoSent22] suruto(0) T_TASHIZAN T_KANA T_PERIOD
+    | [DoSent23] suruto(0) T_HIKIZAN T_KANA T_PERIOD
+    | [DoSent24] suruto(0) T_KAKEZAN T_KANA T_PERIOD
+    | [DoSent25] suruto(0) T_WARIZAN T_KANA T_PERIOD
     | [DoSent4] shite(0) T_KANA T_PERIOD
+    | [DoSent4] shite(0) T_KURE T_PERIOD
     | [DoSent4] shite(0) T_PERIOD
+    | [DoSent17] wakaran T_PERIOD sentence(0)
+    | [DoSent17] wakaran          sentence(0)
+    | [DoSent17] oshiete T_PERIOD sentence(0)
+    | [DoSent17] oshiete          sentence(0)
     | [DoSent6] T_PERIOD
+    ;
+
+wakaran<Node>
+    : [DoWakaran1] T_WAKARAN T_KANA oshiete
+    | [DoWakaran1] T_WAKARAN T_KANA
+    | [DoWakaran1] T_WAKARAN oshiete
+    | [DoWakaran1] T_WAKARAN
+    ;
+
+oshiete<Node>
+    : [DoOshiete1] T_OSHIETE T_KURE T_KANA T_ONEGAI
+    | [DoOshiete1] T_OSHIETE T_KURE T_KANA
+    | [DoOshiete1] T_OSHIETE        T_KANA T_ONEGAI
+    | [DoOshiete1] T_OSHIETE        T_KANA
+    | [DoOshiete1] T_OSHIETE T_KURE T_ONEGAI
+    | [DoOshiete1] T_OSHIETE        T_ONEGAI
+    | [DoOshiete1] T_OSHIETE T_KURE
+    | [DoOshiete1] T_OSHIETE
+    | [DoOshiete1] T_ONEGAI
     ;
 
 suruto<Suruto>

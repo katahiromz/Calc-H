@@ -80,6 +80,13 @@ Calc-H-GUI_res$(DOTOBJ): Calc-H-GUI.rc
 HParser.h: $(CAPER) HParser.cpg
 	$(CAPER) HParser.cpg HParser.h >caper.log 2>&1
 
+test: Calc-H-CUI$(DOTEXE) TestGen$(DOTEXE)
+	TestGen$(DOTEXE) >TestData.txt
+	Calc-H-CUI$(DOTEXE) TestData.txt >TestResult.txt
+
+TestGen$(DOTEXE): TestGen.cpp
+	$(CXX) -O3 -o TestGen$(DOTEXE) TestGen.cpp
+
 clean:
 	rm -f *$(DOTOBJ)
 	rm -f HParser.h

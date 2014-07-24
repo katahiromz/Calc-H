@@ -38,3 +38,9 @@ Windows + MinGW + MSYS + g++の場合
 「Makefile.g++」のBOOST_DIRにBoostへのインクルードパスを設定して下さい。
 その後、このフォルダでコマンドライン「make -f Makefile.g++」
 を実行すれば、自動的にビルドできます。
+
+
+注意
+----
+
+caperでHParser.cpgからHParser.hを生成するのに、10分くらいかかります。
