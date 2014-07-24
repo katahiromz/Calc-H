@@ -194,6 +194,10 @@
 sentence<Sentence>
     : [DoSent8] domains(0) T_HA domains(1) T_KANA T_PERIOD
     | [DoSent9] domains(0) T_HA constraint(1) T_KANA T_PERIOD
+    | [DoSent26] domains(0) T_HA expression_list(1) T_KANA T_PERIOD
+    | [DoSent27] domains(0) T_HA expression(1) T_KANA T_PERIOD
+    | [DoSent28] domains(0) T_HA T_IKURA T_KANA T_PERIOD
+    | [DoSent28] domains(0) T_HA T_IKURA T_PERIOD
     | [DoSent10] mono(0) T_HA domains(1) T_KANA T_PERIOD
     | [DoSent11] mono(0) T_HA constraint(1) T_KANA T_PERIOD
     | [DoSent12] mono(0) T_HA constraint(1) T_DEARU T_BUNSUU T_KANA T_PERIOD

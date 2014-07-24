@@ -1064,6 +1064,93 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
             ChSetMessage(ch_wrong);
         break;
 
+    case Sentence::DOMS_IS_EXPRLIST:
+        assert(sentence->m_doms1);
+        assert(sentence->m_doms1->m_domains);
+        assert(sentence->m_exprlist);
+        if (sentence->m_doms1->m_domains->GetValues(values))
+        {
+            ChNumberFromExprList(v1, sentence->m_exprlist);
+            pmp::vector_type& v = v1.get_v();
+            if (v.size() == values.size())
+            {
+                bool flag = true;
+                for (std::size_t j = 0; j < values.size(); ++j)
+                {
+                    flag = false;
+                    values[j].trim();
+                    for (std::size_t i = 0; i < v.size(); ++i)
+                    {
+                        v[i].trim();
+                        if (values[j] == v[i])
+                        {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (!flag)
+                        break;
+                }
+                if (flag)
+                {
+                    for (std::size_t i = 0; i < v.size(); ++i)
+                    {
+                        flag = false;
+                        for (std::size_t j = 0; j < values.size(); ++j)
+                        {
+                            if (values[j] == v[i])
+                            {
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (!flag)
+                            break;
+                    }
+                }
+                if (flag)
+                    ChSetMessage(ch_right);
+                else
+                    ChSetMessage(ch_wrong);
+            }
+            else
+                ChSetMessage(ch_wrong);
+        }
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::DOMS_IS_EXPR:
+        assert(sentence->m_doms1);
+        assert(sentence->m_doms1->m_domains);
+        assert(sentence->m_expr);
+        if (sentence->m_doms1->m_domains->GetValues(values))
+        {
+            v1 = ChCalcExpr(sentence->m_expr);
+            v1.trim();
+            values[0].trim();
+            if (values.size() == 1 && v1 == values[0])
+                ChSetMessage(ch_right);
+            else
+                ChSetMessage(ch_wrong);
+        }
+        else
+            ChSetMessage(ch_wrong);
+        break;
+
+    case Sentence::DOMS_IS_WHAT:
+        assert(sentence->m_doms1);
+        assert(sentence->m_doms1->m_domains);
+        if (sentence->m_doms1->m_domains->GetValues(values))
+        {
+            for (std::size_t i = 0; i < values.size(); ++i)
+                values[i].trim();
+            return CH_Value(values);
+        }
+        else
+            ChSetMessage("‚Þ‚·‚¤‚É‚ ‚è‚Ü‚·B");
+        break;
+
     default:
         assert(0);
     }
@@ -5273,6 +5360,20 @@ void ChAnalyzeSentence(shared_ptr<Sentence>& sentence)
     case Sentence::SURUTO_KAKEZAN:
     case Sentence::SURUTO_WARIZAN:
         ChAnalyzeSuruto(sentence->m_suruto);
+        break;
+
+    case Sentence::DOMS_IS_EXPRLIST:
+        ChAnalyzeDoms(sentence->m_doms1);
+        ChAnalyzeExprList(sentence->m_exprlist);
+        break;
+
+    case Sentence::DOMS_IS_EXPR:
+        ChAnalyzeDoms(sentence->m_doms1);
+        ChAnalyzeExpr(sentence->m_expr);
+        break;
+
+    case Sentence::DOMS_IS_WHAT:
+        ChAnalyzeDoms(sentence->m_doms1);
         break;
 
     default:

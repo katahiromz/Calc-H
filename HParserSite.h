@@ -304,6 +304,41 @@ namespace Calc_H
             return shared_ptr<Sentence>(s);
         }
 
+        shared_ptr<Sentence> DoSent26(shared_ptr<Doms>& doms1, shared_ptr<ExprList>& exprlist)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent26" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::DOMS_IS_EXPRLIST;
+            s->m_doms1 = doms1;
+            s->m_exprlist = exprlist;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent27(shared_ptr<Doms>& doms1, shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent27" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::DOMS_IS_EXPR;
+            s->m_doms1 = doms1;
+            s->m_expr = expr;
+            return shared_ptr<Sentence>(s);
+        }
+
+        shared_ptr<Sentence> DoSent28(shared_ptr<Doms>& doms1)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoSent28" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::DOMS_IS_WHAT;
+            s->m_doms1 = doms1;
+            return shared_ptr<Sentence>(s);
+        }
+
         shared_ptr<Node> DoWakaran1()
         {
             #ifdef DEEPDEBUG
