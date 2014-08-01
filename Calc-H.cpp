@@ -351,6 +351,8 @@ void ChNumberFromExprList(pmp::Number& num, shared_ptr<ExprList>& exprlist)
 CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
 {
     CH_Value v1, v2;
+    std::vector<CH_Value> values;
+
     switch (mono->m_type)
     {
     case Mono::EXPRLIST_ADD:
@@ -658,6 +660,44 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
         else
             ChSetMessage("‚©‚¢‚¶‚å‚¤‚ª‚¯‚¢‚³‚ñ‚Å‚«‚é‚Ì‚Í‚µ‚º‚ñ‚·‚¤‚Ì‚Ý‚Å‚·B");
         return v2;
+
+    case Mono::DOMS_SUM:
+        assert(mono->m_doms);
+        assert(mono->m_doms->m_domains);
+        if (mono->m_doms->m_domains->GetValues(values))
+        {
+            v1 = 0;
+            std::size_t i, siz = values.size();
+            for (i = 0; i < siz; ++i)
+            {
+                v1 += values[i];
+            }
+            return v1;
+        }
+        else
+        {
+            ChSetMessage("‚¯‚¢‚³‚ñ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B");
+            return 0;
+        }
+
+    case Mono::DOMS_PROD:
+        assert(mono->m_doms);
+        assert(mono->m_doms->m_domains);
+        if (mono->m_doms->m_domains->GetValues(values))
+        {
+            v1 = 1;
+            std::size_t i, siz = values.size();
+            for (i = 0; i < siz; ++i)
+            {
+                v1 *= values[i];
+            }
+            return v1;
+        }
+        else
+        {
+            ChSetMessage("‚¯‚¢‚³‚ñ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B");
+            return 1;
+        }
 
     default:
         assert(0);
@@ -1506,6 +1546,16 @@ void ChAnalyzeDomainsOfNum(shared_ptr<Domains>& domains, shared_ptr<Num>& num)
     delete range;
 }
 
+void ChAnalyzeDomainsOfExprKaraExprMade(
+    shared_ptr<Domains>& domains, shared_ptr<Expr>& expr1, shared_ptr<Expr>& expr2)
+{
+    CH_Value v1 = ChCalcExpr(expr1);
+    CH_Value v2 = ChCalcExpr(expr2);
+    Range *r = new Range(true, true, &v1, &v2);
+    domains.get()->Intersect(*r);
+    delete r;
+}
+
 void ChAnalyzeDomainsOfDom(shared_ptr<Domains>& domains, shared_ptr<Dom>& dom)
 {
     assert(domains);
@@ -1526,6 +1576,14 @@ void ChAnalyzeDomainsOfDom(shared_ptr<Domains>& domains, shared_ptr<Dom>& dom)
 
     case Dom::NUM_ONLY:
         ChAnalyzeDomainsOfNum(domains, dom->m_num);
+        break;
+
+    case Dom::EXPR_KARA_EXPR_MADE:
+        ChAnalyzeExpr(dom->m_expr1);
+        ChAnalyzeExpr(dom->m_expr2);
+        ChAnalyzePrimDom(dom->m_primdom);
+        ChAnalyzeDomainsOfPrimDom(domains, dom->m_primdom);
+        ChAnalyzeDomainsOfExprKaraExprMade(domains, dom->m_expr1, dom->m_expr2);
         break;
 
     default:
@@ -5087,6 +5145,11 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
     case Mono::MONO_HEIHOUKON:
     case Mono::MONO_KAIJOU:
         ChAnalyzeMono(mono->m_mono);
+        break;
+
+    case Mono::DOMS_SUM:
+    case Mono::DOMS_PROD:
+        ChAnalyzeDoms(mono->m_doms);
         break;
 
     default:

@@ -62,6 +62,7 @@ namespace Calc_H
                 resynth17(infos);
                 resynth18(infos);
                 resynth19(infos);
+                resynth20(infos);
             }
         }
 
@@ -170,7 +171,7 @@ namespace Calc_H
 
             // ç≈í∑àÍívñ@ÅB
             // ÅyÇ±Ç±Ç©ÇÁÅzçsÇç~èáÇ…ï¿Ç—ë÷Ç¶ÇƒÇ®Ç≠ÅB
-            if (lexeme("Å`"))                               return set_info(info, T_KARA);
+            if (lexeme("Å`"))                               return set_info(info, T_KARA1);
             if (lexeme("Åp"))                               return set_info(info, T_R_PAREN);
             if (lexeme("Åo"))                               return set_info(info, T_L_PAREN);
             if (lexeme("ÇîÇÅÇéÇà"))                         return set_info(info, T_TANH);
@@ -393,6 +394,7 @@ namespace Calc_H
             if (lexeme("Ç›"))                               return set_info(info, T_SAN);
             if (lexeme("Ç›"))                               return set_info(info, T_KURE);
             if (lexeme("Ç‹ÇÒ"))                             return set_info(info, T_MAN);
+            if (lexeme("Ç‹Ç≈"))                             return set_info(info, T_MADE);
             if (lexeme("Ç‹ÇΩÇÕ"))                           return set_info(info, T_MATAHA);
             if (lexeme("Ç‹Ç¢Ç»Ç∑Ç∑ÇÈÇ∆Ç´ÇÃ"))               return set_info(info, T_HIKUTO);
             if (lexeme("Ç‹Ç¢Ç»Ç∑Ç∑ÇÈÇ∆Ç´"))                 return set_info(info, T_HIKUTO);
@@ -911,7 +913,7 @@ namespace Calc_H
             if (lexeme("Ç™"))                               return set_info(info, T_HA);
             if (lexeme("Ç©Å["))                             return set_info(info, T_KANA);
             if (lexeme("Ç©ÇÒ"))                             return set_info(info, T_KAN);
-            if (lexeme("Ç©ÇÁ"))                             return set_info(info, T_KARA);
+            if (lexeme("Ç©ÇÁ"))                             return set_info(info, T_KARA1);
             if (lexeme("Ç©ÇÀÅ["))                           return set_info(info, T_KANA);
             if (lexeme("Ç©ÇÀÇ¶"))                           return set_info(info, T_KANA);
             if (lexeme("Ç©ÇÀÇ•"))                           return set_info(info, T_KANA);
@@ -1076,7 +1078,7 @@ namespace Calc_H
             if (lexeme("Åù"))                               return set_info(info, T_PERIOD);
             if (lexeme("ÅÄ"))                               return set_info(info, T_WARU);
             if (lexeme("Å~"))                               return set_info(info, T_KAKERU);
-            if (lexeme("~"))                                return set_info(info, T_KARA);
+            if (lexeme("~"))                                return set_info(info, T_KARA1);
             if (lexeme("}"))                                return set_info(info, T_R_PAREN);
             if (lexeme("{"))                                return set_info(info, T_L_PAREN);
             if (lexeme("tanh"))                             return set_info(info, T_TANH);
@@ -1825,10 +1827,12 @@ namespace Calc_H
                 case T_KAKETE:
                 case T_KAKEZAN:
                 case T_KANA:
-                case T_KARA:
+                case T_KARA1:
+                case T_KARA2:
                 case T_KEISAN:
                 case T_KOTAE:
                 case T_L_PAREN:
+                case T_MADE:
                 case T_MINUS:
                 case T_NO1:
                 case T_NO2:
@@ -2062,22 +2066,24 @@ namespace Calc_H
                     case T_DE:
                     case T_DIFF:
                     case T_HEIHOUKON:
-                    case T_KAIJOU:
                     case T_HIITA:
                     case T_HIITE:
                     case T_HIKIZAN:
                     case T_HIKU:
                     case T_HIKUTO:
                     case T_IKURA:
+                    case T_KAIJOU:
                     case T_KAKERU:
                     case T_KAKERUTO:
                     case T_KAKETA:
                     case T_KAKETE:
                     case T_KAKEZAN:
                     case T_KANA:
-                    case T_KARA:
+                    case T_KARA1:
+                    case T_KARA2:
                     case T_KEISAN:
                     case T_KOTAE:
+                    case T_MADE:
                     case T_NOUCHI:
                     case T_ONEGAI:
                     case T_OSHIETE:
@@ -2340,6 +2346,34 @@ namespace Calc_H
                 newinfos.push_back(*it);
             }
             infos = newinfos;
+        }
+
+        // T_MADEÇÃëOÇÃT_KARA1ÇT_KARA2Ç…ïœä∑ÅB
+        void resynth20(std::vector<info_type>& infos)
+        {
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            std::vector<info_type>::iterator kara = infos.end();
+            for (; it != end; ++it)
+            {
+                switch (it->get_token())
+                {
+                case T_KARA1:
+                    kara = it;
+                    break;
+
+                case T_MADE:
+                    if (kara != infos.end())
+                    {
+                        kara->set_token(T_KARA2);
+                        kara = infos.end();
+                    }
+                    break;
+
+                default:
+                    break;
+                }
+            }
         }
 
     private:

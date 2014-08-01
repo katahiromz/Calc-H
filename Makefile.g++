@@ -14,8 +14,8 @@ DEFS = -std=c++0x -static -Wall -pedantic -D_SJIS -finput-charset=CP932 -fexec-c
 
 INCLUDES = -I$(BOOST_DIR)
 
-CXXFLAGS = $(DEFS) $(INCLUDES) -O9 -Ofast -DNDEBUG
-#CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG
+#CXXFLAGS = $(DEFS) $(INCLUDES) -O9 -Ofast -DNDEBUG
+CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG
 #CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG -DDEEPDEBUG
 
 CAPER = ./caper$(DOTEXE)
@@ -78,7 +78,7 @@ Calc-H-GUI_res$(DOTOBJ): Calc-H-GUI.rc
 	windres -i Calc-H-GUI.rc -o Calc-H-GUI_res$(DOTOBJ)
 
 HParser.h: $(CAPER) HParser.cpg
-	$(CAPER) HParser.cpg HParser.h >caper.log 2>&1
+	time $(CAPER) HParser.cpg HParser.h >caper.log 2>&1
 
 test: Calc-H-CUI$(DOTEXE) TestGen$(DOTEXE)
 	TestGen$(DOTEXE) >TestData.txt

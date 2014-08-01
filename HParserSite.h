@@ -1679,6 +1679,28 @@ namespace Calc_H
             return shared_ptr<Mono>(m);
         }
 
+        shared_ptr<Mono> DoMono80(shared_ptr<Doms>& doms)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono80" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::DOMS_SUM;
+            m->m_doms = doms;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono81(shared_ptr<Doms>& doms)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono81" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::DOMS_PROD;
+            m->m_doms = doms;
+            return shared_ptr<Mono>(m);
+        }
+
         shared_ptr<Expr> DoExpr1(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG
@@ -3315,6 +3337,19 @@ namespace Calc_H
             Dom *d = new Dom;
             d->m_type = Dom::DOM_OF_DOM;
             d->m_dom = dom;
+            d->m_primdom = primdom;
+            return shared_ptr<Dom>(d);
+        }
+
+        shared_ptr<Dom> DoDom4(shared_ptr<Expr>& expr1, shared_ptr<Expr>& expr2, shared_ptr<PrimDom>& primdom)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDom4" << std::endl;
+            #endif
+            Dom *d = new Dom;
+            d->m_type = Dom::EXPR_KARA_EXPR_MADE;
+            d->m_expr1 = expr1;
+            d->m_expr2 = expr2;
             d->m_primdom = primdom;
             return shared_ptr<Dom>(d);
         }

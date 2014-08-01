@@ -150,7 +150,8 @@ namespace Calc_H
             SHOUSUU, MONO_NO_SHOUSUU, EXPRLIST_VECFUNC,
             MONO_SHOU_TO_AMARI, MONO_DIVMOD_EXPR, SHITE_DIVMOD_EXPR, EXPR_DIVMOD_MONO,
             TERM_DIVMOD_FACT, SURUTO_SHOU_TO_AMARI,
-            MONO_HEIHOUKON, MONO_KAIJOU
+            MONO_HEIHOUKON, MONO_KAIJOU,
+            DOMS_SUM, DOMS_PROD
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
@@ -161,6 +162,7 @@ namespace Calc_H
         shared_ptr<Fact>        m_fact;
         shared_ptr<Func1Arg>    m_func1arg;
         shared_ptr<VecFunc>     m_vecfunc;
+        shared_ptr<Doms>        m_doms;
     };
 
     struct Expr : Node
@@ -252,12 +254,15 @@ namespace Calc_H
     struct Dom : Node
     {
         enum {
-            CNSTRED_PRIMDOM, PRIMDOM_ONLY, DOM_OF_DOM, NUM_ONLY
+            CNSTRED_PRIMDOM, PRIMDOM_ONLY, DOM_OF_DOM, NUM_ONLY,
+            EXPR_KARA_EXPR_MADE
         } m_type;
         shared_ptr<Dom>         m_dom;
         shared_ptr<Cnstr>       m_cnstr;
         shared_ptr<PrimDom>     m_primdom;
         shared_ptr<Num>         m_num;
+        shared_ptr<Expr>        m_expr1;
+        shared_ptr<Expr>        m_expr2;
     };
 
     struct Doms : Node, std::vector<shared_ptr<Dom> >

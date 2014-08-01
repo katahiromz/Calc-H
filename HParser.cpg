@@ -91,7 +91,8 @@
 %token T_KAKEZAN<TokenValue>;
 %token T_KAN<TokenValue>;
 %token T_KANA<TokenValue>;
-%token T_KARA<TokenValue>;
+%token T_KARA1<TokenValue>;
+%token T_KARA2<TokenValue>;
 %token T_KASUU<TokenValue>;     // replaced
 %token T_KATSU<TokenValue>;
 %token T_KEI<TokenValue>;
@@ -105,6 +106,7 @@
 %token T_LOG<TokenValue>;
 %token T_L_PAREN<TokenValue>;
 %token T_MAN<TokenValue>;
+%token T_MADE<TokenValue>;
 %token T_MATAHA<TokenValue>;
 %token T_MAX<TokenValue>;
 %token T_MIMAN<TokenValue>;
@@ -193,13 +195,15 @@
 
 sentence<Sentence>
     : [DoSent8] domains(0) T_HA domains(1) T_KANA T_PERIOD
-    | [DoSent9] domains(0) T_HA constraint(1) T_KANA T_PERIOD
+    | [DoSent9] domains(0) T_HA constraint(1) T_NO1 T_KANA T_PERIOD
+    | [DoSent9] domains(0) T_HA constraint(1)       T_KANA T_PERIOD
     | [DoSent26] domains(0) T_HA expression_list(1) T_KANA T_PERIOD
     | [DoSent27] domains(0) T_HA expression(1) T_KANA T_PERIOD
     | [DoSent28] domains(0) T_HA T_IKURA T_KANA T_PERIOD
     | [DoSent28] domains(0) T_HA T_IKURA T_PERIOD
     | [DoSent10] mono(0) T_HA domains(1) T_KANA T_PERIOD
-    | [DoSent11] mono(0) T_HA constraint(1) T_KANA T_PERIOD
+    | [DoSent11] mono(0) T_HA constraint(1) T_NO1 T_KANA T_PERIOD
+    | [DoSent11] mono(0) T_HA constraint(1)       T_KANA T_PERIOD
     | [DoSent12] mono(0) T_HA constraint(1) T_DEARU T_BUNSUU T_KANA T_PERIOD
     | [DoSent12] mono(0) T_HA constraint(1) T_NO1 T_BUNSUU T_KANA T_PERIOD
     | [DoSent12] mono(0) T_HA constraint(1) T_BUNSUU T_KANA T_PERIOD
@@ -302,12 +306,12 @@ suruto<Suruto>
     | [DoSuruto4] mono(0) T_WO1 expression(1) T_NI T_COMMA T_KAKEZAN T_SURUTO
     | [DoSuruto4] mono(0) T_WO1 expression(1) T_NI T_KAKERUTO
     | [DoSuruto4] mono(0) T_WO1 expression(1) T_NI T_KAKEZAN T_SURUTO
-    | [DoSuruto5] mono(0) T_KARA expression(1) T_WO1 T_HIKUTO
-    | [DoSuruto5] mono(0) T_KARA expression(1)       T_HIKUTO
-    | [DoSuruto5] mono(0) T_KARA expression(1) T_NO4 T_HIKIZAN T_WO2 T_SURUTO
-    | [DoSuruto5] mono(0) T_KARA expression(1) T_NO4 T_HIKIZAN       T_SURUTO
-    | [DoSuruto16] mono(0) T_WO1 expression(1) T_KARA T_HIKUTO
-    | [DoSuruto16] mono(0) T_WO1 expression(1) T_KARA T_HIKIZAN T_SURUTO
+    | [DoSuruto5] mono(0) T_KARA1 expression(1) T_WO1 T_HIKUTO
+    | [DoSuruto5] mono(0) T_KARA1 expression(1)       T_HIKUTO
+    | [DoSuruto5] mono(0) T_KARA1 expression(1) T_NO4 T_HIKIZAN T_WO2 T_SURUTO
+    | [DoSuruto5] mono(0) T_KARA1 expression(1) T_NO4 T_HIKIZAN       T_SURUTO
+    | [DoSuruto16] mono(0) T_WO1 expression(1) T_KARA1 T_HIKUTO
+    | [DoSuruto16] mono(0) T_WO1 expression(1) T_KARA1 T_HIKIZAN T_SURUTO
     | [DoSuruto6] mono(0) T_WO1 expression(1) T_DE T_WARUTO
     | [DoSuruto6] mono(0) T_WO1 expression(1) T_DE T_WARIZAN T_WO2 T_SURUTO
     | [DoSuruto6] mono(0) T_WO1 expression(1) T_DE T_WARIZAN       T_SURUTO
@@ -368,10 +372,10 @@ suruto<Suruto>
     | [DoSuruto11] shite(0)              expression(1)       T_KAKERUTO
     | [DoSuruto11] shite(0)              expression(1) T_NO4 T_KAKEZAN T_WO2 T_SURUTO
     | [DoSuruto11] shite(0)              expression(1) T_NO4 T_KAKEZAN       T_SURUTO
-    | [DoSuruto12] shite(0) T_SORE T_KARA expression(1) T_WO1 T_HIKUTO
-    | [DoSuruto12] shite(0) T_SORE T_KARA expression(1)       T_HIKUTO
-    | [DoSuruto12] shite(0) T_SORE T_KARA expression(1) T_NO4 T_HIKIZAN T_WO2 T_SURUTO
-    | [DoSuruto12] shite(0) T_SORE T_KARA expression(1) T_NO4 T_HIKIZAN       T_SURUTO
+    | [DoSuruto12] shite(0) T_SORE T_KARA1 expression(1) T_WO1 T_HIKUTO
+    | [DoSuruto12] shite(0) T_SORE T_KARA1 expression(1)       T_HIKUTO
+    | [DoSuruto12] shite(0) T_SORE T_KARA1 expression(1) T_NO4 T_HIKIZAN T_WO2 T_SURUTO
+    | [DoSuruto12] shite(0) T_SORE T_KARA1 expression(1) T_NO4 T_HIKIZAN       T_SURUTO
     | [DoSuruto12] shite(0)               expression(1) T_WO1 T_HIKUTO
     | [DoSuruto12] shite(0)               expression(1)       T_HIKUTO
     | [DoSuruto12] shite(0)               expression(1) T_NO4 T_HIKIZAN T_WO2 T_SURUTO
@@ -429,12 +433,12 @@ shite<Shite>
     | [DoShite4] mono(0) T_TO1 expression(1)       T_KAKETE
     | [DoShite4] mono(0) T_TO1 expression(1) T_NO4 T_KAKEZAN T_WO2 T_SHITE
     | [DoShite4] mono(0) T_TO1 expression(1) T_NO4 T_KAKEZAN       T_SHITE
-    | [DoShite5] mono(0) T_KARA expression(1) T_WO1 T_HIITE
-    | [DoShite5] mono(0) T_KARA expression(1)       T_HIITE
-    | [DoShite5] mono(0) T_KARA expression(1) T_NO4 T_HIKIZAN T_WO2 T_SHITE
-    | [DoShite5] mono(0) T_KARA expression(1) T_NO4 T_HIKIZAN       T_SHITE
-    | [DoShite16] mono(0) T_WO1 expression(1) T_KARA T_HIITE
-    | [DoShite16] mono(0) T_WO1 expression(1) T_KARA T_HIKIZAN T_SHITE
+    | [DoShite5] mono(0) T_KARA1 expression(1) T_WO1 T_HIITE
+    | [DoShite5] mono(0) T_KARA1 expression(1)       T_HIITE
+    | [DoShite5] mono(0) T_KARA1 expression(1) T_NO4 T_HIKIZAN T_WO2 T_SHITE
+    | [DoShite5] mono(0) T_KARA1 expression(1) T_NO4 T_HIKIZAN       T_SHITE
+    | [DoShite16] mono(0) T_WO1 expression(1) T_KARA1 T_HIITE
+    | [DoShite16] mono(0) T_WO1 expression(1) T_KARA1 T_HIKIZAN T_SHITE
     | [DoShite6] mono(0) T_WO1 expression(1) T_DE T_WATTE
     | [DoShite6] mono(0) T_WO1 expression(1) T_DE T_WARIZAN T_WO2 T_SHITE
     | [DoShite6] mono(0) T_WO1 expression(1) T_DE T_WARIZAN       T_SHITE
@@ -480,12 +484,12 @@ shite<Shite>
     | [DoShite9] shite(0)              expression(1) T_DE T_KAKETE
     | [DoShite9] shite(0)              expression(1) T_DE T_KAKEZAN T_WO2 T_SHITE
     | [DoShite9] shite(0)              expression(1) T_DE T_KAKEZAN       T_SHITE
-    | [DoShite10] shite(0) T_SORE T_KARA expression(1) T_WO1 T_HIITE
-    | [DoShite10] shite(0) T_SORE T_KARA expression(1)       T_HIITE
-    | [DoShite10] shite(0) T_SORE T_KARA expression(1) T_NO4 T_HIKIZAN T_SHITE
-    | [DoShite10] shite(0) T_SORE T_KARA expression(1) T_DE T_HIITE
-    | [DoShite10] shite(0) T_SORE T_KARA expression(1) T_DE T_HIKIZAN T_WO2 T_SHITE
-    | [DoShite10] shite(0) T_SORE T_KARA expression(1) T_DE T_HIKIZAN       T_SHITE
+    | [DoShite10] shite(0) T_SORE T_KARA1 expression(1) T_WO1 T_HIITE
+    | [DoShite10] shite(0) T_SORE T_KARA1 expression(1)       T_HIITE
+    | [DoShite10] shite(0) T_SORE T_KARA1 expression(1) T_NO4 T_HIKIZAN T_SHITE
+    | [DoShite10] shite(0) T_SORE T_KARA1 expression(1) T_DE T_HIITE
+    | [DoShite10] shite(0) T_SORE T_KARA1 expression(1) T_DE T_HIKIZAN T_WO2 T_SHITE
+    | [DoShite10] shite(0) T_SORE T_KARA1 expression(1) T_DE T_HIKIZAN       T_SHITE
     | [DoShite10] shite(0)               expression(1) T_WO1 T_HIITE
     | [DoShite10] shite(0)               expression(1)       T_HIITE
     | [DoShite10] shite(0)               expression(1) T_NO4 T_HIKIZAN T_SHITE
@@ -529,6 +533,8 @@ mono<Mono>
     | [DoMono4] expression_list(0) T_NO2 T_QUOT
     | [DoMono75] expression_list(0) T_NO2 vector_function(1)
     | [DoMono75] expression_list(0) T_NOUCHI vector_function(1)
+    | [DoMono80] domains(0) T_NO2 T_SUM
+    | [DoMono81] domains(0) T_NO2 T_PROD
     | [DoMono5] mono(0) T_NI T_COMMA expression(1) T_WO1 T_TASHITA T_MONO
     | [DoMono5] mono(0) T_NI T_COMMA expression(1)       T_TASHITA T_MONO
     | [DoMono5] mono(0) T_NI expression(1) T_WO1 T_TASHITA T_MONO
@@ -541,9 +547,9 @@ mono<Mono>
     | [DoMono6] mono(0) T_NI expression(1)       T_KAKETA T_MONO
     | [DoMono6] mono(0) T_WO1 expression(1) T_NI T_COMMA T_KAKETA T_MONO
     | [DoMono6] mono(0) T_WO1 expression(1) T_NI T_KAKETA T_MONO
-    | [DoMono7] mono(0) T_KARA expression(1) T_WO1 T_HIITA T_MONO
-    | [DoMono7] mono(0) T_KARA expression(1)       T_HIITA T_MONO
-    | [DoMono26] mono(0) T_WO1 expression(1) T_KARA T_HIITA T_MONO
+    | [DoMono7] mono(0) T_KARA1 expression(1) T_WO1 T_HIITA T_MONO
+    | [DoMono7] mono(0) T_KARA1 expression(1)       T_HIITA T_MONO
+    | [DoMono26] mono(0) T_WO1 expression(1) T_KARA1 T_HIITA T_MONO
     | [DoMono8] mono(0) T_WO1 expression(1) T_DE T_WATTA T_MONO
     | [DoMono27] mono(0) T_DE expression(1) T_WO1 T_WATTA T_MONO
     | [DoMono27] mono(0) T_DE expression(1)       T_WATTA T_MONO
@@ -600,12 +606,12 @@ mono<Mono>
     | [DoMono13] shite(0)              expression(1) T_DE T_KAKETA T_MONO
     | [DoMono13] shite(0)              expression(1) T_DE T_KAKEZAN T_WO2 T_SHITA T_MONO
     | [DoMono13] shite(0)              expression(1) T_DE T_KAKEZAN       T_SHITA T_MONO
-    | [DoMono14] shite(0) T_SORE T_KARA expression(1) T_WO1 T_HIITA T_MONO
-    | [DoMono14] shite(0) T_SORE T_KARA expression(1)       T_HIITA T_MONO
-    | [DoMono14] shite(0) T_SORE T_KARA expression(1) T_NO4 T_HIKIZAN T_SHITA T_MONO
-    | [DoMono14] shite(0) T_SORE T_KARA expression(1) T_DE T_HIITA T_MONO
-    | [DoMono14] shite(0) T_SORE T_KARA expression(1) T_DE T_HIKIZAN T_WO2 T_SHITA T_MONO
-    | [DoMono14] shite(0) T_SORE T_KARA expression(1) T_DE T_HIKIZAN       T_SHITA T_MONO
+    | [DoMono14] shite(0) T_SORE T_KARA1 expression(1) T_WO1 T_HIITA T_MONO
+    | [DoMono14] shite(0) T_SORE T_KARA1 expression(1)       T_HIITA T_MONO
+    | [DoMono14] shite(0) T_SORE T_KARA1 expression(1) T_NO4 T_HIKIZAN T_SHITA T_MONO
+    | [DoMono14] shite(0) T_SORE T_KARA1 expression(1) T_DE T_HIITA T_MONO
+    | [DoMono14] shite(0) T_SORE T_KARA1 expression(1) T_DE T_HIKIZAN T_WO2 T_SHITA T_MONO
+    | [DoMono14] shite(0) T_SORE T_KARA1 expression(1) T_DE T_HIKIZAN       T_SHITA T_MONO
     | [DoMono14] shite(0)               expression(1) T_WO1 T_HIITA T_MONO
     | [DoMono14] shite(0)               expression(1)       T_HIITA T_MONO
     | [DoMono14] shite(0)               expression(1) T_NO4 T_HIKIZAN T_SHITA T_MONO
@@ -1029,7 +1035,8 @@ domains<Doms>
     ;
 
 domain<Dom>
-    : [DoDom1] constraint(0) T_NO1 primary_domain(1)
+    : [DoDom4] expression(0) T_KARA2 expression(1) T_MADE T_NO1 primary_domain(2)
+    | [DoDom1] constraint(0) T_NO1 primary_domain(1)
     | [DoDom1] constraint(0) T_DEARU primary_domain(1)
     | [DoDom1] constraint(0) primary_domain(1)
     | [DoDom2] primary_domain(0)
