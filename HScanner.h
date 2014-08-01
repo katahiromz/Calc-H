@@ -181,6 +181,8 @@ namespace Calc_H
             if (lexeme("‚Œ‚‚‡‚P‚O"))                       return set_info(info, T_LOG10);
             if (lexeme("‚Œ‚‚‡"))                           return set_info(info, T_LOG);
             if (lexeme("‚Œ‚Ž"))                             return set_info(info, T_LOG);
+            if (lexeme("‚Œ‚ƒ‚"))                           return set_info(info, T_LCM);
+            if (lexeme("‚‡‚ƒ‚„"))                           return set_info(info, T_GCD);
             if (lexeme("‚†‚‚‚‚“"))                         return set_info(info, T_ZETTAICHI);
             if (lexeme("‚…‚˜‚"))                           return set_info(info, T_EXP);
             if (lexeme("‚ƒ‚‚“‚ˆ"))                         return set_info(info, T_COSH);
@@ -194,6 +196,8 @@ namespace Calc_H
             if (lexeme("‚‚‚‚“"))                           return set_info(info, T_ZETTAICHI);
             if (lexeme("n"))                               return set_info(info, T_R_PAREN);
             if (lexeme("m"))                               return set_info(info, T_L_PAREN);
+            if (lexeme("‚k‚b‚l"))                           return set_info(info, T_LCM);
+            if (lexeme("‚f‚b‚c"))                           return set_info(info, T_GCD);
             if (lexeme("H"))                               return set_info(info, T_PERIOD);
             if (lexeme(""))                               return set_info(info, T_HA);
             if (lexeme("D"))                               return set_info(info, T_PERIOD);
@@ -837,10 +841,12 @@ namespace Calc_H
             if (lexeme("‚³‚¢‚¾‚¢‚Æ‚È‚é‚à‚Ì"))               return set_info(info, T_MAX);
             if (lexeme("‚³‚¢‚¾‚¢‚Æ‚È‚é‚©‚¸"))               return set_info(info, T_MAX);
             if (lexeme("‚³‚¢‚¾‚¢‚¿"))                       return set_info(info, T_MAX);
+            if (lexeme("‚³‚¢‚¾‚¢‚±‚¤‚â‚­‚·‚¤"))             return set_info(info, T_GCD);
             if (lexeme("‚³‚¢‚µ‚å[‚Æ‚È‚é‚©‚¸"))             return set_info(info, T_MIN);
             if (lexeme("‚³‚¢‚µ‚å[‚¿"))                     return set_info(info, T_MIN);
             if (lexeme("‚³‚¢‚µ‚å‚¤‚Æ‚È‚é‚©‚¸"))             return set_info(info, T_MIN);
             if (lexeme("‚³‚¢‚µ‚å‚¤‚¿"))                     return set_info(info, T_MIN);
+            if (lexeme("‚³‚¢‚µ‚å‚¤‚±‚¤‚Î‚¢‚·‚¤"))           return set_info(info, T_LCM);
             if (lexeme("‚³‚¢"))                             return set_info(info, T_SAI);
             if (lexeme("‚³"))                               return set_info(info, T_DIFF);
             if (lexeme("‚²‚ç‚ñ‚È‚³‚¢"))                     return set_info(info, T_KURE);
@@ -1088,6 +1094,8 @@ namespace Calc_H
             if (lexeme("log10"))                            return set_info(info, T_LOG10);
             if (lexeme("log"))                              return set_info(info, T_LOG);
             if (lexeme("ln"))                               return set_info(info, T_LOG);
+            if (lexeme("lcm"))                              return set_info(info, T_LCM);
+            if (lexeme("gcd"))                              return set_info(info, T_GCD);
             if (lexeme("fabs"))                             return set_info(info, T_ZETTAICHI);
             if (lexeme("exp"))                              return set_info(info, T_EXP);
             if (lexeme("cosh"))                             return set_info(info, T_COSH);
@@ -1101,6 +1109,8 @@ namespace Calc_H
             if (lexeme("abs"))                              return set_info(info, T_ZETTAICHI);
             if (lexeme("]"))                                return set_info(info, T_R_PAREN);
             if (lexeme("["))                                return set_info(info, T_L_PAREN);
+            if (lexeme("LCM"))                              return set_info(info, T_LCM);
+            if (lexeme("GCD"))                              return set_info(info, T_GCD);
             if (lexeme("?"))                                return set_info(info, T_PERIOD);
             if (lexeme("=="))                               return set_info(info, T_HA);
             if (lexeme("="))                                return set_info(info, T_HA);
@@ -1555,6 +1565,8 @@ namespace Calc_H
                 case T_MIN:
                 case T_AVERAGE:
                 case T_HEIHOUKON:
+                case T_GCD:
+                case T_LCM:
                     if (no1 != std::string::npos)
                     {
                         (newinfos.begin() + no1)->set_token(T_NO2);
@@ -2237,6 +2249,7 @@ namespace Calc_H
                 case T_COUNT:
                 case T_DIFF:
                 case T_EXP:
+                case T_GCD:
                 case T_GYAKUSUU:
                 case T_HEIHOU:
                 case T_HEIHOUKON:
@@ -2245,8 +2258,9 @@ namespace Calc_H
                 case T_KAKEZAN:
                 case T_KEISAN:
                 case T_KOTAE:
-                case T_LOG:
+                case T_LCM:
                 case T_LOG10:
+                case T_LOG:
                 case T_MAX:
                 case T_MIN:
                 case T_MONO:

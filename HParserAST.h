@@ -247,7 +247,7 @@ namespace Calc_H
     struct VecFunc : Node
     {
         enum {
-            COUNT, MAX, MIN, AVERAGE
+            COUNT, MAX, MIN, AVERAGE, GCD, LCM
         } m_type;
     };
 

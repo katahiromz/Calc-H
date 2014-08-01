@@ -45,6 +45,7 @@
 %token T_FUKASHIGI<TokenValue>;
 %token T_FUNO<TokenValue>;
 %token T_GAI<TokenValue>;
+%token T_GCD<TokenValue>;
 %token T_GENSUU<TokenValue>;    // replaced
 %token T_GO<TokenValue>;
 %token T_GOKU<TokenValue>;
@@ -102,11 +103,12 @@
 %token T_KOU<TokenValue>;
 %token T_KURE<TokenValue>;
 %token T_KYUU<TokenValue>;
+%token T_LCM<TokenValue>;
 %token T_LOG10<TokenValue>;
 %token T_LOG<TokenValue>;
 %token T_L_PAREN<TokenValue>;
-%token T_MAN<TokenValue>;
 %token T_MADE<TokenValue>;
+%token T_MAN<TokenValue>;
 %token T_MATAHA<TokenValue>;
 %token T_MAX<TokenValue>;
 %token T_MIMAN<TokenValue>;
@@ -1020,6 +1022,8 @@ vector_function<VecFunc>
     | [DoVecFunc2] T_MAX
     | [DoVecFunc3] T_MIN
     | [DoVecFunc4] T_AVERAGE
+    | [DoVecFunc5] T_GCD
+    | [DoVecFunc6] T_LCM
     ;
 
 domains<Doms>

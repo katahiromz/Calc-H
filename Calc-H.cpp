@@ -79,6 +79,69 @@ CH_Value ChCalcFactorial(const pmp::integer_type& value)
     return result;
 }
 
+CH_Value ChGCD(CH_Value x, CH_Value y)
+{
+    if (!x.is_i() || !y.is_i())
+    {
+        ChSetMessage("ÇπÇ¢Ç∑Ç§Ç≈ÇÕÇ†ÇËÇ‹ÇπÇÒÅB");
+        return 0;
+    }
+    CH_Value z;
+    while (!(x % y).is_zero())
+    {
+        z = x % y;
+        x = y;
+        y = z;
+    }
+    return y;
+}
+
+CH_Value ChLCM(CH_Value x, CH_Value y)
+{
+    if (!x.is_i() || !y.is_i())
+    {
+        ChSetMessage("ÇπÇ¢Ç∑Ç§Ç≈ÇÕÇ†ÇËÇ‹ÇπÇÒÅB");
+        return 0;
+    }
+
+    return x * y / ChGCD(x, y);
+}
+
+CH_Value ChGCD(const CH_Value& num)
+{
+    assert(num.is_v());
+    const pmp::vector_type& vec = num.get_v();
+
+    if (vec.size() == 0)
+        return 0;
+
+    CH_Value v1 = vec[0], v2;
+    for (size_t i = 1; i < vec.size(); ++i)
+    {
+        v2 = vec[i];
+        v2.trim();
+        v1 = ChGCD(v1, v2);
+        v1.trim();
+    }
+    return v1;
+}
+
+CH_Value ChLCM(const CH_Value& num)
+{
+    assert(num.is_v());
+    const pmp::vector_type& vec = num.get_v();
+
+    if (vec.size() == 0)
+        return 0;
+
+    CH_Value v = vec[0];
+    for (size_t i = 1; i < vec.size(); ++i)
+    {
+        v = ChLCM(v, vec[i]);
+    }
+    return v;
+}
+
 void ChAnalyzeExpr(shared_ptr<Expr>& expr);
 CH_Value ChCalcExpr(const shared_ptr<Expr>& expr);
 CH_Value ChCalcMono(const shared_ptr<Mono>& mono);
@@ -595,6 +658,14 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
             case VecFunc::AVERAGE:
                 ChNumberFromExprList(num, mono->m_exprlist);
                 return pmp::average(num);
+
+            case VecFunc::GCD:
+                ChNumberFromExprList(num, mono->m_exprlist);
+                return ChGCD(num);
+
+            case VecFunc::LCM:
+                ChNumberFromExprList(num, mono->m_exprlist);
+                return ChLCM(num);
 
             default:
                 assert(0);

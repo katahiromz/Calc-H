@@ -3258,6 +3258,26 @@ namespace Calc_H
             return shared_ptr<VecFunc>(f);
         }
 
+        shared_ptr<VecFunc> DoVecFunc5()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoVecFunc5" << std::endl;
+            #endif
+            VecFunc *f = new VecFunc;
+            f->m_type = VecFunc::GCD;
+            return shared_ptr<VecFunc>(f);
+        }
+
+        shared_ptr<VecFunc> DoVecFunc6()
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoVecFunc6" << std::endl;
+            #endif
+            VecFunc *f = new VecFunc;
+            f->m_type = VecFunc::LCM;
+            return shared_ptr<VecFunc>(f);
+        }
+
         shared_ptr<Doms> DoDoms1(shared_ptr<Doms>& doms, shared_ptr<Dom>& dom)
         {
             #ifdef DEEPDEBUG
