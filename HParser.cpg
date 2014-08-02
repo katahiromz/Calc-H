@@ -203,6 +203,7 @@ sentence<Sentence>
     | [DoSent27] domains(0) T_HA expression(1) T_KANA T_PERIOD
     | [DoSent28] domains(0) T_HA T_IKURA T_KANA T_PERIOD
     | [DoSent28] domains(0) T_HA T_IKURA T_PERIOD
+    | [DoSent28] domains(0) T_HA T_PERIOD
     | [DoSent10] mono(0) T_HA domains(1) T_KANA T_PERIOD
     | [DoSent11] mono(0) T_HA constraint(1) T_NO1 T_KANA T_PERIOD
     | [DoSent11] mono(0) T_HA constraint(1)       T_KANA T_PERIOD
@@ -1046,6 +1047,7 @@ domain<Dom>
     | [DoDom2] primary_domain(0)
     | [DoDom3] domain(0) T_NO1 primary_domain(1)
     | [DoDom3] domain(0) T_DEARU primary_domain(1)
+    | [DoDom5] domain(0) T_NOUCHI domain(1)
     ;
 
 primary_domain<PrimDom>

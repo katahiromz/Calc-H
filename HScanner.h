@@ -63,6 +63,7 @@ namespace Calc_H
                 resynth18(infos);
                 resynth19(infos);
                 resynth20(infos);
+                resynth21(infos);
             }
         }
 
@@ -168,6 +169,12 @@ namespace Calc_H
             if (!lexeme("ÇÃÇ»Ç»", false) && lexeme("ÇÃÇ»")) return set_info(info, T_NO1);
             if (!lexeme("Ç¢Ç¡ÇƒÇÒ", false) &&
                 (lexeme("Ç¢Ç¡ÇƒÇ›") || lexeme("Ç¢Ç¡Çƒ"))) return set_info(info, T_OSHIETE);
+
+            if (!lexeme("Ç©Ç¢Çø", false) && !lexeme("Ç©Ç¢Ç§", false) && !lexeme("Ç©Ç¢Ç»", false) &&
+                !lexeme("Ç©Ç¢Ç¢", false) && !lexeme("Ç©Ç¢Ç∂", false) && lexeme("Ç©Ç¢"))
+            {
+                return set_info(info, T_KANA);
+            }
 
             // ç≈í∑àÍívñ@ÅB
             // ÅyÇ±Ç±Ç©ÇÁÅzçsÇç~èáÇ…ï¿Ç—ë÷Ç¶ÇƒÇ®Ç≠ÅB
@@ -984,7 +991,6 @@ namespace Calc_H
             if (lexeme("Ç©ÇØ"))                             return set_info(info, T_KAKERU);
             if (lexeme("Ç©Ç¢Ç»"))                           return set_info(info, T_KANA);
             if (lexeme("Ç©Ç¢Ç∂ÇÂÇ§"))                       return set_info(info, T_KAIJOU);
-            if (lexeme("Ç©Ç¢"))                             return set_info(info, T_KANA);
             if (lexeme("Ç©Ç†"))                             return set_info(info, T_KANA);
             if (lexeme("Ç©Çü"))                             return set_info(info, T_KANA);
             if (lexeme("Ç©"))                               return set_info(info, T_KA);
@@ -2381,6 +2387,47 @@ namespace Calc_H
                     {
                         kara->set_token(T_KARA2);
                         kara = infos.end();
+                    }
+                    break;
+
+                default:
+                    break;
+                }
+            }
+        }
+
+        // T_SHIZENSUU, T_SEISUU, T_GUUSUU, T_KISUU, T_JISSUU,
+        // T_MONO, T_SOSUUÇÃëOå„ÇÃT_TO1ÇT_KAÇ…ïœä∑Ç∑ÇÈÅB
+        void resynth21(std::vector<info_type>& infos)
+        {
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            for (; it != end; ++it)
+            {
+                switch (it->get_token())
+                {
+                case T_SHIZENSUU:
+                case T_SEISUU:
+                case T_GUUSUU:
+                case T_KISUU:
+                case T_JISSUU:
+                    if ((it + 1)->get_token() == T_TO1)
+                        (it + 1)->set_token(T_KA);
+                    break;
+
+                case T_TO1:
+                    switch ((it + 1)->get_token())
+                    {
+                    case T_SHIZENSUU:
+                    case T_SEISUU:
+                    case T_GUUSUU:
+                    case T_KISUU:
+                    case T_JISSUU:
+                        it->set_token(T_KA);
+                        break;
+
+                    default:
+                        break;
                     }
                     break;
 

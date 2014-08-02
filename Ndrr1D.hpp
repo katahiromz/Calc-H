@@ -60,8 +60,8 @@ namespace Ndrr1D
     bool IsEvenNumber(const DRR1D_VALUE& value);
     bool IsOddNumber(const DRR1D_VALUE& value);
     bool IsPrimeNumber(const DRR1D_VALUE& value);
-    DRR1D_VALUE GauseModFloor(const DRR1D_VALUE& d, const DRR1D_VALUE& mod);
-    DRR1D_VALUE GauseModCeil(const DRR1D_VALUE& d, const DRR1D_VALUE& mod);
+    DRR1D_VALUE GauseModFloor(DRR1D_VALUE d, DRR1D_VALUE mod);
+    DRR1D_VALUE GauseModCeil(DRR1D_VALUE d, DRR1D_VALUE mod);
 
     //
     // Ndrr1D::Range
@@ -195,12 +195,12 @@ namespace Ndrr1D
     //
     struct Domain
     {
-        enum Type { EMPTY, SEISUU, GUUSUU, KISUU, JISSUU, SOSUU };
+        enum Type { EMPTY, REGULAR, EVEN, ODD, REAL, PRIME };
         Type                        m_dom_type;
         shared_ptr<Ranges>          m_ranges;
         std::vector<FN_CONTAINS>    m_afnContains;
 
-        Domain() : m_dom_type(JISSUU) { }
+        Domain() : m_dom_type(REAL) { }
 
         Domain(const Domain& d) :
             m_dom_type(d.m_dom_type),

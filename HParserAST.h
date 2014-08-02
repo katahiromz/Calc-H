@@ -255,9 +255,10 @@ namespace Calc_H
     {
         enum {
             CNSTRED_PRIMDOM, PRIMDOM_ONLY, DOM_OF_DOM, NUM_ONLY,
-            EXPR_KARA_EXPR_MADE
+            EXPR_KARA_EXPR_MADE, DOM_NOUCHI_DOM
         } m_type;
         shared_ptr<Dom>         m_dom;
+        shared_ptr<Dom>         m_dom2;
         shared_ptr<Cnstr>       m_cnstr;
         shared_ptr<PrimDom>     m_primdom;
         shared_ptr<Num>         m_num;

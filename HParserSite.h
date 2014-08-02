@@ -3361,7 +3361,8 @@ namespace Calc_H
             return shared_ptr<Dom>(d);
         }
 
-        shared_ptr<Dom> DoDom4(shared_ptr<Expr>& expr1, shared_ptr<Expr>& expr2, shared_ptr<PrimDom>& primdom)
+        shared_ptr<Dom> DoDom4(shared_ptr<Expr>& expr1, shared_ptr<Expr>& expr2,
+                               shared_ptr<PrimDom>& primdom)
         {
             #ifdef DEEPDEBUG
                 std::cerr << "DoDom4" << std::endl;
@@ -3371,6 +3372,18 @@ namespace Calc_H
             d->m_expr1 = expr1;
             d->m_expr2 = expr2;
             d->m_primdom = primdom;
+            return shared_ptr<Dom>(d);
+        }
+
+        shared_ptr<Dom> DoDom5(shared_ptr<Dom>& dom, shared_ptr<Dom>& dom2)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoDom5" << std::endl;
+            #endif
+            Dom *d = new Dom;
+            d->m_type = Dom::DOM_NOUCHI_DOM;
+            d->m_dom = dom;
+            d->m_dom2 = dom2;
             return shared_ptr<Dom>(d);
         }
 

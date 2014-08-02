@@ -735,20 +735,69 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
     case Mono::DOMS_SUM:
         assert(mono->m_doms);
         assert(mono->m_doms->m_domains);
-        if (mono->m_doms->m_domains->GetValues(values))
         {
-            v1 = 0;
-            std::size_t i, siz = values.size();
-            for (i = 0; i < siz; ++i)
+            Domains& domains = *mono->m_doms->m_domains.get();
+            std::cout << domains << std::endl;
+            domains.FixNarrower();
+            std::cout << domains << std::endl;
+            if (domains.size() == 1)
             {
-                v1 += values[i];
+                Domain& domain = *domains[0].get();
+                if (domain.m_dom_type == Domain::REGULAR)
+                {
+                    bool has_min, has_max;
+                    CH_Value *pnLBound = domain.GetLBound(has_min);
+                    CH_Value *pnUBound = domain.GetUBound(has_max);
+                    if (pnLBound && pnUBound && has_min && has_max &&
+                        *pnLBound <= *pnUBound)
+                    {
+                        v1 = *pnLBound;
+                        v2 = *pnUBound;
+                        return (v2 - v1 + 1) * (v1 + v2) / 2;
+                    }
+                }
+                if (domain.m_dom_type == Domain::EVEN)
+                {
+                    bool has_min, has_max;
+                    CH_Value *pnLBound = domain.GetLBound(has_min);
+                    CH_Value *pnUBound = domain.GetUBound(has_max);
+                    if (pnLBound && pnUBound && has_min && has_max &&
+                        *pnLBound <= *pnUBound)
+                    {
+                        v1 = *pnLBound;
+                        v2 = *pnUBound;
+                        return ((v2 - v1) / 2 + 1) * (v1 + v2) / 2;
+                    }
+                }
+                if (domain.m_dom_type == Domain::ODD)
+                {
+                    bool has_min, has_max;
+                    CH_Value *pnLBound = domain.GetLBound(has_min);
+                    CH_Value *pnUBound = domain.GetUBound(has_max);
+                    if (pnLBound && pnUBound && has_min && has_max &&
+                        *pnLBound <= *pnUBound)
+                    {
+                        v1 = *pnLBound;
+                        v2 = *pnUBound;
+                        return ((v2 - v1) / 2 + 1) * (v1 + v2) / 2;
+                    }
+                }
             }
-            return v1;
-        }
-        else
-        {
-            ChSetMessage("‚¯‚¢‚³‚ñ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B");
-            return 0;
+            if (domains.GetValues(values))
+            {
+                v1 = 0;
+                std::size_t i, siz = values.size();
+                for (i = 0; i < siz; ++i)
+                {
+                    v1 += values[i];
+                }
+                return v1;
+            }
+            else
+            {
+                ChSetMessage("‚¯‚¢‚³‚ñ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B");
+                return 0;
+            }
         }
 
     case Mono::DOMS_PROD:
@@ -1305,7 +1354,7 @@ void ChAnalyzeDomainsOfPrimDom(
 
     case PrimDom::SHIZENSUU:
         d->m_afnContains.push_back(IsNaturalNumber);
-        d->RestrictTo(Domain::SEISUU);
+        d->RestrictTo(Domain::REGULAR);
         r = new Range;
         r->m_has_min = true;
         r->m_pnLBound = new CH_Value(0);
@@ -1316,19 +1365,19 @@ void ChAnalyzeDomainsOfPrimDom(
 
     case PrimDom::SEISUU:
         d->m_afnContains.push_back(IsRegularNumber);
-        d->RestrictTo(Domain::SEISUU);
+        d->RestrictTo(Domain::REGULAR);
         domains.get()->Intersect(*d);
         break;
 
     case PrimDom::GUUSUU:
         d->m_afnContains.push_back(IsEvenNumber);
-        d->RestrictTo(Domain::GUUSUU);
+        d->RestrictTo(Domain::EVEN);
         domains.get()->Intersect(*d);
         break;
 
     case PrimDom::KISUU:
         d->m_afnContains.push_back(IsOddNumber);
-        d->RestrictTo(Domain::KISUU);
+        d->RestrictTo(Domain::ODD);
         domains.get()->Intersect(*d);
         break;
 
@@ -1337,7 +1386,7 @@ void ChAnalyzeDomainsOfPrimDom(
 
     case PrimDom::SOSUU:
         d->m_afnContains.push_back(IsPrimeNumber);
-        d->RestrictTo(Domain::SOSUU);
+        d->RestrictTo(Domain::PRIME);
         r = new Range;
         r->m_has_min = true;
         r->m_pnLBound = new CH_Value(2);
@@ -1620,9 +1669,12 @@ void ChAnalyzeDomainsOfNum(shared_ptr<Domains>& domains, shared_ptr<Num>& num)
 void ChAnalyzeDomainsOfExprKaraExprMade(
     shared_ptr<Domains>& domains, shared_ptr<Expr>& expr1, shared_ptr<Expr>& expr2)
 {
+    ChAnalyzeExpr(expr1);
     CH_Value v1 = ChCalcExpr(expr1);
+    ChAnalyzeExpr(expr2);
     CH_Value v2 = ChCalcExpr(expr2);
     Range *r = new Range(true, true, &v1, &v2);
+    std::cout << *r << std::endl;
     domains.get()->Intersect(*r);
     delete r;
 }
@@ -1650,11 +1702,13 @@ void ChAnalyzeDomainsOfDom(shared_ptr<Domains>& domains, shared_ptr<Dom>& dom)
         break;
 
     case Dom::EXPR_KARA_EXPR_MADE:
-        ChAnalyzeExpr(dom->m_expr1);
-        ChAnalyzeExpr(dom->m_expr2);
-        ChAnalyzePrimDom(dom->m_primdom);
         ChAnalyzeDomainsOfPrimDom(domains, dom->m_primdom);
         ChAnalyzeDomainsOfExprKaraExprMade(domains, dom->m_expr1, dom->m_expr2);
+        break;
+
+    case Dom::DOM_NOUCHI_DOM:
+        ChAnalyzeDomainsOfDom(domains, dom->m_dom);
+        ChAnalyzeDomainsOfDom(domains, dom->m_dom2);
         break;
 
     default:
@@ -1669,8 +1723,7 @@ void ChAnalyzeDoms(shared_ptr<Doms>& doms)
     std::size_t i, siz = doms->size();
     for (i = 0; i < siz; ++i)
     {
-        Domains *d = Domains::Whole();
-        shared_ptr<Domains> domains(d);
+        shared_ptr<Domains> domains(Domains::Whole());
         ChAnalyzeDomainsOfDom(domains, (*doms.get())[i]);
         doms->m_domains.get()->Union(*domains.get());
     }

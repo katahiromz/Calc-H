@@ -90,33 +90,49 @@ bool IsPrimeNumber(const DRR1D_VALUE& value)
     return true;
 }
 
-DRR1D_VALUE GauseModFloor(const DRR1D_VALUE& d, const DRR1D_VALUE& mod)
+DRR1D_VALUE GauseModFloor(DRR1D_VALUE d, DRR1D_VALUE mod)
 {
+    if (mod < 0)
+        mod = -mod;
+
+    DRR1D_VALUE v;
     #ifdef DRR1D_USES_PMPNUMBER
-        if (d >= 0)
-            return pmp::floor(d / mod) * mod;
-        else
-            return -pmp::ceil(-d / mod) * mod;
+        v = (d % mod);
+        if (v.is_zero())
+            return d;
+        if (v < 0)
+            v += mod;
+        return (d - v);
     #else
-        if (d >= 0)
-            return std::floor(d / mod) * mod;
-        else
-            return -std::ceil(-d / mod) * mod;
+        v = std::fmod(d, mod);
+        if (v == 0)
+            return d;
+        if (v < 0)
+            v += mod;
+        return (d - v);
     #endif
 }
 
-DRR1D_VALUE GauseModCeil(const DRR1D_VALUE& d, const DRR1D_VALUE& mod)
+DRR1D_VALUE GauseModCeil(DRR1D_VALUE d, DRR1D_VALUE mod)
 {
+    if (mod < 0)
+        mod = -mod;
+
+    DRR1D_VALUE v;
     #ifdef DRR1D_USES_PMPNUMBER
-        if (d >= 0)
-            return pmp::ceil(d / mod) * mod;
-        else
-            return -pmp::floor(-d / mod) * mod;
+        v = (d % mod);
+        if (v.is_zero())
+            return d;
+        if (v < 0)
+            v += mod;
+        return (d - v) + mod;
     #else
-        if (d >= 0)
-            return std::ceil(d / mod) * mod;
-        else
-            return -std::floor(-d / mod) * mod;
+        v = std::fmod(d, mod);
+        if (v == 0)
+            return d;
+        if (v < 0)
+            v += mod;
+        return (d - v) + mod;
     #endif
 }
 
@@ -623,16 +639,16 @@ bool Domain::Includes(Domain::Type type) const
     case Domain::EMPTY:
         return false;
 
-    case Domain::SEISUU:
+    case Domain::REGULAR:
         switch (type)
         {
-        case Domain::SEISUU:
-        case Domain::GUUSUU:
-        case Domain::KISUU:
-        case Domain::SOSUU:
+        case Domain::REGULAR:
+        case Domain::EVEN:
+        case Domain::ODD:
+        case Domain::PRIME:
             return true;
 
-        case Domain::JISSUU:
+        case Domain::REAL:
             return false;
 
         default:
@@ -640,16 +656,16 @@ bool Domain::Includes(Domain::Type type) const
         }
         break;
 
-    case Domain::GUUSUU:
+    case Domain::EVEN:
         switch (type)
         {
-        case Domain::SEISUU:
-        case Domain::KISUU:
-        case Domain::JISSUU:
-        case Domain::SOSUU:
+        case Domain::REGULAR:
+        case Domain::ODD:
+        case Domain::REAL:
+        case Domain::PRIME:
             return false;
 
-        case Domain::GUUSUU:
+        case Domain::EVEN:
             return true;
 
         default:
@@ -657,16 +673,16 @@ bool Domain::Includes(Domain::Type type) const
         }
         break;
 
-    case Domain::KISUU:
+    case Domain::ODD:
         switch (type)
         {
-        case Domain::SEISUU:
-        case Domain::GUUSUU:
-        case Domain::JISSUU:
-        case Domain::SOSUU:
+        case Domain::REGULAR:
+        case Domain::EVEN:
+        case Domain::REAL:
+        case Domain::PRIME:
             return false;
 
-        case Domain::KISUU:
+        case Domain::ODD:
             return true;
 
         default:
@@ -674,19 +690,19 @@ bool Domain::Includes(Domain::Type type) const
         }
         break;
 
-    case Domain::JISSUU:
+    case Domain::REAL:
         return true;
 
-    case Domain::SOSUU:
+    case Domain::PRIME:
         switch (type)
         {
-        case Domain::SEISUU:
-        case Domain::GUUSUU:
-        case Domain::KISUU:
-        case Domain::JISSUU:
+        case Domain::REGULAR:
+        case Domain::EVEN:
+        case Domain::ODD:
+        case Domain::REAL:
             return false;
 
-        case Domain::SOSUU:
+        case Domain::PRIME:
             return true;
 
         default:
@@ -724,28 +740,28 @@ void Domain::RestrictTo(Domain::Type type)
         m_dom_type = type;
         break;
 
-    case Domain::SEISUU:
-        if (m_dom_type == Domain::JISSUU)
+    case Domain::REGULAR:
+        if (m_dom_type == Domain::REAL)
             m_dom_type = type;
         break;
 
-    case Domain::GUUSUU:
+    case Domain::EVEN:
         switch (m_dom_type)
         {
         case Domain::EMPTY:
-        case Domain::GUUSUU:
+        case Domain::EVEN:
             break;
 
-        case Domain::SEISUU:
-        case Domain::JISSUU:
+        case Domain::REGULAR:
+        case Domain::REAL:
             m_dom_type = type;
             break;
 
-        case Domain::KISUU:
+        case Domain::ODD:
             m_dom_type = Domain::EMPTY;
             break;
 
-        case Domain::SOSUU:
+        case Domain::PRIME:
             {
                 Range *r = new Range;
                 r->m_has_min = r->m_has_max = true;
@@ -761,23 +777,23 @@ void Domain::RestrictTo(Domain::Type type)
         }
         break;
 
-    case Domain::KISUU:
+    case Domain::ODD:
         switch (m_dom_type)
         {
         case Domain::EMPTY:
-        case Domain::KISUU:
+        case Domain::ODD:
             break;
 
-        case Domain::SEISUU:
-        case Domain::JISSUU:
+        case Domain::REGULAR:
+        case Domain::REAL:
             m_dom_type = type;
             break;
 
-        case Domain::GUUSUU:
+        case Domain::EVEN:
             m_dom_type = Domain::EMPTY;
             break;
 
-        case Domain::SOSUU:
+        case Domain::PRIME:
             {
                 Range *r = new Range;
                 r->m_has_min = true;
@@ -794,16 +810,16 @@ void Domain::RestrictTo(Domain::Type type)
         }
         break;
 
-    case Domain::JISSUU:
+    case Domain::REAL:
         break;
 
-    case Domain::SOSUU:
+    case Domain::PRIME:
         switch (m_dom_type)
         {
         case Domain::EMPTY:
             break;
 
-        case Domain::GUUSUU:
+        case Domain::EVEN:
             m_dom_type = type;
             {
                 Range *r = new Range;
@@ -815,7 +831,7 @@ void Domain::RestrictTo(Domain::Type type)
             }
             break;
 
-        case Domain::KISUU:
+        case Domain::ODD:
             m_dom_type = type;
             {
                 Range *r = new Range;
@@ -828,8 +844,8 @@ void Domain::RestrictTo(Domain::Type type)
             }
             break;
 
-        case Domain::SEISUU:
-        case Domain::JISSUU:
+        case Domain::REGULAR:
+        case Domain::REAL:
             m_dom_type = type;
             break;
 
@@ -931,7 +947,7 @@ bool Domain::GetValues(std::vector<DRR1D_VALUE>& values) const
         return false;
     }
 
-    if (m_dom_type == Domain::JISSUU)
+    if (m_dom_type == Domain::REAL)
     {
         if (*pnLBound == *pnUBound && has_min && has_max)
         {
@@ -940,7 +956,7 @@ bool Domain::GetValues(std::vector<DRR1D_VALUE>& values) const
         }
         return false;
     }
-    if (m_dom_type == Domain::GUUSUU)
+    if (m_dom_type == Domain::EVEN)
     {
         DRR1D_VALUE m0, m1;
 
@@ -979,7 +995,7 @@ bool Domain::GetValues(std::vector<DRR1D_VALUE>& values) const
         }
         return true;
     }
-    if (m_dom_type == Domain::KISUU)
+    if (m_dom_type == Domain::ODD)
     {
         DRR1D_VALUE m0, m1;
 
@@ -1017,7 +1033,7 @@ bool Domain::GetValues(std::vector<DRR1D_VALUE>& values) const
         }
         return true;
     }
-    if (m_dom_type == Domain::SOSUU)
+    if (m_dom_type == Domain::PRIME)
     {
         DRR1D_VALUE m0, m1;
         #ifdef DRR1D_USES_PMPNUMBER
@@ -1042,7 +1058,7 @@ bool Domain::GetValues(std::vector<DRR1D_VALUE>& values) const
         }
         return true;
     }
-    if (m_dom_type == Domain::SEISUU)
+    if (m_dom_type == Domain::REGULAR)
     {
         DRR1D_VALUE m0, m1;
         #ifdef DRR1D_USES_PMPNUMBER
@@ -1075,20 +1091,21 @@ void Domain::FixNarrower()
     switch (m_dom_type)
     {
     case Domain::EMPTY:
-    case Domain::JISSUU:
+    case Domain::REAL:
         return;
 
     default:
         break;
     }
 
+    //std::cout << "begin Domain::FixNarrower: " << *this << std::endl;
     std::size_t i, siz = m_ranges->size();
     for (i = 0; i < siz; ++i)
     {
         Range& r = *(*m_ranges.get())[i].get();
         switch (m_dom_type)
         {
-        case Domain::SEISUU:
+        case Domain::REGULAR:
             if (r.m_pnLBound)
             {
                 DRR1D_VALUE v1 = *r.m_pnLBound;
@@ -1143,7 +1160,7 @@ void Domain::FixNarrower()
             }
             break;
 
-        case Domain::GUUSUU:
+        case Domain::EVEN:
             if (r.m_pnLBound)
             {
                 DRR1D_VALUE v1 = *r.m_pnLBound;
@@ -1182,7 +1199,7 @@ void Domain::FixNarrower()
             }
             break;
 
-        case Domain::KISUU:
+        case Domain::ODD:
             if (r.m_pnLBound)
             {
                 DRR1D_VALUE v1 = *r.m_pnLBound;
@@ -1221,7 +1238,7 @@ void Domain::FixNarrower()
             }
             break;
 
-        case Domain::SOSUU:
+        case Domain::PRIME:
             if (r.m_pnLBound)
             {
                 DRR1D_VALUE v1 = *r.m_pnLBound;
@@ -1296,6 +1313,7 @@ void Domain::FixNarrower()
             assert(0);
         }
     }
+    //std::cout << "end Domain::FixNarrower: " << *this << std::endl;
 }
 
 void Domain::FixWider()
@@ -1303,20 +1321,21 @@ void Domain::FixWider()
     switch (m_dom_type)
     {
     case Domain::EMPTY:
-    case Domain::JISSUU:
+    case Domain::REAL:
         return;
 
     default:
         break;
     }
 
+    //std::cout << "begin Domain::FixWider: " << *this << std::endl;
     std::size_t i, siz = m_ranges->size();
     for (i = 0; i < siz; ++i)
     {
         Range& r = *(*m_ranges.get())[i].get();
         switch (m_dom_type)
         {
-        case Domain::SEISUU:
+        case Domain::REGULAR:
             if (r.m_pnLBound)
             {
                 DRR1D_VALUE v1 = *r.m_pnLBound;
@@ -1357,7 +1376,7 @@ void Domain::FixWider()
             }
             break;
 
-        case Domain::GUUSUU:
+        case Domain::EVEN:
             if (r.m_pnLBound)
             {
                 DRR1D_VALUE v1 = *r.m_pnLBound;
@@ -1390,7 +1409,7 @@ void Domain::FixWider()
             }
             break;
 
-        case Domain::KISUU:
+        case Domain::ODD:
             if (r.m_pnLBound)
             {
                 DRR1D_VALUE v1 = *r.m_pnLBound;
@@ -1423,7 +1442,7 @@ void Domain::FixWider()
             }
             break;
 
-        case Domain::SOSUU:
+        case Domain::PRIME:
             if (r.m_pnLBound)
             {
                 DRR1D_VALUE v1 = *r.m_pnLBound;
@@ -1487,11 +1506,14 @@ void Domain::FixWider()
             assert(0);
         }
     }
+    //std::cout << "end Domain::FixWider: " << *this << std::endl;
 }
 
 void Domain::Optimize()
 {
+    //std::cout << "begin Domain::Optimize: " << *this << std::endl;
     m_ranges.get()->Optimize();
+    //std::cout << "end Domain::Optimize: " << *this << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -1521,11 +1543,11 @@ bool Domains::Includes(const Domain& domain) const
     {
         if ((*this)[i]->Includes(domain))
             return true;
-        if (domain.m_dom_type == Domain::SEISUU)
+        if (domain.m_dom_type == Domain::REGULAR)
         {
             Domain d1(domain), d2(domain);
-            d1.RestrictTo(Domain::GUUSUU);
-            d2.RestrictTo(Domain::KISUU);
+            d1.RestrictTo(Domain::EVEN);
+            d2.RestrictTo(Domain::ODD);
             if (!d1.empty() && !d2.empty() &&
                 Includes(d1) && Includes(d2))
                 return true;
@@ -1678,10 +1700,32 @@ bool Domains::GetValues(std::vector<DRR1D_VALUE>& values) const
 
 void Domains::FixNarrower()
 {
-    std::size_t i, siz = size();
+    std::size_t i, j, siz;
+
+retry:
+    siz = size();
     for (i = 0; i < siz; ++i)
     {
-        ((*this)[i]).get()->FixNarrower();
+        Domain& domain1 = *((*this)[i]).get();
+        for (j = 0; j < siz; ++j)
+        {
+            if (i == j)
+                continue;
+
+            Domain& domain2 = *((*this)[j]).get();
+            if (domain1.Includes(domain2))
+            {
+                erase(begin() + j);
+                goto retry;
+            }
+        }
+    }
+
+    siz = size();
+    for (i = 0; i < siz; ++i)
+    {
+        Domain& domain = *((*this)[i]).get();
+        domain.FixNarrower();
     }
 }
 
@@ -1698,33 +1742,33 @@ void Domains::FixWider()
     for (i = 0; i < siz; ++i)
     {
         Domain& domain1 = *((*this)[i]).get();
-        if (domain1.m_dom_type == Domain::SEISUU)
+        if (domain1.m_dom_type == Domain::REGULAR)
         {
             for (std::size_t j = 0; j < siz; ++j)
             {
                 if (j == i)
                     continue;
                 Domain& domain2 = *((*this)[j]).get();
-                if (domain2.m_dom_type == Domain::KISUU ||
-                    domain2.m_dom_type == Domain::GUUSUU ||
-                    domain2.m_dom_type == Domain::SOSUU)
+                if (domain2.m_dom_type == Domain::ODD ||
+                    domain2.m_dom_type == Domain::EVEN ||
+                    domain2.m_dom_type == Domain::PRIME)
                 {
                     domain2.m_ranges.get()->Union(*domain1.m_ranges.get());
                     flag = true;
                 }
             }
         }
-        else if (domain1.m_dom_type == Domain::JISSUU)
+        else if (domain1.m_dom_type == Domain::REAL)
         {
             for (std::size_t j = 0; j < siz; ++j)
             {
                 if (j == i)
                     continue;
                 Domain& domain2 = *((*this)[j]).get();
-                if (domain2.m_dom_type == Domain::KISUU ||
-                    domain2.m_dom_type == Domain::GUUSUU ||
-                    domain2.m_dom_type == Domain::SOSUU ||
-                    domain2.m_dom_type == Domain::SEISUU)
+                if (domain2.m_dom_type == Domain::ODD ||
+                    domain2.m_dom_type == Domain::EVEN ||
+                    domain2.m_dom_type == Domain::PRIME ||
+                    domain2.m_dom_type == Domain::REGULAR)
                 {
                     domain2.m_ranges.get()->Union(*domain1.m_ranges.get());
                     flag = true;
