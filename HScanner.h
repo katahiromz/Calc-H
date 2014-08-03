@@ -192,6 +192,7 @@ namespace Calc_H
             if (lexeme("‚‡‚ƒ‚„"))                           return set_info(info, T_GCD);
             if (lexeme("‚†‚‚‚‚“"))                         return set_info(info, T_ZETTAICHI);
             if (lexeme("‚…‚˜‚"))                           return set_info(info, T_EXP);
+            if (lexeme("‚…"))                               return set_info(info, T_E);
             if (lexeme("‚ƒ‚‚“‚ˆ"))                         return set_info(info, T_COSH);
             if (lexeme("‚ƒ‚‚“"))                           return set_info(info, T_COS);
             if (lexeme("‚‚”‚‚Ž"))                         return set_info(info, T_ATAN);
@@ -270,6 +271,8 @@ namespace Calc_H
             if (lexeme("‚í‚é‚Æ"))                           return set_info(info, T_WARUTO);
             if (lexeme("‚í‚é‚±‚Æ‚Ì"))                       return set_info(info, T_WARU);
             if (lexeme("‚í‚é"))                             return set_info(info, T_WARU);
+            if (lexeme("‚í‚è‚Ü‚µ"))                         return set_info(info, T_WARIMASHI);
+            if (lexeme("‚í‚è‚Ñ‚«"))                         return set_info(info, T_WARIBIKI);
             if (lexeme("‚í‚è‚È‚³‚¢"))                       return set_info(info, T_WARUTO);
             if (lexeme("‚í‚è‚´‚ñ"))                         return set_info(info, T_WARIZAN);
             if (lexeme("‚í‚è‚«‚ê‚é‚ñ"))                     return set_info(info, T_WARIKIRU);
@@ -1104,6 +1107,7 @@ namespace Calc_H
             if (lexeme("gcd"))                              return set_info(info, T_GCD);
             if (lexeme("fabs"))                             return set_info(info, T_ZETTAICHI);
             if (lexeme("exp"))                              return set_info(info, T_EXP);
+            if (lexeme("e"))                                return set_info(info, T_E);
             if (lexeme("cosh"))                             return set_info(info, T_COSH);
             if (lexeme("cos"))                              return set_info(info, T_COS);
             if (lexeme("atan"))                             return set_info(info, T_ATAN);
@@ -1638,6 +1642,8 @@ namespace Calc_H
                     break;
 
                 case T_PERCENT:
+                case T_WARIBIKI:
+                case T_WARIMASHI:
                     if (no1 != std::string::npos)
                     {
                         (newinfos.begin() + no1)->set_token(T_NO8);
@@ -1876,6 +1882,8 @@ namespace Calc_H
                 case T_TASU:
                 case T_TASUTO:
                 case T_TO1:
+                case T_WARIBIKI:
+                case T_WARIMASHI:
                 case T_WARIZAN:
                 case T_WARU:
                 case T_WARUTO:
@@ -2118,6 +2126,8 @@ namespace Calc_H
                     case T_TASHIZAN:
                     case T_TASU:
                     case T_TASUTO:
+                    case T_WARIBIKI:
+                    case T_WARIMASHI:
                     case T_WARIZAN:
                     case T_WARU:
                     case T_WARUTO:

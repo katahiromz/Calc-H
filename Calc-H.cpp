@@ -324,24 +324,30 @@ ChPowFactPrim(const shared_ptr<Fact>& fact, const shared_ptr<Prim>& prim)
 
 CH_Value ChCalcFact(const shared_ptr<Fact>& fact)
 {
+    CH_Value v1, v2;
     switch (fact->m_type)
     {
     case Fact::POW:
+        assert(fact->m_fact);
+        assert(fact->m_prim);
         return ChPowFactPrim(fact->m_fact, fact->m_prim);
 
     case Fact::POW2:
+        assert(fact->m_fact);
         {
             CH_Value value = ChCalcFact(fact->m_fact);
             return value * value;
         }
 
     case Fact::POW3:
+        assert(fact->m_fact);
         {
             CH_Value value = ChCalcFact(fact->m_fact);
             return value * value * value;
         }
 
     case Fact::KAIJOU:
+        assert(fact->m_fact);
         {
             CH_Value value = ChCalcFact(fact->m_fact);
             if (value.is_i() && value.get_i() >= 0)
@@ -352,7 +358,33 @@ CH_Value ChCalcFact(const shared_ptr<Fact>& fact)
         }
 
     case Fact::SINGLE:
+        assert(fact->m_prim);
         return ChCalcPrim(fact->m_prim);
+
+    case Fact::PERCENT:
+        assert(fact->m_fact);
+        assert(fact->m_prim);
+        v1 = ChCalcFact(fact->m_fact);
+        v2 = ChCalcPrim(fact->m_prim);
+        v1 *= v2;
+        v1 /= 100;
+        return v1;
+
+    case Fact::WARIBIKI:
+        assert(fact->m_fact);
+        assert(fact->m_prim);
+        v1 = ChCalcFact(fact->m_fact);
+        v2 = ChCalcPrim(fact->m_prim);
+        v1 -= v1 * v2 / 10;
+        return v1;
+
+    case Fact::WARIMASHI:
+        assert(fact->m_fact);
+        assert(fact->m_prim);
+        v1 = ChCalcFact(fact->m_fact);
+        v2 = ChCalcPrim(fact->m_prim);
+        v1 += v1 * v2 / 10;
+        return v1;
 
     default:
         assert(0);
@@ -818,6 +850,22 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
             ChSetMessage("‚¯‚¢‚³‚ñ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B");
             return 1;
         }
+
+    case Mono::MONO_EXPR_WARIBIKI:
+        assert(mono->m_mono);
+        assert(mono->m_expr);
+        v1 = ChCalcMono(mono->m_mono);
+        v2 = ChCalcExpr(mono->m_expr);
+        v1 -= v1 * v2 / 10;
+        return v1;
+
+    case Mono::MONO_EXPR_WARIMASHI:
+        assert(mono->m_mono);
+        assert(mono->m_expr);
+        v1 = ChCalcMono(mono->m_mono);
+        v2 = ChCalcExpr(mono->m_expr);
+        v1 += v1 * v2 / 10;
+        return v1;
 
     default:
         assert(0);
@@ -5276,6 +5324,12 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         ChAnalyzeDoms(mono->m_doms);
         break;
 
+    case Mono::MONO_EXPR_WARIBIKI:
+    case Mono::MONO_EXPR_WARIMASHI:
+        ChAnalyzeMono(mono->m_mono);
+        ChAnalyzeExpr(mono->m_expr);
+        break;
+
     default:
         break;
     }
@@ -5329,6 +5383,9 @@ void ChAnalyzeFact(shared_ptr<Fact>& fact)
     switch (fact->m_type)
     {
     case Fact::POW:
+    case Fact::PERCENT:
+    case Fact::WARIBIKI:
+    case Fact::WARIMASHI:
         ChAnalyzeFact(fact->m_fact);
         ChAnalyzePrim(fact->m_prim);
         break;

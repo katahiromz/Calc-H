@@ -151,7 +151,8 @@ namespace Calc_H
             MONO_SHOU_TO_AMARI, MONO_DIVMOD_EXPR, SHITE_DIVMOD_EXPR, EXPR_DIVMOD_MONO,
             TERM_DIVMOD_FACT, SURUTO_SHOU_TO_AMARI,
             MONO_HEIHOUKON, MONO_KAIJOU,
-            DOMS_SUM, DOMS_PROD
+            DOMS_SUM, DOMS_PROD,
+            MONO_EXPR_WARIBIKI, MONO_EXPR_WARIMASHI
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
@@ -200,7 +201,8 @@ namespace Calc_H
     struct Fact : Node
     {
         enum {
-            POW, POW2, POW3, KAIJOU, SINGLE
+            POW, POW2, POW3, KAIJOU, SINGLE,
+            PERCENT, WARIBIKI, WARIMASHI
         } m_type;
         shared_ptr<Fact>    m_fact;
         shared_ptr<Prim>    m_prim;

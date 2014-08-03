@@ -177,8 +177,10 @@
 %token T_TO2<TokenValue>;       // taibunsuu
 %token T_WAKARAN<TokenValue>;
 %token T_WARARERU<TokenValue>;
+%token T_WARIBIKI<TokenValue>;
 %token T_WARIKIRENAI<TokenValue>;
 %token T_WARIKIRU<TokenValue>;
+%token T_WARIMASHI<TokenValue>;
 %token T_WARIZAN<TokenValue>;
 %token T_WARU<TokenValue>;
 %token T_WARUTO<TokenValue>;
@@ -695,6 +697,8 @@ mono<Mono>
     | [DoMono59] mono(0) T_WO1 T_RIPPOU T_SHITA T_MONO
     | [DoMono59] mono(0) T_NO6 T_RIPPOU
     | [DoMono60] mono(0) T_NO8 expression(1) T_PERCENT
+    | [DoMono82] mono(0) T_NO8 expression(1) T_WARIBIKI
+    | [DoMono83] mono(0) T_NO8 expression(1) T_WARIMASHI
     | [DoMono70] mono(0) T_NO9 T_AMARI
     | [DoMono9] mono(0) T_NO4 T_KOTAE
     | [DoMono74] mono(0) T_WO1 T_SHOUSUU T_NI T_SHITA T_MONO
@@ -727,6 +731,9 @@ factor<Fact>
     | [DoFact2] factor(0) T_NO6 T_HEIHOU
     | [DoFact4] factor(0) T_NO6 T_RIPPOU
     | [DoFact5] factor(0) T_NO6 T_KAIJOU
+    | [DoFact6] factor(0) T_NO8 primary(1) T_PERCENT
+    | [DoFact7] factor(0) T_NO8 primary(1) T_WARIBIKI
+    | [DoFact8] factor(0) T_NO8 primary(1) T_WARIMASHI
     | [DoFact3] primary(0)
     ;
 

@@ -1701,6 +1701,30 @@ namespace Calc_H
             return shared_ptr<Mono>(m);
         }
 
+       shared_ptr<Mono> DoMono82(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono82" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_EXPR_WARIBIKI;
+            m->m_mono = mono;
+            m->m_expr = expr;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono83(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoMono83" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_EXPR_WARIMASHI;
+            m->m_mono = mono;
+            m->m_expr = expr;
+            return shared_ptr<Mono>(m);
+        }
+
         shared_ptr<Expr> DoExpr1(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG
@@ -1848,6 +1872,42 @@ namespace Calc_H
             Fact *f = new Fact;
             f->m_type = Fact::KAIJOU;
             f->m_fact = fact;
+            return shared_ptr<Fact>(f);
+        }
+
+        shared_ptr<Fact> DoFact6(shared_ptr<Fact>& fact, shared_ptr<Prim>& prim)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFact6" << std::endl;
+            #endif
+            Fact *f = new Fact;
+            f->m_type = Fact::PERCENT;
+            f->m_fact = fact;
+            f->m_prim = prim;
+            return shared_ptr<Fact>(f);
+        }
+
+        shared_ptr<Fact> DoFact7(shared_ptr<Fact>& fact, shared_ptr<Prim>& prim)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFact7" << std::endl;
+            #endif
+            Fact *f = new Fact;
+            f->m_type = Fact::WARIBIKI;
+            f->m_fact = fact;
+            f->m_prim = prim;
+            return shared_ptr<Fact>(f);
+        }
+
+        shared_ptr<Fact> DoFact8(shared_ptr<Fact>& fact, shared_ptr<Prim>& prim)
+        {
+            #ifdef DEEPDEBUG
+                std::cerr << "DoFact8" << std::endl;
+            #endif
+            Fact *f = new Fact;
+            f->m_type = Fact::WARIMASHI;
+            f->m_fact = fact;
+            f->m_prim = prim;
             return shared_ptr<Fact>(f);
         }
 
