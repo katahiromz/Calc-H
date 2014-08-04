@@ -1371,6 +1371,7 @@ void ChAnalyzeDomainsOfPrimDom(
     shared_ptr<Domains>& domains, shared_ptr<PrimDom>& primdom)
 {
     Range *r;
+    CH_Value v;
     assert(domains);
     assert(primdom);
     Domain *d = Domain::Whole();
@@ -1378,9 +1379,8 @@ void ChAnalyzeDomainsOfPrimDom(
     {
     case PrimDom::POSITIVE:
         d->m_afnContains.push_back(IsPositiveNumber);
-        r = new Range;
-        r->m_has_min = false;
-        r->m_pnLBound = new CH_Value(0);
+        v = 0;
+        r = new Range(false, false, &v, NULL);
         d->Intersect(*r);
         delete r;
         domains.get()->Intersect(*d);
@@ -1390,9 +1390,8 @@ void ChAnalyzeDomainsOfPrimDom(
 
     case PrimDom::NEGATIVE:
         d->m_afnContains.push_back(IsNegativeNumber);
-        r = new Range;
-        r->m_has_max = false;
-        r->m_pnUBound = new CH_Value(0);
+        v = 0;
+        r = new Range(false, false, NULL, &v);
         d->Intersect(*r);
         delete r;
         domains.get()->Intersect(*d);
@@ -1403,9 +1402,8 @@ void ChAnalyzeDomainsOfPrimDom(
     case PrimDom::SHIZENSUU:
         d->m_afnContains.push_back(IsNaturalNumber);
         d->RestrictTo(Domain::REGULAR);
-        r = new Range;
-        r->m_has_min = true;
-        r->m_pnLBound = new CH_Value(0);
+        v = 0;
+        r = new Range(true, false, &v, NULL);
         d->Intersect(*r);
         delete r;
         domains.get()->Intersect(*d);
@@ -1435,9 +1433,8 @@ void ChAnalyzeDomainsOfPrimDom(
     case PrimDom::SOSUU:
         d->m_afnContains.push_back(IsPrimeNumber);
         d->RestrictTo(Domain::PRIME);
-        r = new Range;
-        r->m_has_min = true;
-        r->m_pnLBound = new CH_Value(2);
+        v = 2;
+        r = new Range(true, false, &v, NULL);
         d->Intersect(*r);
         delete r;
         domains.get()->Intersect(*d);
@@ -1456,42 +1453,38 @@ void ChAnalyzeDomainsOfPrimCnstr(
     assert(domains);
     assert(primcnstr);
     CH_Value v;
-    Range *r = new Range;
+    Range *r = NULL;
     switch (primcnstr->m_type)
     {
     case PrimCnstr::IJOU:
-        r->m_has_min = true;
         ChAnalyzeExpr(primcnstr->m_expr);
         v = ChCalcExpr(primcnstr->m_expr);
         v.trim();
-        r->m_pnLBound = new CH_Value(v);
+        r = new Range(true, false, &v, NULL);
         domains.get()->Intersect(*r);
         break;
 
     case PrimCnstr::IKA:
-        r->m_has_max = true;
         ChAnalyzeExpr(primcnstr->m_expr);
         v = ChCalcExpr(primcnstr->m_expr);
         v.trim();
-        r->m_pnUBound = new CH_Value(v);
+        r = new Range(false, true, NULL, &v);
         domains.get()->Intersect(*r);
         break;
 
     case PrimCnstr::CHIISAI:
-        r->m_has_max = false;
         ChAnalyzeExpr(primcnstr->m_expr);
         v = ChCalcExpr(primcnstr->m_expr);
         v.trim();
-        r->m_pnUBound = new CH_Value(v);
+        r = new Range(false, false, NULL, &v);
         domains.get()->Intersect(*r);
         break;
 
     case PrimCnstr::OOKII:
-        r->m_has_min = false;
         ChAnalyzeExpr(primcnstr->m_expr);
         v = ChCalcExpr(primcnstr->m_expr);
         v.trim();
-        r->m_pnLBound = new CH_Value(v);
+        r = new Range(false, false, &v, NULL);
         domains.get()->Intersect(*r);
         break;
 
@@ -1511,44 +1504,42 @@ void ChAnalyzeDomainsOfAndCnstr(
 {
     assert(domains);
     assert(andcnstr);
-    Range *r = new Range;
+    Range *r = NULL;
     CH_Value v;
     switch (andcnstr->m_type)
     {
     case AndCnstr::IJOU:
-        r->m_has_min = true;
         ChAnalyzeExpr(andcnstr->m_expr);
-        r->m_pnLBound = new CH_Value(ChCalcExpr(andcnstr->m_expr));
+        v = ChCalcExpr(andcnstr->m_expr);
+        v.trim();
+        r = new Range(true, false, &v, NULL);
         domains.get()->Intersect(*r);
         ChAnalyzeDomainsOfAndCnstr(domains, andcnstr->m_andcnstr);
         break;
 
     case AndCnstr::IKA:
-        r->m_has_max = true;
         ChAnalyzeExpr(andcnstr->m_expr);
         v = ChCalcExpr(andcnstr->m_expr);
         v.trim();
-        r->m_pnUBound = new CH_Value(v);
+        r = new Range(false, true, NULL, &v);
         domains.get()->Intersect(*r);
         ChAnalyzeDomainsOfAndCnstr(domains, andcnstr->m_andcnstr);
         break;
 
     case AndCnstr::CHIISAI:
-        r->m_has_max = false;
         ChAnalyzeExpr(andcnstr->m_expr);
         v = ChCalcExpr(andcnstr->m_expr);
         v.trim();
-        r->m_pnUBound = new CH_Value(v);
+        r = new Range(false, false, NULL, &v);
         domains.get()->Intersect(*r);
         ChAnalyzeDomainsOfAndCnstr(domains, andcnstr->m_andcnstr);
         break;
 
     case AndCnstr::OOKII:
-        r->m_has_min = false;
         ChAnalyzeExpr(andcnstr->m_expr);
         v = ChCalcExpr(andcnstr->m_expr);
         v.trim();
-        r->m_pnLBound = new CH_Value(v);
+        r = new Range(false, false, &v, NULL);
         domains.get()->Intersect(*r);
         ChAnalyzeDomainsOfAndCnstr(domains, andcnstr->m_andcnstr);
         break;
@@ -1719,8 +1710,10 @@ void ChAnalyzeDomainsOfExprKaraExprMade(
 {
     ChAnalyzeExpr(expr1);
     CH_Value v1 = ChCalcExpr(expr1);
+    v1.trim();
     ChAnalyzeExpr(expr2);
     CH_Value v2 = ChCalcExpr(expr2);
+    v2.trim();
     Range *r = new Range(true, true, &v1, &v2);
     std::cout << *r << std::endl;
     domains.get()->Intersect(*r);
