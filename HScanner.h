@@ -540,10 +540,12 @@ namespace Calc_H
             if (lexeme("にー"))                             return set_info(info, T_NI);
             if (lexeme("にね"))                             return set_info(info, T_NI);
             if (lexeme("になるんでしょう"))                 return set_info(info, T_DEARU);
+            if (lexeme("になるんでござる"))                 return set_info(info, T_DEARU);
             if (lexeme("になるんでございます"))             return set_info(info, T_DEARU);
             if (lexeme("になるんでございましょう"))         return set_info(info, T_DEARU);
             if (lexeme("になるん"))                         return set_info(info, T_DEARU);
             if (lexeme("になるのでしょう"))                 return set_info(info, T_DEARU);
+            if (lexeme("になるのでござる"))                 return set_info(info, T_DEARU);
             if (lexeme("になるのでございます"))             return set_info(info, T_DEARU);
             if (lexeme("になるのでございましょう"))         return set_info(info, T_DEARU);
             if (lexeme("になるの"))                         return set_info(info, T_DEARU);
@@ -558,10 +560,12 @@ namespace Calc_H
             if (lexeme("なーんだ"))                         return set_info(info, T_IKURA);
             if (lexeme("なーに"))                           return set_info(info, T_IKURA);
             if (lexeme("なんぼになるんでしょう"))           return set_info(info, T_IKURA);
+            if (lexeme("なんぼになるんでござる"))           return set_info(info, T_IKURA);
             if (lexeme("なんぼになるんでございます"))       return set_info(info, T_IKURA);
             if (lexeme("なんぼになるんでございましょう"))   return set_info(info, T_IKURA);
             if (lexeme("なんぼになるん"))                   return set_info(info, T_IKURA);
             if (lexeme("なんぼになるのでしょう"))           return set_info(info, T_IKURA);
+            if (lexeme("なんぼになるのでござる"))           return set_info(info, T_IKURA);
             if (lexeme("なんぼになるのでございます"))       return set_info(info, T_IKURA);
             if (lexeme("なんぼになるのでございましょう"))   return set_info(info, T_IKURA);
             if (lexeme("なんぼになるの"))                   return set_info(info, T_IKURA);
@@ -572,10 +576,12 @@ namespace Calc_H
             if (lexeme("なんぼなの"))                       return set_info(info, T_IKURA);
             if (lexeme("なんぼ"))                           return set_info(info, T_IKURA);
             if (lexeme("なんになるんでしょう"))             return set_info(info, T_IKURA);
+            if (lexeme("なんになるんでござる"))             return set_info(info, T_IKURA);
             if (lexeme("なんになるんでございます"))         return set_info(info, T_IKURA);
             if (lexeme("なんになるんでございましょう"))     return set_info(info, T_IKURA);
             if (lexeme("なんになるん"))                     return set_info(info, T_IKURA);
             if (lexeme("なんになるのでしょう"))             return set_info(info, T_IKURA);
+            if (lexeme("なんになるのでござる"))             return set_info(info, T_IKURA);
             if (lexeme("なんになるのでございます"))         return set_info(info, T_IKURA);
             if (lexeme("なんになるのでございましょう"))     return set_info(info, T_IKURA);
             if (lexeme("なんになるの"))                     return set_info(info, T_IKURA);
@@ -593,6 +599,7 @@ namespace Calc_H
             if (lexeme("なんですやろ"))                     return set_info(info, T_DEARU);
             if (lexeme("なんです"))                         return set_info(info, T_DEARU);
             if (lexeme("なんでしょう"))                     return set_info(info, T_DEARU);
+            if (lexeme("なんでござる"))                     return set_info(info, T_DEARU);
             if (lexeme("なんでございますのでしょう"))       return set_info(info, T_DEARU);
             if (lexeme("なんでございますの"))               return set_info(info, T_DEARU);
             if (lexeme("なんでございますでしょう"))         return set_info(info, T_DEARU);
@@ -616,6 +623,7 @@ namespace Calc_H
             if (lexeme("なのでございますの"))               return set_info(info, T_DEARU);
             if (lexeme("なのでございますでしょう"))         return set_info(info, T_DEARU);
             if (lexeme("なのでございます"))                 return set_info(info, T_DEARU);
+            if (lexeme("なのでござる"))                     return set_info(info, T_DEARU);
             if (lexeme("なのでございましょう"))             return set_info(info, T_DEARU);
             if (lexeme("なのである"))                       return set_info(info, T_DEARU);
             if (lexeme("なのでありんす"))                   return set_info(info, T_DEARU);
@@ -626,9 +634,11 @@ namespace Calc_H
             if (lexeme("なぬ"))                             return set_info(info, T_NANA);
             if (lexeme("なにになるんでしょう"))             return set_info(info, T_IKURA);
             if (lexeme("なにになるんでございます"))         return set_info(info, T_IKURA);
+            if (lexeme("なにになるんでござる"))             return set_info(info, T_IKURA);
             if (lexeme("なにになるん"))                     return set_info(info, T_IKURA);
             if (lexeme("なにになるのでしょう"))             return set_info(info, T_IKURA);
             if (lexeme("なにになるのでございます"))         return set_info(info, T_IKURA);
+            if (lexeme("なにになるのでござる"))             return set_info(info, T_IKURA);
             if (lexeme("なにになるの"))                     return set_info(info, T_IKURA);
             if (lexeme("なにになるでしょう"))               return set_info(info, T_IKURA);
             if (lexeme("なにになる"))                       return set_info(info, T_IKURA);
@@ -654,10 +664,12 @@ namespace Calc_H
             if (lexeme("なぁに"))                           return set_info(info, T_IKURA);
             if (lexeme("どんなかずになるんでしょう"))       return set_info(info, T_IKURA);
             if (lexeme("どんなかずになるんでございます"))   return set_info(info, T_IKURA);
+            if (lexeme("どんなかずになるんでござる"))       return set_info(info, T_IKURA);
             if (lexeme("どんなかずになるんでございましょう")) return set_info(info, T_IKURA);
             if (lexeme("どんなかずになるん"))               return set_info(info, T_IKURA);
             if (lexeme("どんなかずになるのでしょう"))       return set_info(info, T_IKURA);
             if (lexeme("どんなかずになるのでございます"))   return set_info(info, T_IKURA);
+            if (lexeme("どんなかずになるのでござる"))       return set_info(info, T_IKURA);
             if (lexeme("どんなかずになるのでございましょう")) return set_info(info, T_IKURA);
             if (lexeme("どんなかずになるの"))               return set_info(info, T_IKURA);
             if (lexeme("どんなかずになる"))                 return set_info(info, T_IKURA);
@@ -692,6 +704,7 @@ namespace Calc_H
             if (lexeme("でございますの"))                   return set_info(info, T_DEARU);
             if (lexeme("でございますでしょう"))             return set_info(info, T_DEARU);
             if (lexeme("でございます"))                     return set_info(info, T_DEARU);
+            if (lexeme("でござる"))                         return set_info(info, T_DEARU);
             if (lexeme("でございましょう"))                 return set_info(info, T_DEARU);
             if (lexeme("である"))                           return set_info(info, T_DEARU);
             if (lexeme("でありんす"))                       return set_info(info, T_DEARU);
@@ -848,12 +861,24 @@ namespace Calc_H
             if (lexeme("さしひいたとき"))                   return set_info(info, T_HIKUTO);
             if (lexeme("さしひいた"))                       return set_info(info, T_HIITA);
             if (lexeme("さいん"))                           return set_info(info, T_SIN);
+            if (lexeme("さいだいのもの"))                   return set_info(info, T_MAX);
+            if (lexeme("さいだいなもの"))                   return set_info(info, T_MAX);
+            if (lexeme("さいだいなの"))                     return set_info(info, T_MAX);
             if (lexeme("さいだいとなるもの"))               return set_info(info, T_MAX);
             if (lexeme("さいだいとなるかず"))               return set_info(info, T_MAX);
             if (lexeme("さいだいち"))                       return set_info(info, T_MAX);
             if (lexeme("さいだいこうやくすう"))             return set_info(info, T_GCD);
+            if (lexeme("さいしょーのもの"))                 return set_info(info, T_MIN);
+            if (lexeme("さいしょーなもの"))                 return set_info(info, T_MIN);
+            if (lexeme("さいしょーなの"))                   return set_info(info, T_MIN);
+            if (lexeme("さいしょーとなるもの"))             return set_info(info, T_MIN);
             if (lexeme("さいしょーとなるかず"))             return set_info(info, T_MIN);
             if (lexeme("さいしょーち"))                     return set_info(info, T_MIN);
+            if (lexeme("さいしょーこうばいすう"))           return set_info(info, T_LCM);
+            if (lexeme("さいしょうのもの"))                 return set_info(info, T_MIN);
+            if (lexeme("さいしょうなもの"))                 return set_info(info, T_MIN);
+            if (lexeme("さいしょうなの"))                   return set_info(info, T_MIN);
+            if (lexeme("さいしょうとなるもの"))             return set_info(info, T_MIN);
             if (lexeme("さいしょうとなるかず"))             return set_info(info, T_MIN);
             if (lexeme("さいしょうち"))                     return set_info(info, T_MIN);
             if (lexeme("さいしょうこうばいすう"))           return set_info(info, T_LCM);
@@ -1032,10 +1057,12 @@ namespace Calc_H
             if (lexeme("いそ"))                             return set_info(info, T_ISO);
             if (lexeme("いじょう"))                         return set_info(info, T_IJOU);
             if (lexeme("いくらになるんでしょう"))           return set_info(info, T_IKURA);
+            if (lexeme("いくらになるんでござる"))           return set_info(info, T_IKURA);
             if (lexeme("いくらになるんでございます"))       return set_info(info, T_IKURA);
             if (lexeme("いくらになるんでございましょう"))   return set_info(info, T_IKURA);
             if (lexeme("いくらになるん"))                   return set_info(info, T_IKURA);
             if (lexeme("いくらになるのでしょう"))           return set_info(info, T_IKURA);
+            if (lexeme("いくらになるのでござる"))           return set_info(info, T_IKURA);
             if (lexeme("いくらになるのでございます"))       return set_info(info, T_IKURA);
             if (lexeme("いくらになるのでございましょう"))   return set_info(info, T_IKURA);
             if (lexeme("いくらになるの"))                   return set_info(info, T_IKURA);
@@ -1046,11 +1073,13 @@ namespace Calc_H
             if (lexeme("いくらなの"))                       return set_info(info, T_IKURA);
             if (lexeme("いくら"))                           return set_info(info, T_IKURA);
             if (lexeme("いくつになるんでしょう"))           return set_info(info, T_IKURA);
+            if (lexeme("いくつになるんでござる"))           return set_info(info, T_IKURA);
             if (lexeme("いくつになるんでございます"))       return set_info(info, T_IKURA);
             if (lexeme("いくつになるんでございましょう"))   return set_info(info, T_IKURA);
             if (lexeme("いくつになるん"))                   return set_info(info, T_IKURA);
             if (lexeme("いくつになるのでしょう"))           return set_info(info, T_IKURA);
             if (lexeme("いくつになるのでございます"))       return set_info(info, T_IKURA);
+            if (lexeme("いくつになるのでござる"))           return set_info(info, T_IKURA);
             if (lexeme("いくつになるのでございましょう"))   return set_info(info, T_IKURA);
             if (lexeme("いくつになるの"))                   return set_info(info, T_IKURA);
             if (lexeme("いくつになるでしょう"))             return set_info(info, T_IKURA);
@@ -1091,6 +1120,7 @@ namespace Calc_H
             if (lexeme("★"))                               return set_info(info, T_PERIOD);
             if (lexeme("●"))                               return set_info(info, T_PERIOD);
             if (lexeme("◎"))                               return set_info(info, T_PERIOD);
+            if (lexeme("√"))                               return set_info(info, T_ROOT);
             if (lexeme("÷"))                               return set_info(info, T_WARU);
             if (lexeme("×"))                               return set_info(info, T_KAKERU);
             if (lexeme("~"))                                return set_info(info, T_KARA1);
@@ -1211,7 +1241,7 @@ namespace Calc_H
         bool lexeme(const char* s, bool do_commit = true)
         {
             char c;
-            std::size_t n = 1;
+            size_t n = 1;
             while (*s)
             {
                 c = getch();
@@ -1254,7 +1284,7 @@ namespace Calc_H
 
     protected:
         parser_site_type&       m_parser_site;
-        std::size_t             m_index;
+        size_t             m_index;
         std::vector<char>       m_buff;
         std::string             m_saved_str;
 
@@ -1514,9 +1544,9 @@ namespace Calc_H
             std::vector<info_type>::iterator it = infos.begin();
             std::vector<info_type>::iterator end = infos.end();
             int nest;
-            std::size_t no1 = std::string::npos;    // position of T_NO1
-            std::size_t jou1 = std::string::npos;   // position of T_JOU1
-            std::size_t wo1 = std::string::npos;    // position of T_WO1
+            size_t no1 = std::string::npos;    // position of T_NO1
+            size_t jou1 = std::string::npos;   // position of T_JOU1
+            size_t wo1 = std::string::npos;    // position of T_WO1
             bool flag = false;
             for (; it != end; ++it)
             {

@@ -39,6 +39,7 @@ inline int MzcGetLParamY(LPARAM lParam)
     #include "Resizable.h"
 #endif
 
+#define DRR1D_USES_PMPNUMBER
 #include "PmpNumber.hpp"
 #include "Ndrr1D.hpp"
 
@@ -46,7 +47,7 @@ inline int MzcGetLParamY(LPARAM lParam)
 
 const char * const ch_logo = 
         "       +--------------------------------+\n"
-        "       |  ‚Ð‚ç‚ª‚È“d‘ì Calc-H ver.0.7.4 |\n"
+        "       |  ‚Ð‚ç‚ª‚È“d‘ì Calc-H ver.0.8.0 |\n"
         "       |   by •ÐŽR”Ž•¶MZ (katahiromz)   |\n"
         "       | http://katahiromz.web.fc2.com/ |\n"
         "       | katayama.hirofumi.mz@gmail.com |\n"

@@ -9,13 +9,13 @@ CXX = g++
 #BOOST_DIR = .
 BOOST_DIR = /c/local/boost_1_55_0
 
-DEFS = -std=c++0x -static -Wall -pedantic -D_SJIS -finput-charset=CP932 -fexec-charset=CP932
-#DEFS = -std=c++0x -static -Wall -pedantic -D_UTF8
+DEFS = -std=c++11 -static -Wall -pedantic -D_SJIS -finput-charset=CP932 -fexec-charset=CP932
+#DEFS = -std=c++11 -static -Wall -pedantic -D_UTF8
 
 INCLUDES = -I$(BOOST_DIR)
 
-CXXFLAGS = $(DEFS) $(INCLUDES) -O9 -Ofast -DNDEBUG
-#CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG
+#CXXFLAGS = $(DEFS) $(INCLUDES) -O9 -Ofast -DNDEBUG
+CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG
 #CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG -DDEEPDEBUG
 
 CAPER = ./caper$(DOTEXE)
@@ -55,9 +55,11 @@ all: Calc-H-CUI$(DOTEXE) Calc-H-GUI$(DOTEXE)
 
 Calc-H-CUI$(DOTEXE): $(COMMON_OBJS) Calc-H-CUI$(DOTOBJ)
 	$(CXX) -mconsole $(CXXFLAGS) -o Calc-H-CUI$(DOTEXE) $(COMMON_OBJS) Calc-H-CUI$(DOTOBJ)
+	sleep 1
 	strip -s Calc-H-CUI$(DOTEXE)
 Calc-H-GUI$(DOTEXE): $(GUI_OBJS) $(GUI_HEADERS)
 	$(CXX) -mwindows $(CXXFLAGS) -o Calc-H-GUI$(DOTEXE) $(GUI_OBJS)
+	sleep 1
 	strip -s Calc-H-GUI$(DOTEXE)
 
 Calc-H$(DOTOBJ): $(HEADERS) Calc-H.cpp

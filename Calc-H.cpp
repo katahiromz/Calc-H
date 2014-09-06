@@ -2,6 +2,7 @@
 // (Japanese, Shift_JIS)
 // Linuxの場合は、UTF-8に変換して下さい。
 
+#define DRR1D_USES_PMPNUMBER
 #include "PmpNumber.hpp"
 #include "Ndrr1D.hpp"
 #include "Calc-H.h"
@@ -58,7 +59,7 @@ CH_Value ChInverse(const CH_Value& value)
     case pmp::Number::VECTOR:
         {
             pmp::vector_type v;
-            for (std::size_t i = 0; i < value.size(); ++i)
+            for (size_t i = 0; i < value.size(); ++i)
             {
                 v.push_back(value[i]);
             }
@@ -79,34 +80,6 @@ CH_Value ChCalcFactorial(const pmp::integer_type& value)
     return result;
 }
 
-CH_Value ChGCD(CH_Value x, CH_Value y)
-{
-    if (!x.is_i() || !y.is_i())
-    {
-        ChSetMessage("せいすうではありません。");
-        return 0;
-    }
-    CH_Value z;
-    while (!(x % y).is_zero())
-    {
-        z = x % y;
-        x = y;
-        y = z;
-    }
-    return y;
-}
-
-CH_Value ChLCM(CH_Value x, CH_Value y)
-{
-    if (!x.is_i() || !y.is_i())
-    {
-        ChSetMessage("せいすうではありません。");
-        return 0;
-    }
-
-    return x * y / ChGCD(x, y);
-}
-
 CH_Value ChGCD(const CH_Value& num)
 {
     assert(num.is_v());
@@ -115,13 +88,20 @@ CH_Value ChGCD(const CH_Value& num)
     if (vec.size() == 0)
         return 0;
 
-    CH_Value v1 = vec[0], v2;
     for (size_t i = 1; i < vec.size(); ++i)
     {
-        v2 = vec[i];
-        v2.trim();
-        v1 = ChGCD(v1, v2);
-        v1.trim();
+        if (!(vec[i] % 1).is_zero())
+        {
+            ChSetMessage("けいさんたいしょうがせいすうではないので、けいさんできません。");
+            return 0;
+        }
+    }
+
+    Ndrr1D::integer_type v1 = vec[0].get_i(), v2;
+    for (size_t i = 1; i < vec.size(); ++i)
+    {
+        v2 = vec[i].get_i();
+        v1 = Ndrr1D::gcd(v1, v2);
     }
     return v1;
 }
@@ -134,10 +114,19 @@ CH_Value ChLCM(const CH_Value& num)
     if (vec.size() == 0)
         return 0;
 
-    CH_Value v = vec[0];
     for (size_t i = 1; i < vec.size(); ++i)
     {
-        v = ChLCM(v, vec[i]);
+        if (!(vec[i] % 1).is_zero())
+        {
+            ChSetMessage("けいさんたいしょうがせいすうではないので、けいさんできません。");
+            return 0;
+        }
+    }
+
+    Ndrr1D::integer_type v = vec[0].get_i();
+    for (size_t i = 1; i < vec.size(); ++i)
+    {
+        v = Ndrr1D::lcm(v, vec[i].get_i());
     }
     return v;
 }
@@ -438,14 +427,14 @@ void ChNumberFromExprList(pmp::Number& num, shared_ptr<ExprList>& exprlist)
     assert(exprlist);
     pmp::vector_type vec;
     ExprList *el = exprlist.get();
-    for (std::size_t i = 0; i < el->size(); ++i)
+    for (size_t i = 0; i < el->size(); ++i)
         vec.push_back(ChCalcExpr((*el)[i]));
     num.assign(vec);
 }
 
 CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
 {
-    CH_Value v1, v2;
+    CH_Value v1, v2, v3;
     std::vector<CH_Value> values;
 
     switch (mono->m_type)
@@ -769,13 +758,11 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
         assert(mono->m_doms->m_domains);
         {
             Domains& domains = *mono->m_doms->m_domains.get();
-            std::cout << domains << std::endl;
             domains.FixNarrower();
-            std::cout << domains << std::endl;
             if (domains.size() == 1)
             {
                 Domain& domain = *domains[0].get();
-                if (domain.m_dom_type == Domain::REGULAR)
+                if (domain.m_aspect.m_pnModulus)
                 {
                     bool has_min, has_max;
                     CH_Value *pnLBound = domain.GetLBound(has_min);
@@ -785,40 +772,15 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
                     {
                         v1 = *pnLBound;
                         v2 = *pnUBound;
-                        return (v2 - v1 + 1) * (v1 + v2) / 2;
-                    }
-                }
-                if (domain.m_dom_type == Domain::EVEN)
-                {
-                    bool has_min, has_max;
-                    CH_Value *pnLBound = domain.GetLBound(has_min);
-                    CH_Value *pnUBound = domain.GetUBound(has_max);
-                    if (pnLBound && pnUBound && has_min && has_max &&
-                        *pnLBound <= *pnUBound)
-                    {
-                        v1 = *pnLBound;
-                        v2 = *pnUBound;
-                        return ((v2 - v1) / 2 + 1) * (v1 + v2) / 2;
-                    }
-                }
-                if (domain.m_dom_type == Domain::ODD)
-                {
-                    bool has_min, has_max;
-                    CH_Value *pnLBound = domain.GetLBound(has_min);
-                    CH_Value *pnUBound = domain.GetUBound(has_max);
-                    if (pnLBound && pnUBound && has_min && has_max &&
-                        *pnLBound <= *pnUBound)
-                    {
-                        v1 = *pnLBound;
-                        v2 = *pnUBound;
-                        return ((v2 - v1) / 2 + 1) * (v1 + v2) / 2;
+                        v3 = (v2 - v1) / *domain.m_aspect.m_pnModulus + 1;
+                        return v3 * (v1 + v2) / 2;
                     }
                 }
             }
             if (domains.GetValues(values))
             {
                 v1 = 0;
-                std::size_t i, siz = values.size();
+                size_t i, siz = values.size();
                 for (i = 0; i < siz; ++i)
                 {
                     v1 += values[i];
@@ -838,7 +800,7 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
         if (mono->m_doms->m_domains->GetValues(values))
         {
             v1 = 1;
-            std::size_t i, siz = values.size();
+            size_t i, siz = values.size();
             for (i = 0; i < siz; ++i)
             {
                 v1 *= values[i];
@@ -1094,7 +1056,7 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
         if (sentence->m_doms1->m_domains->GetValues(values))
         {
             bool flag = true;
-            std::size_t i, siz = values.size();
+            size_t i, siz = values.size();
             for (i = 0; i < siz; ++i)
             {
                 if (!sentence->m_doms2->m_domains->Contains(values[i]))
@@ -1109,8 +1071,8 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
                 ChSetMessage(ch_wrong);
             break;
         }
-        sentence->m_doms1->m_domains.get()->FixNarrower();
-        sentence->m_doms2->m_domains.get()->FixWider();
+        sentence->m_doms2->m_domains.get()->FixBeforeIncludes(
+            *sentence->m_doms1->m_domains.get());
         #ifdef _DEBUG
             std::cout << *sentence->m_doms1->m_domains.get() << std::endl;
             std::cout << *sentence->m_doms2->m_domains.get() << std::endl;
@@ -1126,7 +1088,8 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
         assert(sentence->m_doms1->m_domains);
         assert(sentence->m_cnstr);
         assert(sentence->m_cnstr->m_domains);
-        sentence->m_doms1->m_domains.get()->FixNarrower();
+        sentence->m_cnstr->m_domains->FixBeforeIncludes(
+            *sentence->m_doms1->m_domains.get());
         if (sentence->m_cnstr->m_domains->Includes(*sentence->m_doms1->m_domains.get()))
             ChSetMessage(ch_right);
         else
@@ -1283,11 +1246,11 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
             if (v.size() == values.size())
             {
                 bool flag = true;
-                for (std::size_t j = 0; j < values.size(); ++j)
+                for (size_t j = 0; j < values.size(); ++j)
                 {
                     flag = false;
                     values[j].trim();
-                    for (std::size_t i = 0; i < v.size(); ++i)
+                    for (size_t i = 0; i < v.size(); ++i)
                     {
                         v[i].trim();
                         if (values[j] == v[i])
@@ -1301,10 +1264,10 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
                 }
                 if (flag)
                 {
-                    for (std::size_t i = 0; i < v.size(); ++i)
+                    for (size_t i = 0; i < v.size(); ++i)
                     {
                         flag = false;
-                        for (std::size_t j = 0; j < values.size(); ++j)
+                        for (size_t j = 0; j < values.size(); ++j)
                         {
                             if (values[j] == v[i])
                             {
@@ -1351,7 +1314,7 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
         assert(sentence->m_doms1->m_domains);
         if (sentence->m_doms1->m_domains->GetValues(values))
         {
-            for (std::size_t i = 0; i < values.size(); ++i)
+            for (size_t i = 0; i < values.size(); ++i)
                 values[i].trim();
             return CH_Value(values);
         }
@@ -1370,60 +1333,42 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
 void ChAnalyzeDomainsOfPrimDom(
     shared_ptr<Domains>& domains, shared_ptr<PrimDom>& primdom)
 {
-    Range *r;
-    CH_Value v;
     assert(domains);
     assert(primdom);
-    Domain *d = Domain::Whole();
+    Domain *d = NULL;
     switch (primdom->m_type)
     {
     case PrimDom::POSITIVE:
-        d->m_afnContains.push_back(IsPositiveNumber);
-        v = 0;
-        r = new Range(false, false, &v, NULL);
-        d->Intersect(*r);
-        delete r;
+        d = Domain::Whole(Domain::POSITIVE);
         domains.get()->Intersect(*d);
         assert(primdom->m_primdom);
         ChAnalyzeDomainsOfPrimDom(domains, primdom->m_primdom);
         break;
 
     case PrimDom::NEGATIVE:
-        d->m_afnContains.push_back(IsNegativeNumber);
-        v = 0;
-        r = new Range(false, false, NULL, &v);
-        d->Intersect(*r);
-        delete r;
+        d = Domain::Whole(Domain::NEGATIVE);
         domains.get()->Intersect(*d);
         assert(primdom->m_primdom);
         ChAnalyzeDomainsOfPrimDom(domains, primdom->m_primdom);
         break;
 
     case PrimDom::SHIZENSUU:
-        d->m_afnContains.push_back(IsNaturalNumber);
-        d->RestrictTo(Domain::REGULAR);
-        v = 0;
-        r = new Range(true, false, &v, NULL);
-        d->Intersect(*r);
-        delete r;
+        d = Domain::Whole(Domain::NATURAL);
         domains.get()->Intersect(*d);
         break;
 
     case PrimDom::SEISUU:
-        d->m_afnContains.push_back(IsRegularNumber);
-        d->RestrictTo(Domain::REGULAR);
+        d = Domain::Whole(Domain::REGULAR);
         domains.get()->Intersect(*d);
         break;
 
     case PrimDom::GUUSUU:
-        d->m_afnContains.push_back(IsEvenNumber);
-        d->RestrictTo(Domain::EVEN);
+        d = Domain::Whole(Domain::EVEN);
         domains.get()->Intersect(*d);
         break;
 
     case PrimDom::KISUU:
-        d->m_afnContains.push_back(IsOddNumber);
-        d->RestrictTo(Domain::ODD);
+        d = Domain::Whole(Domain::ODD);
         domains.get()->Intersect(*d);
         break;
 
@@ -1431,12 +1376,7 @@ void ChAnalyzeDomainsOfPrimDom(
         break;
 
     case PrimDom::SOSUU:
-        d->m_afnContains.push_back(IsPrimeNumber);
-        d->RestrictTo(Domain::PRIME);
-        v = 2;
-        r = new Range(true, false, &v, NULL);
-        d->Intersect(*r);
-        delete r;
+        d = Domain::Whole(Domain::PRIME);
         domains.get()->Intersect(*d);
         break;
 
@@ -1576,7 +1516,7 @@ void ChAnalyzeDomainsOfCnstr(
         ChAnalyzeDomainsOfCnstr(domains1, cnstr->m_cnstr);
         ChAnalyzeDomainsOfAndCnstr(domains2, cnstr->m_andcnstr);
         d1->Union(*d2);
-		domains2 = shared_ptr<Domains>();
+        domains2 = shared_ptr<Domains>();
         domains = domains1;
         break;
 
@@ -1715,7 +1655,6 @@ void ChAnalyzeDomainsOfExprKaraExprMade(
     CH_Value v2 = ChCalcExpr(expr2);
     v2.trim();
     Range *r = new Range(true, true, &v1, &v2);
-    std::cout << *r << std::endl;
     domains.get()->Intersect(*r);
     delete r;
 }
@@ -1760,14 +1699,15 @@ void ChAnalyzeDomainsOfDom(shared_ptr<Domains>& domains, shared_ptr<Dom>& dom)
 void ChAnalyzeDoms(shared_ptr<Doms>& doms)
 {
     assert(doms);
-    doms->m_domains = shared_ptr<Domains>(new Domains);
-    std::size_t i, siz = doms->size();
+    Domains *d0 = new Domains();
+    size_t i, siz = doms->size();
     for (i = 0; i < siz; ++i)
     {
         shared_ptr<Domains> domains(Domains::Whole());
         ChAnalyzeDomainsOfDom(domains, (*doms.get())[i]);
-        doms->m_domains.get()->Union(*domains.get());
+        d0->Union(*domains.get());
     }
+    doms.get()->m_domains = shared_ptr<Domains>(d0);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -1886,8 +1826,7 @@ void ChAnalyzeMonoShiteTasukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite
         {
             ChAnalyzeExprList(shite->m_exprlist);
             ExprList *el = shite->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            const size_t count = el->size();
             shared_ptr<Expr> e = (*el)[count - 1];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -1925,8 +1864,7 @@ void ChAnalyzeMonoShiteKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shi
         {
             ChAnalyzeExprList(shite->m_exprlist);
             ExprList *el = shite->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            const size_t count = el->size();
             shared_ptr<Expr> e = (*el)[count - 1];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -2022,8 +1960,7 @@ void ChAnalyzeMonoMonoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
         {
             ChAnalyzeExprList(mono2->m_exprlist);
             ExprList *el = mono2->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            const size_t count = el->size();
             shared_ptr<Expr> e = (*el)[count - 1];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -2085,8 +2022,7 @@ void ChAnalyzeMonoMonoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2
         {
             ChAnalyzeExprList(mono2->m_exprlist);
             ExprList *el = mono2->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            const size_t count = el->size();
             shared_ptr<Expr> e = (*el)[count - 1];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -2147,8 +2083,7 @@ void ChAnalyzeMonoMonoHikukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
         {
             ChAnalyzeExprList(mono2->m_exprlist);
             ExprList *el = mono2->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            const size_t count = el->size();
             shared_ptr<Expr> e = (*el)[count - 1];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -2214,8 +2149,7 @@ void ChAnalyzeMonoMonoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
         {
             ChAnalyzeExprList(mono2->m_exprlist);
             ExprList *el = mono2->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            const size_t count = el->size();
             shared_ptr<Expr> e = (*el)[count - 1];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -2632,8 +2566,7 @@ void ChAnalyzeMonoSurutoTasukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
         {
             ChAnalyzeExprList(suruto->m_exprlist);
             ExprList *el = suruto->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            const size_t count = el->size();
             shared_ptr<Expr> e = (*el)[count - 1];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -2667,8 +2600,7 @@ void ChAnalyzeMonoSurutoKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& s
         {
             ChAnalyzeExprList(suruto->m_exprlist);
             ExprList *el = suruto->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            const size_t count = el->size();
             shared_ptr<Expr> e = (*el)[count - 1];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -2760,8 +2692,7 @@ void ChAnalyzeMonoSurutoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
         {
             ChAnalyzeExprList(suruto->m_exprlist);
             ExprList *el = suruto->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            assert(el->size() >= 1);
             shared_ptr<Expr> e = (*el)[0];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -2802,8 +2733,7 @@ void ChAnalyzeMonoSurutoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto
         {
             ChAnalyzeExprList(suruto->m_exprlist);
             ExprList *el = suruto->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            assert(el->size() >= 1);
             shared_ptr<Expr> e = (*el)[0];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -2932,8 +2862,7 @@ void ChAnalyzeMonoPrevSentenceTasukazu(shared_ptr<Mono>& mono)
         {
             ChAnalyzeExprList(sentence->m_exprlist);
             ExprList *el = sentence->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            const size_t count = el->size();
             shared_ptr<Expr> e = (*el)[count - 1];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -2980,8 +2909,7 @@ void ChAnalyzeMonoPrevSentenceKakerukazu(shared_ptr<Mono>& mono)
         {
             ChAnalyzeExprList(sentence->m_exprlist);
             ExprList *el = sentence->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            const size_t count = el->size();
             shared_ptr<Expr> e = (*el)[count - 1];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -3096,8 +3024,7 @@ void ChAnalyzeMonoPrevSentenceTasarerukazu(shared_ptr<Mono>& mono)
         {
             ChAnalyzeExprList(sentence->m_exprlist);
             ExprList *el = sentence->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            assert(el->size() >= 1);
             shared_ptr<Expr> e = (*el)[0];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -3144,8 +3071,7 @@ void ChAnalyzeMonoPrevSentenceKakerarerukazu(shared_ptr<Mono>& mono)
         {
             ChAnalyzeExprList(sentence->m_exprlist);
             ExprList *el = sentence->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            assert(el->size() >= 1);
             shared_ptr<Expr> e = (*el)[0];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -3244,8 +3170,7 @@ void ChAnalyzeMonoMonoTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
         {
             ChAnalyzeExprList(mono2->m_exprlist);
             ExprList *el = mono2->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            assert(el->size() >= 1);
             shared_ptr<Expr> e = (*el)[0];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -3315,8 +3240,7 @@ void ChAnalyzeMonoMonoKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& m
         {
             ChAnalyzeExprList(mono2->m_exprlist);
             ExprList *el = mono2->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            assert(el->size() >= 1);
             shared_ptr<Expr> e = (*el)[0];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -3386,8 +3310,7 @@ void ChAnalyzeMonoMonoHikarerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
         {
             ChAnalyzeExprList(mono2->m_exprlist);
             ExprList *el = mono2->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            assert(el->size() >= 1);
             shared_ptr<Expr> e = (*el)[0];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -3464,8 +3387,7 @@ void ChAnalyzeMonoMonoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
         {
             ChAnalyzeExprList(mono2->m_exprlist);
             ExprList *el = mono2->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            assert(el->size() >= 1);
             shared_ptr<Expr> e = (*el)[0];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -3538,8 +3460,7 @@ void ChAnalyzeMonoShiteTasarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
         {
             ChAnalyzeExprList(shite->m_exprlist);
             ExprList *el = shite->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            assert(el->size() >= 1);
             shared_ptr<Expr> e = (*el)[0];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -3580,8 +3501,7 @@ void ChAnalyzeMonoShiteKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>&
         {
             ChAnalyzeExprList(shite->m_exprlist);
             ExprList *el = shite->m_exprlist.get();
-            const std::size_t count = el->size();
-            assert(count >= 2);
+            assert(el->size() >= 1);
             shared_ptr<Expr> e = (*el)[0];
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -4984,8 +4904,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             {
                 ChAnalyzeExprList(mono->m_mono->m_exprlist);
                 ExprList *el = mono->m_mono->m_exprlist.get();
-                const std::size_t count = el->size();
-                assert(count >= 2);
+                assert(el->size() >= 1);
                 shared_ptr<Expr> e = (*el)[0];
                 m = new Mono;
                 m->m_type = Mono::EXPR_ONLY;
@@ -5033,8 +4952,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             {
                 ChAnalyzeExprList(mono->m_mono->m_exprlist);
                 ExprList *el = mono->m_mono->m_exprlist.get();
-                const std::size_t count = el->size();
-                assert(count >= 2);
+                assert(el->size() >= 1);
                 shared_ptr<Expr> e = (*el)[0];
                 m = new Mono;
                 m->m_type = Mono::EXPR_ONLY;
@@ -5082,8 +5000,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             {
                 ChAnalyzeExprList(mono->m_mono->m_exprlist);
                 ExprList *el = mono->m_mono->m_exprlist.get();
-                const std::size_t count = el->size();
-                assert(count >= 2);
+                assert(el->size() >= 1);
                 shared_ptr<Expr> e = (*el)[0];
                 m = new Mono;
                 m->m_type = Mono::EXPR_ONLY;
@@ -5138,8 +5055,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             {
                 ChAnalyzeExprList(mono->m_mono->m_exprlist);
                 ExprList *el = mono->m_mono->m_exprlist.get();
-                const std::size_t count = el->size();
-                assert(count >= 2);
+                assert(el->size() >= 1);
                 shared_ptr<Expr> e = (*el)[0];
                 m = new Mono;
                 m->m_type = Mono::EXPR_ONLY;
@@ -5624,7 +5540,7 @@ void ChReplaceString(std::string& str,
                      const std::string& from,
                      const std::string& to)
 {
-    std::size_t i = 0;
+    size_t i = 0;
     for (;;)
     {
         i = str.find(from, i);
@@ -5641,10 +5557,10 @@ void ChReplaceString(std::string& str,
 std::string ChGetJpnDigits(const std::string& str, bool& ok)
 {
     std::string result;
-    const std::size_t len = str.size();
+    const size_t len = str.size();
 
     ok = true;
-    for (std::size_t i = 0; i < len; ++i)
+    for (size_t i = 0; i < len; ++i)
     {
         assert('0' <= str[i] && str[i] <= '9');
         if ('0' <= str[i] && str[i] <= '9')
@@ -5850,7 +5766,7 @@ std::string ChGetJpnNumber1(
     if (num > ch_zero)
     {
         std::string digits = num.str(ch_precision, std::ios_base::fixed);
-        std::size_t i = digits.find_last_not_of('0');
+        size_t i = digits.find_last_not_of('0');
         if (i != std::string::npos)
             digits = digits.substr(0, i + 1);
         i = digits.find('.');
@@ -5959,7 +5875,7 @@ std::string ChGetJpnNumberFixed2(CH_Value num)
             return "なし";
 
         str = ChGetJpnNumberFixed2(num[0]);
-        for (std::size_t i = 1; i < num.size(); ++i)
+        for (size_t i = 1; i < num.size(); ++i)
         {
             str += "と、";
             str += ChGetJpnNumberFixed2(num[i]);
@@ -5980,7 +5896,7 @@ std::string ChGetJpnNumberFixed2(CH_Value num)
 void CrTrimString(std::string& str)
 {
     static const char *spaces = " \t";
-    std::size_t i, j;
+    size_t i, j;
     bool flag;
     do
     {

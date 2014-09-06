@@ -29,7 +29,9 @@
 #include <cstdio>
 #include <cstring>
 
+#define DRR1D_USES_PMPNUMBER
 #include "PmpNumber.hpp"
+#include "Ndrr1D.hpp"
 typedef pmp::Number CH_Value;
 
 #define ch_precision    15

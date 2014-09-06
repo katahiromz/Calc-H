@@ -10,8 +10,9 @@
     #error You lose.
 #endif
 
-#include <iostream> // for std::cout, std::endl, std::size_t
+#include <iostream> // for std::cout, std::endl, size_t
 #include <vector>   // for std::vector
+#include <cassert>  // for assert
 
 #ifndef shared_ptr
     #if (__cplusplus >= 201103L)
@@ -35,33 +36,48 @@
     #define shared_ptr shared_ptr
 #endif  // ndef shared_ptr
 
+#ifndef DRR1D_USES_PMPNUMBER
+    #include <cmath>
+#endif
+
 ////////////////////////////////////////////////////////////////////////////
+
 
 namespace Ndrr1D
 {
     //
-    // DRR1D_VALUE
+    // number_type
     //
-    #ifndef DRR1D_VALUE
-        #ifdef PMPNUMBER_HPP_
-            #define DRR1D_VALUE pmp::Number
-            #ifndef DRR1D_USES_PMPNUMBER
-                #define DRR1D_USES_PMPNUMBER
-            #endif
-        #else
-            #define DRR1D_VALUE double
-        #endif
+    #ifdef DRR1D_USES_PMPNUMBER
+        typedef pmp::Number         number_type;
+        typedef pmp::integer_type   integer_type;
+    #else
+        typedef double              number_type;
+        typedef int                 integer_type;
     #endif
 
-    bool IsPositiveNumber(const DRR1D_VALUE& value);
-    bool IsNegativeNumber(const DRR1D_VALUE& value);
-    bool IsNaturalNumber(const DRR1D_VALUE& value);
-    bool IsRegularNumber(const DRR1D_VALUE& value);
-    bool IsEvenNumber(const DRR1D_VALUE& value);
-    bool IsOddNumber(const DRR1D_VALUE& value);
-    bool IsPrimeNumber(const DRR1D_VALUE& value);
-    DRR1D_VALUE GauseModFloor(DRR1D_VALUE d, DRR1D_VALUE mod);
-    DRR1D_VALUE GauseModCeil(DRR1D_VALUE d, DRR1D_VALUE mod);
+    bool IsPositiveNumber(const number_type& value);
+    bool IsNegativeNumber(const number_type& value);
+    bool IsNaturalNumber(const number_type& value);
+    bool IsRegularNumber(const number_type& value);
+    bool IsEvenNumber(const number_type& value);
+    bool IsOddNumber(const number_type& value);
+    bool IsPrimeNumber(const number_type& value);
+    bool IsCompositeNumber(const number_type& value);
+    number_type ModFloor(number_type d, number_type mod);
+    number_type ModCeil(number_type d, number_type mod);
+
+    integer_type gcd(integer_type x, integer_type y);
+    integer_type lcm(integer_type x, integer_type y);
+    integer_type gcdx(integer_type& x, integer_type& y,
+                      const integer_type& a, const integer_type& b);
+    integer_type cnrem(
+        const integer_type& a1, const integer_type& m1,
+        const integer_type& a2, const integer_type& m2);
+    bool katayama_qz(
+        integer_type & y, integer_type & M, integer_type & N,
+        const integer_type& a1, integer_type m1,
+        const integer_type& a2, integer_type m2);
 
     //
     // Ndrr1D::Range
@@ -70,174 +86,192 @@ namespace Ndrr1D
     {
         bool            m_has_min;
         bool            m_has_max;
-        DRR1D_VALUE *   m_pnLBound;
-        DRR1D_VALUE *   m_pnUBound;
+        number_type *    m_pnLBound;
+        number_type *    m_pnUBound;
 
-        Range() :
-            m_has_min(false), m_has_max(false),
-            m_pnLBound(NULL), m_pnUBound(NULL)
-        {
-        }
+        Range();
+        Range(bool has_min, bool has_max,
+              number_type *pnLBound, number_type *pnUBound);
+        Range(const number_type& value);
+        Range(const Range& s);
+        virtual ~Range();
+        Range& operator=(const Range& s);
 
-        Range(bool has_min, bool has_max, DRR1D_VALUE *pnLBound, DRR1D_VALUE *pnUBound) :
-            m_has_min(has_min), m_has_max(has_max),
-            m_pnLBound(pnLBound ? new DRR1D_VALUE(*pnLBound) : NULL),
-            m_pnUBound(pnUBound ? new DRR1D_VALUE(*pnUBound) : NULL)
-        {
-        }
-
-        Range(const DRR1D_VALUE& value) :
-            m_has_min(true), m_has_max(true),
-            m_pnLBound(new DRR1D_VALUE(value)), m_pnUBound(new DRR1D_VALUE(value))
-        {
-        }
-
-        ~Range()
-        {
-            delete m_pnLBound;
-            delete m_pnUBound;
-        }
-
-        Range(const Range& r) :
-            m_has_min(r.m_has_min),
-            m_has_max(r.m_has_max),
-            m_pnLBound(new DRR1D_VALUE(*r.m_pnLBound)),
-            m_pnUBound(new DRR1D_VALUE(*r.m_pnUBound))
-        {
-        }
-
-        Range& operator=(const Range& r)
-        {
-            m_has_min = r.m_has_min;
-            delete m_pnLBound;
-            m_pnLBound = new DRR1D_VALUE(*r.m_pnLBound);
-            m_has_max = r.m_has_max;
-            delete m_pnUBound;
-            m_pnUBound = new DRR1D_VALUE(*r.m_pnUBound);
-            return *this;
-        }
-
-        bool empty() const;
-        void clear();
-        bool Includes(const Range& range) const;
-        bool Contains(DRR1D_VALUE value) const;
-        void Intersect(const Range& r);
-
-        DRR1D_VALUE *GetLBound(bool& has_min) const
+        number_type *GetLBound(bool& has_min) const
         {
             has_min = m_has_min;
             return m_pnLBound;
         }
 
-        DRR1D_VALUE *GetUBound(bool& has_max) const
+        number_type *GetUBound(bool& has_max) const
         {
             has_max = m_has_max;
             return m_pnUBound;
         }
 
-        static Range *Whole()
-        {
-            return new Range;
-        }
+        bool empty() const;
+        bool entire() const;
+        void clear();
 
-    protected:
+        bool Includes(const Range& r) const;
+        bool Contains(const number_type& value) const;
+        void Intersect(const Range& r);
+        bool Equal(const Range& r) const;
+
         static Range *Intersect(const Range *r1, const Range *r2);
-        friend struct Ranges;
-        friend struct Domain;
-        friend struct Domains;
+        static Range *Whole() { return new Range(); }
     };
 
     //
     // Ndrr1D::Ranges
     //
-    struct Ranges : std::vector<shared_ptr<Range> >
+    struct Ranges : public std::vector<shared_ptr<Range> >
     {
         Ranges() { }
-
-        Ranges(const Ranges& ranges) : std::vector<shared_ptr<Range> >(ranges)
-        { }
-
-        Ranges& operator=(const Ranges& ranges)
-        {
-            this->assign(ranges.begin(), ranges.end());
-            return *this;
-        }
+        Ranges(const Range& r);
+        Ranges(bool has_min, bool has_max,
+               number_type *pnLBound, number_type *pnUBound);
+        Ranges(const number_type& value);
+        Ranges(const std::vector<shared_ptr<Range> >& ranges);
+        Ranges& operator=(const std::vector<shared_ptr<Range> >& ranges);
 
         bool empty() const;
-        bool Includes(const Ranges& ranges) const;
-        bool Contains(DRR1D_VALUE value) const;
-        void Intersect(const Range& range);
-        void Intersect(const Ranges& ranges);
-        void Union(const Ranges& ranges);
+        bool entire() const;
+
+        void add(Range *r);
+
+        bool Includes(const Range& r) const;
+        bool Includes(const Ranges& r) const;
+        bool Contains(const number_type& value) const;
+
         void Optimize();
+        void Intersect(const Range& r);
+        void Intersect(const Ranges& r);
+        void Union(const Ranges& ranges);
 
-        DRR1D_VALUE *GetLBound(bool& has_min) const;
-        DRR1D_VALUE *GetUBound(bool& has_max) const;
-        static Ranges *Whole();
+        number_type *GetLBound(bool& has_min) const;
+        number_type *GetUBound(bool& has_max) const;
+        bool Equal(const Ranges& r) const;
 
-    protected:
-        static Ranges *Optimize(const Ranges *ranges);
-        static Ranges *Intersect(const Ranges *ranges, const Range *range);
-        static Ranges *Intersect(const Ranges *r1, const Ranges *r2);
         static Ranges *Union(const Ranges *r1, const Ranges *r2);
-        friend struct Range;
-        friend struct Domain;
-        friend struct Domains;
+        static Ranges *Intersect(const Ranges *ranges, const Range *r);
+        static Ranges *Intersect(const Ranges *r1, const Ranges *r2);
+        static Ranges *Whole();
     };
 
     //
-    // Ndrr1D::FN_CONTAINS
+    // Ndrr1D::Aspect
     //
-    typedef bool (*FN_CONTAINS)(const DRR1D_VALUE& value);
+    struct Aspect
+    {
+        integer_type *  m_pnModulus;
+        integer_type *  m_pnResidue;
+        bool            m_must_be_prime;
+        bool            m_must_be_composite;
+
+        Aspect();
+        Aspect(integer_type *pnModulus, integer_type *pnResidue = NULL,
+               bool must_be_prime = false, bool must_be_composite = false);
+        Aspect(const Aspect& a);
+        Aspect& operator=(const Aspect& a);
+        virtual ~Aspect();
+
+        integer_type *GetModulus() const    { return m_pnModulus; }
+        integer_type *GetResidue() const    { return m_pnResidue; }
+        bool MustBePrime() const            { return m_must_be_prime; }
+        bool MustBeComposite() const        { return m_must_be_composite; }
+        bool MustBe2() const;
+
+        bool empty() const;
+        bool entire() const;
+        void clear();
+
+        bool Includes(const Aspect& a) const;
+        bool Contains(const number_type& value) const;
+        void Intersect(const Aspect& a);
+        bool Equal(const Aspect& a) const;
+
+        static Aspect *Intersect(const Aspect *a1, const Aspect *a2);
+    };
 
     //
     // Ndrr1D::Domain
     //
     struct Domain
     {
-        enum Type { EMPTY, REGULAR, EVEN, ODD, REAL, PRIME };
-        Type                        m_dom_type;
-        shared_ptr<Ranges>          m_ranges;
-        std::vector<FN_CONTAINS>    m_afnContains;
+        Aspect  m_aspect;
+        Ranges  m_ranges;
 
-        Domain() : m_dom_type(REAL) { }
-
-        Domain(const Domain& d) :
-            m_dom_type(d.m_dom_type),
-            m_ranges(d.m_ranges),
-            m_afnContains(d.m_afnContains)
-        {
-        }
+        Domain() { }
+        Domain(bool has_min, bool has_max,
+               number_type *pnLBound, number_type *pnUBound);
+        Domain(const Aspect& a, bool has_min, bool has_max,
+               number_type *pnLBound, number_type *pnUBound);
+        Domain(const number_type& value) : m_ranges(value) { }
+        Domain(const Aspect& a, const number_type& value);
+        Domain(const Aspect& a);
+        Domain(const Aspect& a, const Ranges& r) : m_aspect(a), m_ranges(r) { }
+        Domain(const Domain& d) : m_aspect(d.m_aspect), m_ranges(d.m_ranges) { }
 
         Domain& operator=(const Domain& d)
         {
-            m_dom_type = d.m_dom_type;
+            m_aspect = d.m_aspect;
             m_ranges = d.m_ranges;
-            m_afnContains = d.m_afnContains;
             return *this;
         }
 
+        void FixBeforeIncludes(Domain& d);
+
+        bool Includes(const Range& r) const { return m_ranges.Includes(r); }
+        bool Includes(const Ranges& r) const { return m_ranges.Includes(r); }
+
+        // NOTE: You have to call this->FixBeforeIncludes(d) before
+        //       Domain::Includes(const Domain& d) call.
+        bool Includes(const Domain& d) const;
+
+        bool Contains(const number_type& value) const
+        {
+            return m_aspect.Contains(value) && m_ranges.Contains(value);
+        }
+
+        bool GetValues(std::vector<number_type>& values) const;
+
         bool empty() const;
+        bool entire() const;
         void clear();
-        bool Includes(Domain::Type type) const;
-        bool Includes(const Domain& domain) const;
-        bool Contains(const DRR1D_VALUE& value) const;
-        void RestrictTo(Domain::Type type);
+
         void Intersect(const Range& r);
         void Intersect(const Domain& d);
         void Optimize();
-        DRR1D_VALUE *GetLBound(bool& has_min) const;
-        DRR1D_VALUE *GetUBound(bool& has_max) const;
-        bool GetValues(std::vector<DRR1D_VALUE>& values) const;
         void FixWider();
         void FixNarrower();
-        static Domain *Whole();
 
-    protected:
+        number_type *GetLBound(bool& has_min) const
+            { return m_ranges.GetLBound(has_min); }
+        number_type *GetUBound(bool& has_max) const
+            { return m_ranges.GetUBound(has_max); }
+        integer_type *GetModulus() const { return m_aspect.GetModulus(); }
+        integer_type *GetResidue() const { return m_aspect.GetResidue(); }
+        bool MustBePrime() const         { return m_aspect.MustBePrime(); }
+        bool MustBeComposite() const     { return m_aspect.MustBeComposite(); }
+        bool MustBe2() const             { return m_aspect.MustBe2(); }
+        bool Equal(const Domain& d) const;
+
+        enum Type
+        {
+            EMPTY,      // none or empty region
+            POSITIVE,   // number > 0
+            NEGATIVE,   // number < 0
+            NATURAL,    // MODULAR 1 RESIDUE 0 (number >= 1)
+            REGULAR,    // MODULAR 1 RESIDUE 0
+            EVEN,       // MODULAR 2 RESIDUE 0
+            ODD,        // MODULAR 2 RESIDUE 1
+            REAL,       // the entire region
+            PRIME,      // MODULAR 1 RESIDUE 0 (number is a prime)
+            COMPOSITE   // MODULAR 1 RESIDUE 0 (number is a composite)
+        };
+        static Domain *Whole(Domain::Type type = Domain::REAL);
         static Domain *Intersect(const Domain *d1, const Domain *d2);
-        friend struct Range;
-        friend struct Ranges;
-        friend struct Domains;
     };
 
     //
@@ -257,90 +291,160 @@ namespace Ndrr1D
         }
 
         bool empty() const;
+        bool entire() const;
 
-        // NOTE: You have to call domain.FixNarrower and this->FixWider before
-        //       Domains::Includes(const Domain&) call.
+        void add(Domain *d);
+
+        void FixBeforeIncludes(Domain& domain);
+        void FixBeforeIncludes(Domains& domains);
+
+        // NOTE: You have to call this->FixBeforeIncludes(domain) before
+        //       Domains::Includes(const Domain& domain) call.
         bool Includes(const Domain& domain) const;
-
-        // NOTE: You have to call domains.FixNarrower and this->FixWider before
-        //       Domains::Includes(const Domains&) call.
+        // NOTE: You have to call this->FixBeforeIncludes(domains) before
+        //       Domains::Includes(const Domains& domains) call.
         bool Includes(const Domains& domains) const;
-
-        bool Contains(DRR1D_VALUE value) const;
-        void Intersect(const Range& range);
+        bool Contains(const number_type& value) const;
+        void Intersect(const Range& r);
         void Intersect(const Domain& domain);
         void Intersect(const Domains& domains);
         void Union(const Domain& domain);
         void Union(const Domains& domains);
-        bool GetValues(std::vector<DRR1D_VALUE>& values) const;
-        static Domains *Whole();
+        bool GetValues(std::vector<number_type>& values) const;
+        void Optimize();
         void FixWider();
         void FixNarrower();
+        bool Equal(const Domains& d) const;
 
-    protected:
+        number_type *GetLBound() const;
+        number_type *GetUBound() const;
+        number_type *GetLBound(bool& has_min) const;
+        number_type *GetUBound(bool& has_max) const;
+
         static Domains *Intersect(const Domains *domains, const Domain *domain);
         static Domains *Intersect(const Domains *d1, const Domains *d2);
+        static Domains *Union(const Domains *domains, const Domain *domain);
         static Domains *Union(const Domains *d1, const Domains *d2);
-        friend struct Range;
-        friend struct Ranges;
-        friend struct Domain;
+        static Domains *Whole(Domain::Type type = Domain::REAL);
     };
 } // namespace Ndrr1D
+
+////////////////////////////////////////////////////////////////////////////
+// compare two aspects
+
+bool operator==(const Ndrr1D::Aspect& a1, const Ndrr1D::Aspect& a2);
+bool operator!=(const Ndrr1D::Aspect& a1, const Ndrr1D::Aspect& a2);
+
+////////////////////////////////////////////////////////////////////////////
+// output
 
 template <class charT, class traits>
 std::basic_ostream<charT,traits>&
 operator<<(std::basic_ostream<charT,traits>& os, const Ndrr1D::Range& r)
 {
-    os << "[";
-    if (r.m_pnLBound)
+    os << "[ ";
+    if (r.entire())
     {
-        if (r.m_has_min) os << "(Closed)";
-        else os << "(Open)";
-        os << "lower: " << *r.m_pnLBound << " ";
+        os << "entire";
     }
-    if (r.m_pnUBound)
+    else
     {
-        if (r.m_has_max) os << "(Closed)";
-        else os << "(Open)";
-        os << "upper: " << *r.m_pnUBound;
+        if (r.m_pnLBound)
+        {
+            if (r.m_has_min) os << "(Closed)";
+            else os << "(Open)";
+            os << "lower: " << *r.m_pnLBound << " ";
+        }
+        if (r.m_pnUBound)
+        {
+            if (r.m_has_max) os << "(Closed)";
+            else os << "(Open)";
+            os << "upper: " << *r.m_pnUBound;
+        }
     }
-    os << "]";
-    return os;
+    return os << " ]";
 }
 
 template <class charT, class traits>
 std::basic_ostream<charT,traits>&
 operator<<(std::basic_ostream<charT,traits>& os, const Ndrr1D::Ranges& r)
 {
-    os << "[";
-    for (std::size_t i = 0; i < r.size(); ++i)
+    os << "[ ";
+    if (r.empty())
     {
-        os << *(r[i].get());
+        os << "empty";
     }
-    os << "]";
-    return os;
+    else if (r.entire())
+    {
+        os << "entire";
+    }
+    else
+    {
+        for (size_t i = 0; i < r.size(); ++i)
+        {
+            os << *(r[i].get());
+        }
+    }
+    return os << " ]";
+}
+
+template <class charT, class traits>
+std::basic_ostream<charT,traits>&
+operator<<(std::basic_ostream<charT,traits>& os, const Ndrr1D::Aspect& a)
+{
+    if (a.entire())
+    {
+        return os << "entire";
+    }
+    os << "[ modulus: ";
+    if (a.m_pnModulus)
+        os << *a.m_pnModulus;
+    else
+        os << "null";
+    os << ", residue: ";
+    if (a.m_pnResidue)
+        os << *a.m_pnResidue;
+    else
+        os << "null";
+    os << ", must_be_prime: ";
+    if (a.m_must_be_prime)
+        os << "true";
+    else
+        os << "false";
+    return os << " ]";
 }
 
 template <class charT, class traits>
 std::basic_ostream<charT,traits>&
 operator<<(std::basic_ostream<charT,traits>& os, const Ndrr1D::Domain& d)
 {
-    os << "[" << d.m_dom_type << ": " <<
-        (*d.m_ranges.get()) << "]";
-    return os;
+    return os << "[ ranges: " << d.m_ranges <<
+        ", aspect: " << d.m_aspect << " ]";
 }
 
 template <class charT, class traits>
 std::basic_ostream<charT,traits>&
 operator<<(std::basic_ostream<charT,traits>& os, const Ndrr1D::Domains& d)
 {
-    os << "[domains: ";
-    for (std::size_t i = 0; i < d.size(); ++i)
+    os << "[ domains: ";
+    if (d.empty())
     {
-        os << *(d[i].get());
+        os << "empty";
     }
-    os << "]";
-    return os;
+    else if (d.entire())
+    {
+        os << "entire";
+    }
+    else
+    {
+        for (size_t i = 0; i < d.size(); ++i)
+        {
+            os << *(d[i].get());
+        }
+    }
+    return os << " ]";
 }
+
+////////////////////////////////////////////////////////////////////////////
 
 #endif  // ndef __NDRR1D__

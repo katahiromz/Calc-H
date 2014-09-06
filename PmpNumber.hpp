@@ -291,7 +291,7 @@ namespace pmp
         }
 
 #ifndef PMP_DISABLE_VECTOR
-        Number& operator[](std::size_t index)
+        Number& operator[](size_t index)
         {
             if (type() == Number::VECTOR)
                 return get_v()[index];
@@ -299,7 +299,7 @@ namespace pmp
                 return *this;
         }
 
-        const Number& operator[](std::size_t index) const
+        const Number& operator[](size_t index) const
         {
             if (type() == Number::VECTOR)
                 return get_v()[index];
@@ -318,7 +318,7 @@ namespace pmp
         }
 #endif  // ndef PMP_DISABLE_VECTOR
 
-        std::size_t size() const
+        size_t size() const
         {
 #ifndef PMP_DISABLE_VECTOR
             if (is_v())
@@ -361,7 +361,7 @@ namespace pmp
             case Number::VECTOR:
                 {
                     vector_type vec;
-                    for (std::size_t i = 0; i < num1.size(); ++i)
+                    for (size_t i = 0; i < num1.size(); ++i)
                         vec.push_back(-num1.get_v()[i]);
                     return Number(vec);
                 }
@@ -625,7 +625,7 @@ namespace pmp
                         std::vector<std::string> strs;
                         pmp::split(str, ',', strs);
                         m_vector = new vector_type;
-                        for (std::size_t i = 0; i < strs.size(); ++i)
+                        for (size_t i = 0; i < strs.size(); ++i)
                             m_vector->push_back(Number(strs[i]));
                     }
                     break;
@@ -653,7 +653,7 @@ namespace pmp
                     std::vector<std::string> strs;
                     pmp::split(str, ',', strs);
                     m_vector = new vector_type;
-                    for (std::size_t i = 0; i < strs.size(); ++i)
+                    for (size_t i = 0; i < strs.size(); ++i)
                         m_vector->push_back(Number(strs[i]));
                 }
                 else
@@ -768,7 +768,7 @@ operator<<(std::basic_ostream<CharT>& o, const pmp::Number& num)
         if (!num.empty())
         {
             o << num.get_v()[0];
-            for (std::size_t i = 1; i < num.size(); ++i)
+            for (size_t i = 1; i < num.size(); ++i)
             {
                 o << ',';
                 o << num.get_v()[i];
@@ -795,7 +795,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::sqrt(num1[i]));
             return Number(vec);
         }
@@ -813,7 +813,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::exp(num1[i]));
             return Number(vec);
         }
@@ -828,7 +828,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::log(num1[i]));
             return Number(vec);
         }
@@ -843,7 +843,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::log10(num1[i]));
             return Number(vec);
         }
@@ -858,7 +858,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::cos(num1[i]));
             return Number(vec);
         }
@@ -873,7 +873,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::sin(num1[i]));
             return Number(vec);
         }
@@ -888,7 +888,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::tan(num1[i]));
             return Number(vec);
         }
@@ -903,7 +903,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::acos(num1[i]));
             return Number(vec);
         }
@@ -918,7 +918,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::asin(num1[i]));
             return Number(vec);
         }
@@ -933,7 +933,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::atan(num1[i]));
             return Number(vec);
         }
@@ -948,7 +948,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::cosh(num1[i]));
             return Number(vec);
         }
@@ -963,7 +963,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::sinh(num1[i]));
             return Number(vec);
         }
@@ -978,7 +978,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::tanh(num1[i]));
             return Number(vec);
         }
@@ -994,7 +994,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::pow(num1[i], num2));
             return Number(vec);
         }
@@ -1010,7 +1010,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::fmod(num1[i], num2));
             return Number(vec);
         }
@@ -1026,7 +1026,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::atan2(num1[i], num2));
             return Number(vec);
         }
@@ -1041,7 +1041,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::numerator(num1[i]));
             return Number(vec);
         }
@@ -1058,7 +1058,7 @@ namespace pmp
         if (num1.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
                 vec.push_back(pmp::denominator(num1[i]));
             return Number(vec);
         }
@@ -1075,7 +1075,7 @@ namespace pmp
         Number n = 0;
         if (num1.is_v())
         {
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
             {
                 n += pmp::count(num1[i]);
             }
@@ -1091,7 +1091,7 @@ namespace pmp
         Number n(0);
         if (num1.is_v())
         {
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
             {
                 n += pmp::sum(num1[i]);
             }
@@ -1108,7 +1108,7 @@ namespace pmp
         Number n(1);
         if (num1.is_v())
         {
-            for (std::size_t i = 0; i < num1.size(); ++i)
+            for (size_t i = 0; i < num1.size(); ++i)
             {
                 n *= pmp::prod(num1[i]);
             }
@@ -1126,7 +1126,7 @@ namespace pmp
         if (num1.is_v())
         {
             n = num1[0];
-            for (std::size_t i = 1; i < num1.size(); ++i)
+            for (size_t i = 1; i < num1.size(); ++i)
             {
                 n -= num1[i];
             }
@@ -1144,7 +1144,7 @@ namespace pmp
         if (num1.is_v())
         {
             n = num1[0];
-            for (std::size_t i = 1; i < num1.size(); ++i)
+            for (size_t i = 1; i < num1.size(); ++i)
             {
                 n /= num1[i];
             }
@@ -1169,7 +1169,7 @@ namespace pmp
         if (num1.is_v() && !num1.empty())
         {
             Number m = num1[0];
-            for (std::size_t i = 1; i < num1.size(); ++i)
+            for (size_t i = 1; i < num1.size(); ++i)
             {
                 if (m < num1[i])
                     m = num1[i];
@@ -1187,7 +1187,7 @@ namespace pmp
         if (num1.is_v() && !num1.empty())
         {
             Number m = num1[0];
-            for (std::size_t i = 1; i < num1.size(); ++i)
+            for (size_t i = 1; i < num1.size(); ++i)
             {
                 if (m > num1[i])
                     m = num1[i];

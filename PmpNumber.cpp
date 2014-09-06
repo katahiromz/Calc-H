@@ -64,9 +64,9 @@ namespace pmp
         if (is_v() || num.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < size(); ++i)
+            for (size_t i = 0; i < size(); ++i)
             {
-                for (std::size_t j = 0; j < num.size(); ++j)
+                for (size_t j = 0; j < num.size(); ++j)
                 {
                     Number tmp((*this)[i]);
                     tmp += num[j];
@@ -176,9 +176,9 @@ namespace pmp
         if (is_v() || num.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < size(); ++i)
+            for (size_t i = 0; i < size(); ++i)
             {
-                for (std::size_t j = 0; j < num.size(); ++j)
+                for (size_t j = 0; j < num.size(); ++j)
                 {
                     Number tmp((*this)[i]);
                     tmp -= num[j];
@@ -288,9 +288,9 @@ namespace pmp
         if (is_v() || num.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < size(); ++i)
+            for (size_t i = 0; i < size(); ++i)
             {
-                for (std::size_t j = 0; j < num.size(); ++j)
+                for (size_t j = 0; j < num.size(); ++j)
                 {
                     Number tmp((*this)[i]);
                     tmp *= num[j];
@@ -400,9 +400,9 @@ namespace pmp
         if (is_v() || num.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < size(); ++i)
+            for (size_t i = 0; i < size(); ++i)
             {
-                for (std::size_t j = 0; j < num.size(); ++j)
+                for (size_t j = 0; j < num.size(); ++j)
                 {
                     Number tmp((*this)[i]);
                     tmp /= num[j];
@@ -539,9 +539,9 @@ namespace pmp
         if (is_v() || num.is_v())
         {
             vector_type vec;
-            for (std::size_t i = 0; i < size(); ++i)
+            for (size_t i = 0; i < size(); ++i)
             {
-                for (std::size_t j = 0; j < num.size(); ++j)
+                for (size_t j = 0; j < num.size(); ++j)
                 {
                     Number tmp((*this)[i]);
                     tmp %= num[j];
@@ -621,7 +621,7 @@ namespace pmp
 
 #ifndef PMP_DISABLE_VECTOR
         case Number::VECTOR:
-            for (std::size_t i = 0; i < size(); ++i)
+            for (size_t i = 0; i < size(); ++i)
             {
                 if (!get_v()[i].is_zero())
                     return false;
@@ -655,7 +655,7 @@ namespace pmp
                 if (!empty())
                 {
                     s += get_v()[0].str();
-                    for (std::size_t i = 1; i < size(); ++i)
+                    for (size_t i = 1; i < size(); ++i)
                     {
                         s += ", ";
                         s += get_v()[i].str();
@@ -691,7 +691,7 @@ namespace pmp
                 if (!empty())
                 {
                     s += get_v()[0].str(precision);
-                    for (std::size_t i = 1; i < size(); ++i)
+                    for (size_t i = 1; i < size(); ++i)
                     {
                         s += ", ";
                         s += get_v()[i].str(precision);
@@ -747,7 +747,7 @@ namespace pmp
                 if (!empty())
                 {
                     s += get_v()[0].str(precision, flags);
-                    for (std::size_t i = 1; i < size(); ++i)
+                    for (size_t i = 1; i < size(); ++i)
                     {
                         s += ", ";
                         s += get_v()[i].str(precision, flags);
@@ -878,9 +878,9 @@ namespace pmp
         if (is_v() || num.is_v())
         {
             comparisons[0] = comparisons[1] = comparisons[2] = true;
-            for (std::size_t i = 0; i < size(); ++i)
+            for (size_t i = 0; i < size(); ++i)
             {
-                for (std::size_t j = 0; j < num.size(); ++j)
+                for (size_t j = 0; j < num.size(); ++j)
                 {
                     bool comps[3];
                     (*this)[i].compare(num[i], comps);
@@ -1007,7 +1007,7 @@ namespace pmp
 
 #ifndef PMP_DISABLE_VECTOR
         case Number::VECTOR:
-            for (std::size_t i = 0; i < get_v().size(); ++i)
+            for (size_t i = 0; i < get_v().size(); ++i)
                 get_v()[i].trim(precision);
             if (size() == 1)
                 assign(get_v()[0]);
@@ -1023,7 +1023,7 @@ namespace pmp
     /*static*/ integer_type f_to_i(const floating_type& f)
     {
         std::string str = f.str(0, std::ios_base::fixed);
-        std::size_t i = str.find('.');
+        size_t i = str.find('.');
         if (i != std::string::npos)
             str = str.substr(0, i);
         return integer_type(str);
@@ -1075,7 +1075,7 @@ namespace pmp
         case Number::VECTOR:
             {
                 vector_type v = num1.get_v();
-                for (std::size_t i = 0; i < v.size(); ++i)
+                for (size_t i = 0; i < v.size(); ++i)
                 {
                     v[i] = abs(v[i]);
                 }
@@ -1115,7 +1115,7 @@ namespace pmp
         case Number::VECTOR:
             {
                 vector_type v = num1.get_v();
-                for (std::size_t i = 0; i < v.size(); ++i)
+                for (size_t i = 0; i < v.size(); ++i)
                 {
                     v[i] = abs(v[i]);
                 }
@@ -1149,7 +1149,7 @@ namespace pmp
         case Number::VECTOR:
             {
                 vector_type v = num1.get_v();
-                for (std::size_t i = 0; i < v.size(); ++i)
+                for (size_t i = 0; i < v.size(); ++i)
                 {
                     v[i] = floor(v[i]);
                 }
@@ -1183,7 +1183,7 @@ namespace pmp
         case Number::VECTOR:
             {
                 vector_type v = num1.get_v();
-                for (std::size_t i = 0; i < v.size(); ++i)
+                for (size_t i = 0; i < v.size(); ++i)
                 {
                     v[i] = ceil(v[i]);
                 }

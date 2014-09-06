@@ -3,8 +3,6 @@
 #ifndef HPARSER_AST_H_
 #define HPARSER_AST_H_
 
-#include "Ndrr1D.hpp"
-
 namespace Calc_H
 {
     struct Node;

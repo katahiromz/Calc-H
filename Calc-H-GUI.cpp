@@ -9,8 +9,8 @@ HBRUSH      ch_hbrBack = NULL;
 bool        ch_is_running = false;
 
 std::vector<std::string> ch_history;
-std::size_t              ch_history_index = 0;
-std::size_t              ch_history_count = 0;
+size_t              ch_history_index = 0;
+size_t              ch_history_count = 0;
 
 // hook for Ctrl+A
 HHOOK ch_hCtrlAHook = NULL;

@@ -5,6 +5,7 @@ Release
 *.sdf
 *.opensdf
 *.suo
+*.user
 HParser.h
 FTCHECK.BAT
 caper.log
