@@ -1,4 +1,4 @@
-
+/////////////////////////////////////////////////////////////////////////////
 // Ndrr1D.cpp --- The one-dimensional Numeric Domains/Ranges Resolver
 // See file "ReadMe.txt" and "License.txt".
 /////////////////////////////////////////////////////////////////////////////
@@ -1280,6 +1280,11 @@ bool Domain::Includes(const Domain& d) const
     return d;
 }
 
+void Domain::Intersect(const Aspect& a)
+{
+    m_aspect.Intersect(a);
+}
+
 void Domain::Intersect(const Range& r)
 {
     size_t i, siz = m_ranges.size();
@@ -1357,17 +1362,25 @@ bool Domain::GetValues(std::vector<number_type>& values) const
     }
     else
     {
-        if (*pnLBound == *pnUBound && has_min && has_max)
+        size_t i, siz = m_ranges.size();
+        for (i = 0; i < siz; ++i)
         {
-            if (!m_aspect.Contains(*pnLBound))
+            Range& r = *m_ranges[i].get();
+            pnLBound = r.GetLBound(has_min);
+            pnUBound = r.GetUBound(has_max);
+            if (*pnLBound == *pnUBound)
             {
-                return true;
+                if (has_min && has_max)
+                {
+                    values.push_back(*pnLBound);
+                }
             }
-
-            values.push_back(*pnLBound);
-            return true;
+            else
+            {
+                return false;
+            }
         }
-        return false;
+        return true;
     }
 }
 
@@ -1884,6 +1897,15 @@ bool Domains::Contains(const number_type& value) const
     return false;
 }
 
+void Domains::Intersect(const Aspect& a)
+{
+    size_t i, siz = size();
+    for (i = 0; i < siz; ++i)
+    {
+        ((*this)[i]).get()->Intersect(a);
+    }
+}
+
 void Domains::Intersect(const Range& r)
 {
     size_t i, siz = size();
@@ -2139,100 +2161,9 @@ retry2:
             Domain& d2 = *(*this)[j].get();
             Aspect& a1 = d1.m_aspect;
             Aspect& a2 = d2.m_aspect;
-            if (a1 != a2)
-                continue;
-
-            // calculate the union
-            number_type *pnLBound = NULL, *pnUBound = NULL;
-            bool has_min = false, has_max = false;
-            bool has_min1, has_max1, has_min2, has_max2;
-
-            number_type *pnLBound1 = d1.GetLBound(has_min1);
-            number_type *pnLBound2 = d2.GetLBound(has_min2);
-            if (pnLBound1 && pnLBound2)
+            if (a1 == a2)
             {
-                if (*pnLBound1 < *pnLBound2)
-                {
-                    pnLBound = pnLBound1;
-                    has_min = has_min1;
-                }
-                else if (*pnLBound1 > *pnLBound2)
-                {
-                    pnLBound = pnLBound2;
-                    has_min = has_min2;
-                }
-                else
-                {
-                    pnLBound = pnLBound2;
-                    has_min = has_min1 || has_min2;
-                }
-            }
-
-            number_type *pnUBound1 = d1.GetUBound(has_max1);
-            number_type *pnUBound2 = d2.GetUBound(has_max2);
-            if (pnUBound1 && pnUBound2)
-            {
-                if (*pnUBound1 < *pnUBound2)
-                {
-                    pnUBound = pnUBound2;
-                    has_max = has_max2;
-                }
-                else if (*pnUBound1 > *pnUBound2)
-                {
-                    pnUBound = pnUBound1;
-                    has_max = has_max1;
-                }
-                else
-                {
-                    pnUBound = pnUBound2;
-                    has_max = has_max1 || has_max2;
-                }
-            }
-
-            // unite
-            if (pnLBound && pnUBound)
-            {
-                if (*pnLBound < *pnUBound)
-                {
-                    Domain *d = new Domain(a1, has_min, has_max, pnLBound, pnUBound);
-                    (*this)[i] = shared_ptr<Domain>(d);
-                    erase(begin() + j);
-                    goto retry2;
-                }
-                else if (*pnLBound == *pnUBound && has_min && has_max)
-                {
-                    Domain *d = new Domain(a1, *pnLBound);
-                    (*this)[i] = shared_ptr<Domain>(d);
-                    erase(begin() + j);
-                    goto retry2;
-                }
-            }
-            else if (pnLBound || pnUBound)
-            {
-                Domain *d = new Domain(a1, has_min, has_max, pnLBound, pnUBound);
-                (*this)[i] = shared_ptr<Domain>(d);
-                erase(begin() + j);
-                goto retry2;
-            }
-            else
-            {
-                continue;
-            }
-
-            // unite
-            if (pnLBound1 && pnUBound2 && *pnLBound1 == *pnUBound2 &&
-                (has_min1 || has_max2))
-            {
-                Domain *d = new Domain(a1, has_min2, has_max1, pnLBound2, pnUBound1);
-                (*this)[i] = shared_ptr<Domain>(d);
-                erase(begin() + j);
-                goto retry2;
-            }
-            else if (pnUBound1 && pnLBound2 && *pnUBound1 == *pnLBound2 &&
-                     (has_max1 || has_min2))
-            {
-                Domain *d = new Domain(a1, has_min1, has_max2, pnLBound1, pnUBound2);
-                (*this)[i] = shared_ptr<Domain>(d);
+                d1.m_ranges.Union(d2.m_ranges);
                 erase(begin() + j);
                 goto retry2;
             }
@@ -2595,6 +2526,21 @@ bool Domains::Equal(const Domains& d) const
             Ranges ranges2(true, true, &n1, &n2);
             assert(ranges2.Includes(ranges1));
             assert(!ranges1.Includes(ranges2));
+        }
+
+        //
+        // Domains::Union test
+        //
+        {
+            Domains domains1;
+            domains1.Union(Domain(-5));
+            domains1.Union(Domain(-1));
+            domains1.Union(Domain(1));
+            domains1.Union(Domain(5));
+            std::vector<number_type> values;
+            std::cout << domains1 << std::endl;
+            assert(domains1.GetValues(values));
+            assert(values.size() == 4);
         }
 
         //

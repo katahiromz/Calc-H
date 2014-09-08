@@ -25,6 +25,7 @@
 %token T_ATANH<TokenValue>;
 %token T_AVERAGE<TokenValue>;
 %token T_BAI<TokenValue>;
+%token T_BAISUU<TokenValue>;
 %token T_BUNNO<TokenValue>;
 %token T_BUNSUU<TokenValue>;
 %token T_CHIISAI<TokenValue>;
@@ -118,8 +119,11 @@
 %token T_MONO<TokenValue>;
 %token T_MURYOUTAISUU<TokenValue>;
 %token T_NANA<TokenValue>;
+%token T_NANOHA<TokenValue>;    // replaced
 %token T_NAYUTA<TokenValue>;
 %token T_NI<TokenValue>;
+%token T_NIHITOSHII<TokenValue>;
+%token T_NIHITOSHIKU<TokenValue>;
 %token T_NO1<TokenValue>;       // no ... jou
 %token T_NO2<TokenValue>;       // no wa/seki/sa/shou
 %token T_NO3<TokenValue>;       // no bai
@@ -178,7 +182,6 @@
 %token T_WAKARAN<TokenValue>;
 %token T_WARARERU<TokenValue>;
 %token T_WARIBIKI<TokenValue>;
-%token T_WARIKIRENAI<TokenValue>;
 %token T_WARIKIRU<TokenValue>;
 %token T_WARIMASHI<TokenValue>;
 %token T_WARIZAN<TokenValue>;
@@ -188,6 +191,7 @@
 %token T_WATTE<TokenValue>;
 %token T_WO1<TokenValue>;       // do object
 %token T_WO2<TokenValue>;       // do verb
+%token T_YAKUSUU<TokenValue>;
 %token T_YAO<TokenValue>;       // replaced
 %token T_YON<TokenValue>;
 %token T_YORI<TokenValue>;
@@ -233,12 +237,6 @@ sentence<Sentence>
     | [DoSent1] mono(0) T_HA T_PERIOD
     | [DoSent1] mono(0) T_WO1 oshiete T_PERIOD
     | [DoSent1] mono(0) T_PERIOD
-    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRU T_KANA oshiete T_PERIOD
-    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRU T_KANA T_PERIOD
-    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRU T_PERIOD
-    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRENAI T_KANA oshiete T_PERIOD
-    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRENAI T_KANA T_PERIOD
-    | [DoSent7] mono(0) T_HA expression(1) T_DE T_WARIKIRENAI T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KANA T_WO1 oshiete T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KANA wakaran T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KANA oshiete T_PERIOD
@@ -538,6 +536,7 @@ mono<Mono>
     | [DoMono4] expression_list(0) T_NO2 T_QUOT
     | [DoMono75] expression_list(0) T_NO2 vector_function(1)
     | [DoMono75] expression_list(0) T_NOUCHI vector_function(1)
+    | [DoMono84] expression_list(0) T_NOUCHI domains(1)
     | [DoMono80] domains(0) T_NO2 T_SUM
     | [DoMono81] domains(0) T_NO2 T_PROD
     | [DoMono5] mono(0) T_NI T_COMMA expression(1) T_WO1 T_TASHITA T_MONO
@@ -575,7 +574,7 @@ mono<Mono>
     | [DoMono64] mono(0) T_NO4 T_WARIZAN
     | [DoMono64] mono(0) T_NO2 T_QUOT
     | [DoMono76] mono(0) T_NO2 T_QUOT T_TO1 T_AMARI
-    | [DoMono78] mono(0) T_NO2 T_HEIHOUKON
+    | [DoMono78] mono(0) T_NO4 T_HEIHOUKON
     | [DoMono79] mono(0) T_NO4 T_KAIJOU
     | [DoMono9] mono(0) T_NO4 T_KEISAN T_WO2 T_SHITA T_MONO
     | [DoMono9] mono(0) T_NO4 T_KEISAN       T_SHITA T_MONO
@@ -731,6 +730,7 @@ factor<Fact>
     | [DoFact2] factor(0) T_NO6 T_HEIHOU
     | [DoFact4] factor(0) T_NO6 T_RIPPOU
     | [DoFact5] factor(0) T_NO6 T_KAIJOU
+    | [DoFact9] factor(0) T_NO6 T_HEIHOUKON
     | [DoFact6] factor(0) T_NO8 primary(1) T_PERCENT
     | [DoFact7] factor(0) T_NO8 primary(1) T_WARIBIKI
     | [DoFact8] factor(0) T_NO8 primary(1) T_WARIMASHI
@@ -1057,22 +1057,14 @@ domain<Dom>
     | [DoDom5] domain(0) T_NOUCHI domain(1)
     ;
 
-primary_domain<PrimDom>
-    : [DoPrimDom1] T_SEINO primary_domain(0)
-    | [DoPrimDom2] T_FUNO primary_domain(0)
-    | [DoPrimDom3] T_SHIZENSUU
-    | [DoPrimDom4] T_SEISUU
-    | [DoPrimDom5] T_GUUSUU
-    | [DoPrimDom6] T_KISUU
-    | [DoPrimDom7] T_JISSUU
-    | [DoPrimDom7] T_MONO
-    | [DoPrimDom8] T_SOSUU
-    ;
-
-constraint<Cnstr>
-    : [DoCnstr1] constraint(0) T_MATAHA and_constraint(1)
-    | [DoCnstr1] constraint(0) T_KA and_constraint(1)
-    | [DoCnstr2] and_constraint(0)
+primary_constraint<PrimCnstr>
+    : [DoPrimCnstr1] expression(0) T_IJOU
+    | [DoPrimCnstr2] expression(0) T_IKA
+    | [DoPrimCnstr3] expression(0) T_YORI T_CHIISAI
+    | [DoPrimCnstr3] expression(0) T_MIMAN
+    | [DoPrimCnstr4] expression(0) T_YORI T_OOKII
+    | [DoPrimCnstr6] expression(0) T_NIHITOSHII	//
+    | [DoPrimCnstr5] mono(0) T_DE T_WARIKIRU
     ;
 
 and_constraint<AndCnstr>
@@ -1092,14 +1084,27 @@ and_constraint<AndCnstr>
     | [DoAndCnstr3] expression(0) T_MIMAN                      and_constraint(1)
     | [DoAndCnstr4] expression(0) T_YORI T_OOKIKU T_KATSU      and_constraint(1)
     | [DoAndCnstr4] expression(0) T_YORI T_OOKIKU              and_constraint(1)
+    | [DoAndCnstr7] expression(0) T_NIHITOSHIKU                and_constraint(1) ///
     | [DoAndCnstr5] T_L_PAREN constraint(0) T_R_PAREN
     | [DoAndCnstr6] primary_constraint(0)
     ;
 
-primary_constraint<PrimCnstr>
-    : [DoPrimCnstr1] expression(0) T_IJOU
-    | [DoPrimCnstr2] expression(0) T_IKA
-    | [DoPrimCnstr3] expression(0) T_YORI T_CHIISAI
-    | [DoPrimCnstr3] expression(0) T_MIMAN
-    | [DoPrimCnstr4] expression(0) T_YORI T_OOKII
+constraint<Cnstr>
+    : [DoCnstr1] constraint(0) T_MATAHA and_constraint(1)
+    | [DoCnstr1] constraint(0) T_KA and_constraint(1)
+    | [DoCnstr2] and_constraint(0)
+    ;
+
+primary_domain<PrimDom>
+    : [DoPrimDom1] T_SEINO primary_domain(0)
+    | [DoPrimDom2] T_FUNO primary_domain(0)
+    | [DoPrimDom3] T_SHIZENSUU
+    | [DoPrimDom4] T_SEISUU
+    | [DoPrimDom5] T_GUUSUU
+    | [DoPrimDom6] T_KISUU
+    | [DoPrimDom7] T_JISSUU
+    | [DoPrimDom7] T_MONO
+    | [DoPrimDom8] T_SOSUU
+    | [DoPrimDom9] number(0) T_NO2 T_BAISUU
+    | [DoPrimDom10] number(0) T_NO2 T_YAKUSUU
     ;

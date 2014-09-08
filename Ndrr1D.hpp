@@ -42,7 +42,6 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-
 namespace Ndrr1D
 {
     //
@@ -240,6 +239,7 @@ namespace Ndrr1D
         bool entire() const;
         void clear();
 
+        void Intersect(const Aspect& a);
         void Intersect(const Range& r);
         void Intersect(const Domain& d);
         void Optimize();
@@ -277,11 +277,14 @@ namespace Ndrr1D
     //
     // Ndrr1D::Domains
     //
-    struct Domains : std::vector<shared_ptr<Domain> >
+    struct Domains : public std::vector<shared_ptr<Domain> >
     {
         Domains() { }
-
-        Domains(const Domains& domains) : std::vector<shared_ptr<Domain> >(domains)
+        Domains(const number_type& value)         { add(new Domain(value)); }
+        Domains(const Aspect& a, const Ranges& r) { add(new Domain(a, r));  }
+        Domains(const Domain& dom)                { add(new Domain(dom));   }
+        Domains(const Domains& domains) :
+            std::vector<shared_ptr<Domain> >(domains)
         { }
 
         Domains& operator=(const Domains& domains)
@@ -305,6 +308,7 @@ namespace Ndrr1D
         //       Domains::Includes(const Domains& domains) call.
         bool Includes(const Domains& domains) const;
         bool Contains(const number_type& value) const;
+        void Intersect(const Aspect& a);
         void Intersect(const Range& r);
         void Intersect(const Domain& domain);
         void Intersect(const Domains& domains);

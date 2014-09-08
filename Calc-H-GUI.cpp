@@ -128,11 +128,26 @@ ChEditWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     }
 }
 
+static const size_t ch_max_size = 16777216;
+
 void ChAddOutput(HWND hwnd, const char *text)
 {
     std::string str(text);
     ChReplaceString(str, "\n", "\r\n");
     ChReplaceString(str, "\r\r", "\r");
+    if (str.size() > ch_max_size)
+    {
+        size_t excess = str.size() - ch_max_size;
+        size_t i = 0, j;
+        do
+        {
+            j = str.find("\r\n", i);
+            if (j == std::string::npos)
+                break;
+            i = j + 1;
+        } while (j < excess);
+        str = str.substr(i + 2);
+    }
     ::SendDlgItemMessageA(hwnd, edt1, WM_SETREDRAW, FALSE, 0);
     int cch = ::GetWindowTextLengthA(::GetDlgItem(hwnd, edt1));
     ::SendDlgItemMessageA(hwnd, edt1, EM_SETSEL, cch, cch);

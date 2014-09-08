@@ -33,6 +33,7 @@ static const char * const ch_not_hikizan = "ひきざんではありません。";
 static const char * const ch_not_warizan = "わりざんではありません。";
 static const char * const ch_right = "はい、そうです。";
 static const char * const ch_wrong = "いいえ、ちがいます。";
+static const char * const ch_indeterminate = "どちらともいえません。";
 
 using namespace Calc_H;
 using namespace Ndrr1D;
@@ -375,6 +376,17 @@ CH_Value ChCalcFact(const shared_ptr<Fact>& fact)
         v1 += v1 * v2 / 10;
         return v1;
 
+    case Fact::HEIHOUKON:
+        {
+            v1 = pmp::sqrt(ChCalcFact(fact->m_fact));
+            pmp::vector_type vec;
+            vec.push_back(-v1);
+            vec.push_back(v1);
+            std::sort(vec.begin(), vec.end());
+            std::unique(vec.begin(), vec.end());
+            return CH_Value(vec);
+        }
+
     default:
         assert(0);
         return 0;
@@ -436,6 +448,8 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
 {
     CH_Value v1, v2, v3;
     std::vector<CH_Value> values;
+    pmp::Number num;
+    pmp::vector_type vec;
 
     switch (mono->m_type)
     {
@@ -829,10 +843,23 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
         v1 += v1 * v2 / 10;
         return v1;
 
+    case Mono::EXPRLIST_NOUCHI_DOMS:
+        ChNumberFromExprList(num, mono->m_exprlist);
+        num.trim();
+        assert(mono->m_doms->m_domains);
+        for (size_t i = 0; i < num.size(); ++i)
+        {
+            if (mono->m_doms->m_domains->Contains(num[i]))
+            {
+                vec.push_back(num[i]);
+            }
+        }
+        return pmp::Number(vec);
+
     default:
         assert(0);
-        return 0;
     }
+    return 0;
 }
 
 CH_Value ChCalcShite(const shared_ptr<Shite>& shite)
@@ -1037,40 +1064,11 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
     case Sentence::SHITE:
         return ChCalcShite(sentence->m_shite);
 
-    case Sentence::WARIKIRU:
-        v1 = ChCalcMono(sentence->m_mono);
-        v2 = ChCalcExpr(sentence->m_expr);
-        v1 %= v2;
-        v1.trim(ch_precision);
-        if (v1.is_zero())
-            ChSetMessage("わりきれます。");
-        else
-            ChSetMessage("わりきれません。");
-        return 0;
-
     case Sentence::DOMS_IS_DOMS:
         assert(sentence->m_doms1);
         assert(sentence->m_doms1->m_domains);
         assert(sentence->m_doms2);
         assert(sentence->m_doms2->m_domains);
-        if (sentence->m_doms1->m_domains->GetValues(values))
-        {
-            bool flag = true;
-            size_t i, siz = values.size();
-            for (i = 0; i < siz; ++i)
-            {
-                if (!sentence->m_doms2->m_domains->Contains(values[i]))
-                {
-                    flag = false;
-                    break;
-                }
-            }
-            if (flag)
-                ChSetMessage(ch_right);
-            else
-                ChSetMessage(ch_wrong);
-            break;
-        }
         sentence->m_doms2->m_domains.get()->FixBeforeIncludes(
             *sentence->m_doms1->m_domains.get());
         #ifdef _DEBUG
@@ -1078,9 +1076,40 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
             std::cout << *sentence->m_doms2->m_domains.get() << std::endl;
         #endif
         if (sentence->m_doms2->m_domains->Includes(*sentence->m_doms1->m_domains.get()))
+        {
             ChSetMessage(ch_right);
+        }
         else
-            ChSetMessage(ch_wrong);
+        {
+            if (sentence->m_doms1->m_domains->GetValues(values))
+            {
+                bool flag = true;
+                size_t i, siz = values.size();
+                for (i = 0; i < siz; ++i)
+                {
+                    if (!sentence->m_doms2->m_domains->Contains(values[i]))
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag)
+                    ChSetMessage(ch_right);
+                else
+                    ChSetMessage(ch_wrong);
+            }
+            else
+            {
+                Domains *d = Domains::Intersect(
+                    sentence->m_doms2->m_domains.get(),
+                    sentence->m_doms1->m_domains.get());
+                if (d->empty())
+                    ChSetMessage(ch_wrong);
+                else
+                    ChSetMessage(ch_indeterminate);
+                delete d;
+            }
+        }
         break;
 
     case Sentence::DOMS_IS_CNSTR:
@@ -1091,9 +1120,40 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
         sentence->m_cnstr->m_domains->FixBeforeIncludes(
             *sentence->m_doms1->m_domains.get());
         if (sentence->m_cnstr->m_domains->Includes(*sentence->m_doms1->m_domains.get()))
+        {
             ChSetMessage(ch_right);
+        }
         else
-            ChSetMessage(ch_wrong);
+        {
+            if (sentence->m_doms1->m_domains->GetValues(values))
+            {
+                bool flag = true;
+                size_t i, siz = values.size();
+                for (i = 0; i < siz; ++i)
+                {
+                    if (!sentence->m_cnstr->m_domains->Contains(values[i]))
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag)
+                    ChSetMessage(ch_right);
+                else
+                    ChSetMessage(ch_wrong);
+            }
+            else
+            {
+                Domains *d = Domains::Intersect(
+                    sentence->m_cnstr->m_domains.get(),
+                    sentence->m_doms1->m_domains.get());
+                if (d->empty())
+                    ChSetMessage(ch_wrong);
+                else
+                    ChSetMessage(ch_indeterminate);
+                delete d;
+            }
+        }
         break;
 
     case Sentence::MONO_IS_DOMS:
@@ -1380,6 +1440,67 @@ void ChAnalyzeDomainsOfPrimDom(
         domains.get()->Intersect(*d);
         break;
 
+    case PrimDom::BAISUU:
+        {
+            CH_Value v = ChCalcNum(primdom->m_num);
+            v.trim();
+            if (v.is_i())
+            {
+                if (v < 0)
+                    v = -v;
+
+                if (v.is_zero())
+                {
+                    domains.get()->Intersect(Domain(CH_Value(0)));
+                }
+                else
+                {
+                    integer_type i1 = v.get_i();
+                    integer_type i2 = 0;
+                    domains.get()->Intersect(Aspect(&i1, &i2));
+                }
+            }
+            else
+            {
+                ChSetMessage("せいすうではないかずのばいすうはていぎされていません。");
+            }
+        }
+        break;
+
+    case PrimDom::YAKUSUU:
+        {
+            CH_Value v = ChCalcNum(primdom->m_num);
+            v.trim();
+            if (v.is_i())
+            {
+                if (v < 0)
+                    v = -v;
+
+                if (v.is_zero())
+                {
+                    ChSetMessage("ぜろのやくすうはていぎされていません。");
+                }
+                else
+                {
+                    Domains d;
+                    for (CH_Value n = 1; n <= v; n += 1)
+                    {
+                        if ((v % n).is_zero())
+                        {
+                            d.Union(Domain(n));
+                            d.Union(Domain(-n));
+                        }
+                    }
+                    domains.get()->Intersect(d);
+                }
+            }
+            else
+            {
+                ChSetMessage("せいすうではないかずのやくすうはていぎされていません。");
+            }
+        }
+        break;
+
     default:
         assert(0);
     }
@@ -1426,6 +1547,38 @@ void ChAnalyzeDomainsOfPrimCnstr(
         v.trim();
         r = new Range(false, false, &v, NULL);
         domains.get()->Intersect(*r);
+        break;
+
+    case PrimCnstr::WARIKIRU:
+        ChAnalyzeMono(primcnstr->m_mono);
+        v = ChCalcMono(primcnstr->m_mono);
+        v.trim();
+        if (v.is_i())
+        {
+            if (v < 0)
+                v = -v;
+            if (v.is_zero())
+            {
+                ChSetMessage("けいさんできません。");
+            }
+            else
+            {
+                Ndrr1D::integer_type i1(v.get_i());
+                Ndrr1D::integer_type i2(0);
+                domains.get()->Intersect(Aspect(&i1, &i2));
+            }
+        }
+        else
+        {
+            ChSetMessage("わるかずがせいすうではありません。");
+        }
+        break;
+
+    case PrimCnstr::HITOSHII:
+        ChAnalyzeExpr(primcnstr->m_expr);
+        v = ChCalcExpr(primcnstr->m_expr);
+        v.trim();
+        domains.get()->Intersect(Domain(v));
         break;
 
     default:
@@ -1492,6 +1645,14 @@ void ChAnalyzeDomainsOfAndCnstr(
         ChAnalyzeDomainsOfPrimCnstr(domains, andcnstr->m_primcnstr);
         break;
 
+    case AndCnstr::HITOSHIKU:
+        ChAnalyzeExpr(andcnstr->m_expr);
+        v = ChCalcExpr(andcnstr->m_expr);
+        v.trim();
+        domains.get()->Intersect(Domain(v));
+        ChAnalyzeDomainsOfAndCnstr(domains, andcnstr->m_andcnstr);
+        break;
+
     default:
         assert(0);
     }
@@ -1554,31 +1715,12 @@ void ChAnalyzeAndCnstr(shared_ptr<AndCnstr>& andcnstr)
     switch (andcnstr->m_type)
     {
     case AndCnstr::IJOU:
-        ChAnalyzeExpr(andcnstr->m_expr);
-        ChAnalyzeAndCnstr(andcnstr->m_andcnstr);
-        break;
-
     case AndCnstr::IKA:
-        ChAnalyzeExpr(andcnstr->m_expr);
-        ChAnalyzeAndCnstr(andcnstr->m_andcnstr);
-        break;
-
     case AndCnstr::CHIISAI:
-        ChAnalyzeExpr(andcnstr->m_expr);
-        ChAnalyzeAndCnstr(andcnstr->m_andcnstr);
-        break;
-
     case AndCnstr::OOKII:
-        ChAnalyzeExpr(andcnstr->m_expr);
-        ChAnalyzeAndCnstr(andcnstr->m_andcnstr);
-        break;
-
     case AndCnstr::CNSTR_ONLY:
-        ChAnalyzeExpr(andcnstr->m_expr);
-        ChAnalyzeAndCnstr(andcnstr->m_andcnstr);
-        break;
-
     case AndCnstr::PRIMCNSTR_ONLY:
+    case AndCnstr::HITOSHIKU:
         ChAnalyzeExpr(andcnstr->m_expr);
         ChAnalyzeAndCnstr(andcnstr->m_andcnstr);
         break;
@@ -1630,6 +1772,8 @@ void ChAnalyzePrimDom(shared_ptr<PrimDom>& primdom)
     case PrimDom::GUUSUU:
     case PrimDom::KISUU:
     case PrimDom::JISSUU:
+    case PrimDom::BAISUU:
+    case PrimDom::YAKUSUU:
         break;
 
     default:
@@ -5239,6 +5383,11 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         ChAnalyzeExpr(mono->m_expr);
         break;
 
+    case Mono::EXPRLIST_NOUCHI_DOMS:
+        ChAnalyzeExprList(mono->m_exprlist);
+        ChAnalyzeDoms(mono->m_doms);
+        break;
+
     default:
         break;
     }
@@ -5302,6 +5451,7 @@ void ChAnalyzeFact(shared_ptr<Fact>& fact)
     case Fact::POW2:
     case Fact::POW3:
     case Fact::KAIJOU:
+    case Fact::HEIHOUKON:
         ChAnalyzeFact(fact->m_fact);
         break;
 
@@ -5454,11 +5604,6 @@ void ChAnalyzeSentence(shared_ptr<Sentence>& sentence)
 
     case Sentence::SHITE:
         ChAnalyzeShite(sentence->m_shite);
-        break;
-
-    case Sentence::WARIKIRU:
-        ChAnalyzeMono(sentence->m_mono);
-        ChAnalyzeExpr(sentence->m_expr);
         break;
 
     case Sentence::DOMS_IS_DOMS:

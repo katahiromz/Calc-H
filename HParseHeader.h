@@ -35,7 +35,7 @@ namespace Calc_H
             for (it = infos.begin(); it != end2; ++it)
             {
                 #if 0
-                    std::cerr << scanner.token_to_string(*it) << std::endl;
+                    std::cout << scanner.token_to_string(*it) << std::endl;
                 #endif
                 if (parser.post(it->m_token, make_shared<TokenValue>(*it)))
                 {

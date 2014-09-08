@@ -50,7 +50,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent1(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent1" << std::endl;
+                std::cout << "DoSent1" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::MONO;
@@ -61,7 +61,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent3(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent3" << std::endl;
+                std::cout << "DoSent3" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::SURUTO;
@@ -72,7 +72,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent4(shared_ptr<Shite>& shite)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent4" << std::endl;
+                std::cout << "DoSent4" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::SHITE;
@@ -83,29 +83,17 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent6()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent6" << std::endl;
+                std::cout << "DoSent6" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::EMPTY;
             return shared_ptr<Sentence>(s);
         }
 
-        shared_ptr<Sentence> DoSent7(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
-        {
-            #ifdef DEEPDEBUG
-                std::cerr << "DoSent7" << std::endl;
-            #endif
-            Sentence *s = new Sentence;
-            s->m_type = Sentence::WARIKIRU;
-            s->m_mono = mono;
-            s->m_expr = expr;
-            return shared_ptr<Sentence>(s);
-        }
-
         shared_ptr<Sentence> DoSent8(shared_ptr<Doms>& doms1, shared_ptr<Doms>& doms2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent8" << std::endl;
+                std::cout << "DoSent8" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::DOMS_IS_DOMS;
@@ -117,7 +105,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent9(shared_ptr<Doms>& doms1, shared_ptr<Cnstr>& cnstr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent9" << std::endl;
+                std::cout << "DoSent9" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::DOMS_IS_CNSTR;
@@ -129,7 +117,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent10(shared_ptr<Mono>& mono, shared_ptr<Doms>& doms2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent10" << std::endl;
+                std::cout << "DoSent10" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::MONO_IS_DOMS;
@@ -141,7 +129,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent11(shared_ptr<Mono>& mono, shared_ptr<Cnstr>& cnstr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent11" << std::endl;
+                std::cout << "DoSent11" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::MONO_IS_CNSTR;
@@ -153,7 +141,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent12(shared_ptr<Mono>& mono, shared_ptr<Cnstr>& cnstr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent12" << std::endl;
+                std::cout << "DoSent12" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::MONO_IS_CNSTRED_BUNSUU;
@@ -165,7 +153,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent13(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent13" << std::endl;
+                std::cout << "DoSent13" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::MONO_IS_BUNSUU;
@@ -176,7 +164,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent14(shared_ptr<Mono>& mono, shared_ptr<Cnstr>& cnstr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent14" << std::endl;
+                std::cout << "DoSent14" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::MONO_IS_CNSTRED_SHOUSUU;
@@ -188,7 +176,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent15(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent15" << std::endl;
+                std::cout << "DoSent15" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::MONO_IS_SHOUSUU;
@@ -199,7 +187,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent16(shared_ptr<Mono>& mono1, shared_ptr<Mono>& mono2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent16" << std::endl;
+                std::cout << "DoSent16" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::MONO_IS_MONO;
@@ -211,7 +199,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent17(shared_ptr<Sentence>& sentence)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent17" << std::endl;
+                std::cout << "DoSent17" << std::endl;
             #endif
             return sentence;
         }
@@ -219,7 +207,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent18(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent18" << std::endl;
+                std::cout << "DoSent18" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::MONO_IS_TASHIZAN;
@@ -230,7 +218,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent19(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent19" << std::endl;
+                std::cout << "DoSent19" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::MONO_IS_HIKIZAN;
@@ -241,7 +229,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent20(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent20" << std::endl;
+                std::cout << "DoSent20" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::MONO_IS_KAKEZAN;
@@ -252,7 +240,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent21(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent21" << std::endl;
+                std::cout << "DoSent21" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::MONO_IS_WARIZAN;
@@ -263,7 +251,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent22(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent22" << std::endl;
+                std::cout << "DoSent22" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::SURUTO_TASHIZAN;
@@ -274,7 +262,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent23(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent23" << std::endl;
+                std::cout << "DoSent23" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::SURUTO_HIKIZAN;
@@ -285,7 +273,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent24(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent24" << std::endl;
+                std::cout << "DoSent24" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::SURUTO_KAKEZAN;
@@ -296,7 +284,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent25(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent25" << std::endl;
+                std::cout << "DoSent25" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::SURUTO_WARIZAN;
@@ -307,7 +295,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent26(shared_ptr<Doms>& doms1, shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent26" << std::endl;
+                std::cout << "DoSent26" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::DOMS_IS_EXPRLIST;
@@ -319,7 +307,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent27(shared_ptr<Doms>& doms1, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent27" << std::endl;
+                std::cout << "DoSent27" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::DOMS_IS_EXPR;
@@ -331,7 +319,7 @@ namespace Calc_H
         shared_ptr<Sentence> DoSent28(shared_ptr<Doms>& doms1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSent28" << std::endl;
+                std::cout << "DoSent28" << std::endl;
             #endif
             Sentence *s = new Sentence;
             s->m_type = Sentence::DOMS_IS_WHAT;
@@ -342,7 +330,7 @@ namespace Calc_H
         shared_ptr<Node> DoWakaran1()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoWakaran1" << std::endl;
+                std::cout << "DoWakaran1" << std::endl;
             #endif
             return shared_ptr<Node>();
         }
@@ -350,7 +338,7 @@ namespace Calc_H
         shared_ptr<Node> DoOshiete1()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoOshiete1" << std::endl;
+                std::cout << "DoOshiete1" << std::endl;
             #endif
             return shared_ptr<Node>();
         }
@@ -358,7 +346,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto1(shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto1" << std::endl;
+                std::cout << "DoSuruto1" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::EXPRLIST_ADD;
@@ -369,7 +357,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto2(shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto2" << std::endl;
+                std::cout << "DoSuruto2" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::EXPRLIST_MUL;
@@ -380,7 +368,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto3(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto3" << std::endl;
+                std::cout << "DoSuruto3" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::MONO_ADD;
@@ -392,7 +380,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto4(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto4" << std::endl;
+                std::cout << "DoSuruto4" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::MONO_MUL;
@@ -404,7 +392,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto5(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto5" << std::endl;
+                std::cout << "DoSuruto5" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::MONO_SUB;
@@ -416,7 +404,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto6(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto6" << std::endl;
+                std::cout << "DoSuruto6" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::MONO_DIV;
@@ -428,7 +416,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto7(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto7" << std::endl;
+                std::cout << "DoSuruto7" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::MONO_ONLY;
@@ -439,7 +427,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto8(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto8" << std::endl;
+                std::cout << "DoSuruto8" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::MONO_WO_EXPR_BAI;
@@ -451,7 +439,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto9(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto9" << std::endl;
+                std::cout << "DoSuruto9" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::MONO_WO_BAI;
@@ -462,7 +450,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto10(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto10" << std::endl;
+                std::cout << "DoSuruto10" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::SHITE_TASUTO;
@@ -474,7 +462,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto11(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto11" << std::endl;
+                std::cout << "DoSuruto11" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::SHITE_KAKERUTO;
@@ -486,7 +474,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto12(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto12" << std::endl;
+                std::cout << "DoSuruto12" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::SHITE_HIKUTO;
@@ -498,7 +486,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto13(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto13" << std::endl;
+                std::cout << "DoSuruto13" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::SHITE_WARUTO;
@@ -510,7 +498,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto16(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto16" << std::endl;
+                std::cout << "DoSuruto16" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::MONO_WO_EXPR_SUB;
@@ -522,7 +510,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto17(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto17" << std::endl;
+                std::cout << "DoSuruto17" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::MONO_DE_EXPR_DIV;
@@ -534,7 +522,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto18(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto18" << std::endl;
+                std::cout << "DoSuruto18" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::MONO_WO_EXPR_JOU;
@@ -546,7 +534,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto19(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto19" << std::endl;
+                std::cout << "DoSuruto19" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::MONO_WO_HEIHOU;
@@ -557,7 +545,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto20(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto20" << std::endl;
+                std::cout << "DoSuruto20" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::MONO_WO_RIPPOU;
@@ -568,7 +556,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto21(shared_ptr<Shite>& shite)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto21" << std::endl;
+                std::cout << "DoSuruto21" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::SHOUSUU;
@@ -579,7 +567,7 @@ namespace Calc_H
         shared_ptr<Suruto> DoSuruto22(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSuruto22" << std::endl;
+                std::cout << "DoSuruto22" << std::endl;
             #endif
             Suruto *s = new Suruto;
             s->m_type = Suruto::MONO_WO_SHOUSUU;
@@ -590,7 +578,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite1(shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite1" << std::endl;
+                std::cout << "DoShite1" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::EXPRLIST_ADD;
@@ -601,7 +589,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite2(shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite2" << std::endl;
+                std::cout << "DoShite2" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::EXPRLIST_MUL;
@@ -612,7 +600,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite3(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite3" << std::endl;
+                std::cout << "DoShite3" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::MONO_ADD;
@@ -624,7 +612,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite4(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite4" << std::endl;
+                std::cout << "DoShite4" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::MONO_MUL;
@@ -636,7 +624,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite5(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite5" << std::endl;
+                std::cout << "DoShite5" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::MONO_SUB;
@@ -648,7 +636,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite6(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite6" << std::endl;
+                std::cout << "DoShite6" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::MONO_DIV;
@@ -660,7 +648,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite7(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite7" << std::endl;
+                std::cout << "DoShite7" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::MONO_ONLY;
@@ -671,7 +659,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite8(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite8" << std::endl;
+                std::cout << "DoShite8" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::SHITE_ADD;
@@ -683,7 +671,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite9(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite9" << std::endl;
+                std::cout << "DoShite9" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::SHITE_MUL;
@@ -695,7 +683,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite10(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite10" << std::endl;
+                std::cout << "DoShite10" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::SHITE_SUB;
@@ -707,7 +695,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite11(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite11" << std::endl;
+                std::cout << "DoShite11" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::SHITE_DIV;
@@ -719,7 +707,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite12(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite12" << std::endl;
+                std::cout << "DoShite12" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::SHITE_EXPR_BAI;
@@ -731,7 +719,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite13(shared_ptr<Shite>& shite)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite13" << std::endl;
+                std::cout << "DoShite13" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::SHITE_BAI;
@@ -742,7 +730,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite16(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite16" << std::endl;
+                std::cout << "DoShite16" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::MONO_WO_EXPR_SUB;
@@ -754,7 +742,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite17(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite17" << std::endl;
+                std::cout << "DoShite17" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::MONO_WO_EXPR_DIV;
@@ -766,7 +754,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite18(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite18" << std::endl;
+                std::cout << "DoShite18" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::SHITE_EXPR_JOU;
@@ -778,7 +766,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite19(shared_ptr<Shite>& shite)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite19" << std::endl;
+                std::cout << "DoShite19" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::SHITE_HEIHOU;
@@ -789,7 +777,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite20(shared_ptr<Shite>& shite)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite20" << std::endl;
+                std::cout << "DoShite20" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::SHITE_RIPPOU;
@@ -800,7 +788,7 @@ namespace Calc_H
         shared_ptr<Shite> DoShite21(shared_ptr<Shite>& shite)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoShite21" << std::endl;
+                std::cout << "DoShite21" << std::endl;
             #endif
             Shite *s = new Shite;
             s->m_type = Shite::SHOUSUU;
@@ -811,7 +799,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono1(shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono1" << std::endl;
+                std::cout << "DoMono1" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::EXPRLIST_ADD;
@@ -822,7 +810,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono2(shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono2" << std::endl;
+                std::cout << "DoMono2" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::EXPRLIST_MUL;
@@ -833,7 +821,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono3(shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono3" << std::endl;
+                std::cout << "DoMono3" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::EXPRLIST_SUB;
@@ -844,7 +832,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono4(shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono4" << std::endl;
+                std::cout << "DoMono4" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::EXPRLIST_DIV;
@@ -855,7 +843,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono5(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono5" << std::endl;
+                std::cout << "DoMono5" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_ADD;
@@ -867,7 +855,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono6(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono6" << std::endl;
+                std::cout << "DoMono6" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_MUL;
@@ -879,7 +867,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono7(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono7" << std::endl;
+                std::cout << "DoMono7" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_SUB;
@@ -891,7 +879,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono8(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono8" << std::endl;
+                std::cout << "DoMono8" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_DIV;
@@ -903,7 +891,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono9(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono9" << std::endl;
+                std::cout << "DoMono9" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_ONLY;
@@ -914,7 +902,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono10(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono10" << std::endl;
+                std::cout << "DoMono10" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_EXPR_BAI;
@@ -926,7 +914,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono11(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono11" << std::endl;
+                std::cout << "DoMono11" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_BAI;
@@ -937,7 +925,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono12(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono12" << std::endl;
+                std::cout << "DoMono12" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SHITE_ADD;
@@ -949,7 +937,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono13(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono13" << std::endl;
+                std::cout << "DoMono13" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SHITE_MUL;
@@ -961,7 +949,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono14(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono14" << std::endl;
+                std::cout << "DoMono14" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SHITE_SUB;
@@ -973,7 +961,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono15(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono15" << std::endl;
+                std::cout << "DoMono15" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SHITE_DIV;
@@ -985,7 +973,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono16(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono16" << std::endl;
+                std::cout << "DoMono16" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SHITE_EXPR_BAI;
@@ -997,7 +985,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono17(shared_ptr<Shite>& shite)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono17" << std::endl;
+                std::cout << "DoMono17" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SHITE_BAI;
@@ -1008,7 +996,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono18(shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono18" << std::endl;
+                std::cout << "DoMono18" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -1019,7 +1007,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono19()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono19" << std::endl;
+                std::cout << "DoMono19" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SORE;
@@ -1029,7 +1017,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono20(shared_ptr<Mono>& mono, shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono20" << std::endl;
+                std::cout << "DoMono20" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_TO_EXPRLIST_ADD;
@@ -1041,7 +1029,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono21(shared_ptr<Mono>& mono, shared_ptr<ExprList>& exprlist)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono21" << std::endl;
+                std::cout << "DoMono21" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_TO_EXPRLIST_MUL;
@@ -1053,7 +1041,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono22(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono22" << std::endl;
+                std::cout << "DoMono22" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_TO_EXPR_ADD;
@@ -1065,7 +1053,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono23(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono23" << std::endl;
+                std::cout << "DoMono23" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_TO_EXPR_MUL;
@@ -1077,7 +1065,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono24(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono24" << std::endl;
+                std::cout << "DoMono24" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_TO_EXPR_SUB;
@@ -1089,7 +1077,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono25(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono25" << std::endl;
+                std::cout << "DoMono25" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_TO_EXPR_DIV;
@@ -1101,7 +1089,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono26(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono26" << std::endl;
+                std::cout << "DoMono26" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_WO_EXPR_KARA_SUB;
@@ -1113,7 +1101,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono27(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono27" << std::endl;
+                std::cout << "DoMono27" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_DE_EXPR_WO_DIV;
@@ -1125,7 +1113,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono28(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono28" << std::endl;
+                std::cout << "DoMono28" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_NO_TASUKAZU;
@@ -1136,7 +1124,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono29(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono29" << std::endl;
+                std::cout << "DoMono29" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_NO_KAKERUKAZU;
@@ -1147,7 +1135,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono30(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono30" << std::endl;
+                std::cout << "DoMono30" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_NO_HIKUKAZU;
@@ -1158,7 +1146,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono31(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono31" << std::endl;
+                std::cout << "DoMono31" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_NO_WARUKAZU;
@@ -1169,7 +1157,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono32(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono32" << std::endl;
+                std::cout << "DoMono32" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SURUTOKI_TASUKAZU;
@@ -1180,7 +1168,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono33(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono33" << std::endl;
+                std::cout << "DoMono33" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SURUTOKI_KAKERUKAZU;
@@ -1191,7 +1179,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono34(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono34" << std::endl;
+                std::cout << "DoMono34" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SURUTOKI_HIKUKAZU;
@@ -1202,7 +1190,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono35(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono35" << std::endl;
+                std::cout << "DoMono35" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SURUTOKI_WARUKAZU;
@@ -1213,7 +1201,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono36(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono36" << std::endl;
+                std::cout << "DoMono36" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SURUTO_ONLY;
@@ -1224,7 +1212,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono37(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono37" << std::endl;
+                std::cout << "DoMono37" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SURUTOKI_TASARERUKAZU;
@@ -1235,7 +1223,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono38(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono38" << std::endl;
+                std::cout << "DoMono38" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SURUTOKI_KAKERARERUKAZU;
@@ -1246,7 +1234,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono39(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono39" << std::endl;
+                std::cout << "DoMono39" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SURUTOKI_HIKARERUKAZU;
@@ -1257,7 +1245,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono40(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono40" << std::endl;
+                std::cout << "DoMono40" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SURUTOKI_WARARERUKAZU;
@@ -1268,7 +1256,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono41(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono41" << std::endl;
+                std::cout << "DoMono41" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_NO_TASARERUKAZU;
@@ -1279,7 +1267,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono42(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono42" << std::endl;
+                std::cout << "DoMono42" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_NO_KAKERARERUKAZU;
@@ -1290,7 +1278,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono43(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono43" << std::endl;
+                std::cout << "DoMono43" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_NO_HIKARERUKAZU;
@@ -1301,7 +1289,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono44(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono44" << std::endl;
+                std::cout << "DoMono44" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_NO_WARARERUKAZU;
@@ -1312,7 +1300,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono45()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono45" << std::endl;
+                std::cout << "DoMono45" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SORE_NO_TASUKAZU;
@@ -1322,7 +1310,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono46()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono46" << std::endl;
+                std::cout << "DoMono46" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SORE_NO_KAKERUKAZU;
@@ -1332,7 +1320,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono47()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono47" << std::endl;
+                std::cout << "DoMono47" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SORE_NO_HIKUKAZU;
@@ -1342,7 +1330,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono48()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono48" << std::endl;
+                std::cout << "DoMono48" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SORE_NO_WARUKAZU;
@@ -1352,7 +1340,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono49()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono49" << std::endl;
+                std::cout << "DoMono49" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SORE_NO_TASARERUKAZU;
@@ -1362,7 +1350,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono50()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono50" << std::endl;
+                std::cout << "DoMono50" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SORE_NO_KAKERARERUKAZU;
@@ -1372,7 +1360,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono51()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono51" << std::endl;
+                std::cout << "DoMono51" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SORE_NO_HIKARERUKAZU;
@@ -1382,7 +1370,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono52()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono52" << std::endl;
+                std::cout << "DoMono52" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SORE_NO_WARARERUKAZU;
@@ -1392,7 +1380,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono53(shared_ptr<Mono>& mono, shared_ptr<Func1Arg>& func1arg)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono53" << std::endl;
+                std::cout << "DoMono53" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_FUNC1ARG;
@@ -1404,7 +1392,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono54(shared_ptr<Shite>& shite, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono54" << std::endl;
+                std::cout << "DoMono54" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SHITE_EXPR_JOU;
@@ -1416,7 +1404,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono55(shared_ptr<Shite>& shite)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono55" << std::endl;
+                std::cout << "DoMono55" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SHITE_HEIHOU;
@@ -1427,7 +1415,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono56(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono56" << std::endl;
+                std::cout << "DoMono56" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_EXPR_JOU;
@@ -1439,7 +1427,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono57(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono57" << std::endl;
+                std::cout << "DoMono57" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_HEIHOU;
@@ -1450,7 +1438,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono58(shared_ptr<Shite>& shite)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono58" << std::endl;
+                std::cout << "DoMono58" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SHITE_RIPPOU;
@@ -1461,7 +1449,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono59(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono59" << std::endl;
+                std::cout << "DoMono59" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_RIPPOU;
@@ -1472,7 +1460,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono60(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono60" << std::endl;
+                std::cout << "DoMono60" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_NO_EXPR_PERCENT;
@@ -1484,7 +1472,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono61(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono61" << std::endl;
+                std::cout << "DoMono61" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::TASHIZAN;
@@ -1495,7 +1483,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono62(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono62" << std::endl;
+                std::cout << "DoMono62" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::KAKEZAN;
@@ -1506,7 +1494,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono63(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono63" << std::endl;
+                std::cout << "DoMono63" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::HIKIZAN;
@@ -1517,7 +1505,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono64(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono64" << std::endl;
+                std::cout << "DoMono64" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::WARIZAN;
@@ -1528,7 +1516,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono65(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono65" << std::endl;
+                std::cout << "DoMono65" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SURUTO_WA;
@@ -1539,7 +1527,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono66(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono66" << std::endl;
+                std::cout << "DoMono66" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SURUTO_SEKI;
@@ -1550,7 +1538,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono67(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono67" << std::endl;
+                std::cout << "DoMono67" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SURUTO_SA;
@@ -1561,7 +1549,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono68(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono68" << std::endl;
+                std::cout << "DoMono68" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SURUTO_SHOU;
@@ -1572,7 +1560,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono69(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono69" << std::endl;
+                std::cout << "DoMono69" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SURUTO_AMARI;
@@ -1583,7 +1571,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono70(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono70" << std::endl;
+                std::cout << "DoMono70" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_NO_AMARI;
@@ -1594,7 +1582,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono71()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono71" << std::endl;
+                std::cout << "DoMono71" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SORE_NO_AMARI;
@@ -1604,7 +1592,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono72(shared_ptr<Shite>& shite)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono72" << std::endl;
+                std::cout << "DoMono72" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SHOUSUU;
@@ -1615,7 +1603,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono74(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono74" << std::endl;
+                std::cout << "DoMono74" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_NO_SHOUSUU;
@@ -1626,7 +1614,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono75(shared_ptr<ExprList>& exprlist, shared_ptr<VecFunc>& vf)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono75" << std::endl;
+                std::cout << "DoMono75" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::EXPRLIST_VECFUNC;
@@ -1638,7 +1626,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono76(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono76" << std::endl;
+                std::cout << "DoMono76" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_SHOU_TO_AMARI;
@@ -1649,7 +1637,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono77(shared_ptr<Suruto>& suruto)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono77" << std::endl;
+                std::cout << "DoMono77" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::SURUTO_SHOU_TO_AMARI;
@@ -1660,7 +1648,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono78(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono78" << std::endl;
+                std::cout << "DoMono78" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_HEIHOUKON;
@@ -1671,7 +1659,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono79(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono79" << std::endl;
+                std::cout << "DoMono79" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_KAIJOU;
@@ -1682,7 +1670,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono80(shared_ptr<Doms>& doms)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono80" << std::endl;
+                std::cout << "DoMono80" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::DOMS_SUM;
@@ -1693,7 +1681,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono81(shared_ptr<Doms>& doms)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono81" << std::endl;
+                std::cout << "DoMono81" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::DOMS_PROD;
@@ -1704,7 +1692,7 @@ namespace Calc_H
        shared_ptr<Mono> DoMono82(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono82" << std::endl;
+                std::cout << "DoMono82" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_EXPR_WARIBIKI;
@@ -1716,7 +1704,7 @@ namespace Calc_H
         shared_ptr<Mono> DoMono83(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMono83" << std::endl;
+                std::cout << "DoMono83" << std::endl;
             #endif
             Mono *m = new Mono;
             m->m_type = Mono::MONO_EXPR_WARIMASHI;
@@ -1725,10 +1713,22 @@ namespace Calc_H
             return shared_ptr<Mono>(m);
         }
 
+        shared_ptr<Mono> DoMono84(shared_ptr<ExprList>& exprlist, shared_ptr<Doms>& doms)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoMono84" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::EXPRLIST_NOUCHI_DOMS;
+            m->m_exprlist = exprlist;
+            m->m_doms = doms;
+            return shared_ptr<Mono>(m);
+        }
+
         shared_ptr<Expr> DoExpr1(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoExpr1" << std::endl;
+                std::cout << "DoExpr1" << std::endl;
             #endif
             Expr *e = new Expr;
             e->m_type = Expr::ADD;
@@ -1740,7 +1740,7 @@ namespace Calc_H
         shared_ptr<Expr> DoExpr2(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoExpr2" << std::endl;
+                std::cout << "DoExpr2" << std::endl;
             #endif
             Expr *e = new Expr;
             e->m_type = Expr::SUB;
@@ -1752,7 +1752,7 @@ namespace Calc_H
         shared_ptr<Expr> DoExpr3(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoExpr3" << std::endl;
+                std::cout << "DoExpr3" << std::endl;
             #endif
             Expr *e = new Expr;
             e->m_type = Expr::ADD;
@@ -1764,7 +1764,7 @@ namespace Calc_H
         shared_ptr<Expr> DoExpr4(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoExpr4" << std::endl;
+                std::cout << "DoExpr4" << std::endl;
             #endif
             Expr *e = new Expr;
             e->m_type = Expr::SUB;
@@ -1776,7 +1776,7 @@ namespace Calc_H
         shared_ptr<Expr> DoExpr5(shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoExpr5" << std::endl;
+                std::cout << "DoExpr5" << std::endl;
             #endif
             Expr *e = new Expr;
             e->m_type = Expr::TERM_ONLY;
@@ -1787,7 +1787,7 @@ namespace Calc_H
         shared_ptr<Term> DoTerm1(shared_ptr<Term>& term, shared_ptr<Fact>& fact)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoTerm1" << std::endl;
+                std::cout << "DoTerm1" << std::endl;
             #endif
             Term *t = new Term;
             t->m_type = Term::MUL;
@@ -1799,7 +1799,7 @@ namespace Calc_H
         shared_ptr<Term> DoTerm2(shared_ptr<Term>& term, shared_ptr<Fact>& fact)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoTerm2" << std::endl;
+                std::cout << "DoTerm2" << std::endl;
             #endif
             Term *t = new Term;
             t->m_type = Term::DIV;
@@ -1811,7 +1811,7 @@ namespace Calc_H
         shared_ptr<Term> DoTerm3(shared_ptr<Fact>& fact)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoTerm3" << std::endl;
+                std::cout << "DoTerm3" << std::endl;
             #endif
             Term *t = new Term;
             t->m_type = Term::FACT_ONLY;
@@ -1822,7 +1822,7 @@ namespace Calc_H
         shared_ptr<Fact> DoFact1(shared_ptr<Fact>& fact, shared_ptr<Prim>& prim)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFact1" << std::endl;
+                std::cout << "DoFact1" << std::endl;
             #endif
             Fact *f = new Fact;
             f->m_type = Fact::POW;
@@ -1834,7 +1834,7 @@ namespace Calc_H
         shared_ptr<Fact> DoFact2(shared_ptr<Fact>& fact)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFact2" << std::endl;
+                std::cout << "DoFact2" << std::endl;
             #endif
             Fact *f = new Fact;
             f->m_type = Fact::POW2;
@@ -1845,7 +1845,7 @@ namespace Calc_H
         shared_ptr<Fact> DoFact3(shared_ptr<Prim>& prim)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFact3" << std::endl;
+                std::cout << "DoFact3" << std::endl;
             #endif
             Fact *f = new Fact;
             f->m_type = Fact::SINGLE;
@@ -1856,7 +1856,7 @@ namespace Calc_H
         shared_ptr<Fact> DoFact4(shared_ptr<Fact>& fact)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFact4" << std::endl;
+                std::cout << "DoFact4" << std::endl;
             #endif
             Fact *f = new Fact;
             f->m_type = Fact::POW3;
@@ -1867,7 +1867,7 @@ namespace Calc_H
         shared_ptr<Fact> DoFact5(shared_ptr<Fact>& fact)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFact5" << std::endl;
+                std::cout << "DoFact5" << std::endl;
             #endif
             Fact *f = new Fact;
             f->m_type = Fact::KAIJOU;
@@ -1878,7 +1878,7 @@ namespace Calc_H
         shared_ptr<Fact> DoFact6(shared_ptr<Fact>& fact, shared_ptr<Prim>& prim)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFact6" << std::endl;
+                std::cout << "DoFact6" << std::endl;
             #endif
             Fact *f = new Fact;
             f->m_type = Fact::PERCENT;
@@ -1890,7 +1890,7 @@ namespace Calc_H
         shared_ptr<Fact> DoFact7(shared_ptr<Fact>& fact, shared_ptr<Prim>& prim)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFact7" << std::endl;
+                std::cout << "DoFact7" << std::endl;
             #endif
             Fact *f = new Fact;
             f->m_type = Fact::WARIBIKI;
@@ -1902,7 +1902,7 @@ namespace Calc_H
         shared_ptr<Fact> DoFact8(shared_ptr<Fact>& fact, shared_ptr<Prim>& prim)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFact8" << std::endl;
+                std::cout << "DoFact8" << std::endl;
             #endif
             Fact *f = new Fact;
             f->m_type = Fact::WARIMASHI;
@@ -1911,10 +1911,21 @@ namespace Calc_H
             return shared_ptr<Fact>(f);
         }
 
+        shared_ptr<Fact> DoFact9(shared_ptr<Fact>& fact)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoFact9" << std::endl;
+            #endif
+            Fact *f = new Fact;
+            f->m_type = Fact::HEIHOUKON;
+            f->m_fact = fact;
+            return shared_ptr<Fact>(f);
+        }
+
         shared_ptr<Prim> DoPrim1(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrim1" << std::endl;
+                std::cout << "DoPrim1" << std::endl;
             #endif
             Prim *p = new Prim;
             p->m_type = Prim::MONO;
@@ -1925,7 +1936,7 @@ namespace Calc_H
         shared_ptr<Prim> DoPrim2(shared_ptr<Prim>& prim)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrim2" << std::endl;
+                std::cout << "DoPrim2" << std::endl;
             #endif
             Prim *p = new Prim;
             p->m_type = Prim::MINUS;
@@ -1936,7 +1947,7 @@ namespace Calc_H
         shared_ptr<Prim> DoPrim3(shared_ptr<Prim>& prim, shared_ptr<Num>& num)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrim3" << std::endl;
+                std::cout << "DoPrim3" << std::endl;
             #endif
             Prim *p = new Prim;
             p->m_type = Prim::BUNSUU;
@@ -1948,7 +1959,7 @@ namespace Calc_H
         shared_ptr<Prim> DoPrim4(shared_ptr<Num>& num)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrim4" << std::endl;
+                std::cout << "DoPrim4" << std::endl;
             #endif
             Prim *p = new Prim;
             p->m_type = Prim::NUM;
@@ -1960,7 +1971,7 @@ namespace Calc_H
                                  shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrim5" << std::endl;
+                std::cout << "DoPrim5" << std::endl;
             #endif
             Prim *p = new Prim;
             p->m_type = Prim::TAIBUNSUU;
@@ -1973,7 +1984,7 @@ namespace Calc_H
         shared_ptr<Prim> DoPrim6(shared_ptr<Func1Arg>& func1arg, shared_ptr<Prim>& prim)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrim6" << std::endl;
+                std::cout << "DoPrim6" << std::endl;
             #endif
             Prim *p = new Prim;
             p->m_type = Prim::FUNC1ARG;
@@ -1985,7 +1996,7 @@ namespace Calc_H
         shared_ptr<Prim> DoPrim7(shared_ptr<Prim>& prim)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrim7" << std::endl;
+                std::cout << "DoPrim7" << std::endl;
             #endif
             Prim *p = new Prim;
             p->m_type = Prim::DO;
@@ -1996,7 +2007,7 @@ namespace Calc_H
         shared_ptr<Prim> DoPrim8()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrim8" << std::endl;
+                std::cout << "DoPrim8" << std::endl;
             #endif
             Prim *p = new Prim;
             p->m_type = Prim::PI;
@@ -2006,7 +2017,7 @@ namespace Calc_H
         shared_ptr<Prim> DoPrim9()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrim9" << std::endl;
+                std::cout << "DoPrim9" << std::endl;
             #endif
             Prim *p = new Prim;
             p->m_type = Prim::E;
@@ -2016,7 +2027,7 @@ namespace Calc_H
         shared_ptr<Prim> DoPrim10(shared_ptr<Func1Arg>& func1arg, shared_ptr<Prim>& prim)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrim10" << std::endl;
+                std::cout << "DoPrim10" << std::endl;
             #endif
             Prim *p = new Prim;
             p->m_type = Prim::FUNC1ARG_HEIHOU;
@@ -2031,7 +2042,7 @@ namespace Calc_H
             shared_ptr<Prim>& prim)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrim11" << std::endl;
+                std::cout << "DoPrim11" << std::endl;
             #endif
             Prim *p = new Prim;
             p->m_type = Prim::FUNC1ARG_JOU;
@@ -2046,7 +2057,7 @@ namespace Calc_H
             shared_ptr<Prim>& prim)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrim12" << std::endl;
+                std::cout << "DoPrim12" << std::endl;
             #endif
             Prim *p = new Prim;
             p->m_type = Prim::FUNC1ARG_RIPPOU;
@@ -2058,7 +2069,7 @@ namespace Calc_H
         shared_ptr<Prim> DoPrim13(shared_ptr<Prim>& prim)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrim13" << std::endl;
+                std::cout << "DoPrim13" << std::endl;
             #endif
             Prim *p = new Prim;
             p->m_type = Prim::FACTORIAL;
@@ -2069,7 +2080,7 @@ namespace Calc_H
         shared_ptr<ExprList> DoExprList1(shared_ptr<ExprList>& exprlist, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoExprList1" << std::endl;
+                std::cout << "DoExprList1" << std::endl;
             #endif
             exprlist.get()->push_back(expr);
             return exprlist;
@@ -2078,7 +2089,7 @@ namespace Calc_H
         shared_ptr<ExprList> DoExprList2(shared_ptr<ExprList>& exprlist, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoExprList2" << std::endl;
+                std::cout << "DoExprList2" << std::endl;
             #endif
             exprlist.get()->push_back(expr);
             return exprlist;
@@ -2087,7 +2098,7 @@ namespace Calc_H
         shared_ptr<ExprList> DoExprList3(shared_ptr<Expr>& expr1, shared_ptr<Expr>& expr2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoExprList3" << std::endl;
+                std::cout << "DoExprList3" << std::endl;
             #endif
             ExprList *el = new ExprList;
             el->push_back(expr1);
@@ -2098,7 +2109,7 @@ namespace Calc_H
         shared_ptr<ExprList> DoExprList4(shared_ptr<Expr>& expr1, shared_ptr<Expr>& expr2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoExprList4" << std::endl;
+                std::cout << "DoExprList4" << std::endl;
             #endif
             ExprList *el = new ExprList;
             el->push_back(expr1);
@@ -2109,7 +2120,7 @@ namespace Calc_H
         shared_ptr<Num> DoNum1(shared_ptr<Num>& num, shared_ptr<Digits>& digits)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoNum1" << std::endl;
+                std::cout << "DoNum1" << std::endl;
             #endif
             num.get()->m_value =
                 CH_Value(num->m_value.str() + "." + digits->str());
@@ -2119,7 +2130,7 @@ namespace Calc_H
         shared_ptr<Num> DoNum2(shared_ptr<Digits>& digits)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoNum2" << std::endl;
+                std::cout << "DoNum2" << std::endl;
             #endif
             Num *num = new Num;
             num->m_value = CH_Value("0." + digits->str());
@@ -2129,7 +2140,7 @@ namespace Calc_H
         shared_ptr<Num> DoNum3(shared_ptr<Num>& num)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoNum3" << std::endl;
+                std::cout << "DoNum3" << std::endl;
             #endif
             return num;
         }
@@ -2137,7 +2148,7 @@ namespace Calc_H
         shared_ptr<Num> DoNum4()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoNum4" << std::endl;
+                std::cout << "DoNum4" << std::endl;
             #endif
             Num *n = new Num;
             n->m_value = ch_zero;
@@ -2147,7 +2158,7 @@ namespace Calc_H
         shared_ptr<Num> DoMuryoutaisuuLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMuryoutaisuuLeNum1" << std::endl;
+                std::cout << "DoMuryoutaisuuLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2155,7 +2166,7 @@ namespace Calc_H
         shared_ptr<Num> DoMuryoutaisuuLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMuryoutaisuuLeNum2" << std::endl;
+                std::cout << "DoMuryoutaisuuLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2163,7 +2174,7 @@ namespace Calc_H
         shared_ptr<Num> DoMuryoutaisuuNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMuryoutaisuuNum1" << std::endl;
+                std::cout << "DoMuryoutaisuuNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_muryoutaisuu;
             num1.get()->m_value += num2->m_value;
@@ -2173,7 +2184,7 @@ namespace Calc_H
         shared_ptr<Num> DoMuryoutaisuuNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoMuryoutaisuuNum2" << std::endl;
+                std::cout << "DoMuryoutaisuuNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_muryoutaisuu;
             return num1;
@@ -2182,7 +2193,7 @@ namespace Calc_H
         shared_ptr<Num> DoFukashigiLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFukashigiLeNum1" << std::endl;
+                std::cout << "DoFukashigiLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2190,7 +2201,7 @@ namespace Calc_H
         shared_ptr<Num> DoFukashigiLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFukashigiLeNum2" << std::endl;
+                std::cout << "DoFukashigiLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2198,7 +2209,7 @@ namespace Calc_H
         shared_ptr<Num> DoFukashigiNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFukashigiNum1" << std::endl;
+                std::cout << "DoFukashigiNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_fukashigi;
             num1.get()->m_value += num2->m_value;
@@ -2208,7 +2219,7 @@ namespace Calc_H
         shared_ptr<Num> DoFukashigiNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFukashigiNum2" << std::endl;
+                std::cout << "DoFukashigiNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_fukashigi;
             return num1;
@@ -2217,7 +2228,7 @@ namespace Calc_H
         shared_ptr<Num> DoNayutaLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoNayutaLeNum1" << std::endl;
+                std::cout << "DoNayutaLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2225,7 +2236,7 @@ namespace Calc_H
         shared_ptr<Num> DoNayutaLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoNayutaLeNum2" << std::endl;
+                std::cout << "DoNayutaLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2233,7 +2244,7 @@ namespace Calc_H
         shared_ptr<Num> DoNayutaNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoNayutaNum1" << std::endl;
+                std::cout << "DoNayutaNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_nayuta;
             num1.get()->m_value += num2->m_value;
@@ -2243,7 +2254,7 @@ namespace Calc_H
         shared_ptr<Num> DoNayutaNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoNayutaNum2" << std::endl;
+                std::cout << "DoNayutaNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_nayuta;
             return num1;
@@ -2252,7 +2263,7 @@ namespace Calc_H
         shared_ptr<Num> DoAsougiLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoAsougiLeNum1" << std::endl;
+                std::cout << "DoAsougiLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2260,7 +2271,7 @@ namespace Calc_H
         shared_ptr<Num> DoAsougiLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoAsougiLeNum2" << std::endl;
+                std::cout << "DoAsougiLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2268,7 +2279,7 @@ namespace Calc_H
         shared_ptr<Num> DoAsougiNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoAsougiNum1" << std::endl;
+                std::cout << "DoAsougiNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_asougi;
             num1.get()->m_value += num2->m_value;
@@ -2278,7 +2289,7 @@ namespace Calc_H
         shared_ptr<Num> DoAsougiNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoAsougiNum2" << std::endl;
+                std::cout << "DoAsougiNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_asougi;
             return num1;
@@ -2287,7 +2298,7 @@ namespace Calc_H
         shared_ptr<Num> DoGougashaLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoGougashaLeNum1" << std::endl;
+                std::cout << "DoGougashaLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2295,7 +2306,7 @@ namespace Calc_H
         shared_ptr<Num> DoGougashaLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoGougashaLeNum2" << std::endl;
+                std::cout << "DoGougashaLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2303,7 +2314,7 @@ namespace Calc_H
         shared_ptr<Num> DoGougashaNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoGougashaNum1" << std::endl;
+                std::cout << "DoGougashaNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_gougasha;
             num1.get()->m_value += num2->m_value;
@@ -2313,7 +2324,7 @@ namespace Calc_H
         shared_ptr<Num> DoGougashaNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoGougashaNum2" << std::endl;
+                std::cout << "DoGougashaNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_gougasha;
             return num1;
@@ -2322,7 +2333,7 @@ namespace Calc_H
         shared_ptr<Num> DoGokuLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoGokuLeNum1" << std::endl;
+                std::cout << "DoGokuLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2330,7 +2341,7 @@ namespace Calc_H
         shared_ptr<Num> DoGokuLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoGokuLeNum2" << std::endl;
+                std::cout << "DoGokuLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2338,7 +2349,7 @@ namespace Calc_H
         shared_ptr<Num> DoGokuNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoGokuNum1" << std::endl;
+                std::cout << "DoGokuNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_goku;
             num1.get()->m_value += num2->m_value;
@@ -2348,7 +2359,7 @@ namespace Calc_H
         shared_ptr<Num> DoGokuNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoGokuNum2" << std::endl;
+                std::cout << "DoGokuNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_goku;
             return num1;
@@ -2357,7 +2368,7 @@ namespace Calc_H
         shared_ptr<Num> DoSaiLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSaiLeNum1" << std::endl;
+                std::cout << "DoSaiLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2365,7 +2376,7 @@ namespace Calc_H
         shared_ptr<Num> DoSaiLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSaiLeNum2" << std::endl;
+                std::cout << "DoSaiLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2373,7 +2384,7 @@ namespace Calc_H
         shared_ptr<Num> DoSaiNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSaiNum1" << std::endl;
+                std::cout << "DoSaiNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_sai;
             num1.get()->m_value += num2->m_value;
@@ -2383,7 +2394,7 @@ namespace Calc_H
         shared_ptr<Num> DoSaiNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSaiNum2" << std::endl;
+                std::cout << "DoSaiNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_sai;
             return num1;
@@ -2392,7 +2403,7 @@ namespace Calc_H
         shared_ptr<Num> DoSeiLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSeiLeNum1" << std::endl;
+                std::cout << "DoSeiLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2400,7 +2411,7 @@ namespace Calc_H
         shared_ptr<Num> DoSeiLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSeiLeNum2" << std::endl;
+                std::cout << "DoSeiLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2408,7 +2419,7 @@ namespace Calc_H
         shared_ptr<Num> DoSeiNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSeiNum1" << std::endl;
+                std::cout << "DoSeiNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_sei;
             num1.get()->m_value += num2->m_value;
@@ -2418,7 +2429,7 @@ namespace Calc_H
         shared_ptr<Num> DoSeiNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSeiNum2" << std::endl;
+                std::cout << "DoSeiNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_sei;
             return num1;
@@ -2427,7 +2438,7 @@ namespace Calc_H
         shared_ptr<Num> DoKanLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoKanLeNum1" << std::endl;
+                std::cout << "DoKanLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2435,7 +2446,7 @@ namespace Calc_H
         shared_ptr<Num> DoKanLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoKanLeNum2" << std::endl;
+                std::cout << "DoKanLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2443,7 +2454,7 @@ namespace Calc_H
         shared_ptr<Num> DoKanNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoKanNum1" << std::endl;
+                std::cout << "DoKanNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_kan;
             num1.get()->m_value += num2->m_value;
@@ -2453,7 +2464,7 @@ namespace Calc_H
         shared_ptr<Num> DoKanNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoKanNum2" << std::endl;
+                std::cout << "DoKanNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_kan;
             return num1;
@@ -2462,7 +2473,7 @@ namespace Calc_H
         shared_ptr<Num> DoKouLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoKouLeNum1" << std::endl;
+                std::cout << "DoKouLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2470,7 +2481,7 @@ namespace Calc_H
         shared_ptr<Num> DoKouLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoKouLeNum2" << std::endl;
+                std::cout << "DoKouLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2478,7 +2489,7 @@ namespace Calc_H
         shared_ptr<Num> DoKouNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoKouNum1" << std::endl;
+                std::cout << "DoKouNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_kou;
             num1.get()->m_value += num2->m_value;
@@ -2488,7 +2499,7 @@ namespace Calc_H
         shared_ptr<Num> DoKouNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoKouNum2" << std::endl;
+                std::cout << "DoKouNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_kou;
             return num1;
@@ -2497,7 +2508,7 @@ namespace Calc_H
         shared_ptr<Num> DoJouLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoJouLeNum1" << std::endl;
+                std::cout << "DoJouLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2505,7 +2516,7 @@ namespace Calc_H
         shared_ptr<Num> DoJouLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoJouLeNum2" << std::endl;
+                std::cout << "DoJouLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2513,7 +2524,7 @@ namespace Calc_H
         shared_ptr<Num> DoJouNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoJouNum1" << std::endl;
+                std::cout << "DoJouNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_jou;
             num1.get()->m_value += num2->m_value;
@@ -2523,7 +2534,7 @@ namespace Calc_H
         shared_ptr<Num> DoJouNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoJouNum2" << std::endl;
+                std::cout << "DoJouNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_jou;
             return num1;
@@ -2532,7 +2543,7 @@ namespace Calc_H
         shared_ptr<Num> DoJoLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoJoLeNum1" << std::endl;
+                std::cout << "DoJoLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2540,7 +2551,7 @@ namespace Calc_H
         shared_ptr<Num> DoJoLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoJoLeNum2" << std::endl;
+                std::cout << "DoJoLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2548,7 +2559,7 @@ namespace Calc_H
         shared_ptr<Num> DoJoNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoJoNum1" << std::endl;
+                std::cout << "DoJoNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_jo;
             num1.get()->m_value += num2->m_value;
@@ -2558,7 +2569,7 @@ namespace Calc_H
         shared_ptr<Num> DoJoNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoJoNum2" << std::endl;
+                std::cout << "DoJoNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_jo;
             return num1;
@@ -2567,7 +2578,7 @@ namespace Calc_H
         shared_ptr<Num> DoGaiLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoGaiLeNum1" << std::endl;
+                std::cout << "DoGaiLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2575,7 +2586,7 @@ namespace Calc_H
         shared_ptr<Num> DoGaiLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoGaiLeNum2" << std::endl;
+                std::cout << "DoGaiLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2583,7 +2594,7 @@ namespace Calc_H
         shared_ptr<Num> DoGaiNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoGaiNum1" << std::endl;
+                std::cout << "DoGaiNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_gai;
             num1.get()->m_value += num2->m_value;
@@ -2593,7 +2604,7 @@ namespace Calc_H
         shared_ptr<Num> DoGaiNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoGaiNum2" << std::endl;
+                std::cout << "DoGaiNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_gai;
             return num1;
@@ -2602,7 +2613,7 @@ namespace Calc_H
         shared_ptr<Num> DoKeiLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoKeyNum1" << std::endl;
+                std::cout << "DoKeyNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2610,7 +2621,7 @@ namespace Calc_H
         shared_ptr<Num> DoKeiLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoKeyNum2" << std::endl;
+                std::cout << "DoKeyNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2618,7 +2629,7 @@ namespace Calc_H
         shared_ptr<Num> DoKeiNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoKeiNum1" << std::endl;
+                std::cout << "DoKeiNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_kei;
             num1.get()->m_value += num2->m_value;
@@ -2628,7 +2639,7 @@ namespace Calc_H
         shared_ptr<Num> DoKeiNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoKeiNum1" << std::endl;
+                std::cout << "DoKeiNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_kei;
             return num1;
@@ -2637,7 +2648,7 @@ namespace Calc_H
         shared_ptr<Num> DoChouLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoChouLeNum1" << std::endl;
+                std::cout << "DoChouLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2645,7 +2656,7 @@ namespace Calc_H
         shared_ptr<Num> DoChouLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoChouLeNum2" << std::endl;
+                std::cout << "DoChouLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2653,7 +2664,7 @@ namespace Calc_H
         shared_ptr<Num> DoChouNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoChouNum1" << std::endl;
+                std::cout << "DoChouNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_chou;
             num1.get()->m_value += num2->m_value;
@@ -2663,7 +2674,7 @@ namespace Calc_H
         shared_ptr<Num> DoChouNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoChouNum2" << std::endl;
+                std::cout << "DoChouNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_chou;
             return num1;
@@ -2672,7 +2683,7 @@ namespace Calc_H
         shared_ptr<Num> DoOkuLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoOkuLeNum1" << std::endl;
+                std::cout << "DoOkuLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2680,7 +2691,7 @@ namespace Calc_H
         shared_ptr<Num> DoOkuLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoOkuLeNum2" << std::endl;
+                std::cout << "DoOkuLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2688,7 +2699,7 @@ namespace Calc_H
         shared_ptr<Num> DoOkuNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoOkuNum1" << std::endl;
+                std::cout << "DoOkuNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_oku;
             num1.get()->m_value += num2->m_value;
@@ -2698,7 +2709,7 @@ namespace Calc_H
         shared_ptr<Num> DoOkuNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoOkuNum2" << std::endl;
+                std::cout << "DoOkuNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_oku;
             return num1;
@@ -2707,7 +2718,7 @@ namespace Calc_H
         shared_ptr<Num> DoManLeNum1(shared_ptr<Num>& num)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoManLeNum1" << std::endl;
+                std::cout << "DoManLeNum1" << std::endl;
             #endif
             return num;
         }
@@ -2715,7 +2726,7 @@ namespace Calc_H
         shared_ptr<Num> DoManLeNum2(shared_ptr<Num>& num)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoManLeNum2" << std::endl;
+                std::cout << "DoManLeNum2" << std::endl;
             #endif
             return num;
         }
@@ -2723,7 +2734,7 @@ namespace Calc_H
         shared_ptr<Num> DoManNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoManNum1" << std::endl;
+                std::cout << "DoManNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_man;
             num1.get()->m_value += num2->m_value;
@@ -2733,7 +2744,7 @@ namespace Calc_H
         shared_ptr<Num> DoManNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoManNum2" << std::endl;
+                std::cout << "DoManNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_man;
             return num1;
@@ -2742,7 +2753,7 @@ namespace Calc_H
         shared_ptr<Num> DoSenLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSenLeNum1" << std::endl;
+                std::cout << "DoSenLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2750,7 +2761,7 @@ namespace Calc_H
         shared_ptr<Num> DoSenLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSenLeNum2" << std::endl;
+                std::cout << "DoSenLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2758,7 +2769,7 @@ namespace Calc_H
         shared_ptr<Num> DoSenNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSenNum1" << std::endl;
+                std::cout << "DoSenNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_sen;
             num1.get()->m_value += num2->m_value;
@@ -2768,7 +2779,7 @@ namespace Calc_H
         shared_ptr<Num> DoSenNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSenNum2" << std::endl;
+                std::cout << "DoSenNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_sen;
             return num1;
@@ -2777,7 +2788,7 @@ namespace Calc_H
         shared_ptr<Num> DoSenNum3(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSenNum3" << std::endl;
+                std::cout << "DoSenNum3" << std::endl;
             #endif
             num1.get()->m_value += ch_sen;
             return num1;
@@ -2786,7 +2797,7 @@ namespace Calc_H
         shared_ptr<Num> DoSenNum4()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoSenNum4" << std::endl;
+                std::cout << "DoSenNum4" << std::endl;
             #endif
             Num *n = new Num;
             n->m_value = ch_sen;
@@ -2796,7 +2807,7 @@ namespace Calc_H
         shared_ptr<Num> DoHyakuLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoHyakuLeNum1" << std::endl;
+                std::cout << "DoHyakuLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2804,7 +2815,7 @@ namespace Calc_H
         shared_ptr<Num> DoHyakuLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoHyakuLeNum2" << std::endl;
+                std::cout << "DoHyakuLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2812,7 +2823,7 @@ namespace Calc_H
         shared_ptr<Num> DoHyakuNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoHyakuNum1" << std::endl;
+                std::cout << "DoHyakuNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_hyaku;
             num1.get()->m_value += num2->m_value;
@@ -2822,7 +2833,7 @@ namespace Calc_H
         shared_ptr<Num> DoHyakuNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoHyakuNum2" << std::endl;
+                std::cout << "DoHyakuNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_hyaku;
             return num1;
@@ -2831,7 +2842,7 @@ namespace Calc_H
         shared_ptr<Num> DoHyakuNum3(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoHyakuNum3" << std::endl;
+                std::cout << "DoHyakuNum3" << std::endl;
             #endif
             num1.get()->m_value += ch_hyaku;
             return num1;
@@ -2840,7 +2851,7 @@ namespace Calc_H
         shared_ptr<Num> DoHyakuNum4()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoHyakuNum4" << std::endl;
+                std::cout << "DoHyakuNum4" << std::endl;
             #endif
             Num *n = new Num;
             n->m_value = ch_hyaku;
@@ -2850,7 +2861,7 @@ namespace Calc_H
         shared_ptr<Num> DoJuuLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoJuuLeNum1" << std::endl;
+                std::cout << "DoJuuLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2858,7 +2869,7 @@ namespace Calc_H
         shared_ptr<Num> DoJuuLeNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoJuuLeNum2" << std::endl;
+                std::cout << "DoJuuLeNum2" << std::endl;
             #endif
             return num1;
         }
@@ -2866,7 +2877,7 @@ namespace Calc_H
         shared_ptr<Num> DoJuuNum1(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoJuuNum1" << std::endl;
+                std::cout << "DoJuuNum1" << std::endl;
             #endif
             num1.get()->m_value *= ch_juu;
             num1.get()->m_value += num2->m_value;
@@ -2876,7 +2887,7 @@ namespace Calc_H
         shared_ptr<Num> DoJuuNum2(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoJuuNum2" << std::endl;
+                std::cout << "DoJuuNum2" << std::endl;
             #endif
             num1.get()->m_value *= ch_juu;
             return num1;
@@ -2885,7 +2896,7 @@ namespace Calc_H
         shared_ptr<Num> DoJuuNum3(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoJuuNum3" << std::endl;
+                std::cout << "DoJuuNum3" << std::endl;
             #endif
             num1.get()->m_value += ch_juu;
             return num1;
@@ -2894,7 +2905,7 @@ namespace Calc_H
         shared_ptr<Num> DoJuuNum4()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoJuuNum4" << std::endl;
+                std::cout << "DoJuuNum4" << std::endl;
             #endif
             Num *n = new Num;
             n->m_value = ch_juu;
@@ -2904,7 +2915,7 @@ namespace Calc_H
         shared_ptr<Num> DoIchiLeNum1(shared_ptr<Num>& num1)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoIchiLeNum1" << std::endl;
+                std::cout << "DoIchiLeNum1" << std::endl;
             #endif
             return num1;
         }
@@ -2912,7 +2923,7 @@ namespace Calc_H
         shared_ptr<Num> DoIchiNum1()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoIchiNum1" << std::endl;
+                std::cout << "DoIchiNum1" << std::endl;
             #endif
             Num *n = new Num;
             n->m_value = 1;
@@ -2922,7 +2933,7 @@ namespace Calc_H
         shared_ptr<Num> DoIchiNum2()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoIchiNum2" << std::endl;
+                std::cout << "DoIchiNum2" << std::endl;
             #endif
             Num *n = new Num;
             n->m_value = 2;
@@ -2932,7 +2943,7 @@ namespace Calc_H
         shared_ptr<Num> DoIchiNum3()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoIchiNum3" << std::endl;
+                std::cout << "DoIchiNum3" << std::endl;
             #endif
             Num *n = new Num;
             n->m_value = 3;
@@ -2942,7 +2953,7 @@ namespace Calc_H
         shared_ptr<Num> DoIchiNum4()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoIchiNum4" << std::endl;
+                std::cout << "DoIchiNum4" << std::endl;
             #endif
             Num *n = new Num;
             n->m_value = 4;
@@ -2952,7 +2963,7 @@ namespace Calc_H
         shared_ptr<Num> DoIchiNum5()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoIchiNum5" << std::endl;
+                std::cout << "DoIchiNum5" << std::endl;
             #endif
             Num *n = new Num;
             n->m_value = 5;
@@ -2962,7 +2973,7 @@ namespace Calc_H
         shared_ptr<Num> DoIchiNum6()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoIchiNum6" << std::endl;
+                std::cout << "DoIchiNum6" << std::endl;
             #endif
             Num *n = new Num;
             n->m_value = 6;
@@ -2972,7 +2983,7 @@ namespace Calc_H
         shared_ptr<Num> DoIchiNum7()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoIchiNum7" << std::endl;
+                std::cout << "DoIchiNum7" << std::endl;
             #endif
             Num *n = new Num;
             n->m_value = 7;
@@ -2982,7 +2993,7 @@ namespace Calc_H
         shared_ptr<Num> DoIchiNum8()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoIchiNum8" << std::endl;
+                std::cout << "DoIchiNum8" << std::endl;
             #endif
             Num *n = new Num;
             n->m_value = 8;
@@ -2992,7 +3003,7 @@ namespace Calc_H
         shared_ptr<Num> DoIchiNum9()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoIchiNum9" << std::endl;
+                std::cout << "DoIchiNum9" << std::endl;
             #endif
             Num *n = new Num;
             n->m_value = 9;
@@ -3002,7 +3013,7 @@ namespace Calc_H
         shared_ptr<Num> DoIchiNum10(shared_ptr<TokenValue>& num)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoIchiNum10" << std::endl;
+                std::cout << "DoIchiNum10" << std::endl;
             #endif
             Num *n = new Num;
             n->m_value = CH_Value(num->text());
@@ -3012,7 +3023,7 @@ namespace Calc_H
         shared_ptr<Digits> DoDigits1(shared_ptr<Digits>& digits, shared_ptr<Digit>& digit)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDigits1" << std::endl;
+                std::cout << "DoDigits1" << std::endl;
             #endif
             digits.get()->push_back(digit);
             return digits;
@@ -3021,7 +3032,7 @@ namespace Calc_H
         shared_ptr<Digits> DoDigits2(shared_ptr<Digit>& digit)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDigits2" << std::endl;
+                std::cout << "DoDigits2" << std::endl;
             #endif
             Digits *digits = new Digits;
             digits->push_back(digit);
@@ -3031,7 +3042,7 @@ namespace Calc_H
         shared_ptr<Digit> DoDigit0()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDigit0" << std::endl;
+                std::cout << "DoDigit0" << std::endl;
             #endif
             Digit *d = new Digit;
             d->m_digit = 0;
@@ -3041,7 +3052,7 @@ namespace Calc_H
         shared_ptr<Digit> DoDigit1()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDigit1" << std::endl;
+                std::cout << "DoDigit1" << std::endl;
             #endif
             Digit *d = new Digit;
             d->m_digit = 1;
@@ -3051,7 +3062,7 @@ namespace Calc_H
         shared_ptr<Digit> DoDigit2()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDigit2" << std::endl;
+                std::cout << "DoDigit2" << std::endl;
             #endif
             Digit *d = new Digit;
             d->m_digit = 2;
@@ -3061,7 +3072,7 @@ namespace Calc_H
         shared_ptr<Digit> DoDigit3()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDigit3" << std::endl;
+                std::cout << "DoDigit3" << std::endl;
             #endif
             Digit *d = new Digit;
             d->m_digit = 3;
@@ -3071,7 +3082,7 @@ namespace Calc_H
         shared_ptr<Digit> DoDigit4()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDigit4" << std::endl;
+                std::cout << "DoDigit4" << std::endl;
             #endif
             Digit *d = new Digit;
             d->m_digit = 4;
@@ -3081,7 +3092,7 @@ namespace Calc_H
         shared_ptr<Digit> DoDigit5()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDigit5" << std::endl;
+                std::cout << "DoDigit5" << std::endl;
             #endif
             Digit *d = new Digit;
             d->m_digit = 5;
@@ -3091,7 +3102,7 @@ namespace Calc_H
         shared_ptr<Digit> DoDigit6()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDigit6" << std::endl;
+                std::cout << "DoDigit6" << std::endl;
             #endif
             Digit *d = new Digit;
             d->m_digit = 6;
@@ -3101,7 +3112,7 @@ namespace Calc_H
         shared_ptr<Digit> DoDigit7()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDigit7" << std::endl;
+                std::cout << "DoDigit7" << std::endl;
             #endif
             Digit *d = new Digit;
             d->m_digit = 7;
@@ -3111,7 +3122,7 @@ namespace Calc_H
         shared_ptr<Digit> DoDigit8()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDigit8" << std::endl;
+                std::cout << "DoDigit8" << std::endl;
             #endif
             Digit *d = new Digit;
             d->m_digit = 8;
@@ -3121,7 +3132,7 @@ namespace Calc_H
         shared_ptr<Digit> DoDigit9()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDigit9" << std::endl;
+                std::cout << "DoDigit9" << std::endl;
             #endif
             Digit *d = new Digit;
             d->m_digit = 9;
@@ -3131,7 +3142,7 @@ namespace Calc_H
         shared_ptr<Func1Arg> DoFunc1Arg1()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1Arg1" << std::endl;
+                std::cout << "DoFunc1Arg1" << std::endl;
             #endif
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::SIN;
@@ -3141,7 +3152,7 @@ namespace Calc_H
         shared_ptr<Func1Arg> DoFunc1Arg2()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1Arg2" << std::endl;
+                std::cout << "DoFunc1Arg2" << std::endl;
             #endif
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::COS;
@@ -3151,7 +3162,7 @@ namespace Calc_H
         shared_ptr<Func1Arg> DoFunc1Arg3()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1Arg3" << std::endl;
+                std::cout << "DoFunc1Arg3" << std::endl;
             #endif
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::TAN;
@@ -3161,7 +3172,7 @@ namespace Calc_H
         shared_ptr<Func1Arg> DoFunc1Arg4()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1Arg4" << std::endl;
+                std::cout << "DoFunc1Arg4" << std::endl;
             #endif
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::ASIN;
@@ -3171,7 +3182,7 @@ namespace Calc_H
         shared_ptr<Func1Arg> DoFunc1Arg5()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1Arg5" << std::endl;
+                std::cout << "DoFunc1Arg5" << std::endl;
             #endif
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::ACOS;
@@ -3181,7 +3192,7 @@ namespace Calc_H
         shared_ptr<Func1Arg> DoFunc1Arg6()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1Arg6" << std::endl;
+                std::cout << "DoFunc1Arg6" << std::endl;
             #endif
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::ATAN;
@@ -3191,7 +3202,7 @@ namespace Calc_H
         shared_ptr<Func1Arg> DoFunc1Arg7()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1Arg7" << std::endl;
+                std::cout << "DoFunc1Arg7" << std::endl;
             #endif
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::SQRT;
@@ -3201,7 +3212,7 @@ namespace Calc_H
         shared_ptr<Func1Arg> DoFunc1Arg8()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1Arg8" << std::endl;
+                std::cout << "DoFunc1Arg8" << std::endl;
             #endif
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::ABS;
@@ -3211,7 +3222,7 @@ namespace Calc_H
         shared_ptr<Func1Arg> DoFunc1Arg9()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1Arg9" << std::endl;
+                std::cout << "DoFunc1Arg9" << std::endl;
             #endif
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::INV;
@@ -3221,7 +3232,7 @@ namespace Calc_H
         shared_ptr<Func1Arg> DoFunc1Arg10()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1Arg10" << std::endl;
+                std::cout << "DoFunc1Arg10" << std::endl;
             #endif
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::EXP;
@@ -3231,7 +3242,7 @@ namespace Calc_H
         shared_ptr<Func1Arg> DoFunc1Arg11()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1Arg11" << std::endl;
+                std::cout << "DoFunc1Arg11" << std::endl;
             #endif
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::LOG;
@@ -3241,7 +3252,7 @@ namespace Calc_H
         shared_ptr<Func1Arg> DoFunc1Arg12()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1Arg12" << std::endl;
+                std::cout << "DoFunc1Arg12" << std::endl;
             #endif
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::LOG10;
@@ -3251,7 +3262,7 @@ namespace Calc_H
         shared_ptr<Func1Arg> DoFunc1Arg13()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1Arg13" << std::endl;
+                std::cout << "DoFunc1Arg13" << std::endl;
             #endif
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::SINH;
@@ -3261,7 +3272,7 @@ namespace Calc_H
         shared_ptr<Func1Arg> DoFunc1Arg14()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1Arg14" << std::endl;
+                std::cout << "DoFunc1Arg14" << std::endl;
             #endif
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::COSH;
@@ -3271,7 +3282,7 @@ namespace Calc_H
         shared_ptr<Func1Arg> DoFunc1Arg15()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoFunc1Arg15" << std::endl;
+                std::cout << "DoFunc1Arg15" << std::endl;
             #endif
             Func1Arg *f = new Func1Arg;
             f->m_type = Func1Arg::TANH;
@@ -3281,7 +3292,7 @@ namespace Calc_H
         shared_ptr<VecFunc> DoVecFunc1()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoVecFunc1" << std::endl;
+                std::cout << "DoVecFunc1" << std::endl;
             #endif
             VecFunc *f = new VecFunc;
             f->m_type = VecFunc::COUNT;
@@ -3291,7 +3302,7 @@ namespace Calc_H
         shared_ptr<VecFunc> DoVecFunc2()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoVecFunc2" << std::endl;
+                std::cout << "DoVecFunc2" << std::endl;
             #endif
             VecFunc *f = new VecFunc;
             f->m_type = VecFunc::MAX;
@@ -3301,7 +3312,7 @@ namespace Calc_H
         shared_ptr<VecFunc> DoVecFunc3()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoVecFunc3" << std::endl;
+                std::cout << "DoVecFunc3" << std::endl;
             #endif
             VecFunc *f = new VecFunc;
             f->m_type = VecFunc::MIN;
@@ -3311,7 +3322,7 @@ namespace Calc_H
         shared_ptr<VecFunc> DoVecFunc4()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoVecFunc4" << std::endl;
+                std::cout << "DoVecFunc4" << std::endl;
             #endif
             VecFunc *f = new VecFunc;
             f->m_type = VecFunc::AVERAGE;
@@ -3321,7 +3332,7 @@ namespace Calc_H
         shared_ptr<VecFunc> DoVecFunc5()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoVecFunc5" << std::endl;
+                std::cout << "DoVecFunc5" << std::endl;
             #endif
             VecFunc *f = new VecFunc;
             f->m_type = VecFunc::GCD;
@@ -3331,7 +3342,7 @@ namespace Calc_H
         shared_ptr<VecFunc> DoVecFunc6()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoVecFunc6" << std::endl;
+                std::cout << "DoVecFunc6" << std::endl;
             #endif
             VecFunc *f = new VecFunc;
             f->m_type = VecFunc::LCM;
@@ -3341,7 +3352,7 @@ namespace Calc_H
         shared_ptr<Doms> DoDoms1(shared_ptr<Doms>& doms, shared_ptr<Dom>& dom)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDoms1" << std::endl;
+                std::cout << "DoDoms1" << std::endl;
             #endif
             doms.get()->push_back(dom);
             return doms;
@@ -3350,7 +3361,7 @@ namespace Calc_H
         shared_ptr<Doms> DoDoms2(shared_ptr<Dom>& dom)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDoms2" << std::endl;
+                std::cout << "DoDoms2" << std::endl;
             #endif
             Doms *d = new Doms;
             d->push_back(dom);
@@ -3360,7 +3371,7 @@ namespace Calc_H
         shared_ptr<Doms> DoDoms3(shared_ptr<Doms>& doms, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDoms3" << std::endl;
+                std::cout << "DoDoms3" << std::endl;
             #endif
             Dom *dom = new Dom;
             dom->m_type = Dom::NUM_ONLY;
@@ -3372,7 +3383,7 @@ namespace Calc_H
         shared_ptr<Doms> DoDoms4(shared_ptr<Num>& num1, shared_ptr<Num>& num2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDoms4" << std::endl;
+                std::cout << "DoDoms4" << std::endl;
             #endif
             Dom *dom1 = new Dom;
             dom1->m_type = Dom::NUM_ONLY;
@@ -3389,7 +3400,7 @@ namespace Calc_H
         shared_ptr<Dom> DoDom1(shared_ptr<Cnstr>& cnstr, shared_ptr<PrimDom>& primdom)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDom1" << std::endl;
+                std::cout << "DoDom1" << std::endl;
             #endif
             Dom *d = new Dom;
             d->m_type = Dom::CNSTRED_PRIMDOM;
@@ -3401,7 +3412,7 @@ namespace Calc_H
         shared_ptr<Dom> DoDom2(shared_ptr<PrimDom>& primdom)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDom2" << std::endl;
+                std::cout << "DoDom2" << std::endl;
             #endif
             Dom *d = new Dom;
             d->m_type = Dom::PRIMDOM_ONLY;
@@ -3412,7 +3423,7 @@ namespace Calc_H
         shared_ptr<Dom> DoDom3(shared_ptr<Dom>& dom, shared_ptr<PrimDom>& primdom)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDom3" << std::endl;
+                std::cout << "DoDom3" << std::endl;
             #endif
             Dom *d = new Dom;
             d->m_type = Dom::DOM_OF_DOM;
@@ -3425,7 +3436,7 @@ namespace Calc_H
                                shared_ptr<PrimDom>& primdom)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDom4" << std::endl;
+                std::cout << "DoDom4" << std::endl;
             #endif
             Dom *d = new Dom;
             d->m_type = Dom::EXPR_KARA_EXPR_MADE;
@@ -3438,7 +3449,7 @@ namespace Calc_H
         shared_ptr<Dom> DoDom5(shared_ptr<Dom>& dom, shared_ptr<Dom>& dom2)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoDom5" << std::endl;
+                std::cout << "DoDom5" << std::endl;
             #endif
             Dom *d = new Dom;
             d->m_type = Dom::DOM_NOUCHI_DOM;
@@ -3450,7 +3461,7 @@ namespace Calc_H
         shared_ptr<PrimDom> DoPrimDom1(shared_ptr<PrimDom>& primdom)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrimDom1" << std::endl;
+                std::cout << "DoPrimDom1" << std::endl;
             #endif
             PrimDom *pm = new PrimDom;
             pm->m_type = PrimDom::POSITIVE;
@@ -3461,7 +3472,7 @@ namespace Calc_H
         shared_ptr<PrimDom> DoPrimDom2(shared_ptr<PrimDom>& primdom)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrimDom2" << std::endl;
+                std::cout << "DoPrimDom2" << std::endl;
             #endif
             PrimDom *pm = new PrimDom;
             pm->m_type = PrimDom::NEGATIVE;
@@ -3472,7 +3483,7 @@ namespace Calc_H
         shared_ptr<PrimDom> DoPrimDom3()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrimDom3" << std::endl;
+                std::cout << "DoPrimDom3" << std::endl;
             #endif
             PrimDom *pm = new PrimDom;
             pm->m_type = PrimDom::SHIZENSUU;
@@ -3482,7 +3493,7 @@ namespace Calc_H
         shared_ptr<PrimDom> DoPrimDom4()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrimDom4" << std::endl;
+                std::cout << "DoPrimDom4" << std::endl;
             #endif
             PrimDom *pm = new PrimDom;
             pm->m_type = PrimDom::SEISUU;
@@ -3492,7 +3503,7 @@ namespace Calc_H
         shared_ptr<PrimDom> DoPrimDom5()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrimDom5" << std::endl;
+                std::cout << "DoPrimDom5" << std::endl;
             #endif
             PrimDom *pm = new PrimDom;
             pm->m_type = PrimDom::GUUSUU;
@@ -3502,7 +3513,7 @@ namespace Calc_H
         shared_ptr<PrimDom> DoPrimDom6()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrimDom6" << std::endl;
+                std::cout << "DoPrimDom6" << std::endl;
             #endif
             PrimDom *pm = new PrimDom;
             pm->m_type = PrimDom::KISUU;
@@ -3512,7 +3523,7 @@ namespace Calc_H
         shared_ptr<PrimDom> DoPrimDom7()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrimDom7" << std::endl;
+                std::cout << "DoPrimDom7" << std::endl;
             #endif
             PrimDom *pm = new PrimDom;
             pm->m_type = PrimDom::JISSUU;
@@ -3522,17 +3533,39 @@ namespace Calc_H
         shared_ptr<PrimDom> DoPrimDom8()
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrimDom8" << std::endl;
+                std::cout << "DoPrimDom8" << std::endl;
             #endif
             PrimDom *pm = new PrimDom;
             pm->m_type = PrimDom::SOSUU;
             return shared_ptr<PrimDom>(pm);
         }
 
+        shared_ptr<PrimDom> DoPrimDom9(shared_ptr<Num>& num)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoPrimDom9" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::BAISUU;
+            pm->m_num = num;
+            return shared_ptr<PrimDom>(pm);
+        }
+
+        shared_ptr<PrimDom> DoPrimDom10(shared_ptr<Num>& num)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoPrimDom10" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::YAKUSUU;
+            pm->m_num = num;
+            return shared_ptr<PrimDom>(pm);
+        }
+
         shared_ptr<Cnstr> DoCnstr1(shared_ptr<Cnstr>& cnstr, shared_ptr<AndCnstr>& andcnstr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoCnstr1" << std::endl;
+                std::cout << "DoCnstr1" << std::endl;
             #endif
             Cnstr *c = new Cnstr;
             c->m_type = Cnstr::MATAHA;
@@ -3544,7 +3577,7 @@ namespace Calc_H
         shared_ptr<Cnstr> DoCnstr2(shared_ptr<AndCnstr>& andcnstr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoCnstr2" << std::endl;
+                std::cout << "DoCnstr2" << std::endl;
             #endif
             Cnstr *c = new Cnstr;
             c->m_type = Cnstr::SINGLE;
@@ -3555,7 +3588,7 @@ namespace Calc_H
         shared_ptr<AndCnstr> DoAndCnstr1(shared_ptr<Expr>& expr, shared_ptr<AndCnstr>& andcnstr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoAndCnstr1" << std::endl;
+                std::cout << "DoAndCnstr1" << std::endl;
             #endif
             AndCnstr *ac = new AndCnstr;
             ac->m_type = AndCnstr::IJOU;
@@ -3567,7 +3600,7 @@ namespace Calc_H
         shared_ptr<AndCnstr> DoAndCnstr2(shared_ptr<Expr>& expr, shared_ptr<AndCnstr>& andcnstr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoAndCnstr2" << std::endl;
+                std::cout << "DoAndCnstr2" << std::endl;
             #endif
             AndCnstr *ac = new AndCnstr;
             ac->m_type = AndCnstr::IKA;
@@ -3579,7 +3612,7 @@ namespace Calc_H
         shared_ptr<AndCnstr> DoAndCnstr3(shared_ptr<Expr>& expr, shared_ptr<AndCnstr>& andcnstr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoAndCnstr3" << std::endl;
+                std::cout << "DoAndCnstr3" << std::endl;
             #endif
             AndCnstr *ac = new AndCnstr;
             ac->m_type = AndCnstr::CHIISAI;
@@ -3591,7 +3624,7 @@ namespace Calc_H
         shared_ptr<AndCnstr> DoAndCnstr4(shared_ptr<Expr>& expr, shared_ptr<AndCnstr>& andcnstr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoAndCnstr4" << std::endl;
+                std::cout << "DoAndCnstr4" << std::endl;
             #endif
             AndCnstr *ac = new AndCnstr;
             ac->m_type = AndCnstr::OOKII;
@@ -3603,7 +3636,7 @@ namespace Calc_H
         shared_ptr<AndCnstr> DoAndCnstr5(shared_ptr<Cnstr>& cnstr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoAndCnstr5" << std::endl;
+                std::cout << "DoAndCnstr5" << std::endl;
             #endif
             AndCnstr *ac = new AndCnstr;
             ac->m_type = AndCnstr::CNSTR_ONLY;
@@ -3614,7 +3647,7 @@ namespace Calc_H
         shared_ptr<AndCnstr> DoAndCnstr6(shared_ptr<PrimCnstr>& primcnstr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoAndCnstr6" << std::endl;
+                std::cout << "DoAndCnstr6" << std::endl;
             #endif
             AndCnstr *ac = new AndCnstr;
             ac->m_type = AndCnstr::PRIMCNSTR_ONLY;
@@ -3622,10 +3655,22 @@ namespace Calc_H
             return shared_ptr<AndCnstr>(ac);
         }
 
+        shared_ptr<AndCnstr> DoAndCnstr7(shared_ptr<Expr>& expr, shared_ptr<AndCnstr>& andcnstr)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoAndCnstr7" << std::endl;
+            #endif
+            AndCnstr *ac = new AndCnstr;
+            ac->m_type = AndCnstr::HITOSHIKU;
+            ac->m_expr = expr;
+            ac->m_andcnstr = andcnstr;
+            return shared_ptr<AndCnstr>(ac);
+        }
+
         shared_ptr<PrimCnstr> DoPrimCnstr1(shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrimCnstr1" << std::endl;
+                std::cout << "DoPrimCnstr1" << std::endl;
             #endif
             PrimCnstr *pc = new PrimCnstr;
             pc->m_type = PrimCnstr::IJOU;
@@ -3636,7 +3681,7 @@ namespace Calc_H
         shared_ptr<PrimCnstr> DoPrimCnstr2(shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrimCnstr2" << std::endl;
+                std::cout << "DoPrimCnstr2" << std::endl;
             #endif
             PrimCnstr *pc = new PrimCnstr;
             pc->m_type = PrimCnstr::IKA;
@@ -3647,7 +3692,7 @@ namespace Calc_H
         shared_ptr<PrimCnstr> DoPrimCnstr3(shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrimCnstr3" << std::endl;
+                std::cout << "DoPrimCnstr3" << std::endl;
             #endif
             PrimCnstr *pc = new PrimCnstr;
             pc->m_type = PrimCnstr::CHIISAI;
@@ -3658,10 +3703,32 @@ namespace Calc_H
         shared_ptr<PrimCnstr> DoPrimCnstr4(shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
-                std::cerr << "DoPrimCnstr4" << std::endl;
+                std::cout << "DoPrimCnstr4" << std::endl;
             #endif
             PrimCnstr *pc = new PrimCnstr;
             pc->m_type = PrimCnstr::OOKII;
+            pc->m_expr = expr;
+            return shared_ptr<PrimCnstr>(pc);
+        }
+
+        shared_ptr<PrimCnstr> DoPrimCnstr5(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoPrimCnstr5" << std::endl;
+            #endif
+            PrimCnstr *pc = new PrimCnstr;
+            pc->m_type = PrimCnstr::WARIKIRU;
+            pc->m_mono = mono;
+            return shared_ptr<PrimCnstr>(pc);
+        }
+
+        shared_ptr<PrimCnstr> DoPrimCnstr6(shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoPrimCnstr6" << std::endl;
+            #endif
+            PrimCnstr *pc = new PrimCnstr;
+            pc->m_type = PrimCnstr::HITOSHII;
             pc->m_expr = expr;
             return shared_ptr<PrimCnstr>(pc);
         }

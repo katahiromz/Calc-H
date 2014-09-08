@@ -150,7 +150,8 @@ namespace Calc_H
             TERM_DIVMOD_FACT, SURUTO_SHOU_TO_AMARI,
             MONO_HEIHOUKON, MONO_KAIJOU,
             DOMS_SUM, DOMS_PROD,
-            MONO_EXPR_WARIBIKI, MONO_EXPR_WARIMASHI
+            MONO_EXPR_WARIBIKI, MONO_EXPR_WARIMASHI,
+            EXPRLIST_NOUCHI_DOMS
         } m_type;
         shared_ptr<ExprList>    m_exprlist;
         shared_ptr<Mono>        m_mono;
@@ -200,7 +201,7 @@ namespace Calc_H
     {
         enum {
             POW, POW2, POW3, KAIJOU, SINGLE,
-            PERCENT, WARIBIKI, WARIMASHI
+            PERCENT, WARIBIKI, WARIMASHI, HEIHOUKON
         } m_type;
         shared_ptr<Fact>    m_fact;
         shared_ptr<Prim>    m_prim;
@@ -276,9 +277,10 @@ namespace Calc_H
         enum {
             POSITIVE, NEGATIVE,
             SHIZENSUU, SEISUU, GUUSUU, KISUU, JISSUU,
-            SOSUU
+            SOSUU, BAISUU, YAKUSUU
         } m_type;
         shared_ptr<PrimDom>     m_primdom;
+        shared_ptr<Num>         m_num;
     };
 
     struct Cnstr : Node
@@ -294,7 +296,7 @@ namespace Calc_H
     struct AndCnstr : Node
     {
         enum {
-            IJOU, IKA, CHIISAI, OOKII, CNSTR_ONLY, PRIMCNSTR_ONLY
+            IJOU, IKA, CHIISAI, OOKII, CNSTR_ONLY, PRIMCNSTR_ONLY, HITOSHIKU
         } m_type;
         shared_ptr<Expr>        m_expr;
         shared_ptr<AndCnstr>    m_andcnstr;
@@ -305,9 +307,10 @@ namespace Calc_H
     struct PrimCnstr : Node
     {
         enum {
-            IJOU, IKA, CHIISAI, OOKII
+            IJOU, IKA, CHIISAI, OOKII, WARIKIRU, HITOSHII
         } m_type;
         shared_ptr<Expr>        m_expr;
+        shared_ptr<Mono>        m_mono;
     };
 
     //
