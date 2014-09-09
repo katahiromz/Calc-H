@@ -208,6 +208,7 @@ namespace Calc_H
             if (lexeme("ａｒｃｃｏｓ"))                     return set_info(info, T_ACOS);
             if (lexeme("ａｃｏｓ"))                         return set_info(info, T_ACOS);
             if (lexeme("ａｂｓ"))                           return set_info(info, T_ZETTAICHI);
+            if (lexeme("＾"))                               return set_info(info, T_POWER);
             if (lexeme("］"))                               return set_info(info, T_R_PAREN);
             if (lexeme("［"))                               return set_info(info, T_L_PAREN);
             if (lexeme("ＬＣＭ"))                           return set_info(info, T_LCM);
@@ -218,6 +219,7 @@ namespace Calc_H
             if (lexeme("－"))                               return set_info(info, T_MINUS);
             if (lexeme("，"))                               return set_info(info, T_COMMA);
             if (lexeme("＋"))                               return set_info(info, T_TASU);
+            if (lexeme("＊＊"))                             return set_info(info, T_POWER);
             if (lexeme("）"))                               return set_info(info, T_R_PAREN);
             if (lexeme("（"))                               return set_info(info, T_L_PAREN);
             if (lexeme("％"))                               return set_info(info, T_PERCENT);
@@ -538,19 +540,19 @@ namespace Calc_H
             if (lexeme("にひとしく"))                       return set_info(info, T_NIHITOSHIKU);
             if (lexeme("にひとしい"))                       return set_info(info, T_NIHITOSHII);
             if (lexeme("にね"))                             return set_info(info, T_NI);
-            if (lexeme("になるんでしょう"))                 return set_info(info, T_DEARU);
-            if (lexeme("になるんでござる"))                 return set_info(info, T_DEARU);
-            if (lexeme("になるんでございます"))             return set_info(info, T_DEARU);
-            if (lexeme("になるんでございましょう"))         return set_info(info, T_DEARU);
-            if (lexeme("になるん"))                         return set_info(info, T_DEARU);
-            if (lexeme("になるのでしょう"))                 return set_info(info, T_DEARU);
-            if (lexeme("になるのでござる"))                 return set_info(info, T_DEARU);
-            if (lexeme("になるのでございます"))             return set_info(info, T_DEARU);
-            if (lexeme("になるのでございましょう"))         return set_info(info, T_DEARU);
-            if (lexeme("になるの"))                         return set_info(info, T_DEARU);
-            if (lexeme("になるでしょう"))                   return set_info(info, T_DEARU);
-            if (lexeme("になる"))                           return set_info(info, T_DEARU);
-            if (lexeme("になります"))                       return set_info(info, T_DEARU);
+            if (lexeme("になるんでしょう"))                 return set_info(info, T_NIHITOSHII);
+            if (lexeme("になるんでござる"))                 return set_info(info, T_NIHITOSHII);
+            if (lexeme("になるんでございます"))             return set_info(info, T_NIHITOSHII);
+            if (lexeme("になるんでございましょう"))         return set_info(info, T_NIHITOSHII);
+            if (lexeme("になるん"))                         return set_info(info, T_NIHITOSHII);
+            if (lexeme("になるのでしょう"))                 return set_info(info, T_NIHITOSHII);
+            if (lexeme("になるのでござる"))                 return set_info(info, T_NIHITOSHII);
+            if (lexeme("になるのでございます"))             return set_info(info, T_NIHITOSHII);
+            if (lexeme("になるのでございましょう"))         return set_info(info, T_NIHITOSHII);
+            if (lexeme("になるの"))                         return set_info(info, T_NIHITOSHII);
+            if (lexeme("になるでしょう"))                   return set_info(info, T_NIHITOSHII);
+            if (lexeme("になる"))                           return set_info(info, T_NIHITOSHII);
+            if (lexeme("になります"))                       return set_info(info, T_NIHITOSHII);
             if (lexeme("にたすことの"))                     return set_info(info, T_TASU);
             if (lexeme("にくわえることの"))                 return set_info(info, T_TASU);
             if (lexeme("にかけることの"))                   return set_info(info, T_KAKERU);
@@ -692,6 +694,7 @@ namespace Calc_H
             if (lexeme("とひとしく"))                       return set_info(info, T_NIHITOSHIKU);
             if (lexeme("とひとしい"))                       return set_info(info, T_NIHITOSHII);
             if (lexeme("とね、"))                           return set_info(info, T_TO1);
+            if (lexeme("となる"))                           return set_info(info, T_NIHITOSHII);
             if (lexeme("とな、"))                           return set_info(info, T_TO1);
             if (lexeme("とじかっこ"))                       return set_info(info, T_R_PAREN);
             if (lexeme("とお"))                             return set_info(info, T_JUU);
@@ -779,6 +782,7 @@ namespace Calc_H
             if (lexeme("そすう"))                           return set_info(info, T_SOSUU);
             if (lexeme("そうわ"))                           return set_info(info, T_SUM);
             if (lexeme("そうきょくせん"))                   return set_info(info, T_HYPERBOLIC);
+            if (lexeme("そいんすう"))                       return set_info(info, T_SOINSUU);
             if (lexeme("そいつ"))                           return set_info(info, T_SORE);
             if (lexeme("そ"))                               return set_info(info, T_JUU);
             if (lexeme("ぜんぶ"))                           return set_info(info, T_ALL);
@@ -800,10 +804,12 @@ namespace Calc_H
             if (lexeme("する"))                             return set_info(info, T_SURU);
             if (lexeme("すべて"))                           return set_info(info, T_ALL);
             if (lexeme("じょー"))                           return set_info(info, T_JOU1);
+            if (lexeme("じょほう"))                         return set_info(info, T_WARIZAN);
             if (lexeme("じょすう"))                         return set_info(info, T_JOSUU);
             if (lexeme("じょざん"))                         return set_info(info, T_WARIZAN);
             if (lexeme("じょうようたいすう"))               return set_info(info, T_LOG10);
             if (lexeme("じょうよ"))                         return set_info(info, T_AMARI);
+            if (lexeme("じょうほう"))                       return set_info(info, T_KAKEZAN);
             if (lexeme("じょうすう"))                       return set_info(info, T_JOUSUU);
             if (lexeme("じょうざん"))                       return set_info(info, T_KAKEZAN);
             if (lexeme("じょう"))                           return set_info(info, T_JOU1);
@@ -811,10 +817,14 @@ namespace Calc_H
             if (lexeme("じゅー"))                           return set_info(info, T_JUU);
             if (lexeme("じゅっ"))                           return set_info(info, T_JUU);
             if (lexeme("じゅう"))                           return set_info(info, T_JUU);
+            if (lexeme("じめいなやくすう"))                 return set_info(info, T_JIMEINAYAKUSUU);
+            if (lexeme("じめいないんすう"))                 return set_info(info, T_JIMEINAYAKUSUU);
             if (lexeme("じっすう"))                         return set_info(info, T_JISSUU);
             if (lexeme("じっ"))                             return set_info(info, T_JUU);
             if (lexeme("じじょう"))                         return set_info(info, T_HEIHOU);
             if (lexeme("しー"))                             return set_info(info, T_YON);
+            if (lexeme("しんのやくすう"))                   return set_info(info, T_SHINNOYAKUSUU);
+            if (lexeme("しんのいんすう"))                   return set_info(info, T_SHINNOYAKUSUU);
             if (lexeme("しろ"))                             return set_info(info, T_SURUTO);
             if (lexeme("しらん"))                           return set_info(info, T_WAKARAN);
             if (lexeme("しらない"))                         return set_info(info, T_WAKARAN);
@@ -891,6 +901,7 @@ namespace Calc_H
             if (lexeme("ごらんなさい"))                     return set_info(info, T_KURE);
             if (lexeme("ごらん"))                           return set_info(info, T_KURE);
             if (lexeme("ごく"))                             return set_info(info, T_GOKU);
+            if (lexeme("ごうせいすう"))                     return set_info(info, T_GOUSEISUU);
             if (lexeme("ごうけい"))                         return set_info(info, T_SUM);
             if (lexeme("ごうがしゃ"))                       return set_info(info, T_GOUGASHA);
             if (lexeme("ごう"))                             return set_info(info, T_GO);
@@ -914,6 +925,7 @@ namespace Calc_H
             if (lexeme("ここ"))                             return set_info(info, T_KYUU);
             if (lexeme("こう"))                             return set_info(info, T_KOU);
             if (lexeme("こいつ"))                           return set_info(info, T_SORE);
+            if (lexeme("げんほう"))                         return set_info(info, T_HIKIZAN);
             if (lexeme("げんすう"))                         return set_info(info, T_GENSUU);
             if (lexeme("げんざん"))                         return set_info(info, T_HIKIZAN);
             if (lexeme("けいさん"))                         return set_info(info, T_KEISAN);
@@ -959,6 +971,7 @@ namespace Calc_H
             if (lexeme("かー"))                             return set_info(info, T_KANA);
             if (lexeme("かん"))                             return set_info(info, T_KAN);
             if (lexeme("から"))                             return set_info(info, T_KARA1);
+            if (lexeme("かほう"))                           return set_info(info, T_TASHIZAN);
             if (lexeme("かねー"))                           return set_info(info, T_KANA);
             if (lexeme("かねえ"))                           return set_info(info, T_KANA);
             if (lexeme("かねぇ"))                           return set_info(info, T_KANA);
@@ -1152,6 +1165,7 @@ namespace Calc_H
             if (lexeme("arccos"))                           return set_info(info, T_ACOS);
             if (lexeme("acos"))                             return set_info(info, T_ACOS);
             if (lexeme("abs"))                              return set_info(info, T_ZETTAICHI);
+            if (lexeme("^"))                                return set_info(info, T_POWER);
             if (lexeme("]"))                                return set_info(info, T_R_PAREN);
             if (lexeme("["))                                return set_info(info, T_L_PAREN);
             if (lexeme("LCM"))                              return set_info(info, T_LCM);
@@ -1164,6 +1178,7 @@ namespace Calc_H
             if (lexeme("-"))                                return set_info(info, T_MINUS);
             if (lexeme(","))                                return set_info(info, T_COMMA);
             if (lexeme("+"))                                return set_info(info, T_TASU);
+            if (lexeme("**"))                               return set_info(info, T_POWER);
             if (lexeme("*"))                                return set_info(info, T_KAKERU);
             if (lexeme(")"))                                return set_info(info, T_R_PAREN);
             if (lexeme("("))                                return set_info(info, T_L_PAREN);
@@ -1541,6 +1556,7 @@ namespace Calc_H
         // T_NO7: 三角関数「正弦」「余弦」「正接」の直前の「の」。
         // T_NO8: 「の何ぱーせんと」の「の」。
         // T_NO9: 「の余り」の「の」。
+        // T_NO10: 倍数、約数、素因数の直前の「の」。
         // T_NO1: それ以外。
         void resynth3(std::vector<info_type>& infos)
         {
@@ -1611,11 +1627,22 @@ namespace Calc_H
                 case T_AVERAGE:
                 case T_GCD:
                 case T_LCM:
-                case T_BAISUU:
-                case T_YAKUSUU:
                     if (no1 != std::string::npos)
                     {
                         (newinfos.begin() + no1)->set_token(T_NO2);
+                        no1 = std::string::npos;
+                    }
+                    jou1 = std::string::npos;
+                    break;
+
+                case T_BAISUU:
+                case T_YAKUSUU:
+                case T_SOINSUU:
+                case T_JIMEINAYAKUSUU:
+                case T_SHINNOYAKUSUU:
+                    if (no1 != std::string::npos)
+                    {
+                        (newinfos.begin() + no1)->set_token(T_NO10);
                         no1 = std::string::npos;
                     }
                     jou1 = std::string::npos;
@@ -1904,6 +1931,7 @@ namespace Calc_H
                 case T_NO7:
                 case T_NO8:
                 case T_NO9:
+                case T_NO10:
                 case T_NOUCHI:
                 case T_OSHIETE:
                 case T_PERCENT:
@@ -2303,6 +2331,7 @@ namespace Calc_H
                 case T_DIFF:
                 case T_EXP:
                 case T_GCD:
+                case T_GOUSEISUU:
                 case T_GYAKUSUU:
                 case T_HEIHOU:
                 case T_HEIHOUKON:
@@ -2321,8 +2350,10 @@ namespace Calc_H
                 case T_QUOT:
                 case T_RIPPOU:
                 case T_ROOT:
+                case T_SHIZENSUU:
                 case T_SIN:
                 case T_SINH:
+                case T_SOINSUU:
                 case T_SUM:
                 case T_TAN:
                 case T_TASHIZAN:
@@ -2446,7 +2477,7 @@ namespace Calc_H
         }
 
         // T_SHIZENSUU, T_SEISUU, T_GUUSUU, T_KISUU, T_JISSUU,
-        // T_MONO, T_SOSUUの前後のT_TO1をT_KAに変換する。
+        // T_MONO, T_SOSUU, T_GOUSEISUU, T_JIMEINAYAKUSUUの前後のT_TO1をT_KAに変換する。
         void resynth21(std::vector<info_type>& infos)
         {
             std::vector<info_type>::iterator it = infos.begin();
@@ -2460,6 +2491,9 @@ namespace Calc_H
                 case T_GUUSUU:
                 case T_KISUU:
                 case T_JISSUU:
+                case T_SOSUU:
+                case T_GOUSEISUU:
+                case T_JIMEINAYAKUSUU:
                     if ((it + 1)->get_token() == T_TO1)
                         (it + 1)->set_token(T_KA);
                     break;
@@ -2472,6 +2506,9 @@ namespace Calc_H
                     case T_GUUSUU:
                     case T_KISUU:
                     case T_JISSUU:
+                    case T_SOSUU:
+                    case T_GOUSEISUU:
+                    case T_JIMEINAYAKUSUU:
                         it->set_token(T_KA);
                         break;
 

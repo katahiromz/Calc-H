@@ -51,6 +51,7 @@
 %token T_GO<TokenValue>;
 %token T_GOKU<TokenValue>;
 %token T_GOUGASHA<TokenValue>;
+%token T_GOUSEISUU<TokenValue>;
 %token T_GUUSUU<TokenValue>;
 %token T_GYAKUSUU<TokenValue>;
 %token T_HA<TokenValue>;
@@ -76,6 +77,7 @@
 %token T_IKURA<TokenValue>;
 %token T_IO<TokenValue>;        // replaced
 %token T_ISO<TokenValue>;       // replaced
+%token T_JIMEINAYAKUSUU<TokenValue>;
 %token T_JISSUU<TokenValue>;
 %token T_JO<TokenValue>;
 %token T_JOSUU<TokenValue>;     // replaced
@@ -133,6 +135,7 @@
 %token T_NO7<TokenValue>;       // no seigen, no yogen, no seisetu, etc.
 %token T_NO8<TokenValue>;       // no ... percent
 %token T_NO9<TokenValue>;       // no amari
+%token T_NO10<TokenValue>;      // no baisuu, yakusuu, soinsuu, etc.
 %token T_NOUCHI<TokenValue>;
 %token T_NUMBER<TokenValue>;
 %token T_OKU<TokenValue>;
@@ -144,6 +147,7 @@
 %token T_PERIOD<TokenValue>;
 %token T_PI<TokenValue>;
 %token T_PLUS<TokenValue>;
+%token T_POWER<TokenValue>;
 %token T_PROD<TokenValue>;
 %token T_QUOT<TokenValue>;
 %token T_RIPPOU<TokenValue>;
@@ -157,6 +161,7 @@
 %token T_SEISUU<TokenValue>;
 %token T_SEN<TokenValue>;
 %token T_SHI<TokenValue>;
+%token T_SHINNOYAKUSUU<TokenValue>;
 %token T_SHITA<TokenValue>;
 %token T_SHITE<TokenValue>;
 %token T_SHIZENSUU<TokenValue>;
@@ -165,6 +170,7 @@
 %token T_SINH<TokenValue>;
 %token T_SONO<TokenValue>;      // replaced
 %token T_SORE<TokenValue>;
+%token T_SOINSUU<TokenValue>;
 %token T_SOSUU<TokenValue>;
 %token T_SUM<TokenValue>;
 %token T_SURU<TokenValue>;      // replaced
@@ -734,6 +740,7 @@ factor<Fact>
     | [DoFact6] factor(0) T_NO8 primary(1) T_PERCENT
     | [DoFact7] factor(0) T_NO8 primary(1) T_WARIBIKI
     | [DoFact8] factor(0) T_NO8 primary(1) T_WARIMASHI
+    | [DoFact10] factor(0) T_POWER primary(1)
     | [DoFact3] primary(0)
     ;
 
@@ -1105,6 +1112,10 @@ primary_domain<PrimDom>
     | [DoPrimDom7] T_JISSUU
     | [DoPrimDom7] T_MONO
     | [DoPrimDom8] T_SOSUU
-    | [DoPrimDom9] number(0) T_NO2 T_BAISUU
-    | [DoPrimDom10] number(0) T_NO2 T_YAKUSUU
+    | [DoPrimDom12] T_GOUSEISUU
+    | [DoPrimDom9] expression(0) T_NO10 T_BAISUU
+    | [DoPrimDom10] expression(0) T_NO10 T_YAKUSUU
+    | [DoPrimDom11] expression(0) T_NO10 T_SOINSUU
+    | [DoPrimDom13] expression(0) T_NO10 T_JIMEINAYAKUSUU
+    | [DoPrimDom14] expression(0) T_NO10 T_SHINNOYAKUSUU
     ;

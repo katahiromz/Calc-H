@@ -1922,6 +1922,18 @@ namespace Calc_H
             return shared_ptr<Fact>(f);
         }
 
+        shared_ptr<Fact> DoFact10(shared_ptr<Fact>& fact, shared_ptr<Prim>& prim)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoFact10" << std::endl;
+            #endif
+            Fact *f = new Fact;
+            f->m_type = Fact::POWER;
+            f->m_fact = fact;
+            f->m_prim = prim;
+            return shared_ptr<Fact>(f);
+        }
+
         shared_ptr<Prim> DoPrim1(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
@@ -3540,25 +3552,68 @@ namespace Calc_H
             return shared_ptr<PrimDom>(pm);
         }
 
-        shared_ptr<PrimDom> DoPrimDom9(shared_ptr<Num>& num)
+        shared_ptr<PrimDom> DoPrimDom9(shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
                 std::cout << "DoPrimDom9" << std::endl;
             #endif
             PrimDom *pm = new PrimDom;
             pm->m_type = PrimDom::BAISUU;
-            pm->m_num = num;
+            pm->m_expr = expr;
             return shared_ptr<PrimDom>(pm);
         }
 
-        shared_ptr<PrimDom> DoPrimDom10(shared_ptr<Num>& num)
+        shared_ptr<PrimDom> DoPrimDom10(shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
                 std::cout << "DoPrimDom10" << std::endl;
             #endif
             PrimDom *pm = new PrimDom;
             pm->m_type = PrimDom::YAKUSUU;
-            pm->m_num = num;
+            pm->m_expr = expr;
+            return shared_ptr<PrimDom>(pm);
+        }
+
+        shared_ptr<PrimDom> DoPrimDom11(shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoPrimDom11" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::SOINSUU;
+            pm->m_expr = expr;
+            return shared_ptr<PrimDom>(pm);
+        }
+
+        shared_ptr<PrimDom> DoPrimDom12()
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoPrimDom12" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::GOUSEISUU;
+            return shared_ptr<PrimDom>(pm);
+        }
+
+        shared_ptr<PrimDom> DoPrimDom13(shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoPrimDom13" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::JIMEINAYAKUSUU;
+            pm->m_expr = expr;
+            return shared_ptr<PrimDom>(pm);
+        }
+
+        shared_ptr<PrimDom> DoPrimDom14(shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoPrimDom14" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::SHINNOYAKUSUU;
+            pm->m_expr = expr;
             return shared_ptr<PrimDom>(pm);
         }
 

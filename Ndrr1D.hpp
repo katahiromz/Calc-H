@@ -280,12 +280,13 @@ namespace Ndrr1D
     struct Domains : public std::vector<shared_ptr<Domain> >
     {
         Domains() { }
-        Domains(const number_type& value)         { add(new Domain(value)); }
-        Domains(const Aspect& a, const Ranges& r) { add(new Domain(a, r));  }
-        Domains(const Domain& dom)                { add(new Domain(dom));   }
+        Domains(const number_type& value)         { add(new Domain(value));     }
+        Domains(const Aspect& a, const number_type& value)
+                                                  { add(new Domain(a, value));  }
+        Domains(const Aspect& a, const Ranges& r) { add(new Domain(a, r));      }
+        Domains(const Domain& dom)                { add(new Domain(dom));       }
         Domains(const Domains& domains) :
-            std::vector<shared_ptr<Domain> >(domains)
-        { }
+            std::vector<shared_ptr<Domain> >(domains) { }
 
         Domains& operator=(const Domains& domains)
         {

@@ -318,6 +318,7 @@ CH_Value ChCalcFact(const shared_ptr<Fact>& fact)
     switch (fact->m_type)
     {
     case Fact::POW:
+    case Fact::POWER:
         assert(fact->m_fact);
         assert(fact->m_prim);
         return ChPowFactPrim(fact->m_fact, fact->m_prim);
@@ -1442,7 +1443,8 @@ void ChAnalyzeDomainsOfPrimDom(
 
     case PrimDom::BAISUU:
         {
-            CH_Value v = ChCalcNum(primdom->m_num);
+            ChAnalyzeExpr(primdom->m_expr);
+            CH_Value v = ChCalcExpr(primdom->m_expr);
             v.trim();
             if (v.is_i())
             {
@@ -1469,7 +1471,8 @@ void ChAnalyzeDomainsOfPrimDom(
 
     case PrimDom::YAKUSUU:
         {
-            CH_Value v = ChCalcNum(primdom->m_num);
+            ChAnalyzeExpr(primdom->m_expr);
+            CH_Value v = ChCalcExpr(primdom->m_expr);
             v.trim();
             if (v.is_i())
             {
@@ -1484,6 +1487,110 @@ void ChAnalyzeDomainsOfPrimDom(
                 {
                     Domains d;
                     for (CH_Value n = 1; n <= v; n += 1)
+                    {
+                        if ((v % n).is_zero())
+                        {
+                            d.Union(Domain(n));
+                            d.Union(Domain(-n));
+                        }
+                    }
+                    domains.get()->Intersect(d);
+                }
+            }
+            else
+            {
+                ChSetMessage("せいすうではないかずのやくすうはていぎされていません。");
+            }
+        }
+        break;
+
+    case PrimDom::SOINSUU:
+        {
+            ChAnalyzeExpr(primdom->m_expr);
+            CH_Value v = ChCalcExpr(primdom->m_expr);
+            v.trim();
+            if (v.is_i())
+            {
+                if (v < 0)
+                    v = -v;
+
+                if (v.is_zero())
+                {
+                    ChSetMessage("ぜろのやくすうはていぎされていません。");
+                }
+                else
+                {
+                    Domains d;
+                    for (CH_Value n = 2; n <= v; n += 1)
+                    {
+                        if ((v % n).is_zero() && Ndrr1D::IsPrimeNumber(n))
+                        {
+                            d.Union(Domain(n));
+                        }
+                    }
+                    domains.get()->Intersect(d);
+                }
+            }
+            else
+            {
+                ChSetMessage("せいすうではないかずのそいんすうはていぎされていません。");
+            }
+        }
+        break;
+
+    case PrimDom::GOUSEISUU:
+        domains.get()->Intersect(Aspect(NULL, NULL, false, true));
+        break;
+
+    case PrimDom::JIMEINAYAKUSUU:
+        {
+            ChAnalyzeExpr(primdom->m_expr);
+            CH_Value v = ChCalcExpr(primdom->m_expr);
+            v.trim();
+            if (v.is_i())
+            {
+                if (v < 0)
+                    v = -v;
+
+                if (v.is_zero())
+                {
+                    ChSetMessage("ぜろのやくすうはていぎされていません。");
+                }
+                else
+                {
+                    Domains d;
+                    d.Union(Domain(-v));
+                    d.Union(Domain(-1));
+                    d.Union(Domain(1));
+                    d.Union(Domain(v));
+                    domains.get()->Intersect(d);
+                }
+            }
+            else
+            {
+                ChSetMessage("せいすうではないかずのやくすうはていぎされていません。");
+            }
+        }
+        break;
+
+    case PrimDom::SHINNOYAKUSUU:
+        {
+            ChAnalyzeExpr(primdom->m_expr);
+            CH_Value v = ChCalcExpr(primdom->m_expr);
+            v.trim();
+            if (v.is_i())
+            {
+                if (v < 0)
+                    v = -v;
+
+                if (v.is_zero())
+                {
+                    ChSetMessage("ぜろのやくすうはていぎされていません。");
+                }
+                else
+                {
+                    Domains d;
+                    for (CH_Value n = 2; n < v; n += 1)
                     {
                         if ((v % n).is_zero())
                         {
@@ -1774,6 +1881,10 @@ void ChAnalyzePrimDom(shared_ptr<PrimDom>& primdom)
     case PrimDom::JISSUU:
     case PrimDom::BAISUU:
     case PrimDom::YAKUSUU:
+    case PrimDom::SOINSUU:
+    case PrimDom::GOUSEISUU:
+    case PrimDom::JIMEINAYAKUSUU:
+    case PrimDom::SHINNOYAKUSUU:
         break;
 
     default:
@@ -5441,6 +5552,7 @@ void ChAnalyzeFact(shared_ptr<Fact>& fact)
     switch (fact->m_type)
     {
     case Fact::POW:
+    case Fact::POWER:
     case Fact::PERCENT:
     case Fact::WARIBIKI:
     case Fact::WARIMASHI:

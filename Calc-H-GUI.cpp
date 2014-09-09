@@ -141,10 +141,10 @@ void ChAddOutput(HWND hwnd, const char *text)
         size_t i = 0, j;
         do
         {
-            j = str.find("\r\n", i);
+            j = str.find("\r\n", i + 1);
             if (j == std::string::npos)
                 break;
-            i = j + 1;
+            i = j;
         } while (j < excess);
         str = str.substr(i + 2);
     }

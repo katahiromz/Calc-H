@@ -201,7 +201,7 @@ namespace Calc_H
     {
         enum {
             POW, POW2, POW3, KAIJOU, SINGLE,
-            PERCENT, WARIBIKI, WARIMASHI, HEIHOUKON
+            PERCENT, WARIBIKI, WARIMASHI, HEIHOUKON, POWER
         } m_type;
         shared_ptr<Fact>    m_fact;
         shared_ptr<Prim>    m_prim;
@@ -277,10 +277,11 @@ namespace Calc_H
         enum {
             POSITIVE, NEGATIVE,
             SHIZENSUU, SEISUU, GUUSUU, KISUU, JISSUU,
-            SOSUU, BAISUU, YAKUSUU
+            SOSUU, BAISUU, YAKUSUU, SOINSUU, GOUSEISUU,
+            JIMEINAYAKUSUU, SHINNOYAKUSUU
         } m_type;
         shared_ptr<PrimDom>     m_primdom;
-        shared_ptr<Num>         m_num;
+        shared_ptr<Expr>        m_expr;
     };
 
     struct Cnstr : Node
