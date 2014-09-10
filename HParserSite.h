@@ -327,6 +327,17 @@ namespace Calc_H
             return shared_ptr<Sentence>(s);
         }
 
+        shared_ptr<Sentence> DoSent29(shared_ptr<ExprList>& exprlist)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoSent29" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::TAGAINISO;
+            s->m_exprlist = exprlist;
+            return shared_ptr<Sentence>(s);
+        }
+
         shared_ptr<Node> DoWakaran1()
         {
             #ifdef DEEPDEBUG
@@ -3552,36 +3563,36 @@ namespace Calc_H
             return shared_ptr<PrimDom>(pm);
         }
 
-        shared_ptr<PrimDom> DoPrimDom9(shared_ptr<Expr>& expr)
+        shared_ptr<PrimDom> DoPrimDom9(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
                 std::cout << "DoPrimDom9" << std::endl;
             #endif
             PrimDom *pm = new PrimDom;
             pm->m_type = PrimDom::BAISUU;
-            pm->m_expr = expr;
+            pm->m_mono = mono;
             return shared_ptr<PrimDom>(pm);
         }
 
-        shared_ptr<PrimDom> DoPrimDom10(shared_ptr<Expr>& expr)
+        shared_ptr<PrimDom> DoPrimDom10(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
                 std::cout << "DoPrimDom10" << std::endl;
             #endif
             PrimDom *pm = new PrimDom;
             pm->m_type = PrimDom::YAKUSUU;
-            pm->m_expr = expr;
+            pm->m_mono = mono;
             return shared_ptr<PrimDom>(pm);
         }
 
-        shared_ptr<PrimDom> DoPrimDom11(shared_ptr<Expr>& expr)
+        shared_ptr<PrimDom> DoPrimDom11(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
                 std::cout << "DoPrimDom11" << std::endl;
             #endif
             PrimDom *pm = new PrimDom;
             pm->m_type = PrimDom::SOINSUU;
-            pm->m_expr = expr;
+            pm->m_mono = mono;
             return shared_ptr<PrimDom>(pm);
         }
 
@@ -3595,25 +3606,47 @@ namespace Calc_H
             return shared_ptr<PrimDom>(pm);
         }
 
-        shared_ptr<PrimDom> DoPrimDom13(shared_ptr<Expr>& expr)
+        shared_ptr<PrimDom> DoPrimDom13(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
                 std::cout << "DoPrimDom13" << std::endl;
             #endif
             PrimDom *pm = new PrimDom;
             pm->m_type = PrimDom::JIMEINAYAKUSUU;
-            pm->m_expr = expr;
+            pm->m_mono = mono;
             return shared_ptr<PrimDom>(pm);
         }
 
-        shared_ptr<PrimDom> DoPrimDom14(shared_ptr<Expr>& expr)
+        shared_ptr<PrimDom> DoPrimDom14(shared_ptr<Mono>& mono)
         {
             #ifdef DEEPDEBUG
                 std::cout << "DoPrimDom14" << std::endl;
             #endif
             PrimDom *pm = new PrimDom;
             pm->m_type = PrimDom::SHINNOYAKUSUU;
-            pm->m_expr = expr;
+            pm->m_mono = mono;
+            return shared_ptr<PrimDom>(pm);
+        }
+
+        shared_ptr<PrimDom> DoPrimDom15(shared_ptr<ExprList>& exprlist)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoPrimDom15" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::KOUBAISUU;
+            pm->m_exprlist = exprlist;
+            return shared_ptr<PrimDom>(pm);
+        }
+
+        shared_ptr<PrimDom> DoPrimDom16(shared_ptr<ExprList>& exprlist)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoPrimDom16" << std::endl;
+            #endif
+            PrimDom *pm = new PrimDom;
+            pm->m_type = PrimDom::KOUYAKUSUU;
+            pm->m_exprlist = exprlist;
             return shared_ptr<PrimDom>(pm);
         }
 

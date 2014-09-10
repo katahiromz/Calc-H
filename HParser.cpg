@@ -104,6 +104,8 @@
 %token T_KISUU<TokenValue>;
 %token T_KOTAE<TokenValue>;
 %token T_KOU<TokenValue>;
+%token T_KOUBAISUU<TokenValue>;
+%token T_KOUYAKUSUU<TokenValue>;
 %token T_KURE<TokenValue>;
 %token T_KYUU<TokenValue>;
 %token T_LCM<TokenValue>;
@@ -175,6 +177,7 @@
 %token T_SUM<TokenValue>;
 %token T_SURU<TokenValue>;      // replaced
 %token T_SURUTO<TokenValue>;
+%token T_TAGAINISO<TokenValue>;
 %token T_TAN<TokenValue>;
 %token T_TANH<TokenValue>;
 %token T_TASARERU<TokenValue>;
@@ -216,6 +219,7 @@ sentence<Sentence>
     | [DoSent28] domains(0) T_HA T_IKURA T_KANA T_PERIOD
     | [DoSent28] domains(0) T_HA T_IKURA T_PERIOD
     | [DoSent28] domains(0) T_HA T_PERIOD
+    | [DoSent29] expression_list(0) T_HA T_TAGAINISO T_KANA T_PERIOD
     | [DoSent10] mono(0) T_HA domains(1) T_KANA T_PERIOD
     | [DoSent11] mono(0) T_HA constraint(1) T_NO1 T_KANA T_PERIOD
     | [DoSent11] mono(0) T_HA constraint(1)       T_KANA T_PERIOD
@@ -1070,7 +1074,7 @@ primary_constraint<PrimCnstr>
     | [DoPrimCnstr3] expression(0) T_YORI T_CHIISAI
     | [DoPrimCnstr3] expression(0) T_MIMAN
     | [DoPrimCnstr4] expression(0) T_YORI T_OOKII
-    | [DoPrimCnstr6] expression(0) T_NIHITOSHII	//
+    | [DoPrimCnstr6] expression(0) T_NIHITOSHII
     | [DoPrimCnstr5] mono(0) T_DE T_WARIKIRU
     ;
 
@@ -1091,7 +1095,7 @@ and_constraint<AndCnstr>
     | [DoAndCnstr3] expression(0) T_MIMAN                      and_constraint(1)
     | [DoAndCnstr4] expression(0) T_YORI T_OOKIKU T_KATSU      and_constraint(1)
     | [DoAndCnstr4] expression(0) T_YORI T_OOKIKU              and_constraint(1)
-    | [DoAndCnstr7] expression(0) T_NIHITOSHIKU                and_constraint(1) ///
+    | [DoAndCnstr7] expression(0) T_NIHITOSHIKU                and_constraint(1)
     | [DoAndCnstr5] T_L_PAREN constraint(0) T_R_PAREN
     | [DoAndCnstr6] primary_constraint(0)
     ;
@@ -1113,9 +1117,11 @@ primary_domain<PrimDom>
     | [DoPrimDom7] T_MONO
     | [DoPrimDom8] T_SOSUU
     | [DoPrimDom12] T_GOUSEISUU
-    | [DoPrimDom9] expression(0) T_NO10 T_BAISUU
-    | [DoPrimDom10] expression(0) T_NO10 T_YAKUSUU
-    | [DoPrimDom11] expression(0) T_NO10 T_SOINSUU
-    | [DoPrimDom13] expression(0) T_NO10 T_JIMEINAYAKUSUU
-    | [DoPrimDom14] expression(0) T_NO10 T_SHINNOYAKUSUU
+    | [DoPrimDom15] expression_list(0) T_NO10 T_KOUBAISUU
+    | [DoPrimDom16] expression_list(0) T_NO10 T_KOUYAKUSUU
+    | [DoPrimDom9] mono(0) T_NO10 T_BAISUU
+    | [DoPrimDom10] mono(0) T_NO10 T_YAKUSUU
+    | [DoPrimDom11] mono(0) T_NO10 T_SOINSUU
+    | [DoPrimDom13] mono(0) T_NO10 T_JIMEINAYAKUSUU
+    | [DoPrimDom14] mono(0) T_NO10 T_SHINNOYAKUSUU
     ;

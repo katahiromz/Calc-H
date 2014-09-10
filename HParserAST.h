@@ -64,7 +64,7 @@ namespace Calc_H
             SURUTO_TASHIZAN, SURUTO_HIKIZAN,
             SURUTO_KAKEZAN, SURUTO_WARIZAN,
             DOMS_IS_EXPRLIST, DOMS_IS_EXPR,
-            DOMS_IS_WHAT
+            DOMS_IS_WHAT, TAGAINISO
         } m_type;
         shared_ptr<Mono>        m_mono;
         shared_ptr<Mono>        m_mono2;
@@ -278,10 +278,11 @@ namespace Calc_H
             POSITIVE, NEGATIVE,
             SHIZENSUU, SEISUU, GUUSUU, KISUU, JISSUU,
             SOSUU, BAISUU, YAKUSUU, SOINSUU, GOUSEISUU,
-            JIMEINAYAKUSUU, SHINNOYAKUSUU
+            JIMEINAYAKUSUU, SHINNOYAKUSUU, KOUBAISUU, KOUYAKUSUU
         } m_type;
         shared_ptr<PrimDom>     m_primdom;
-        shared_ptr<Expr>        m_expr;
+        shared_ptr<Mono>        m_mono;
+        shared_ptr<ExprList>    m_exprlist;
     };
 
     struct Cnstr : Node

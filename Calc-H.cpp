@@ -34,9 +34,34 @@ static const char * const ch_not_warizan = "わりざんではありません。";
 static const char * const ch_right = "はい、そうです。";
 static const char * const ch_wrong = "いいえ、ちがいます。";
 static const char * const ch_indeterminate = "どちらともいえません。";
+static const char * const ch_not_regular = "けいさんたいしょうがせいすうではないので、けいさんできません。";
+static const char * const ch_all_zero_gcd = "すべてがぜろなので、さいだいこうやくすうがけいさんできません。";
+static const char * const ch_zero_exists_lcm = "ぜろがそんざいするので、さいしょうこうばいすうがけいさんできません。";
 
 using namespace Calc_H;
 using namespace Ndrr1D;
+
+CH_Value ChDivMod(const CH_Value& v1, CH_Value v2)
+{
+    pmp::vector_type vec;
+
+    CH_Value v3 = Ndrr1D::ModFloor(v1 / v2, 1);
+    v3.trim();
+    vec.push_back(v3);
+    CH_Value v4 = v1 - v3 * v2;
+    if (v2 < 0)
+    {
+        v2 = -v2;
+    }
+    while (v4 < 0)
+    {
+        v4 += v2;
+    }
+    v4.trim();
+    vec.push_back(v4);
+
+    return pmp::Number(vec);
+}
 
 CH_Value ChInverse(const CH_Value& value)
 {
@@ -56,7 +81,6 @@ CH_Value ChInverse(const CH_Value& value)
         result = pmp::Number(pmp::denominator(value), pmp::numerator(value));
         break;
 
-#ifndef PMP_DISABLE_VECTOR
     case pmp::Number::VECTOR:
         {
             pmp::vector_type v;
@@ -66,7 +90,7 @@ CH_Value ChInverse(const CH_Value& value)
             }
             result = CH_Value(v);
         }
-#endif  // ndef PMP_DISABLE_VECTOR
+        break;
     }
     return result;
 }
@@ -89,13 +113,23 @@ CH_Value ChGCD(const CH_Value& num)
     if (vec.size() == 0)
         return 0;
 
+    bool flag = false;
     for (size_t i = 1; i < vec.size(); ++i)
     {
         if (!(vec[i] % 1).is_zero())
         {
-            ChSetMessage("けいさんたいしょうがせいすうではないので、けいさんできません。");
+            ChSetMessage(ch_not_regular);
             return 0;
         }
+        if (!vec[i].is_zero())
+        {
+            flag = true;
+        }
+    }
+    if (!flag)
+    {
+        ChSetMessage(ch_all_zero_gcd);
+        return 0;
     }
 
     Ndrr1D::integer_type v1 = vec[0].get_i(), v2;
@@ -119,7 +153,12 @@ CH_Value ChLCM(const CH_Value& num)
     {
         if (!(vec[i] % 1).is_zero())
         {
-            ChSetMessage("けいさんたいしょうがせいすうではないので、けいさんできません。");
+            ChSetMessage(ch_not_regular);
+            return 0;
+        }
+        if (vec[i].is_zero())
+        {
+            ChSetMessage(ch_zero_exists_lcm);
             return 0;
         }
     }
@@ -456,18 +495,22 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
     {
     case Mono::EXPRLIST_ADD:
         ChNumberFromExprList(v1, mono->m_exprlist);
+        v1.trim();
         return pmp::sum(v1);
 
     case Mono::EXPRLIST_MUL:
         ChNumberFromExprList(v1, mono->m_exprlist);
+        v1.trim();
         return pmp::prod(v1);
 
     case Mono::EXPRLIST_SUB:
         ChNumberFromExprList(v1, mono->m_exprlist);
+        v1.trim();
         return pmp::diff(v1);
 
     case Mono::EXPRLIST_DIV:
         ChNumberFromExprList(v1, mono->m_exprlist);
+        v1.trim();
         return pmp::quot(v1);
 
     case Mono::MONO_ADD:
@@ -520,10 +563,12 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
 
     case Mono::MONO_TO_EXPRLIST_ADD:
         ChNumberFromExprList(v1, mono->m_exprlist);
+        v1.trim();
         return ChCalcMono(mono->m_mono) + pmp::sum(v1);
 
     case Mono::MONO_TO_EXPRLIST_MUL:
         ChNumberFromExprList(v1, mono->m_exprlist);
+        v1.trim();
         return ChCalcMono(mono->m_mono) * pmp::prod(v1);
         
     case Mono::MONO_TO_EXPR_ADD:
@@ -681,26 +726,32 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
             {
             case VecFunc::COUNT:
                 ChNumberFromExprList(num, mono->m_exprlist);
+                num.trim();
                 return pmp::count(num);
 
             case VecFunc::MAX:
                 ChNumberFromExprList(num, mono->m_exprlist);
+                num.trim();
                 return pmp::max(num);
 
             case VecFunc::MIN:
                 ChNumberFromExprList(num, mono->m_exprlist);
+                num.trim();
                 return pmp::min(num);
 
             case VecFunc::AVERAGE:
                 ChNumberFromExprList(num, mono->m_exprlist);
+                num.trim();
                 return pmp::average(num);
 
             case VecFunc::GCD:
                 ChNumberFromExprList(num, mono->m_exprlist);
+                num.trim();
                 return ChGCD(num);
 
             case VecFunc::LCM:
                 ChNumberFromExprList(num, mono->m_exprlist);
+                num.trim();
                 return ChLCM(num);
 
             default:
@@ -710,44 +761,24 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
         return 0;
 
     case Mono::MONO_DIVMOD_EXPR:
-        {
-            pmp::vector_type vec;
-            v1 = ChCalcMono(mono->m_mono);
-            v2 = ChCalcExpr(mono->m_expr);
-            vec.push_back((v1 / v2).to_i());
-            vec.push_back(v1 % v2);
-            return pmp::Number(vec);
-        }
+        v1 = ChCalcMono(mono->m_mono);
+        v2 = ChCalcExpr(mono->m_expr);
+        return ChDivMod(v1, v2);
 
     case Mono::SHITE_DIVMOD_EXPR:
-        {
-            pmp::vector_type vec;
-            v1 = ChCalcShite(mono->m_shite);
-            v2 = ChCalcExpr(mono->m_expr);
-            vec.push_back((v1 / v2).to_i());
-            vec.push_back(v1 % v2);
-            return pmp::Number(vec);
-        }
+        v1 = ChCalcShite(mono->m_shite);
+        v2 = ChCalcExpr(mono->m_expr);
+        return ChDivMod(v1, v2);
 
     case Mono::EXPR_DIVMOD_MONO:
-        {
-            pmp::vector_type vec;
-            v1 = ChCalcExpr(mono->m_expr);
-            v2 = ChCalcMono(mono->m_mono);
-            vec.push_back((v1 / v2).to_i());
-            vec.push_back(v1 % v2);
-            return pmp::Number(vec);
-        }
+        v1 = ChCalcExpr(mono->m_expr);
+        v2 = ChCalcMono(mono->m_mono);
+        return ChDivMod(v1, v2);
 
     case Mono::TERM_DIVMOD_FACT:
-        {
-            pmp::vector_type vec;
-            v1 = ChCalcTerm(mono->m_term);
-            v2 = ChCalcFact(mono->m_fact);
-            vec.push_back((v1 / v2).to_i());
-            vec.push_back(v1 % v2);
-            return pmp::Number(vec);
-        }
+        v1 = ChCalcTerm(mono->m_term);
+        v2 = ChCalcFact(mono->m_fact);
+        return ChDivMod(v1, v2);
 
     case Mono::MONO_HEIHOUKON:
         {
@@ -870,10 +901,12 @@ CH_Value ChCalcShite(const shared_ptr<Shite>& shite)
     {
     case Shite::EXPRLIST_ADD:
         ChNumberFromExprList(v1, shite->m_exprlist);
+        v1.trim();
         return pmp::sum(v1);
 
     case Shite::EXPRLIST_MUL:
         ChNumberFromExprList(v1, shite->m_exprlist);
+        v1.trim();
         return pmp::prod(v1);
 
     case Shite::MONO_ADD:
@@ -946,10 +979,12 @@ CH_Value ChCalcSuruto(const shared_ptr<Suruto>& suruto)
     {
     case Suruto::EXPRLIST_ADD:
         ChNumberFromExprList(v1, suruto->m_exprlist);
+        v1.trim();
         return pmp::sum(v1);
 
     case Suruto::EXPRLIST_MUL:
         ChNumberFromExprList(v1, suruto->m_exprlist);
+        v1.trim();
         return pmp::prod(v1);
 
     case Suruto::MONO_ADD:
@@ -1056,10 +1091,12 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
 
     case Sentence::EXPRLIST_ADD:
         ChNumberFromExprList(v1, sentence->m_exprlist);
+        v1.trim();
         return pmp::sum(v1);
 
     case Sentence::EXPRLIST_MUL:
         ChNumberFromExprList(v1, sentence->m_exprlist);
+        v1.trim();
         return pmp::prod(v1);
 
     case Sentence::SHITE:
@@ -1303,6 +1340,7 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
         if (sentence->m_doms1->m_domains->GetValues(values))
         {
             ChNumberFromExprList(v1, sentence->m_exprlist);
+            v1.trim();
             pmp::vector_type& v = v1.get_v();
             if (v.size() == values.size())
             {
@@ -1383,6 +1421,60 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
             ChSetMessage("むすうにあります。");
         break;
 
+    case Sentence::TAGAINISO:
+        {
+            assert(sentence->m_exprlist);
+            ChNumberFromExprList(v1, sentence->m_exprlist);
+            v1.trim();
+            bool flag1 = true;
+            bool flag2 = false;
+            for (size_t i = 0; i < v1.size() - 1; ++i)
+            {
+                v1[i].trim();
+                if (!(v1[i] % 1).is_zero())
+                {
+                    flag1 = false;
+                    ChSetMessage(ch_not_regular);
+                    break;
+                }
+                if (!v1[i].is_zero())
+                {
+                    flag2 = true;
+                }
+            }
+            if (flag1 && flag2)
+            {
+                for (size_t i = 0; i < v1.size() - 1; ++i)
+                {
+                    for (size_t j = i + 1; j < v1.size(); ++j)
+                    {
+                        if (Ndrr1D::gcd(v1[i].get_i(), v1[j].get_i()) != 1)
+                        {
+                            flag1 = false;
+                            goto break2;
+                        }
+                    }
+                }
+            }
+break2:
+            if (flag2)
+            {
+                if (flag1)
+                {
+                    ChSetMessage(ch_right);
+                }
+                else
+                {
+                    ChSetMessage(ch_wrong);
+                }
+            }
+            else
+            {
+                ChSetMessage(ch_all_zero_gcd);
+            }
+        }
+        break;
+
     default:
         assert(0);
     }
@@ -1390,6 +1482,8 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
 }
 
 ////////////////////////////////////////////////////////////////////////////
+
+void ChAnalyzeExprList(shared_ptr<ExprList>& exprlist);
 
 void ChAnalyzeDomainsOfPrimDom(
     shared_ptr<Domains>& domains, shared_ptr<PrimDom>& primdom)
@@ -1443,8 +1537,8 @@ void ChAnalyzeDomainsOfPrimDom(
 
     case PrimDom::BAISUU:
         {
-            ChAnalyzeExpr(primdom->m_expr);
-            CH_Value v = ChCalcExpr(primdom->m_expr);
+            ChAnalyzeMono(primdom->m_mono);
+            CH_Value v = ChCalcMono(primdom->m_mono);
             v.trim();
             if (v.is_i())
             {
@@ -1471,8 +1565,8 @@ void ChAnalyzeDomainsOfPrimDom(
 
     case PrimDom::YAKUSUU:
         {
-            ChAnalyzeExpr(primdom->m_expr);
-            CH_Value v = ChCalcExpr(primdom->m_expr);
+            ChAnalyzeMono(primdom->m_mono);
+            CH_Value v = ChCalcMono(primdom->m_mono);
             v.trim();
             if (v.is_i())
             {
@@ -1506,8 +1600,8 @@ void ChAnalyzeDomainsOfPrimDom(
 
     case PrimDom::SOINSUU:
         {
-            ChAnalyzeExpr(primdom->m_expr);
-            CH_Value v = ChCalcExpr(primdom->m_expr);
+            ChAnalyzeMono(primdom->m_mono);
+            CH_Value v = ChCalcMono(primdom->m_mono);
             v.trim();
             if (v.is_i())
             {
@@ -1544,8 +1638,8 @@ void ChAnalyzeDomainsOfPrimDom(
 
     case PrimDom::JIMEINAYAKUSUU:
         {
-            ChAnalyzeExpr(primdom->m_expr);
-            CH_Value v = ChCalcExpr(primdom->m_expr);
+            ChAnalyzeMono(primdom->m_mono);
+            CH_Value v = ChCalcMono(primdom->m_mono);
             v.trim();
             if (v.is_i())
             {
@@ -1575,8 +1669,8 @@ void ChAnalyzeDomainsOfPrimDom(
 
     case PrimDom::SHINNOYAKUSUU:
         {
-            ChAnalyzeExpr(primdom->m_expr);
-            CH_Value v = ChCalcExpr(primdom->m_expr);
+            ChAnalyzeMono(primdom->m_mono);
+            CH_Value v = ChCalcMono(primdom->m_mono);
             v.trim();
             if (v.is_i())
             {
@@ -1591,6 +1685,75 @@ void ChAnalyzeDomainsOfPrimDom(
                 {
                     Domains d;
                     for (CH_Value n = 2; n < v; n += 1)
+                    {
+                        if ((v % n).is_zero())
+                        {
+                            d.Union(Domain(n));
+                            d.Union(Domain(-n));
+                        }
+                    }
+                    domains.get()->Intersect(d);
+                }
+            }
+            else
+            {
+                ChSetMessage("せいすうではないかずのやくすうはていぎされていません。");
+            }
+        }
+        break;
+
+    case PrimDom::KOUBAISUU:
+        {
+            CH_Value v;
+            ChAnalyzeExprList(primdom->m_exprlist);
+            ChNumberFromExprList(v, primdom->m_exprlist);
+            v.trim();
+            v = ChLCM(v);
+            v.trim();
+            if (v.is_i())
+            {
+                if (v < 0)
+                    v = -v;
+
+                if (v.is_zero())
+                {
+                    domains.get()->Intersect(Domain(CH_Value(0)));
+                }
+                else
+                {
+                    integer_type i1 = v.get_i();
+                    integer_type i2 = 0;
+                    domains.get()->Intersect(Aspect(&i1, &i2));
+                }
+            }
+            else
+            {
+                ChSetMessage("せいすうではないかずのばいすうはていぎされていません。");
+            }
+        }
+        break;
+
+    case PrimDom::KOUYAKUSUU:
+        {
+            CH_Value v;
+            ChAnalyzeExprList(primdom->m_exprlist);
+            ChNumberFromExprList(v, primdom->m_exprlist);
+            v.trim();
+            v = ChGCD(v);
+            v.trim();
+            if (v.is_i())
+            {
+                if (v < 0)
+                    v = -v;
+
+                if (v.is_zero())
+                {
+                    ChSetMessage("ぜろのやくすうはていぎされていません。");
+                }
+                else
+                {
+                    Domains d;
+                    for (CH_Value n = 1; n <= v; n += 1)
                     {
                         if ((v % n).is_zero())
                         {
@@ -1885,6 +2048,8 @@ void ChAnalyzePrimDom(shared_ptr<PrimDom>& primdom)
     case PrimDom::GOUSEISUU:
     case PrimDom::JIMEINAYAKUSUU:
     case PrimDom::SHINNOYAKUSUU:
+    case PrimDom::KOUBAISUU:
+    case PrimDom::KOUYAKUSUU:
         break;
 
     default:
@@ -1967,7 +2132,6 @@ void ChAnalyzeDoms(shared_ptr<Doms>& doms)
 
 ////////////////////////////////////////////////////////////////////////////
 
-void ChAnalyzeExprList(shared_ptr<ExprList>& exprlist);
 void ChAnalyzeMono(shared_ptr<Mono>& mono);
 void ChAnalyzeShite(shared_ptr<Shite>& shite);
 void ChAnalyzeSuruto(shared_ptr<Suruto>& suruto);
@@ -5784,6 +5948,10 @@ void ChAnalyzeSentence(shared_ptr<Sentence>& sentence)
 
     case Sentence::DOMS_IS_WHAT:
         ChAnalyzeDoms(sentence->m_doms1);
+        break;
+
+    case Sentence::TAGAINISO:
+        ChAnalyzeExprList(sentence->m_exprlist);
         break;
 
     default:

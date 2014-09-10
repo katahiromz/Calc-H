@@ -540,19 +540,19 @@ namespace Calc_H
             if (lexeme("‚É‚Ð‚Æ‚µ‚­"))                       return set_info(info, T_NIHITOSHIKU);
             if (lexeme("‚É‚Ð‚Æ‚µ‚¢"))                       return set_info(info, T_NIHITOSHII);
             if (lexeme("‚É‚Ë"))                             return set_info(info, T_NI);
-            if (lexeme("‚É‚È‚é‚ñ‚Å‚µ‚å‚¤"))                 return set_info(info, T_NIHITOSHII);
-            if (lexeme("‚É‚È‚é‚ñ‚Å‚²‚´‚é"))                 return set_info(info, T_NIHITOSHII);
-            if (lexeme("‚É‚È‚é‚ñ‚Å‚²‚´‚¢‚Ü‚·"))             return set_info(info, T_NIHITOSHII);
-            if (lexeme("‚É‚È‚é‚ñ‚Å‚²‚´‚¢‚Ü‚µ‚å‚¤"))         return set_info(info, T_NIHITOSHII);
-            if (lexeme("‚É‚È‚é‚ñ"))                         return set_info(info, T_NIHITOSHII);
-            if (lexeme("‚É‚È‚é‚Ì‚Å‚µ‚å‚¤"))                 return set_info(info, T_NIHITOSHII);
-            if (lexeme("‚É‚È‚é‚Ì‚Å‚²‚´‚é"))                 return set_info(info, T_NIHITOSHII);
-            if (lexeme("‚É‚È‚é‚Ì‚Å‚²‚´‚¢‚Ü‚·"))             return set_info(info, T_NIHITOSHII);
-            if (lexeme("‚É‚È‚é‚Ì‚Å‚²‚´‚¢‚Ü‚µ‚å‚¤"))         return set_info(info, T_NIHITOSHII);
-            if (lexeme("‚É‚È‚é‚Ì"))                         return set_info(info, T_NIHITOSHII);
-            if (lexeme("‚É‚È‚é‚Å‚µ‚å‚¤"))                   return set_info(info, T_NIHITOSHII);
-            if (lexeme("‚É‚È‚é"))                           return set_info(info, T_NIHITOSHII);
-            if (lexeme("‚É‚È‚è‚Ü‚·"))                       return set_info(info, T_NIHITOSHII);
+            if (lexeme("‚É‚È‚é‚ñ‚Å‚µ‚å‚¤"))                 return set_info(info, T_DEARU);
+            if (lexeme("‚É‚È‚é‚ñ‚Å‚²‚´‚é"))                 return set_info(info, T_DEARU);
+            if (lexeme("‚É‚È‚é‚ñ‚Å‚²‚´‚¢‚Ü‚·"))             return set_info(info, T_DEARU);
+            if (lexeme("‚É‚È‚é‚ñ‚Å‚²‚´‚¢‚Ü‚µ‚å‚¤"))         return set_info(info, T_DEARU);
+            if (lexeme("‚É‚È‚é‚ñ"))                         return set_info(info, T_DEARU);
+            if (lexeme("‚É‚È‚é‚Ì‚Å‚µ‚å‚¤"))                 return set_info(info, T_DEARU);
+            if (lexeme("‚É‚È‚é‚Ì‚Å‚²‚´‚é"))                 return set_info(info, T_DEARU);
+            if (lexeme("‚É‚È‚é‚Ì‚Å‚²‚´‚¢‚Ü‚·"))             return set_info(info, T_DEARU);
+            if (lexeme("‚É‚È‚é‚Ì‚Å‚²‚´‚¢‚Ü‚µ‚å‚¤"))         return set_info(info, T_DEARU);
+            if (lexeme("‚É‚È‚é‚Ì"))                         return set_info(info, T_DEARU);
+            if (lexeme("‚É‚È‚é‚Å‚µ‚å‚¤"))                   return set_info(info, T_DEARU);
+            if (lexeme("‚É‚È‚é"))                           return set_info(info, T_DEARU);
+            if (lexeme("‚É‚È‚è‚Ü‚·"))                       return set_info(info, T_DEARU);
             if (lexeme("‚É‚½‚·‚±‚Æ‚Ì"))                     return set_info(info, T_TASU);
             if (lexeme("‚É‚­‚í‚¦‚é‚±‚Æ‚Ì"))                 return set_info(info, T_TASU);
             if (lexeme("‚É‚©‚¯‚é‚±‚Æ‚Ì"))                   return set_info(info, T_KAKERU);
@@ -676,6 +676,17 @@ namespace Calc_H
             if (lexeme("‚Ç‚ñ‚È‚©‚¸‚É‚È‚é‚Ì"))               return set_info(info, T_IKURA);
             if (lexeme("‚Ç‚ñ‚È‚©‚¸‚É‚È‚é"))                 return set_info(info, T_IKURA);
             if (lexeme("‚Ç‚ñ‚È‚©‚¸‚É‚È‚è‚Ü‚·"))             return set_info(info, T_IKURA);
+            if (lexeme("‚Ç‚ê‚É‚È‚é‚ñ‚Å‚µ‚å‚¤"))             return set_info(info, T_IKURA);
+            if (lexeme("‚Ç‚ê‚É‚È‚é‚ñ‚Å‚²‚´‚é"))             return set_info(info, T_IKURA);
+            if (lexeme("‚Ç‚ê‚É‚È‚é‚ñ‚Å‚²‚´‚¢‚Ü‚·"))         return set_info(info, T_IKURA);
+            if (lexeme("‚Ç‚ê‚É‚È‚é‚ñ"))                     return set_info(info, T_IKURA);
+            if (lexeme("‚Ç‚ê‚É‚È‚é‚Ì‚Å‚µ‚å‚¤"))             return set_info(info, T_IKURA);
+            if (lexeme("‚Ç‚ê‚É‚È‚é‚Ì‚Å‚²‚´‚é"))             return set_info(info, T_IKURA);
+            if (lexeme("‚Ç‚ê‚É‚È‚é‚Ì‚Å‚²‚´‚¢‚Ü‚·"))         return set_info(info, T_IKURA);
+            if (lexeme("‚Ç‚ê‚É‚È‚é‚Ì"))                     return set_info(info, T_IKURA);
+            if (lexeme("‚Ç‚ê‚É‚È‚é‚Å‚µ‚å‚¤"))               return set_info(info, T_IKURA);
+            if (lexeme("‚Ç‚ê‚É‚È‚é"))                       return set_info(info, T_IKURA);
+            if (lexeme("‚Ç‚ê"))                             return set_info(info, T_IKURA);
             if (lexeme("‚Ç‚È‚¢‚È‚é‚ñ‚Å‚µ‚å‚¤"))             return set_info(info, T_IKURA);
             if (lexeme("‚Ç‚È‚¢‚È‚é‚ñ"))                     return set_info(info, T_IKURA);
             if (lexeme("‚Ç‚È‚¢‚È‚é‚Ì‚Å‚µ‚å‚¤"))             return set_info(info, T_IKURA);
@@ -769,6 +780,7 @@ namespace Calc_H
             if (lexeme("‚½‚µ‚ ‚í‚³‚ê‚é"))                   return set_info(info, T_TASARERU);
             if (lexeme("‚½‚µ"))                             return set_info(info, T_TASHITE);
             if (lexeme("‚½‚³‚ê‚é"))                         return set_info(info, T_TASARERU);
+            if (lexeme("‚½‚ª‚¢‚É‚»"))                       return set_info(info, T_TAGAINISO);
             if (lexeme("‚½‚¢‚·‚¤‚©‚ñ‚·‚¤"))                 return set_info(info, T_LOG);
             if (lexeme("‚½‚¢‚·‚¤"))                         return set_info(info, T_LOG);
             if (lexeme("‚»‚ê‚Ì"))                           return set_info(info, T_SONO);
@@ -923,6 +935,8 @@ namespace Calc_H
             if (lexeme("‚±‚³‚¢‚ñ"))                         return set_info(info, T_COS);
             if (lexeme("‚±‚±‚Ì"))                           return set_info(info, T_KYUU);
             if (lexeme("‚±‚±"))                             return set_info(info, T_KYUU);
+            if (lexeme("‚±‚¤‚â‚­‚·‚¤"))                     return set_info(info, T_KOUYAKUSUU);
+            if (lexeme("‚±‚¤‚Î‚¢‚·‚¤"))                     return set_info(info, T_KOUBAISUU);
             if (lexeme("‚±‚¤"))                             return set_info(info, T_KOU);
             if (lexeme("‚±‚¢‚Â"))                           return set_info(info, T_SORE);
             if (lexeme("‚°‚ñ‚Ù‚¤"))                         return set_info(info, T_HIKIZAN);
@@ -1118,6 +1132,7 @@ namespace Calc_H
             if (lexeme("‚ [‚­‚³‚¢‚ñ"))                     return set_info(info, T_ASIN);
             if (lexeme("‚ [‚­‚±‚³‚¢‚ñ"))                   return set_info(info, T_ACOS);
             if (lexeme("‚ ‚Ü‚è"))                           return set_info(info, T_AMARI);
+            if (lexeme("‚ ‚½‚¢"))                           return set_info(info, T_KOTAE);
             if (lexeme("‚ ‚»‚¤‚¬"))                         return set_info(info, T_ASOUGI);
             if (lexeme("l"))                               return set_info(info, T_R_PAREN);
             if (lexeme("k"))                               return set_info(info, T_L_PAREN);
@@ -1640,6 +1655,8 @@ namespace Calc_H
                 case T_SOINSUU:
                 case T_JIMEINAYAKUSUU:
                 case T_SHINNOYAKUSUU:
+                case T_KOUBAISUU:
+                case T_KOUYAKUSUU:
                     if (no1 != std::string::npos)
                     {
                         (newinfos.begin() + no1)->set_token(T_NO10);
@@ -1942,6 +1959,7 @@ namespace Calc_H
                 case T_SHITE:
                 case T_SUM:
                 case T_SURUTO:
+                case T_TAGAINISO:
                 case T_TASHITE:
                 case T_TASHIZAN:
                 case T_TASU:
@@ -2186,6 +2204,7 @@ namespace Calc_H
                     case T_SHITE:
                     case T_SUM:
                     case T_SURUTO:
+                    case T_TAGAINISO:
                     case T_TASHITA:
                     case T_TASHITE:
                     case T_TASHIZAN:
@@ -2340,6 +2359,8 @@ namespace Calc_H
                 case T_KAKEZAN:
                 case T_KEISAN:
                 case T_KOTAE:
+                case T_KOUBAISUU:
+                case T_KOUYAKUSUU:
                 case T_LCM:
                 case T_LOG10:
                 case T_LOG:

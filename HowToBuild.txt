@@ -43,4 +43,4 @@ Windows + MinGW + MSYS + g++の場合
 注意
 ----
 
-caperでHParser.cpgからHParser.hを生成するのに、30分くらいかかります。
+caperでHParser.cpgからHParser.hを生成するのに、56分くらいかかります。
