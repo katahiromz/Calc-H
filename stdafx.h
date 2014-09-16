@@ -1,4 +1,7 @@
-// stdafx.h
+////////////////////////////////////////////////////////////////////////////
+// stdafx.h -- Hiragana Calculator Calc-H
+// This file is part of Calc-H.  See file "ReadMe.txt" and "License.txt".
+////////////////////////////////////////////////////////////////////////////
 
 #include <string>       // for std::string
 #include <vector>       // for std::vector
@@ -47,7 +50,7 @@ inline int MzcGetLParamY(LPARAM lParam)
 
 const char * const ch_logo = 
         "       +--------------------------------+\n"
-        "       |  ‚Ð‚ç‚ª‚È“d‘ì Calc-H ver.0.8.2 |\n"
+        "       |  ‚Ð‚ç‚ª‚È“d‘ì Calc-H ver.0.8.1 |\n"
         "       |   by •ÐŽR”Ž•¶MZ (katahiromz)   |\n"
         "       | http://katahiromz.web.fc2.com/ |\n"
         "       | katayama.hirofumi.mz@gmail.com |\n"

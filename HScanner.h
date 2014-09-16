@@ -1,4 +1,7 @@
-// HScanner.h
+////////////////////////////////////////////////////////////////////////////
+// HScanner.h -- Hiragana Calculator Calc-H
+// This file is part of Calc-H.  See file "ReadMe.txt" and "License.txt".
+////////////////////////////////////////////////////////////////////////////
 // (Japanese, Shift_JIS)
 // LinuxÇÃèÍçáÇÕÅAUTF-8Ç…ïœä∑ÇµÇƒâ∫Ç≥Ç¢ÅB
 
@@ -743,6 +746,7 @@ namespace Calc_H
             if (lexeme("Çæ"))                               return set_info(info, T_DEARU);
             if (lexeme("ÇΩÇÒÇ∫ÇÒÇ∆"))                       return set_info(info, T_TAN);
             if (lexeme("ÇΩÇÒÇ∂Ç•ÇÒÇ∆"))                     return set_info(info, T_TAN);
+            if (lexeme("ÇΩÇÒ"))                             return set_info(info, T_TAN);
             if (lexeme("ÇΩÇπÇŒ"))                           return set_info(info, T_TASUTO);
             if (lexeme("ÇΩÇπ"))                             return set_info(info, T_TASUTO);
             if (lexeme("ÇΩÇ∑Ç∆Ç´"))                         return set_info(info, T_TASUTO);
@@ -837,6 +841,7 @@ namespace Calc_H
             if (lexeme("ÇµÅ["))                             return set_info(info, T_YON);
             if (lexeme("ÇµÇÒÇÃÇ‚Ç≠Ç∑Ç§"))                   return set_info(info, T_SHINNOYAKUSUU);
             if (lexeme("ÇµÇÒÇÃÇ¢ÇÒÇ∑Ç§"))                   return set_info(info, T_SHINNOYAKUSUU);
+            if (lexeme("ÇµÇÒ"))                             return set_info(info, T_SIN);
             if (lexeme("ÇµÇÎ"))                             return set_info(info, T_SURUTO);
             if (lexeme("ÇµÇÁÇÒ"))                           return set_info(info, T_WAKARAN);
             if (lexeme("ÇµÇÁÇ»Ç¢"))                         return set_info(info, T_WAKARAN);
@@ -932,6 +937,7 @@ namespace Calc_H
             if (lexeme("Ç±ÇΩÇ¶ÇΩÇ‹Ç¶"))                     return set_info(info, T_OSHIETE);
             if (lexeme("Ç±ÇΩÇ¶"))                           return set_info(info, T_KOTAE);
             if (lexeme("Ç±Ç∑Ç§"))                           return set_info(info, T_COUNT);
+            if (lexeme("Ç±Ç∑"))                             return set_info(info, T_COS);
             if (lexeme("Ç±Ç≥Ç¢ÇÒ"))                         return set_info(info, T_COS);
             if (lexeme("Ç±Ç±ÇÃ"))                           return set_info(info, T_KYUU);
             if (lexeme("Ç±Ç±"))                             return set_info(info, T_KYUU);

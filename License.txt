@@ -3,7 +3,7 @@
 Copyright (C) 2014 Katayama Hirofumi MZ.
 
 このソフトは、パブリック・ドメイン・ソフトウェア (PDS)です。
-使用者の自己責任でご自由にお使い下さい。
+自己責任でご自由にお使い下さい。
 
 This software is public domain software.
-Use freely at your own risk.
+Use it freely at your own risk.

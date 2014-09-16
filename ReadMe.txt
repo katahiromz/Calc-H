@@ -23,13 +23,7 @@
 動作環境
 --------
 
- * Windows 98
- * Windows Me
- * Windows 2000
- * Windows XP
- * Windows Vista
- * Windows 7
- * Windows 8.1
+ * Windows 98/Me/2000/XP/Vista/7/8.1
 
 
 できること
@@ -48,7 +42,7 @@
  * 複数の数の、最大値、最小値、平均値などを教えてくれる
  * 簡単な質問に答えられる
 
-入力例はファイルExample.txtをご覧下さい。
+入力例はファイルExamples.txtをご覧下さい。
 
 
 連絡先
