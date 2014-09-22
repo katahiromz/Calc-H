@@ -6100,7 +6100,7 @@ std::string ChGetJpnDigits(const std::string& str, bool& ok)
 std::string ChGetJpnNumber1(
     CH_Value num,
     bool add_zero = true,
-    bool add_zerodot = true)
+    bool add_dot = true)
 {
     std::string str;
     if (num < 0)
@@ -6298,8 +6298,10 @@ std::string ChGetJpnNumber1(
             jdigits = ChGetJpnDigits(digits.substr(i + 1), ok);
             if (ok && !jdigits.empty())
             {
-                if (add_zerodot)
-                    str += "‚ê‚¢‚Ä‚ñ";
+                if (add_zero)
+                    str += "‚ê‚¢";
+                if (add_dot)
+                    str += "‚Ä‚ñ";
                 str += jdigits;
             }
             else
