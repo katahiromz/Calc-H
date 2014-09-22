@@ -1478,6 +1478,21 @@ break2:
         }
         break;
 
+
+    case Sentence::DOES_DOMS_EXIST:
+        assert(sentence->m_doms1);
+        assert(sentence->m_doms1->m_domains);
+        if (sentence->m_doms1->m_domains->empty())
+        {
+            ChSetMessage("Ç†ÇËÇ‹ÇπÇÒÅB");
+        }
+        else if (!sentence->m_doms1->m_domains->GetValues(values) ||
+                 values.size())
+        {
+            ChSetMessage("Ç†ÇËÇ‹Ç∑ÅB");
+        }
+        break;
+
     default:
         assert(0);
     }
@@ -5950,6 +5965,7 @@ void ChAnalyzeSentence(shared_ptr<Sentence>& sentence)
         break;
 
     case Sentence::DOMS_IS_WHAT:
+    case Sentence::DOES_DOMS_EXIST:
         ChAnalyzeDoms(sentence->m_doms1);
         break;
 

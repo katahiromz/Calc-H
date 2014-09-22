@@ -341,6 +341,17 @@ namespace Calc_H
             return shared_ptr<Sentence>(s);
         }
 
+        shared_ptr<Sentence> DoSent30(shared_ptr<Doms>& doms1)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoSent30" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::DOES_DOMS_EXIST;
+            s->m_doms1 = doms1;
+            return shared_ptr<Sentence>(s);
+        }
+
         shared_ptr<Node> DoWakaran1()
         {
             #ifdef DEEPDEBUG

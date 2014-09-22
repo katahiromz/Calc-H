@@ -531,6 +531,18 @@ bool Range::Equal(const Range& r) const
     return Includes(r) && r.Includes(*this);
 }
 
+void Range::Offset(const number_type& diff)
+{
+    if (m_pnLBound)
+    {
+        *m_pnLBound += diff;
+    }
+    if (m_pnUBound)
+    {
+        *m_pnUBound += diff;
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // Ndrr1D::Ranges
 
@@ -893,6 +905,15 @@ retry2:
 bool Ranges::Equal(const Ranges& r) const
 {
     return Includes(r) && r.Includes(*this);
+}
+
+void Ranges::Offset(const number_type& diff)
+{
+    size_t i, siz = size();
+    for (i = 0; i < siz; ++i)
+    {
+        ((*this)[i]).get()->Offset(diff);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////

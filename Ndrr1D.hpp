@@ -85,8 +85,8 @@ namespace Ndrr1D
     {
         bool            m_has_min;
         bool            m_has_max;
-        number_type *    m_pnLBound;
-        number_type *    m_pnUBound;
+        number_type *   m_pnLBound;
+        number_type *   m_pnUBound;
 
         Range();
         Range(bool has_min, bool has_max,
@@ -116,6 +116,7 @@ namespace Ndrr1D
         bool Contains(const number_type& value) const;
         void Intersect(const Range& r);
         bool Equal(const Range& r) const;
+        void Offset(const number_type& diff);
 
         static Range *Intersect(const Range *r1, const Range *r2);
         static Range *Whole() { return new Range(); }
@@ -143,14 +144,15 @@ namespace Ndrr1D
         bool Includes(const Ranges& r) const;
         bool Contains(const number_type& value) const;
 
+        number_type *GetLBound(bool& has_min) const;
+        number_type *GetUBound(bool& has_max) const;
+        bool Equal(const Ranges& r) const;
+
         void Optimize();
         void Intersect(const Range& r);
         void Intersect(const Ranges& r);
         void Union(const Ranges& ranges);
-
-        number_type *GetLBound(bool& has_min) const;
-        number_type *GetUBound(bool& has_max) const;
-        bool Equal(const Ranges& r) const;
+        void Offset(const number_type& diff);
 
         static Ranges *Union(const Ranges *r1, const Ranges *r2);
         static Ranges *Intersect(const Ranges *ranges, const Range *r);

@@ -21,6 +21,7 @@
 %token T_ACOSH<TokenValue>;
 %token T_ALL<TokenValue>;       // replaced
 %token T_AMARI<TokenValue>;
+%token T_ARI<TokenValue>;
 %token T_ASIN<TokenValue>;
 %token T_ASINH<TokenValue>;
 %token T_ASOUGI<TokenValue>;
@@ -125,12 +126,14 @@
 %token T_MIRUTO<TokenValue>;    // replaced
 %token T_MONO<TokenValue>;
 %token T_MURYOUTAISUU<TokenValue>;
+%token T_NAI<TokenValue>;
 %token T_NANA<TokenValue>;
 %token T_NANOHA<TokenValue>;    // replaced
 %token T_NAYUTA<TokenValue>;
 %token T_NI<TokenValue>;
 %token T_NIHITOSHII<TokenValue>;
 %token T_NIHITOSHIKU<TokenValue>;
+%token T_NO10<TokenValue>;      // no baisuu, yakusuu, soinsuu, etc.
 %token T_NO1<TokenValue>;       // no ... jou
 %token T_NO2<TokenValue>;       // no wa/seki/sa/shou
 %token T_NO3<TokenValue>;       // no bai
@@ -140,7 +143,6 @@
 %token T_NO7<TokenValue>;       // no seigen, no yogen, no seisetu, etc.
 %token T_NO8<TokenValue>;       // no ... percent
 %token T_NO9<TokenValue>;       // no amari
-%token T_NO10<TokenValue>;      // no baisuu, yakusuu, soinsuu, etc.
 %token T_NOUCHI<TokenValue>;
 %token T_NUMBER<TokenValue>;
 %token T_OKU<TokenValue>;
@@ -173,9 +175,9 @@
 %token T_SHOUSUU<TokenValue>;
 %token T_SIN<TokenValue>;
 %token T_SINH<TokenValue>;
+%token T_SOINSUU<TokenValue>;
 %token T_SONO<TokenValue>;      // replaced
 %token T_SORE<TokenValue>;
-%token T_SOINSUU<TokenValue>;
 %token T_SOSUU<TokenValue>;
 %token T_SUM<TokenValue>;
 %token T_SURU<TokenValue>;      // replaced
@@ -222,6 +224,8 @@ sentence<Sentence>
     | [DoSent28] domains(0) T_HA T_IKURA T_KANA T_PERIOD
     | [DoSent28] domains(0) T_HA T_IKURA T_PERIOD
     | [DoSent28] domains(0) T_HA T_PERIOD
+    | [DoSent30] domains(0) T_HA T_ARI T_KANA T_PERIOD
+    | [DoSent30] domains(0) T_HA T_NAI T_KANA T_PERIOD
     | [DoSent29] expression_list(0) T_HA T_TAGAINISO T_KANA T_PERIOD
     | [DoSent10] mono(0) T_HA domains(1) T_KANA T_PERIOD
     | [DoSent11] mono(0) T_HA constraint(1) T_NO1 T_KANA T_PERIOD
