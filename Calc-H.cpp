@@ -1191,7 +1191,19 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
             std::cout << *sentence->m_doms1->m_domains.get() << std::endl;
             std::cout << *sentence->m_doms2->m_domains.get() << std::endl;
         #endif
-        if (sentence->m_doms2->m_domains->Includes(*sentence->m_doms1->m_domains.get()))
+        if ((sentence->m_doms1->m_domains->empty() ||
+                (sentence->m_doms1->m_domains->GetValues(values) &&
+                 values.size() == 0)
+            ) &&
+            (sentence->m_doms2->m_domains->empty() ||
+                (sentence->m_doms2->m_domains->GetValues(values) &&
+                 values.size() == 0)
+            ))
+        {
+            ChSetMessage("‚Ç‚¿‚ç‚à‚»‚ñ‚´‚¢‚µ‚Ü‚¹‚ñB");
+        }
+        else if (sentence->m_doms2->m_domains->Includes(
+            *sentence->m_doms1->m_domains.get()))
         {
             ChSetMessage(ch_right);
         }
