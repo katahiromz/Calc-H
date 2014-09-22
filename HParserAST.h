@@ -190,7 +190,8 @@ namespace Calc_H
     {
         enum {
             MONO, MINUS, NUM, BUNSUU, TAIBUNSUU, FUNC1ARG, DO,
-            PI, E, FUNC1ARG_HEIHOU, FUNC1ARG_RIPPOU, FUNC1ARG_JOU, FACTORIAL
+            PI, E, FUNC1ARG_HEIHOU, FUNC1ARG_RIPPOU, FUNC1ARG_JOU,
+            FACTORIAL, NTH_PRIME
         } m_type;
         shared_ptr<Expr>        m_expr;
         shared_ptr<Prim>        m_prim;

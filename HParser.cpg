@@ -17,26 +17,27 @@
 %token T_DIGIT8<TokenValue>;
 %token T_DIGIT9<TokenValue>;
 
-%token T_ACOS<TokenValue>;
-%token T_ACOSH<TokenValue>;
-%token T_ALL<TokenValue>;       // replaced
-%token T_AMARI<TokenValue>;
-%token T_ARI<TokenValue>;
-%token T_ASIN<TokenValue>;
-%token T_ASINH<TokenValue>;
-%token T_ASOUGI<TokenValue>;
-%token T_ATAN<TokenValue>;
-%token T_ATANH<TokenValue>;
-%token T_AVERAGE<TokenValue>;
-%token T_BAI<TokenValue>;
-%token T_BAISUU<TokenValue>;
-%token T_BUNNO<TokenValue>;
-%token T_BUNSUU<TokenValue>;
-%token T_CHIISAI<TokenValue>;
-%token T_CHIISAKU<TokenValue>;
-%token T_CHOU<TokenValue>;
-%token T_COMMA<TokenValue>;
 %token T_COS<TokenValue>;
+%token T_COMMA<TokenValue>;
+%token T_CHOU<TokenValue>;
+%token T_CHIISAKU<TokenValue>;
+%token T_CHIISAI<TokenValue>;
+%token T_BUNSUU<TokenValue>;
+%token T_BUNNO<TokenValue>;
+%token T_BANMENO<TokenValue>;
+%token T_BAISUU<TokenValue>;
+%token T_BAI<TokenValue>;
+%token T_AVERAGE<TokenValue>;
+%token T_ATANH<TokenValue>;
+%token T_ATAN<TokenValue>;
+%token T_ASOUGI<TokenValue>;
+%token T_ASINH<TokenValue>;
+%token T_ASIN<TokenValue>;
+%token T_ARI<TokenValue>;
+%token T_AMARI<TokenValue>;
+%token T_ALL<TokenValue>;       // replaced
+%token T_ACOSH<TokenValue>;
+%token T_ACOS<TokenValue>;
 %token T_COSH<TokenValue>;
 %token T_COUNT<TokenValue>;
 %token T_DE<TokenValue>;
@@ -758,6 +759,7 @@ factor<Fact>
 primary<Prim>
     : [DoPrim7] primary(0) T_DO
     | [DoPrim13] primary(0) T_FACTORIAL
+    | [DoPrim14] primary(0) T_BANMENO T_SOSUU
     | [DoPrim10] func1arg(0) T_HEIHOU primary(1)
     | [DoPrim12] func1arg(0) T_RIPPOU primary(1)
     | [DoPrim11] func1arg(0) number(1) T_JOU1 primary(2)

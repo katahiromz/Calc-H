@@ -2114,6 +2114,17 @@ namespace Calc_H
             return shared_ptr<Prim>(p);
         }
 
+        shared_ptr<Prim> DoPrim14(shared_ptr<Prim>& prim)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoPrim14" << std::endl;
+            #endif
+            Prim *p = new Prim;
+            p->m_type = Prim::NTH_PRIME;
+            p->m_prim = prim;
+            return shared_ptr<Prim>(p);
+        }
+
         shared_ptr<ExprList> DoExprList1(shared_ptr<ExprList>& exprlist, shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG

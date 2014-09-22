@@ -521,6 +521,7 @@ namespace Calc_H
             if (lexeme("ÇœÅ["))                             return set_info(info, T_PERCENT);
             if (lexeme("ÇœÇ‹"))                             return set_info(info, T_HACHI);
             if (lexeme("ÇœÇ¢"))                             return set_info(info, T_PI);
+            if (lexeme("ÇŒÇÒÇﬂÇÃ"))                         return set_info(info, T_BANMENO);
             if (lexeme("ÇŒÇÒ"))                             return set_info(info, T_MAN);
             if (lexeme("ÇŒÇ¢Ç∑Ç§"))                         return set_info(info, T_BAISUU);
             if (lexeme("ÇŒÇ¢"))                             return set_info(info, T_BAI);

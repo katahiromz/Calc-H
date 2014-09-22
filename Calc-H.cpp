@@ -30,6 +30,60 @@ void ChSetMessage(const std::string& str)
         Calc_H::s_message = str;
 }
 
+static const size_t ch_primes[] =
+{
+    2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41,
+    43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97
+};
+
+class CH_PrimeTable
+{
+public:
+    CH_PrimeTable()
+    {
+    }
+
+    pmp::integer_type nth_prime(size_t i)
+    {
+        assert(i > 0);
+        --i;
+
+        size_t siz = sizeof(ch_primes) / sizeof(ch_primes[0]);
+        if (i < siz)
+            return ch_primes[i];
+
+        if (m_primes.empty())
+            m_primes.insert(m_primes.end(), &ch_primes[0], &ch_primes[siz]);
+
+        siz = m_primes.size();
+        if (i < siz)
+            return m_primes[i];
+
+        for (pmp::integer_type m = m_primes[siz - 1] + 2; i >= siz; m += 2)
+        {
+            bool flag = true;
+            for (size_t j = 0; j + 1 < siz; ++j)
+            {
+                if (m % m_primes[j] == 0)
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag)
+            {
+                m_primes.push_back(m);
+                ++siz;
+            }
+        }
+        return m_primes[i];
+    }
+
+public:
+    std::vector<pmp::integer_type> m_primes;
+};
+static CH_PrimeTable ch_prime_table;
+
 static const char * const ch_not_tashizan = "たしざんではありません。";
 static const char * const ch_not_kakezan = "かけざんではありません。";
 static const char * const ch_not_hikizan = "ひきざんではありません。";
@@ -337,6 +391,26 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
             else
             {
                 ChSetMessage("かいじょうがけいさんできるのはしぜんすうのみです。");
+                return 0;
+            }
+        }
+
+    case Prim::NTH_PRIME:
+        {
+            CH_Value value = ChCalcPrim(prim->m_prim);
+            value.trim();
+            if (value.is_i() && value.get_i() > 0)
+            {
+                if (value.get_i() > ch_prime_table.m_primes.max_size())
+                {
+                    throw std::runtime_error("The prime is out of supported range.");
+                    return 0;
+                }
+                return ch_prime_table.nth_prime(value.get_i().convert_to<size_t>());
+            }
+            else
+            {
+                ChSetMessage("じょすうがしぜんすうではありません。");
                 return 0;
             }
         }
@@ -1074,6 +1148,7 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
 {
     CH_Value v1, v2;
     std::vector<CH_Value> values;
+    bool flag;
 
     switch (sentence->m_type)
     {
@@ -1482,15 +1557,16 @@ break2:
     case Sentence::DOES_DOMS_EXIST:
         assert(sentence->m_doms1);
         assert(sentence->m_doms1->m_domains);
-        if (sentence->m_doms1->m_domains->empty())
+        flag = !sentence->m_doms1->m_domains->empty();
+        if (!flag)
         {
-            ChSetMessage("ありません。");
+            flag = !sentence->m_doms1->m_domains->GetValues(values) ||
+                   values.size() > 0;
         }
-        else if (!sentence->m_doms1->m_domains->GetValues(values) ||
-                 values.size())
-        {
+        if (flag)
             ChSetMessage("あります。");
-        }
+        else
+            ChSetMessage("ありません。");
         break;
 
     default:
@@ -5720,6 +5796,7 @@ void ChAnalyzePrim(shared_ptr<Prim>& prim)
     case Prim::FUNC1ARG_RIPPOU:
     case Prim::FUNC1ARG_JOU:
     case Prim::FACTORIAL:
+    case Prim::NTH_PRIME:
         ChAnalyzePrim(prim->m_prim);
         break;
 
