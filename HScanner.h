@@ -813,6 +813,7 @@ namespace Calc_H
             if (lexeme("そすう"))                           return set_info(info, T_SOSUU);
             if (lexeme("そうわ"))                           return set_info(info, T_SUM);
             if (lexeme("そうきょくせん"))                   return set_info(info, T_HYPERBOLIC);
+            if (lexeme("そいんすうぶんかい"))               return set_info(info, T_SOINSUUBUNKAI);
             if (lexeme("そいんすう"))                       return set_info(info, T_SOINSUU);
             if (lexeme("そいつ"))                           return set_info(info, T_SORE);
             if (lexeme("そ"))                               return set_info(info, T_JUU);
@@ -1611,6 +1612,7 @@ namespace Calc_H
         // T_NO8: 「の何ぱーせんと」の「の」。
         // T_NO9: 「の余り」の「の」。
         // T_NO10: 倍数、約数、素因数の直前の「の」。
+        // T_NO11: 素因数分解の直前の「の」。
         // T_NO1: それ以外。
         void resynth3(std::vector<info_type>& infos)
         {
@@ -1699,6 +1701,15 @@ namespace Calc_H
                     if (no1 != std::string::npos)
                     {
                         (newinfos.begin() + no1)->set_token(T_NO10);
+                        no1 = std::string::npos;
+                    }
+                    jou1 = std::string::npos;
+                    break;
+
+                case T_SOINSUUBUNKAI:
+                    if (no1 != std::string::npos)
+                    {
+                        (newinfos.begin() + no1)->set_token(T_NO11);
                         no1 = std::string::npos;
                     }
                     jou1 = std::string::npos;
@@ -2414,6 +2425,7 @@ namespace Calc_H
                 case T_SIN:
                 case T_SINH:
                 case T_SOINSUU:
+                case T_SOINSUUBUNKAI:
                 case T_SUM:
                 case T_TAN:
                 case T_TASHIZAN:

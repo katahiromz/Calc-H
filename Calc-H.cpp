@@ -1144,11 +1144,14 @@ bool ChIsSurutoHikizan(shared_ptr<Suruto>& suruto);
 bool ChIsSurutoKakezan(shared_ptr<Suruto>& suruto);
 bool ChIsSurutoWarizan(shared_ptr<Suruto>& suruto);
 
+std::string ChGetJpnNumberFixed2(CH_Value num);
+
 CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
 {
     CH_Value v1, v2;
     std::vector<CH_Value> values;
     bool flag;
+    bool flag1, flag2;
 
     switch (sentence->m_type)
     {
@@ -1191,16 +1194,30 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
             std::cout << *sentence->m_doms1->m_domains.get() << std::endl;
             std::cout << *sentence->m_doms2->m_domains.get() << std::endl;
         #endif
+        flag1 = flag2 = false;
         if ((sentence->m_doms1->m_domains->empty() ||
                 (sentence->m_doms1->m_domains->GetValues(values) &&
-                 values.size() == 0)
-            ) &&
-            (sentence->m_doms2->m_domains->empty() ||
+                 values.size() == 0)))
+        {
+            flag1 = true;
+        }
+        if ((sentence->m_doms2->m_domains->empty() ||
                 (sentence->m_doms2->m_domains->GetValues(values) &&
-                 values.size() == 0)
-            ))
+                 values.size() == 0)))
+        {
+            flag2 = true;
+        }
+        if (flag1 && flag2)
         {
             ChSetMessage("どちらもそんざいしません。");
+        }
+        else if (flag1)
+        {
+            ChSetMessage("ぜんしゃはそんざいしません。");
+        }
+        else if (flag2)
+        {
+            ChSetMessage("こうしゃはそんざいしません。");
         }
         else if (sentence->m_doms2->m_domains->Includes(
             *sentence->m_doms1->m_domains.get()))
@@ -1579,6 +1596,91 @@ break2:
             ChSetMessage("あります。");
         else
             ChSetMessage("ありません。");
+        break;
+
+    case Sentence::MONO_SOINSUUBUNKAI:
+        assert(sentence->m_mono);
+        {
+            ChAnalyzeMono(sentence->m_mono);
+            CH_Value v = ChCalcMono(sentence->m_mono);
+            v.trim();
+            if (v.is_i())
+            {
+                bool minus = false;
+                if (v < 0)
+                {
+                    v = -v;
+                    minus = true;
+                }
+
+                if (v.is_zero())
+                {
+                    break;
+                }
+                else
+                {
+                    pmp::vector_type vec1, vec2;
+                    for (CH_Value n = 2; n <= v; n += 1)
+                    {
+                        if ((v % n).is_zero() && Ndrr1D::IsPrimeNumber(n))
+                        {
+                            vec1.push_back(n);
+                        }
+                    }
+                    for (size_t i = 0; i < vec1.size(); ++i)
+                    {
+                        pmp::integer_type count(0);
+                        while ((v % vec1[i]).is_zero())
+                        {
+                            ++count;
+                            v /= vec1[i];
+                        }
+                        vec2.push_back(count);
+                    }
+                    std::vector<std::string> strs1, strs2;
+                    std::string str1, str2;
+                    assert(vec1.size() == vec2.size());
+                    for (size_t i = 0; i < vec1.size(); ++i)
+                    {
+                        str1 = ChGetJpnNumberFixed2(vec1[i]);
+                        if (vec2[i] > 1)
+                        {
+                            str1 += "の";
+                            str1 += ChGetJpnNumberFixed2(vec2[i]);
+                            str1 += "じょう";
+                        }
+                        strs1.push_back(str1);
+                        str2 = vec1[i].str();
+                        if (vec2[i] > 1)
+                        {
+                            str2 += "^";
+                            str2 += vec2[i].str();
+                        }
+                        strs2.push_back(str2);
+                    }
+                    assert(strs1.size() == strs2.size());
+                    str1 = strs1[0];
+                    str2 = strs2[0];
+                    for (size_t i = 1; i < strs1.size(); ++i)
+                    {
+                        str1 += " かける ";
+                        str2 += " * ";
+                        str1 += strs1[i];
+                        str2 += strs2[i];
+                    }
+                    if (minus)
+                    {
+                        str1 = "まいなす " + str1;
+                        str2 = "- " + str2;
+                    }
+                    ChSetMessage(str1 + " (" + str2 + ") です。");
+                }
+            }
+            else
+            {
+                ChSetMessage("せいすうではないかずのそいんすうはていぎされていません。");
+            }
+        }
         break;
 
     default:
@@ -6028,6 +6130,7 @@ void ChAnalyzeSentence(shared_ptr<Sentence>& sentence)
     case Sentence::MONO_IS_HIKIZAN:
     case Sentence::MONO_IS_KAKEZAN:
     case Sentence::MONO_IS_WARIZAN:
+    case Sentence::MONO_SOINSUUBUNKAI:
         ChAnalyzeMono(sentence->m_mono);
         break;
 

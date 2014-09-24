@@ -135,6 +135,7 @@
 %token T_NIHITOSHII<TokenValue>;
 %token T_NIHITOSHIKU<TokenValue>;
 %token T_NO10<TokenValue>;      // no baisuu, yakusuu, soinsuu, etc.
+%token T_NO11<TokenValue>;      // no soinsuubunkai
 %token T_NO1<TokenValue>;       // no ... jou
 %token T_NO2<TokenValue>;       // no wa/seki/sa/shou
 %token T_NO3<TokenValue>;       // no bai
@@ -177,6 +178,7 @@
 %token T_SIN<TokenValue>;
 %token T_SINH<TokenValue>;
 %token T_SOINSUU<TokenValue>;
+%token T_SOINSUUBUNKAI<TokenValue>;
 %token T_SONO<TokenValue>;      // replaced
 %token T_SORE<TokenValue>;
 %token T_SOSUU<TokenValue>;
@@ -255,6 +257,11 @@ sentence<Sentence>
     | [DoSent1] mono(0) T_HA T_PERIOD
     | [DoSent1] mono(0) T_WO1 oshiete T_PERIOD
     | [DoSent1] mono(0) T_PERIOD
+    | [DoSent31] mono(0) T_WO1 T_SOINSUUBUNKAI T_SURUTO T_IKURA T_PERIOD
+    | [DoSent31] mono(0) T_WO1 T_SOINSUUBUNKAI T_SURUTO T_PERIOD
+    | [DoSent31] mono(0) T_WO1 T_SOINSUUBUNKAI T_PERIOD
+    | [DoSent31] mono(0) T_NO11 T_SOINSUUBUNKAI T_HA T_PERIOD
+    | [DoSent31] mono(0) T_NO11 T_SOINSUUBUNKAI T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KANA T_WO1 oshiete T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KANA wakaran T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KANA oshiete T_PERIOD

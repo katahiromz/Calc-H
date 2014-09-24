@@ -352,6 +352,17 @@ namespace Calc_H
             return shared_ptr<Sentence>(s);
         }
 
+        shared_ptr<Sentence> DoSent31(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoSent31" << std::endl;
+            #endif
+            Sentence *s = new Sentence;
+            s->m_type = Sentence::MONO_SOINSUUBUNKAI;
+            s->m_mono = mono;
+            return shared_ptr<Sentence>(s);
+        }
+
         shared_ptr<Node> DoWakaran1()
         {
             #ifdef DEEPDEBUG

@@ -67,7 +67,8 @@ namespace Calc_H
             SURUTO_TASHIZAN, SURUTO_HIKIZAN,
             SURUTO_KAKEZAN, SURUTO_WARIZAN,
             DOMS_IS_EXPRLIST, DOMS_IS_EXPR,
-            DOMS_IS_WHAT, TAGAINISO, DOES_DOMS_EXIST
+            DOMS_IS_WHAT, TAGAINISO, DOES_DOMS_EXIST,
+            MONO_SOINSUUBUNKAI
         } m_type;
         shared_ptr<Mono>        m_mono;
         shared_ptr<Mono>        m_mono2;
