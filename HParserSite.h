@@ -3791,6 +3791,18 @@ namespace Calc_H
             return shared_ptr<AndCnstr>(ac);
         }
 
+        shared_ptr<AndCnstr> DoAndCnstr8(shared_ptr<Expr>& expr, shared_ptr<AndCnstr>& andcnstr)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoAndCnstr8" << std::endl;
+            #endif
+            AndCnstr *ac = new AndCnstr;
+            ac->m_type = AndCnstr::SEIJO;
+            ac->m_expr = expr;
+            ac->m_andcnstr = andcnstr;
+            return shared_ptr<AndCnstr>(ac);
+        }
+
         shared_ptr<PrimCnstr> DoPrimCnstr1(shared_ptr<Expr>& expr)
         {
             #ifdef DEEPDEBUG
@@ -3853,6 +3865,17 @@ namespace Calc_H
             #endif
             PrimCnstr *pc = new PrimCnstr;
             pc->m_type = PrimCnstr::HITOSHII;
+            pc->m_expr = expr;
+            return shared_ptr<PrimCnstr>(pc);
+        }
+
+        shared_ptr<PrimCnstr> DoPrimCnstr7(shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoPrimCnstr7" << std::endl;
+            #endif
+            PrimCnstr *pc = new PrimCnstr;
+            pc->m_type = PrimCnstr::SEIJO;
             pc->m_expr = expr;
             return shared_ptr<PrimCnstr>(pc);
         }

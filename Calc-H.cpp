@@ -2059,6 +2059,39 @@ void ChAnalyzeDomainsOfPrimCnstr(
         domains.get()->Intersect(Domain(v));
         break;
 
+    case PrimCnstr::SEIJO:
+        ChAnalyzeExpr(primcnstr->m_expr);
+        v = ChCalcExpr(primcnstr->m_expr);
+        v.trim();
+        if (v.is_i())
+        {
+            if (v < 0)
+                v = -v;
+
+            if (v.is_zero())
+            {
+                ChSetMessage("ぜろのやくすうはていぎされていません。");
+            }
+            else
+            {
+                Domains d;
+                for (CH_Value n = 1; n <= v; n += 1)
+                {
+                    if ((v % n).is_zero())
+                    {
+                        d.Union(Domain(n));
+                        d.Union(Domain(-n));
+                    }
+                }
+                domains.get()->Intersect(d);
+            }
+        }
+        else
+        {
+            ChSetMessage("せいすうではないかずのせいじょはていぎされていません。");
+        }
+        break;
+
     default:
         assert(0);
     }
@@ -2131,6 +2164,39 @@ void ChAnalyzeDomainsOfAndCnstr(
         ChAnalyzeDomainsOfAndCnstr(domains, andcnstr->m_andcnstr);
         break;
 
+    case AndCnstr::SEIJO:
+        ChAnalyzeExpr(andcnstr->m_expr);
+        v = ChCalcExpr(andcnstr->m_expr);
+        v.trim();
+        if (v.is_i())
+        {
+            if (v < 0)
+                v = -v;
+
+            if (v.is_zero())
+            {
+                ChSetMessage("ぜろのやくすうはていぎされていません。");
+            }
+            else
+            {
+                Domains d;
+                for (CH_Value n = 1; n <= v; n += 1)
+                {
+                    if ((v % n).is_zero())
+                    {
+                        d.Union(Domain(n));
+                        d.Union(Domain(-n));
+                    }
+                }
+                domains.get()->Intersect(d);
+            }
+        }
+        else
+        {
+            ChSetMessage("せいすうではないかずのせいじょはていぎされていません。");
+        }
+        break;
+
     default:
         assert(0);
     }
@@ -2199,6 +2265,7 @@ void ChAnalyzeAndCnstr(shared_ptr<AndCnstr>& andcnstr)
     case AndCnstr::CNSTR_ONLY:
     case AndCnstr::PRIMCNSTR_ONLY:
     case AndCnstr::HITOSHIKU:
+    case AndCnstr::SEIJO:
         ChAnalyzeExpr(andcnstr->m_expr);
         ChAnalyzeAndCnstr(andcnstr->m_andcnstr);
         break;

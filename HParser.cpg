@@ -166,10 +166,10 @@
 %token T_SAI<TokenValue>;
 %token T_SAN<TokenValue>;
 %token T_SEI<TokenValue>;
+%token T_SEIJO<TokenValue>;
 %token T_SEINO<TokenValue>;
 %token T_SEISUU<TokenValue>;
 %token T_SEN<TokenValue>;
-%token T_SHI<TokenValue>;
 %token T_SHINNOYAKUSUU<TokenValue>;
 %token T_SHITA<TokenValue>;
 %token T_SHITE<TokenValue>;
@@ -257,9 +257,12 @@ sentence<Sentence>
     | [DoSent1] mono(0) T_HA T_PERIOD
     | [DoSent1] mono(0) T_WO1 oshiete T_PERIOD
     | [DoSent1] mono(0) T_PERIOD
+    | [DoSent31] mono(0) T_WO1 T_SOINSUUBUNKAI T_SURUTO T_IKURA T_KANA T_PERIOD
     | [DoSent31] mono(0) T_WO1 T_SOINSUUBUNKAI T_SURUTO T_IKURA T_PERIOD
     | [DoSent31] mono(0) T_WO1 T_SOINSUUBUNKAI T_SURUTO T_PERIOD
     | [DoSent31] mono(0) T_WO1 T_SOINSUUBUNKAI T_PERIOD
+    | [DoSent31] mono(0) T_NO11 T_SOINSUUBUNKAI T_HA T_IKURA T_KANA T_PERIOD
+    | [DoSent31] mono(0) T_NO11 T_SOINSUUBUNKAI T_HA T_IKURA T_PERIOD
     | [DoSent31] mono(0) T_NO11 T_SOINSUUBUNKAI T_HA T_PERIOD
     | [DoSent31] mono(0) T_NO11 T_SOINSUUBUNKAI T_PERIOD
     | [DoSent3] suruto(0) T_IKURA T_KANA T_WO1 oshiete T_PERIOD
@@ -1091,6 +1094,7 @@ primary_constraint<PrimCnstr>
     | [DoPrimCnstr3] expression(0) T_MIMAN
     | [DoPrimCnstr4] expression(0) T_YORI T_OOKII
     | [DoPrimCnstr6] expression(0) T_NIHITOSHII
+    | [DoPrimCnstr7] expression(0) T_WO2 T_SEIJO T_SURU
     | [DoPrimCnstr5] mono(0) T_DE T_WARIKIRU
     ;
 
@@ -1112,6 +1116,7 @@ and_constraint<AndCnstr>
     | [DoAndCnstr4] expression(0) T_YORI T_OOKIKU T_KATSU      and_constraint(1)
     | [DoAndCnstr4] expression(0) T_YORI T_OOKIKU              and_constraint(1)
     | [DoAndCnstr7] expression(0) T_NIHITOSHIKU                and_constraint(1)
+    | [DoAndCnstr8] expression(0) T_WO2 T_SEIJO T_SHITE        and_constraint(1)
     | [DoAndCnstr5] T_L_PAREN constraint(0) T_R_PAREN
     | [DoAndCnstr6] primary_constraint(0)
     ;

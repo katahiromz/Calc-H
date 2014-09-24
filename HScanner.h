@@ -827,6 +827,7 @@ namespace Calc_H
             if (lexeme("せいの"))                           return set_info(info, T_SEINO);
             if (lexeme("せいせつ"))                         return set_info(info, T_TAN);
             if (lexeme("せいすう"))                         return set_info(info, T_SEISUU);
+            if (lexeme("せいじょ"))                         return set_info(info, T_SEIJO);
             if (lexeme("せいげん"))                         return set_info(info, T_SIN);
             if (lexeme("せい"))                             return set_info(info, T_SEI);
             if (lexeme("すれば"))                           return set_info(info, T_SURUTO);
@@ -2061,6 +2062,7 @@ namespace Calc_H
                 case T_MINUS:
                 case T_WO1:
                 case T_WO2:
+                case T_SEIJO:
                     flag = true;
                     break;
 
@@ -2080,7 +2082,8 @@ namespace Calc_H
         }
 
         // 「を」をT_WO1とT_WO2に分類する。
-        // T_WO2: 「たしざん」「けいさん」などの直後の「を」。
+        // T_WO2: 「たしざん」「けいさん」などの直後の「を」、または
+        //        「せいじょ」の前の「を」。
         // T_WO1: そのほかの「を」。
         void resynth8(std::vector<info_type>& infos)
         {
@@ -2100,7 +2103,7 @@ namespace Calc_H
                     break;
 
                 case T_WO1:
-                    if (flag)
+                    if (flag || (it + 1)->get_token() == T_SEIJO)
                     {
                         flag = false;
                         it->set_token(T_WO2);

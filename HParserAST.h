@@ -303,7 +303,8 @@ namespace Calc_H
     struct AndCnstr : Node
     {
         enum {
-            IJOU, IKA, CHIISAI, OOKII, CNSTR_ONLY, PRIMCNSTR_ONLY, HITOSHIKU
+            IJOU, IKA, CHIISAI, OOKII, CNSTR_ONLY, PRIMCNSTR_ONLY,
+            HITOSHIKU, SEIJO
         } m_type;
         shared_ptr<Expr>        m_expr;
         shared_ptr<AndCnstr>    m_andcnstr;
@@ -314,7 +315,7 @@ namespace Calc_H
     struct PrimCnstr : Node
     {
         enum {
-            IJOU, IKA, CHIISAI, OOKII, WARIKIRU, HITOSHII
+            IJOU, IKA, CHIISAI, OOKII, WARIKIRU, HITOSHII, SEIJO
         } m_type;
         shared_ptr<Expr>        m_expr;
         shared_ptr<Mono>        m_mono;
