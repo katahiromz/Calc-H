@@ -42,7 +42,8 @@ bool ChScan(
     return true;
 }
 
-typedef Calc_H::Scanner<std::string::const_iterator, Calc_H::ParserSite> CH_Scanner;
+typedef std::string::const_iterator CH_ScannerIterator;
+typedef Calc_H::Scanner<CH_ScannerIterator, Calc_H::ParserSite> CH_Scanner;
 typedef Calc_H::Parser<shared_ptr<Calc_H::Node>, Calc_H::ParserSite> CH_Parser;
 
 bool ChScanString(
@@ -50,7 +51,7 @@ bool ChScanString(
     std::vector<ChTokenInfo>&   infos,
     const std::string&          str)
 {
-    return ChScan<std::string::const_iterator>(scanner, infos, str.begin(), str.end());
+    return ChScan<CH_ScannerIterator>(scanner, infos, str.begin(), str.end());
 }
 
 bool ChResynth(CH_Scanner& scanner, std::vector<ChTokenInfo>& infos)
@@ -7146,6 +7147,9 @@ std::string ChJustDoIt(std::string& query)
         i = 0;
     if (i == query.find("//"))
         return "";  // retry
+
+    i = query.find("//");
+    query = query.substr(0, i);
 
     ChReplaceString(query, "Ç‹Å[Ç∑", "Ç‹Ç∑");
     ChReplaceString(query, "Ç‹Ç†Ç∑", "Ç‹Ç∑");
