@@ -9,7 +9,15 @@
 #include "PmpNumber.hpp"
 #include "Ndrr1D.hpp"
 #include "Calc-H.h"
-#include "HParseHeader.h"
+
+#include <ctime>            // for std::time
+#include <iterator>         // for std::istreambuf_iterator
+#include <iostream>         // for std::cerr
+
+#include "HParserAST.h"     // for Calc_H::Node, Calc_H::TokenInfo
+#include "HParser.h"        // for Calc_H::Parser
+#include "HScanner.h"       // for Calc_H::Scanner
+#include "HParserSite.h"    // for Calc_H::ParserSite
 
 namespace Calc_H
 {
@@ -22,6 +30,80 @@ namespace Calc_H
         "ぜろ", "いち", "に", "さん", "よん",
         "ご", "ろく", "なな", "はち", "きゅう"
     };
+}
+
+template <class Iterator>
+bool ChScan(
+    Calc_H::Scanner<Iterator, Calc_H::ParserSite>& scanner,
+    std::vector<ChTokenInfo>& infos,
+    Iterator begin, Iterator end)
+{
+    scanner.scan(infos, begin, end);
+    #ifdef _DEBUG
+        scanner.show_tokens(infos.begin(), infos.end());
+    #endif
+    return true;
+}
+
+bool ChScanString(
+    Calc_H::Scanner<std::string::const_iterator,Calc_H::ParserSite>& scanner,
+    std::vector<ChTokenInfo>& infos, const std::string& str)
+{
+    return ChScan<std::string::const_iterator>(scanner, infos, str.begin(), str.end());
+}
+
+bool ChResynth(
+    Calc_H::Scanner<std::string::const_iterator,Calc_H::ParserSite>& scanner,
+    std::vector<ChTokenInfo>& infos)
+{
+    scanner.resynth(infos);
+    return true;
+}
+
+bool ChParse(
+    shared_ptr<Calc_H::Sentence>&   s,
+    std::string&                    error,
+    std::vector<ChTokenInfo>       infos)
+{
+    using namespace Calc_H;
+    ParserSite ps;
+
+    Parser<shared_ptr<Node>, ParserSite> parser(ps);
+    std::vector<ChTokenInfo>::iterator it, end2 = infos.end();
+    if (ps.error().empty())
+    {
+        for (it = infos.begin(); it != end2; ++it)
+        {
+            #if 0
+                std::cout << scanner.token_to_string(*it) << std::endl;
+            #endif
+            if (parser.post(it->m_token, make_shared<ChTokenInfo>(*it)))
+            {
+                if (parser.error())
+                {
+                    ps.location() = it->location();
+                    ps.message("ことばがわかりません。");
+                }
+                break;
+            }
+        }
+    }
+
+    if (ps.error().empty())
+    {
+        shared_ptr<Node> node;
+        if (parser.accept(node))
+        {
+            s = static_pointer_cast<Sentence, Node>(node);
+            return true;
+        }
+    }
+    else
+    {
+        error = ps.error();
+    }
+
+    return false;
 }
 
 void ChSetMessage(const std::string& str)
@@ -403,7 +485,7 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
             {
                 if (value.get_i() > ch_prime_table.m_primes.max_size())
                 {
-                    throw std::runtime_error("The prime is out of supported range.");
+                    ChSetMessage("おおきすぎてけいさんできません。");
                     return 0;
                 }
                 return ch_prime_table.nth_prime(value.get_i().convert_to<size_t>());
@@ -6637,6 +6719,10 @@ void CrTrimString(std::string& str)
 
 std::string ChJustDoIt(std::string& query)
 {
+    static bool s_retried = false;
+    static std::string s_query_prev;
+    static time_t s_time;
+
     std::stringstream sstream;
     shared_ptr<Sentence> sentence;
     CrTrimString(query);
@@ -6645,8 +6731,11 @@ std::string ChJustDoIt(std::string& query)
         return "";
 
     // comment
-    if (query.size() >= 2 && query[0] == '/' && query[1] == '/')
-        return "";
+    size_t i = query.find_first_not_of(" \t");
+    if (i == std::string::npos)
+        i = 0;
+    if (i == query.find("//"))
+        return "";  // retry
 
     sstream << "こたえ：";
 
@@ -6664,62 +6753,116 @@ std::string ChJustDoIt(std::string& query)
     }
 
     std::string error;
-    query += "?";
     if (query.find("ありがと") != std::string::npos ||
         query.find("さんきゅ") != std::string::npos ||
         query.find("かんしゃ") != std::string::npos)
     {
         sstream << "こちらこそつかってくれてありがとう。" << std::endl;
     }
-    else if (parse_string(sentence, query, error))
+    else if (
+        query.find("あなた") != std::string::npos ||
+        query.find("きみ") != std::string::npos ||
+        query.find("だれ") != std::string::npos)
     {
-        Calc_H::s_message.clear();
-        ChAnalyzeSentence(sentence);
-        if (Calc_H::s_message.empty())
-        {
-            pmp::Number::Type old_type =
-                pmp::SetIntDivType(pmp::Number::FLOATING);
-            try
-            {
-                CH_Value value = ChCalcSentence(sentence);
-                value.trim();
-                if (s_message.empty())
-                {
-                    sstream << ChGetJpnNumberFixed2(value) <<
-                        " (" << value.str(ch_precision) <<
-                                ") " << "です。" << std::endl;
-                    s_sore = value;
-                }
-                else
-                {
-                    sstream << Calc_H::s_message << std::endl;
-                }
-            }
-            catch (const std::overflow_error&)
-            {
-                sstream << "おーばーふろーです。" << std::endl;
-            }
-            catch (const std::runtime_error&)
-            {
-                sstream << "けいさんできませんでした。" << std::endl;
-            }
-            pmp::SetIntDivType(old_type); // restore old
-        }
-        else
-        {
-            sstream << Calc_H::s_message << std::endl;
-        }
-        s_sentence_prev = sentence;
+        sstream <<
+            "ぼくは、けいさんろぼっと、ばれっとです。" << std::endl;
     }
     else
     {
-        if (error.empty())
+        Calc_H::ParserSite ps;
+        Calc_H::Scanner<std::string::const_iterator, Calc_H::ParserSite>
+            scanner(ps);
+
+        std::vector<ChTokenInfo> infos;
+        if (s_retried && time(NULL) - s_time < 30)
         {
-            sstream << "けいさんできませんでした。" << std::endl;
+            query = s_query_prev + query;
+        }
+
+        ChScanString(scanner, infos, query + "?");
+        if (infos.size() >= 3)
+        {
+            ChTokenInfo info = infos[infos.size() - 3];
+            if ((info.get_token() == T_PERIOD ||
+                 info.get_token() == T_COMMA) && infos.size() >= 4)
+            {
+                info = infos[infos.size() - 4];
+            }
+            switch (info.get_token())
+            {
+            case T_TASU:
+            case T_HIKU:
+            case T_KAKERU:
+            case T_WARU:
+            case T_KARA1:
+            case T_DE:
+            case T_NO1:
+            case T_WO1:
+            case T_ETTO:
+                s_retried = true;
+                s_query_prev = query;
+                s_time = time(NULL);
+                return "";  // retry
+
+            default:
+                break;
+            }
+        }
+
+        ChResynth(scanner, infos);
+        s_retried = false;
+        s_query_prev.clear();
+
+        if (ChParse(sentence, error, infos))
+        {
+            Calc_H::s_message.clear();
+            ChAnalyzeSentence(sentence);
+            if (Calc_H::s_message.empty())
+            {
+                pmp::Number::Type old_type =
+                    pmp::SetIntDivType(pmp::Number::FLOATING);
+                try
+                {
+                    CH_Value value = ChCalcSentence(sentence);
+                    value.trim();
+                    if (s_message.empty())
+                    {
+                        sstream << ChGetJpnNumberFixed2(value) <<
+                            " (" << value.str(ch_precision) <<
+                                    ") " << "です。" << std::endl;
+                        s_sore = value;
+                    }
+                    else
+                    {
+                        sstream << Calc_H::s_message << std::endl;
+                    }
+                }
+                catch (const std::overflow_error&)
+                {
+                    sstream << "おーばーふろーです。" << std::endl;
+                }
+                catch (const std::runtime_error&)
+                {
+                    sstream << "けいさんできませんでした。" << std::endl;
+                }
+                pmp::SetIntDivType(old_type); // restore old
+            }
+            else
+            {
+                sstream << Calc_H::s_message << std::endl;
+            }
+            s_sentence_prev = sentence;
         }
         else
         {
-            sstream << error << std::endl;
+            if (error.empty())
+            {
+                sstream << "けいさんできませんでした。" << std::endl;
+            }
+            else
+            {
+                sstream << error << std::endl;
+            }
         }
     }
 

@@ -6,215 +6,216 @@
 %token_prefix;
 %smart_pointer<shared_ptr>;
 
-%token T_DIGIT0<TokenValue>;
-%token T_DIGIT1<TokenValue>;
-%token T_DIGIT2<TokenValue>;
-%token T_DIGIT3<TokenValue>;
-%token T_DIGIT4<TokenValue>;
-%token T_DIGIT5<TokenValue>;
-%token T_DIGIT6<TokenValue>;
-%token T_DIGIT7<TokenValue>;
-%token T_DIGIT8<TokenValue>;
-%token T_DIGIT9<TokenValue>;
+%token T_DIGIT0<ChTokenInfo>;
+%token T_DIGIT1<ChTokenInfo>;
+%token T_DIGIT2<ChTokenInfo>;
+%token T_DIGIT3<ChTokenInfo>;
+%token T_DIGIT4<ChTokenInfo>;
+%token T_DIGIT5<ChTokenInfo>;
+%token T_DIGIT6<ChTokenInfo>;
+%token T_DIGIT7<ChTokenInfo>;
+%token T_DIGIT8<ChTokenInfo>;
+%token T_DIGIT9<ChTokenInfo>;
 
-%token T_COS<TokenValue>;
-%token T_COMMA<TokenValue>;
-%token T_CHOU<TokenValue>;
-%token T_CHIISAKU<TokenValue>;
-%token T_CHIISAI<TokenValue>;
-%token T_BUNSUU<TokenValue>;
-%token T_BUNNO<TokenValue>;
-%token T_BANMENO<TokenValue>;
-%token T_BAISUU<TokenValue>;
-%token T_BAI<TokenValue>;
-%token T_AVERAGE<TokenValue>;
-%token T_ATANH<TokenValue>;
-%token T_ATAN<TokenValue>;
-%token T_ASOUGI<TokenValue>;
-%token T_ASINH<TokenValue>;
-%token T_ASIN<TokenValue>;
-%token T_ARI<TokenValue>;
-%token T_AMARI<TokenValue>;
-%token T_ALL<TokenValue>;       // replaced
-%token T_ACOSH<TokenValue>;
-%token T_ACOS<TokenValue>;
-%token T_COSH<TokenValue>;
-%token T_COUNT<TokenValue>;
-%token T_DE<TokenValue>;
-%token T_DEARU<TokenValue>;
-%token T_DIFF<TokenValue>;
-%token T_DO<TokenValue>;
-%token T_DOT<TokenValue>;
-%token T_E<TokenValue>;
-%token T_EXP<TokenValue>;
-%token T_FACTORIAL<TokenValue>;
-%token T_FUKASHIGI<TokenValue>;
-%token T_FUNO<TokenValue>;
-%token T_GAI<TokenValue>;
-%token T_GCD<TokenValue>;
-%token T_GENSUU<TokenValue>;    // replaced
-%token T_GO<TokenValue>;
-%token T_GOKU<TokenValue>;
-%token T_GOUGASHA<TokenValue>;
-%token T_GOUSEISUU<TokenValue>;
-%token T_GUUSUU<TokenValue>;
-%token T_GYAKUSUU<TokenValue>;
-%token T_HA<TokenValue>;
-%token T_HACHI<TokenValue>;
-%token T_HATA<TokenValue>;      // replaced
-%token T_HEIHOU<TokenValue>;
-%token T_HEIHOUKON<TokenValue>;
-%token T_HIGENSUU<TokenValue>;  // replaced
-%token T_HIITA<TokenValue>;
-%token T_HIITE<TokenValue>;
-%token T_HIJOSUU<TokenValue>;   // replaced
-%token T_HIJOUSUU<TokenValue>;  // replaced
-%token T_HIKARERU<TokenValue>;
-%token T_HIKASUU<TokenValue>;   // replaced
-%token T_HIKIZAN<TokenValue>;
-%token T_HIKU<TokenValue>;
-%token T_HIKUTO<TokenValue>;
-%token T_HYAKU<TokenValue>;
-%token T_HYPERBOLIC<TokenValue>;
-%token T_ICHI<TokenValue>;
-%token T_IJOU<TokenValue>;
-%token T_IKA<TokenValue>;
-%token T_IKURA<TokenValue>;
-%token T_IO<TokenValue>;        // replaced
-%token T_ISO<TokenValue>;       // replaced
-%token T_JIMEINAYAKUSUU<TokenValue>;
-%token T_JISSUU<TokenValue>;
-%token T_JO<TokenValue>;
-%token T_JOSUU<TokenValue>;     // replaced
-%token T_JOU1<TokenValue>;      // exponent
-%token T_JOU2<TokenValue>;      // number unit
-%token T_JOUSUU<TokenValue>;    // replaced
-%token T_JUU<TokenValue>;
-%token T_KA<TokenValue>;
-%token T_KAIJOU<TokenValue>;
-%token T_KAKERARERU<TokenValue>;
-%token T_KAKERU<TokenValue>;
-%token T_KAKERUTO<TokenValue>;
-%token T_KAKETA<TokenValue>;
-%token T_KAKETE<TokenValue>;
-%token T_KAKEZAN<TokenValue>;
-%token T_KAN<TokenValue>;
-%token T_KANA<TokenValue>;
-%token T_KARA1<TokenValue>;
-%token T_KARA2<TokenValue>;
-%token T_KASUU<TokenValue>;     // replaced
-%token T_KATSU<TokenValue>;
-%token T_KEI<TokenValue>;
-%token T_KEISAN<TokenValue>;
-%token T_KISUU<TokenValue>;
-%token T_KOTAE<TokenValue>;
-%token T_KOU<TokenValue>;
-%token T_KOUBAISUU<TokenValue>;
-%token T_KOUYAKUSUU<TokenValue>;
-%token T_KURE<TokenValue>;
-%token T_KYUU<TokenValue>;
-%token T_LCM<TokenValue>;
-%token T_LOG10<TokenValue>;
-%token T_LOG<TokenValue>;
-%token T_L_PAREN<TokenValue>;
-%token T_MADE<TokenValue>;
-%token T_MAN<TokenValue>;
-%token T_MATAHA<TokenValue>;
-%token T_MAX<TokenValue>;
-%token T_MIMAN<TokenValue>;
-%token T_MIN<TokenValue>;
-%token T_MINUS<TokenValue>;
-%token T_MIRUTO<TokenValue>;    // replaced
-%token T_MONO<TokenValue>;
-%token T_MURYOUTAISUU<TokenValue>;
-%token T_NAI<TokenValue>;
-%token T_NANA<TokenValue>;
-%token T_NANOHA<TokenValue>;    // replaced
-%token T_NAYUTA<TokenValue>;
-%token T_NI<TokenValue>;
-%token T_NIHITOSHII<TokenValue>;
-%token T_NIHITOSHIKU<TokenValue>;
-%token T_NO10<TokenValue>;      // no baisuu, yakusuu, soinsuu, etc.
-%token T_NO11<TokenValue>;      // no soinsuubunkai
-%token T_NO1<TokenValue>;       // no ... jou
-%token T_NO2<TokenValue>;       // no wa/seki/sa/shou
-%token T_NO3<TokenValue>;       // no bai
-%token T_NO4<TokenValue>;       // no keisan
-%token T_NO5<TokenValue>;       // no tasukazu, no kakerukazu, etc.
-%token T_NO6<TokenValue>;       // no heihou, no nan-jou
-%token T_NO7<TokenValue>;       // no seigen, no yogen, no seisetu, etc.
-%token T_NO8<TokenValue>;       // no ... percent
-%token T_NO9<TokenValue>;       // no amari
-%token T_NOUCHI<TokenValue>;
-%token T_NUMBER<TokenValue>;
-%token T_OKU<TokenValue>;
-%token T_ONEGAI<TokenValue>;
-%token T_OOKII<TokenValue>;
-%token T_OOKIKU<TokenValue>;
-%token T_OSHIETE<TokenValue>;
-%token T_PERCENT<TokenValue>;
-%token T_PERIOD<TokenValue>;
-%token T_PI<TokenValue>;
-%token T_PLUS<TokenValue>;
-%token T_POWER<TokenValue>;
-%token T_PROD<TokenValue>;
-%token T_QUOT<TokenValue>;
-%token T_RIPPOU<TokenValue>;
-%token T_ROKU<TokenValue>;
-%token T_ROOT<TokenValue>;
-%token T_R_PAREN<TokenValue>;
-%token T_SAI<TokenValue>;
-%token T_SAN<TokenValue>;
-%token T_SEI<TokenValue>;
-%token T_SEIJO<TokenValue>;
-%token T_SEINO<TokenValue>;
-%token T_SEISUU<TokenValue>;
-%token T_SEN<TokenValue>;
-%token T_SHINNOYAKUSUU<TokenValue>;
-%token T_SHITA<TokenValue>;
-%token T_SHITE<TokenValue>;
-%token T_SHIZENSUU<TokenValue>;
-%token T_SHOUSUU<TokenValue>;
-%token T_SIN<TokenValue>;
-%token T_SINH<TokenValue>;
-%token T_SOINSUU<TokenValue>;
-%token T_SOINSUUBUNKAI<TokenValue>;
-%token T_SONO<TokenValue>;      // replaced
-%token T_SORE<TokenValue>;
-%token T_SOSUU<TokenValue>;
-%token T_SUM<TokenValue>;
-%token T_SURU<TokenValue>;      // replaced
-%token T_SURUTO<TokenValue>;
-%token T_TAGAINISO<TokenValue>;
-%token T_TAN<TokenValue>;
-%token T_TANH<TokenValue>;
-%token T_TASARERU<TokenValue>;
-%token T_TASHITA<TokenValue>;
-%token T_TASHITE<TokenValue>;
-%token T_TASHIZAN<TokenValue>;
-%token T_TASU<TokenValue>;
-%token T_TASUTO<TokenValue>;
-%token T_TO1<TokenValue>;
-%token T_TO2<TokenValue>;       // taibunsuu
-%token T_WAKARAN<TokenValue>;
-%token T_WARARERU<TokenValue>;
-%token T_WARIBIKI<TokenValue>;
-%token T_WARIKIRU<TokenValue>;
-%token T_WARIMASHI<TokenValue>;
-%token T_WARIZAN<TokenValue>;
-%token T_WARU<TokenValue>;
-%token T_WARUTO<TokenValue>;
-%token T_WATTA<TokenValue>;
-%token T_WATTE<TokenValue>;
-%token T_WO1<TokenValue>;       // do object
-%token T_WO2<TokenValue>;       // do verb
-%token T_YAKUSUU<TokenValue>;
-%token T_YAO<TokenValue>;       // replaced
-%token T_YON<TokenValue>;
-%token T_YORI<TokenValue>;
-%token T_YOSO<TokenValue>;      // replaced
-%token T_ZERO<TokenValue>;
-%token T_ZETTAICHI<TokenValue>;
+%token T_ACOS<ChTokenInfo>;
+%token T_ACOSH<ChTokenInfo>;
+%token T_ALL<ChTokenInfo>;       // replaced
+%token T_AMARI<ChTokenInfo>;
+%token T_ARI<ChTokenInfo>;
+%token T_ASIN<ChTokenInfo>;
+%token T_ASINH<ChTokenInfo>;
+%token T_ASOUGI<ChTokenInfo>;
+%token T_ATAN<ChTokenInfo>;
+%token T_ATANH<ChTokenInfo>;
+%token T_AVERAGE<ChTokenInfo>;
+%token T_BAI<ChTokenInfo>;
+%token T_BAISUU<ChTokenInfo>;
+%token T_BANMENO<ChTokenInfo>;
+%token T_BUNNO<ChTokenInfo>;
+%token T_BUNSUU<ChTokenInfo>;
+%token T_CHIISAI<ChTokenInfo>;
+%token T_CHIISAKU<ChTokenInfo>;
+%token T_CHOU<ChTokenInfo>;
+%token T_COMMA<ChTokenInfo>;
+%token T_COS<ChTokenInfo>;
+%token T_COSH<ChTokenInfo>;
+%token T_COUNT<ChTokenInfo>;
+%token T_DE<ChTokenInfo>;
+%token T_DEARU<ChTokenInfo>;
+%token T_DIFF<ChTokenInfo>;
+%token T_DO<ChTokenInfo>;
+%token T_DOT<ChTokenInfo>;
+%token T_E<ChTokenInfo>;
+%token T_ETTO<ChTokenInfo>;     // replaced
+%token T_EXP<ChTokenInfo>;
+%token T_FACTORIAL<ChTokenInfo>;
+%token T_FUKASHIGI<ChTokenInfo>;
+%token T_FUNO<ChTokenInfo>;
+%token T_GAI<ChTokenInfo>;
+%token T_GCD<ChTokenInfo>;
+%token T_GENSUU<ChTokenInfo>;    // replaced
+%token T_GO<ChTokenInfo>;
+%token T_GOKU<ChTokenInfo>;
+%token T_GOUGASHA<ChTokenInfo>;
+%token T_GOUSEISUU<ChTokenInfo>;
+%token T_GUUSUU<ChTokenInfo>;
+%token T_GYAKUSUU<ChTokenInfo>;
+%token T_HA<ChTokenInfo>;
+%token T_HACHI<ChTokenInfo>;
+%token T_HATA<ChTokenInfo>;      // replaced
+%token T_HEIHOU<ChTokenInfo>;
+%token T_HEIHOUKON<ChTokenInfo>;
+%token T_HIGENSUU<ChTokenInfo>;  // replaced
+%token T_HIITA<ChTokenInfo>;
+%token T_HIITE<ChTokenInfo>;
+%token T_HIJOSUU<ChTokenInfo>;   // replaced
+%token T_HIJOUSUU<ChTokenInfo>;  // replaced
+%token T_HIKARERU<ChTokenInfo>;
+%token T_HIKASUU<ChTokenInfo>;   // replaced
+%token T_HIKIZAN<ChTokenInfo>;
+%token T_HIKU<ChTokenInfo>;
+%token T_HIKUTO<ChTokenInfo>;
+%token T_HYAKU<ChTokenInfo>;
+%token T_HYPERBOLIC<ChTokenInfo>;
+%token T_ICHI<ChTokenInfo>;
+%token T_IJOU<ChTokenInfo>;
+%token T_IKA<ChTokenInfo>;
+%token T_IKURA<ChTokenInfo>;
+%token T_IO<ChTokenInfo>;        // replaced
+%token T_ISO<ChTokenInfo>;       // replaced
+%token T_JIMEINAYAKUSUU<ChTokenInfo>;
+%token T_JISSUU<ChTokenInfo>;
+%token T_JO<ChTokenInfo>;
+%token T_JOSUU<ChTokenInfo>;     // replaced
+%token T_JOU1<ChTokenInfo>;      // exponent
+%token T_JOU2<ChTokenInfo>;      // number unit
+%token T_JOUSUU<ChTokenInfo>;    // replaced
+%token T_JUU<ChTokenInfo>;
+%token T_KA<ChTokenInfo>;
+%token T_KAIJOU<ChTokenInfo>;
+%token T_KAKERARERU<ChTokenInfo>;
+%token T_KAKERU<ChTokenInfo>;
+%token T_KAKERUTO<ChTokenInfo>;
+%token T_KAKETA<ChTokenInfo>;
+%token T_KAKETE<ChTokenInfo>;
+%token T_KAKEZAN<ChTokenInfo>;
+%token T_KAN<ChTokenInfo>;
+%token T_KANA<ChTokenInfo>;
+%token T_KARA1<ChTokenInfo>;
+%token T_KARA2<ChTokenInfo>;
+%token T_KASUU<ChTokenInfo>;     // replaced
+%token T_KATSU<ChTokenInfo>;
+%token T_KEI<ChTokenInfo>;
+%token T_KEISAN<ChTokenInfo>;
+%token T_KISUU<ChTokenInfo>;
+%token T_KOTAE<ChTokenInfo>;
+%token T_KOU<ChTokenInfo>;
+%token T_KOUBAISUU<ChTokenInfo>;
+%token T_KOUYAKUSUU<ChTokenInfo>;
+%token T_KURE<ChTokenInfo>;
+%token T_KYUU<ChTokenInfo>;
+%token T_LCM<ChTokenInfo>;
+%token T_LOG10<ChTokenInfo>;
+%token T_LOG<ChTokenInfo>;
+%token T_L_PAREN<ChTokenInfo>;
+%token T_MADE<ChTokenInfo>;
+%token T_MAN<ChTokenInfo>;
+%token T_MATAHA<ChTokenInfo>;
+%token T_MAX<ChTokenInfo>;
+%token T_MIMAN<ChTokenInfo>;
+%token T_MIN<ChTokenInfo>;
+%token T_MINUS<ChTokenInfo>;
+%token T_MIRUTO<ChTokenInfo>;    // replaced
+%token T_MONO<ChTokenInfo>;
+%token T_MURYOUTAISUU<ChTokenInfo>;
+%token T_NAI<ChTokenInfo>;
+%token T_NANA<ChTokenInfo>;
+%token T_NANOHA<ChTokenInfo>;    // replaced
+%token T_NAYUTA<ChTokenInfo>;
+%token T_NI<ChTokenInfo>;
+%token T_NIHITOSHII<ChTokenInfo>;
+%token T_NIHITOSHIKU<ChTokenInfo>;
+%token T_NO10<ChTokenInfo>;      // no baisuu, yakusuu, soinsuu, etc.
+%token T_NO11<ChTokenInfo>;      // no soinsuubunkai
+%token T_NO1<ChTokenInfo>;       // no ... jou
+%token T_NO2<ChTokenInfo>;       // no wa/seki/sa/shou
+%token T_NO3<ChTokenInfo>;       // no bai
+%token T_NO4<ChTokenInfo>;       // no keisan
+%token T_NO5<ChTokenInfo>;       // no tasukazu, no kakerukazu, etc.
+%token T_NO6<ChTokenInfo>;       // no heihou, no nan-jou
+%token T_NO7<ChTokenInfo>;       // no seigen, no yogen, no seisetu, etc.
+%token T_NO8<ChTokenInfo>;       // no ... percent
+%token T_NO9<ChTokenInfo>;       // no amari
+%token T_NOUCHI<ChTokenInfo>;
+%token T_NUMBER<ChTokenInfo>;
+%token T_OKU<ChTokenInfo>;
+%token T_ONEGAI<ChTokenInfo>;
+%token T_OOKII<ChTokenInfo>;
+%token T_OOKIKU<ChTokenInfo>;
+%token T_OSHIETE<ChTokenInfo>;
+%token T_PERCENT<ChTokenInfo>;
+%token T_PERIOD<ChTokenInfo>;
+%token T_PI<ChTokenInfo>;
+%token T_PLUS<ChTokenInfo>;
+%token T_POWER<ChTokenInfo>;
+%token T_PROD<ChTokenInfo>;
+%token T_QUOT<ChTokenInfo>;
+%token T_RIPPOU<ChTokenInfo>;
+%token T_ROKU<ChTokenInfo>;
+%token T_ROOT<ChTokenInfo>;
+%token T_R_PAREN<ChTokenInfo>;
+%token T_SAI<ChTokenInfo>;
+%token T_SAN<ChTokenInfo>;
+%token T_SEI<ChTokenInfo>;
+%token T_SEIJO<ChTokenInfo>;
+%token T_SEINO<ChTokenInfo>;
+%token T_SEISUU<ChTokenInfo>;
+%token T_SEN<ChTokenInfo>;
+%token T_SHINNOYAKUSUU<ChTokenInfo>;
+%token T_SHITA<ChTokenInfo>;
+%token T_SHITE<ChTokenInfo>;
+%token T_SHIZENSUU<ChTokenInfo>;
+%token T_SHOUSUU<ChTokenInfo>;
+%token T_SIN<ChTokenInfo>;
+%token T_SINH<ChTokenInfo>;
+%token T_SOINSUU<ChTokenInfo>;
+%token T_SOINSUUBUNKAI<ChTokenInfo>;
+%token T_SONO<ChTokenInfo>;      // replaced
+%token T_SORE<ChTokenInfo>;
+%token T_SOSUU<ChTokenInfo>;
+%token T_SUM<ChTokenInfo>;
+%token T_SURU<ChTokenInfo>;      // replaced
+%token T_SURUTO<ChTokenInfo>;
+%token T_TAGAINISO<ChTokenInfo>;
+%token T_TAN<ChTokenInfo>;
+%token T_TANH<ChTokenInfo>;
+%token T_TASARERU<ChTokenInfo>;
+%token T_TASHITA<ChTokenInfo>;
+%token T_TASHITE<ChTokenInfo>;
+%token T_TASHIZAN<ChTokenInfo>;
+%token T_TASU<ChTokenInfo>;
+%token T_TASUTO<ChTokenInfo>;
+%token T_TO1<ChTokenInfo>;
+%token T_TO2<ChTokenInfo>;       // taibunsuu
+%token T_WAKARAN<ChTokenInfo>;
+%token T_WARARERU<ChTokenInfo>;
+%token T_WARIBIKI<ChTokenInfo>;
+%token T_WARIKIRU<ChTokenInfo>;
+%token T_WARIMASHI<ChTokenInfo>;
+%token T_WARIZAN<ChTokenInfo>;
+%token T_WARU<ChTokenInfo>;
+%token T_WARUTO<ChTokenInfo>;
+%token T_WATTA<ChTokenInfo>;
+%token T_WATTE<ChTokenInfo>;
+%token T_WO1<ChTokenInfo>;       // do object
+%token T_WO2<ChTokenInfo>;       // do verb
+%token T_YAKUSUU<ChTokenInfo>;
+%token T_YAO<ChTokenInfo>;       // replaced
+%token T_YON<ChTokenInfo>;
+%token T_YORI<ChTokenInfo>;
+%token T_YOSO<ChTokenInfo>;      // replaced
+%token T_ZERO<ChTokenInfo>;
+%token T_ZETTAICHI<ChTokenInfo>;
 
 %namespace Calc_H;
 

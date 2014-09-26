@@ -371,9 +371,9 @@ namespace Calc_H
     };
 
     //
-    // TokenValue
+    // ChTokenInfo
     //
-    #define TokenValue TokenInfo<Token>
+    #define ChTokenInfo Calc_H::TokenInfo<Calc_H::Token>
 } // namespace Calc_H
 
 #endif  // ndef HPARSER_AST_H_

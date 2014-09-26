@@ -23,7 +23,6 @@ CAPER = ./caper$(DOTEXE)
 HEADERS = \
 	Calc-H.h \
 	PmpNumber.hpp \
-	HParseHeader.h \
 	HParser.h \
 	HParserAST.h \
 	HParserSite.h \

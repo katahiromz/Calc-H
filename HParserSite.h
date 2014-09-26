@@ -3069,7 +3069,7 @@ namespace Calc_H
             return shared_ptr<Num>(n);
         }
 
-        shared_ptr<Num> DoIchiNum10(shared_ptr<TokenValue>& num)
+        shared_ptr<Num> DoIchiNum10(shared_ptr<ChTokenInfo>& num)
         {
             #ifdef DEEPDEBUG
                 std::cout << "DoIchiNum10" << std::endl;
@@ -3889,8 +3889,8 @@ namespace Calc_H
         //
         void message(const std::string& str)
         {
-            error() = location().str();
-            error() += ": ";
+            //error() = location().str();
+            //error() += ": ";
             error() += str;
         }
 

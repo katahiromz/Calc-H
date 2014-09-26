@@ -1,9 +1,11 @@
 (Japanese, Shift_JIS)
 
-Copyright (C) 2014 Katayama Hirofumi MZ.
+Copyright (C) 2014 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>.
 
-このソフトは、パブリック・ドメイン・ソフトウェア (PDS)です。
-自己責任でご自由にお使い下さい。
+このソフトは、フリーソフトウェアです。自己責任でご自由にお使い下さい。
+ただし、商品化の権利は、片山博文MZに属します。
 
-This software is public domain software.
-Use it freely at your own risk.
+---
+This software is free software. Use it freely at your own risk.
+However, the right to produce any commercial product(s) based 
+on this software belongs to Katayama Hirofumi MZ.

@@ -173,7 +173,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calc-H.h" />
-    <ClInclude Include="HParseHeader.h" />
     <ClInclude Include="HParserAST.h" />
     <ClInclude Include="HParserSite.h" />
     <ClInclude Include="HScanner.h" />
