@@ -1761,6 +1761,51 @@ namespace Calc_H
             return shared_ptr<Mono>(m);
         }
 
+        shared_ptr<Mono> DoMono85(shared_ptr<ExprList>& exprlist)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoMono85" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::EXPRLIST_INTDIV;
+            m->m_exprlist = exprlist;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono86(shared_ptr<Mono>& mono)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoMono64" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SEISHOU;
+            m->m_mono = mono;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono87(shared_ptr<Mono>& mono, shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoMono87" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::MONO_TO_EXPR_INTDIV;
+            m->m_mono = mono;
+            m->m_expr = expr;
+            return shared_ptr<Mono>(m);
+        }
+
+        shared_ptr<Mono> DoMono88(shared_ptr<Suruto>& suruto)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoMono88" << std::endl;
+            #endif
+            Mono *m = new Mono;
+            m->m_type = Mono::SURUTO_SEISHOU;
+            m->m_suruto = suruto;
+            return shared_ptr<Mono>(m);
+        }
+
         shared_ptr<Expr> DoExpr1(shared_ptr<Expr>& expr, shared_ptr<Term>& term)
         {
             #ifdef DEEPDEBUG

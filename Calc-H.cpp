@@ -594,6 +594,7 @@ CH_Value ChCalcFact(const shared_ptr<Fact>& fact)
 
 CH_Value ChCalcTerm(const shared_ptr<Term>& term)
 {
+    CH_Value v1, v2;
     switch (term->m_type)
     {
     case Term::MUL:
@@ -601,6 +602,11 @@ CH_Value ChCalcTerm(const shared_ptr<Term>& term)
 
     case Term::DIV:
         return ChCalcTerm(term->m_term) / ChCalcFact(term->m_fact);
+
+    case Term::INTDIV:
+        v1 = ChCalcTerm(term->m_term);
+        v2 = ChCalcFact(term->m_fact);
+        return ChDivMod(v1, v2)[0];
 
     case Term::FACT_ONLY:
         return ChCalcFact(term->m_fact);
@@ -672,6 +678,12 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
         v1.trim();
         return pmp::quot(v1);
 
+    case Mono::EXPRLIST_INTDIV:
+        ChNumberFromExprList(v1, mono->m_exprlist);
+        v1.trim();
+        assert(v1.size() >= 2);
+        return ChDivMod(v1[0], v1[1])[0];
+
     case Mono::MONO_ADD:
         return ChCalcMono(mono->m_mono) + ChCalcExpr(mono->m_expr);
 
@@ -683,6 +695,11 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
 
     case Mono::MONO_DIV:
         return ChCalcMono(mono->m_mono) / ChCalcExpr(mono->m_expr);
+
+    case Mono::MONO_INTDIV:
+        v1 = ChCalcMono(mono->m_mono);
+        v2 = ChCalcExpr(mono->m_expr);
+        return ChDivMod(v1, v2)[0];
 
     case Mono::MONO_ONLY:
         return ChCalcMono(mono->m_mono);
@@ -705,6 +722,11 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
     case Mono::SHITE_DIV:
         return ChCalcShite(mono->m_shite) / ChCalcExpr(mono->m_expr);
 
+    case Mono::SHITE_INTDIV:
+        v1 = ChCalcShite(mono->m_shite);
+        v2 = ChCalcExpr(mono->m_expr);
+        return ChDivMod(v1, v2)[0];
+
     case Mono::SHITE_EXPR_BAI:
         return ChCalcShite(mono->m_shite) * ChCalcExpr(mono->m_expr);
 
@@ -719,6 +741,9 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
 
     case Mono::SORE:
         return s_sore;
+
+    case Mono::SEISHOU:
+        return ChCalcMono(mono->m_mono);
 
     case Mono::MONO_TO_EXPRLIST_ADD:
         ChNumberFromExprList(v1, mono->m_exprlist);
@@ -742,11 +767,21 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
     case Mono::MONO_TO_EXPR_DIV:
         return ChCalcMono(mono->m_mono) / ChCalcExpr(mono->m_expr);
 
+    case Mono::MONO_TO_EXPR_INTDIV:
+        v1 = ChCalcMono(mono->m_mono);
+        v2 = ChCalcExpr(mono->m_expr);
+        return ChDivMod(v1, v2)[0];
+
     case Mono::MONO_WO_EXPR_KARA_SUB:
         return ChCalcExpr(mono->m_expr) - ChCalcMono(mono->m_mono);
 
     case Mono::MONO_DE_EXPR_WO_DIV:
         return ChCalcExpr(mono->m_expr) / ChCalcMono(mono->m_mono);
+
+    case Mono::MONO_DE_EXPR_WO_INTDIV:
+        v1 = ChCalcExpr(mono->m_expr);
+        v2 = ChCalcMono(mono->m_mono);
+        return ChDivMod(v1, v2)[0];
 
     case Mono::TERM_ONLY:
         return ChCalcTerm(mono->m_term);
@@ -1080,6 +1115,11 @@ CH_Value ChCalcShite(const shared_ptr<Shite>& shite)
     case Shite::MONO_DIV:
         return ChCalcMono(shite->m_mono) / ChCalcExpr(shite->m_expr);
 
+    case Shite::MONO_INTDIV:
+        v1 = ChCalcMono(shite->m_mono);
+        v2 = ChCalcExpr(shite->m_expr);
+        return ChDivMod(v1, v2)[0];
+
     case Shite::MONO_ONLY:
         return ChCalcMono(shite->m_mono);
 
@@ -1095,6 +1135,11 @@ CH_Value ChCalcShite(const shared_ptr<Shite>& shite)
     case Shite::SHITE_DIV:
         return ChCalcShite(shite->m_shite) / ChCalcExpr(shite->m_expr);
 
+    case Shite::SHITE_INTDIV:
+        v1 = ChCalcShite(shite->m_shite);
+        v2 = ChCalcExpr(shite->m_expr);
+        return ChDivMod(v1, v2)[0];
+
     case Shite::SHITE_EXPR_BAI:
         return ChCalcShite(shite->m_shite) * ChCalcExpr(shite->m_expr);
 
@@ -1106,6 +1151,11 @@ CH_Value ChCalcShite(const shared_ptr<Shite>& shite)
 
     case Shite::MONO_WO_EXPR_DIV:
         return ChCalcMono(shite->m_mono) / ChCalcExpr(shite->m_expr);
+
+    case Shite::MONO_WO_EXPR_INTDIV:
+        v1 = ChCalcMono(shite->m_mono);
+        v2 = ChCalcExpr(shite->m_expr);
+        return ChDivMod(v1, v2)[0];
 
     case Shite::SHITE_EXPR_JOU:
         v1 = ChCalcShite(shite->m_shite);
@@ -1158,6 +1208,11 @@ CH_Value ChCalcSuruto(const shared_ptr<Suruto>& suruto)
     case Suruto::MONO_DIV:
         return ChCalcMono(suruto->m_mono) / ChCalcExpr(suruto->m_expr);
 
+    case Suruto::MONO_INTDIV:
+        v1 = ChCalcMono(suruto->m_mono);
+        v2 = ChCalcExpr(suruto->m_expr);
+        return ChDivMod(v1, v2)[0];
+
     case Suruto::MONO_ONLY:
         return ChCalcMono(suruto->m_mono);
 
@@ -1179,11 +1234,21 @@ CH_Value ChCalcSuruto(const shared_ptr<Suruto>& suruto)
     case Suruto::SHITE_WARUTO:
         return ChCalcShite(suruto->m_shite) / ChCalcExpr(suruto->m_expr);
 
+    case Suruto::SHITE_INTWARUTO:
+        v1 = ChCalcShite(suruto->m_shite);
+        v2 = ChCalcExpr(suruto->m_expr);
+        return ChDivMod(v1, v2)[0];
+
     case Suruto::MONO_WO_EXPR_SUB:
         return ChCalcExpr(suruto->m_expr) - ChCalcMono(suruto->m_mono);
 
     case Suruto::MONO_DE_EXPR_DIV:
         return ChCalcExpr(suruto->m_expr) / ChCalcMono(suruto->m_mono);
+
+    case Suruto::MONO_DE_EXPR_INTDIV:
+        v1 = ChCalcExpr(suruto->m_expr);
+        v2 = ChCalcMono(suruto->m_mono);
+        return ChDivMod(v1, v2)[0];
 
     case Suruto::MONO_WO_EXPR_JOU:
         v1 = ChCalcMono(suruto->m_mono);
@@ -2707,6 +2772,9 @@ void ChAnalyzeMonoShiteWarukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& shite
     case Shite::MONO_DIV:
     case Shite::SHITE_DIV:
     case Shite::MONO_WO_EXPR_DIV:
+    case Shite::MONO_INTDIV:
+    case Shite::SHITE_INTDIV:
+    case Shite::MONO_WO_EXPR_INTDIV:
         ChAnalyzeExpr(shite->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
@@ -2922,6 +2990,7 @@ void ChAnalyzeMonoMonoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
     switch (mono2->m_type)
     {
     case Mono::EXPRLIST_DIV:
+    case Mono::EXPRLIST_INTDIV:
         {
             ChAnalyzeExprList(mono2->m_exprlist);
             ExprList *el = mono2->m_exprlist.get();
@@ -2937,6 +3006,9 @@ void ChAnalyzeMonoMonoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
     case Mono::MONO_DIV:
     case Mono::MONO_TO_EXPR_DIV:
     case Mono::SHITE_DIV:
+    case Mono::MONO_INTDIV:
+    case Mono::MONO_TO_EXPR_INTDIV:
+    case Mono::SHITE_INTDIV:
         ChAnalyzeExpr(mono2->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
@@ -2959,6 +3031,7 @@ void ChAnalyzeMonoMonoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2)
     //case Mono::SORE:
 
     case Mono::MONO_DE_EXPR_WO_DIV:
+    case Mono::MONO_DE_EXPR_WO_INTDIV:
         ChAnalyzeMono(mono2->m_mono);
         mono = mono2->m_mono;
         break;
@@ -3076,6 +3149,7 @@ void ChAnalyzeMonoTermKakerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
         break;
 
     case Term::DIV:
+    case Term::INTDIV:
         ChSetMessage(ch_not_kakezan);
         break;
 
@@ -3097,6 +3171,7 @@ void ChAnalyzeMonoTermWarukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& term)
         break;
 
     case Term::DIV:
+    case Term::INTDIV:
         ChAnalyzeFact(term->m_fact);
         m = new Mono;
         m->m_type = Mono::FACT_ONLY;
@@ -3217,6 +3292,7 @@ void ChAnalyzeMonoTermKakerarerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& t
         break;
 
     case Term::DIV:
+    case Term::INTDIV:
     case Term::FACT_ONLY:
         ChSetMessage(ch_not_kakezan);
         break;
@@ -3255,6 +3331,7 @@ void ChAnalyzeMonoTermWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Term>& ter
     switch (term->m_type)
     {
     case Term::DIV:
+    case Term::INTDIV:
         ChAnalyzeTerm(term->m_term);
         m = new Mono;
         m->m_type = Mono::TERM_ONLY;
@@ -3436,7 +3513,9 @@ void ChAnalyzeMonoSurutoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
     switch (suruto->m_type)
     {
     case Suruto::MONO_DIV:
+    case Suruto::MONO_INTDIV:
     case Suruto::SHITE_WARUTO:
+    case Suruto::SHITE_INTWARUTO:
         ChAnalyzeExpr(suruto->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
@@ -3445,6 +3524,7 @@ void ChAnalyzeMonoSurutoWarukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>& sur
         break;
 
     case Suruto::MONO_DE_EXPR_DIV:
+    case Suruto::MONO_DE_EXPR_INTDIV:
         ChAnalyzeMono(suruto->m_mono);
         m = new Mono;
         m->m_type = Mono::MONO_ONLY;
@@ -3583,6 +3663,7 @@ void ChAnalyzeMonoSurutoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
     switch (suruto->m_type)
     {
     case Suruto::MONO_DIV:
+    case Suruto::MONO_INTDIV:
         ChAnalyzeMono(suruto->m_mono);
         m = new Mono;
         m->m_type = Mono::MONO_ONLY;
@@ -3591,6 +3672,7 @@ void ChAnalyzeMonoSurutoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
         break;
 
     case Suruto::SHITE_WARUTO:
+    case Suruto::SHITE_INTWARUTO:
         ChAnalyzeShite(suruto->m_shite);
         m = new Mono;
         m->m_type = Mono::SHITE_ONLY;
@@ -3599,6 +3681,7 @@ void ChAnalyzeMonoSurutoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Suruto>&
         break;
 
     case Suruto::MONO_DE_EXPR_DIV:
+    case Suruto::MONO_DE_EXPR_INTDIV:
         ChAnalyzeExpr(suruto->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
@@ -4160,6 +4243,7 @@ void ChAnalyzeMonoMonoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
     switch (mono2->m_type)
     {
     case Mono::EXPRLIST_DIV:
+    case Mono::EXPRLIST_INTDIV:
         {
             ChAnalyzeExprList(mono2->m_exprlist);
             ExprList *el = mono2->m_exprlist.get();
@@ -4177,6 +4261,7 @@ void ChAnalyzeMonoMonoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
         break;
 
     case Mono::SHITE_DIV:
+    case Mono::SHITE_INTDIV:
         ChAnalyzeShite(mono2->m_shite);
         m = new Mono;
         m->m_type = Mono::SHITE_ONLY;
@@ -4196,11 +4281,14 @@ void ChAnalyzeMonoMonoWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Mono>& mon
 
     case Mono::MONO_DIV:
     case Mono::MONO_TO_EXPR_DIV:
+    case Mono::MONO_INTDIV:
+    case Mono::MONO_TO_EXPR_INTDIV:
         ChAnalyzeMono(mono2->m_mono);
         mono = mono2->m_mono;
         break;
 
     case Mono::MONO_DE_EXPR_WO_DIV:
+    case Mono::MONO_DE_EXPR_WO_INTDIV:
         ChAnalyzeExpr(mono2->m_expr);
         m = new Mono;
         m->m_type = Mono::EXPR_ONLY;
@@ -4345,6 +4433,8 @@ void ChAnalyzeMonoShiteWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
     {
     case Shite::MONO_DIV:
     case Shite::MONO_WO_EXPR_DIV:
+    case Shite::MONO_INTDIV:
+    case Shite::MONO_WO_EXPR_INTDIV:
         mono = shite->m_mono;
         break;
 
@@ -4353,6 +4443,7 @@ void ChAnalyzeMonoShiteWararerukazu(shared_ptr<Mono>& mono, shared_ptr<Shite>& s
         break;
 
     case Shite::SHITE_DIV:
+    case Shite::SHITE_INTDIV:
         ChAnalyzeShite(shite->m_shite);
         m = new Mono;
         m->m_type = Mono::SHITE_ONLY;
@@ -4429,6 +4520,9 @@ bool ChIsShiteWarizan(shared_ptr<Shite>& shite)
     case Shite::MONO_DIV:
     case Shite::SHITE_DIV:
     case Shite::MONO_WO_EXPR_DIV:
+    case Shite::MONO_INTDIV:
+    case Shite::SHITE_INTDIV:
+    case Shite::MONO_WO_EXPR_INTDIV:
         return true;
 
     case Shite::MONO_ONLY:
@@ -4723,6 +4817,9 @@ bool ChIsSurutoWarizan(shared_ptr<Suruto>& suruto)
     case Suruto::MONO_DIV:
     case Suruto::SHITE_WARUTO:
     case Suruto::MONO_DE_EXPR_DIV:
+    case Suruto::MONO_INTDIV:
+    case Suruto::SHITE_INTWARUTO:
+    case Suruto::MONO_DE_EXPR_INTDIV:
         return true;
 
     case Suruto::MONO_ONLY:
@@ -4852,6 +4949,11 @@ bool ChIsMonoWarizan(shared_ptr<Mono>& mono)
     case Mono::SHITE_DIV:
     case Mono::MONO_TO_EXPR_DIV:
     case Mono::MONO_DE_EXPR_WO_DIV:
+    case Mono::EXPRLIST_INTDIV:
+    case Mono::MONO_INTDIV:
+    case Mono::SHITE_INTDIV:
+    case Mono::MONO_TO_EXPR_INTDIV:
+    case Mono::MONO_DE_EXPR_WO_INTDIV:
         return true;
 
     case Mono::MONO_ONLY:
@@ -4877,6 +4979,164 @@ bool ChIsMonoWarizan(shared_ptr<Mono>& mono)
     }
 }
 
+void ChMakeMonoSeishou(shared_ptr<Mono>& mono);
+
+void ChMakeShiteSeishou(shared_ptr<Shite>& shite)
+{
+    assert(shite);
+    switch (shite->m_type)
+    {
+    case Shite::MONO_DIV:
+        shite.get()->m_type = Shite::MONO_INTDIV;
+        break;
+
+    case Shite::SHITE_DIV:
+        shite.get()->m_type = Shite::SHITE_INTDIV;
+        break;
+
+    case Shite::MONO_WO_EXPR_DIV:
+        shite.get()->m_type = Shite::MONO_WO_EXPR_INTDIV;
+        break;
+
+    case Shite::MONO_ONLY:
+        ChMakeMonoSeishou(shite->m_mono);
+        break;
+
+    default:
+        break;
+    }
+}
+
+void ChMakePrimSeishou(shared_ptr<Prim>& prim)
+{
+    assert(prim);
+    if (prim->m_type == Prim::MONO)
+    {
+        ChMakeMonoSeishou(prim->m_mono);
+    }
+}
+
+void ChMakeFactSeishou(shared_ptr<Fact>& fact)
+{
+    assert(fact);
+    if (fact->m_type == Fact::SINGLE)
+    {
+        ChMakePrimSeishou(fact->m_prim);
+    }
+}
+
+void ChMakeTermSeishou(shared_ptr<Term>& term)
+{
+    assert(term);
+    switch (term->m_type)
+    {
+    case Term::DIV:
+        term.get()->m_type = Term::INTDIV;
+        break;
+
+    case Term::FACT_ONLY:
+        ChMakeFactSeishou(term->m_fact);
+        break;
+
+    default:
+        break;
+    }
+}
+
+void ChMakeExprSeishou(shared_ptr<Expr>& expr)
+{
+    assert(expr);
+    switch (expr->m_type)
+    {
+    case Expr::TERM_ONLY:
+        ChMakeTermSeishou(expr->m_term);
+        break;
+
+    default:
+        break;
+    }
+}
+
+void ChMakeSurutoSeishou(shared_ptr<Suruto>& suruto)
+{
+    assert(suruto);
+    switch (suruto->m_type)
+    {
+    case Suruto::MONO_DIV:
+        suruto.get()->m_type = Suruto::MONO_INTDIV;
+        break;
+
+    case Suruto::SHITE_WARUTO:
+        suruto.get()->m_type = Suruto::SHITE_INTWARUTO;
+        break;
+
+    case Suruto::MONO_DE_EXPR_DIV:
+        suruto.get()->m_type = Suruto::MONO_DE_EXPR_INTDIV;
+        break;
+
+    case Suruto::MONO_ONLY:
+        ChMakeMonoSeishou(suruto->m_mono);
+        break;
+
+    default:
+        break;
+    }
+}
+
+void ChMakeMonoSeishou(shared_ptr<Mono>& mono)
+{
+    assert(mono);
+    switch (mono->m_type)
+    {
+    case Mono::EXPRLIST_DIV:
+        mono.get()->m_type = Mono::EXPRLIST_INTDIV;
+        break;
+
+    case Mono::MONO_DIV:
+        mono.get()->m_type = Mono::MONO_INTDIV;
+        break;
+
+    case Mono::SHITE_DIV:
+        mono.get()->m_type = Mono::SHITE_INTDIV;
+        break;
+
+    case Mono::MONO_TO_EXPR_DIV:
+        mono.get()->m_type = Mono::MONO_TO_EXPR_INTDIV;
+        break;
+
+    case Mono::MONO_DE_EXPR_WO_DIV:
+        mono.get()->m_type = Mono::MONO_DE_EXPR_WO_INTDIV;
+        break;
+
+    case Mono::MONO_ONLY:
+        ChMakeMonoSeishou(mono->m_mono);
+        break;
+
+    case Mono::SHITE_ONLY:
+        ChMakeShiteSeishou(mono->m_shite);
+        break;
+
+    case Mono::EXPR_ONLY:
+        ChMakeExprSeishou(mono->m_expr);
+        break;
+
+    case Mono::TERM_ONLY:
+        ChMakeTermSeishou(mono->m_term);
+        break;
+
+    case Mono::FACT_ONLY:
+        ChMakeFactSeishou(mono->m_fact);
+        break;
+
+    case Mono::SURUTO_ONLY:
+        ChMakeSurutoSeishou(mono->m_suruto);
+        break;
+
+    default:
+        break;
+    }
+}
+
 void ChAnalyzeMonoMonoAmari(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2);
 void ChAnalyzeMonoMonoShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Mono>& mono2);
 
@@ -4888,6 +5148,7 @@ void ChAnalyzeMonoSurutoAmari(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto
     switch (suruto->m_type)
     {
     case Suruto::MONO_DIV:
+    case Suruto::MONO_INTDIV:
         ChAnalyzeMono(suruto->m_mono);
         ChAnalyzeExpr(suruto->m_expr);
         m = new Mono;
@@ -4902,6 +5163,7 @@ void ChAnalyzeMonoSurutoAmari(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto
         break;
 
     case Suruto::SHITE_WARUTO:
+    case Suruto::SHITE_INTWARUTO:
         ChAnalyzeShite(suruto->m_shite);
         ChAnalyzeExpr(suruto->m_expr);
         m = new Mono;
@@ -4912,6 +5174,7 @@ void ChAnalyzeMonoSurutoAmari(shared_ptr<Mono>& mono, shared_ptr<Suruto>& suruto
         break;
 
     case Suruto::MONO_DE_EXPR_DIV:
+    case Suruto::MONO_DE_EXPR_INTDIV:
         ChAnalyzeExpr(suruto->m_expr);
         ChAnalyzeMono(suruto->m_mono);
         m = new Mono;
@@ -5263,6 +5526,7 @@ void ChAnalyzeMonoSurutoShouToAmari(shared_ptr<Mono>& mono, shared_ptr<Suruto>& 
         break;
 
     case Suruto::SHITE_WARUTO:
+    case Suruto::SHITE_INTWARUTO:
         ChAnalyzeShite(suruto->m_shite);
         ChAnalyzeExpr(suruto->m_expr);
         m = new Mono;
@@ -5408,6 +5672,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         break;
 
     case Mono::EXPRLIST_DIV:
+    case Mono::EXPRLIST_INTDIV:
         ChAnalyzeExprList(mono->m_exprlist);
         break;
 
@@ -5415,13 +5680,16 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
     case Mono::MONO_MUL:
     case Mono::MONO_SUB:
     case Mono::MONO_DIV:
+    case Mono::MONO_INTDIV:
     case Mono::MONO_EXPR_BAI:
     case Mono::MONO_TO_EXPR_ADD:
     case Mono::MONO_TO_EXPR_MUL:
     case Mono::MONO_TO_EXPR_SUB:
     case Mono::MONO_TO_EXPR_DIV:
+    case Mono::MONO_TO_EXPR_INTDIV:
     case Mono::MONO_WO_EXPR_KARA_SUB:
     case Mono::MONO_DE_EXPR_WO_DIV:
+    case Mono::MONO_DE_EXPR_WO_INTDIV:
     case Mono::MONO_EXPR_JOU:
     case Mono::MONO_NO_EXPR_PERCENT:
     case Mono::MONO_MOD_EXPR:
@@ -5443,6 +5711,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
     case Mono::SHITE_MUL:
     case Mono::SHITE_SUB:
     case Mono::SHITE_DIV:
+    case Mono::SHITE_INTDIV:
     case Mono::SHITE_EXPR_BAI:
         ChAnalyzeShite(mono->m_shite);
         ChAnalyzeExpr(mono->m_expr);
@@ -5620,6 +5889,9 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         case Mono::MONO_DIV:
         case Mono::SHITE_DIV:
         case Mono::MONO_TO_EXPR_DIV:
+        case Mono::MONO_INTDIV:
+        case Mono::SHITE_INTDIV:
+        case Mono::MONO_TO_EXPR_INTDIV:
             ChAnalyzeExpr(mono->m_mono->m_expr);
             m = new Mono;
             m->m_type = Mono::EXPR_ONLY;
@@ -5828,6 +6100,7 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
             break;
 
         case Mono::EXPRLIST_DIV:
+        case Mono::EXPRLIST_INTDIV:
             {
                 ChAnalyzeExprList(mono->m_mono->m_exprlist);
                 ExprList *el = mono->m_mono->m_exprlist.get();
@@ -5931,6 +6204,13 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         mono = mono->m_mono;
         break;
 
+    case Mono::SEISHOU:
+        ChAnalyzeMono(mono->m_mono);
+        if (!ChIsMonoWarizan(mono->m_mono))
+            ChSetMessage(ch_not_warizan);
+        ChMakeMonoSeishou(mono->m_mono);
+        break;
+
     case Mono::SURUTO_WA:
         ChAnalyzeSuruto(mono->m_suruto);
         if (!ChIsSurutoTashizan(mono->m_suruto))
@@ -5965,6 +6245,17 @@ void ChAnalyzeMono(shared_ptr<Mono>& mono)
         ChAnalyzeSuruto(mono->m_suruto);
         if (!ChIsSurutoWarizan(mono->m_suruto))
             ChSetMessage(ch_not_warizan);
+        m = new Mono;
+        m->m_type = Mono::SURUTO_ONLY;
+        m->m_suruto = mono->m_suruto;
+        mono = shared_ptr<Mono>(m);
+        break;
+
+    case Mono::SURUTO_SEISHOU:
+        ChAnalyzeSuruto(mono->m_suruto);
+        if (!ChIsSurutoWarizan(mono->m_suruto))
+            ChSetMessage(ch_not_warizan);
+        ChMakeSurutoSeishou(mono->m_suruto);
         m = new Mono;
         m->m_type = Mono::SURUTO_ONLY;
         m->m_suruto = mono->m_suruto;
@@ -6102,6 +6393,7 @@ void ChAnalyzeTerm(shared_ptr<Term>& term)
     {
     case Term::MUL:
     case Term::DIV:
+    case Term::INTDIV:
         ChAnalyzeTerm(term->m_term);
         ChAnalyzeFact(term->m_fact);
         break;
@@ -6126,8 +6418,10 @@ void ChAnalyzeShite(shared_ptr<Shite>& shite)
     case Shite::MONO_MUL:
     case Shite::MONO_SUB:
     case Shite::MONO_DIV:
+    case Shite::MONO_INTDIV:
     case Shite::MONO_WO_EXPR_SUB:
     case Shite::MONO_WO_EXPR_DIV:
+    case Shite::MONO_WO_EXPR_INTDIV:
         ChAnalyzeMono(shite->m_mono);
         ChAnalyzeExpr(shite->m_expr);
         break;
@@ -6140,6 +6434,7 @@ void ChAnalyzeShite(shared_ptr<Shite>& shite)
     case Shite::SHITE_MUL:
     case Shite::SHITE_SUB:
     case Shite::SHITE_DIV:
+    case Shite::SHITE_INTDIV:
     case Shite::SHITE_EXPR_BAI:
     case Shite::SHITE_EXPR_JOU:
         ChAnalyzeShite(shite->m_shite);
@@ -6184,9 +6479,11 @@ void ChAnalyzeSuruto(shared_ptr<Suruto>& suruto)
     case Suruto::MONO_MUL:
     case Suruto::MONO_SUB:
     case Suruto::MONO_DIV:
+    case Suruto::MONO_INTDIV:
     case Suruto::MONO_WO_EXPR_BAI:
     case Suruto::MONO_WO_EXPR_SUB:
     case Suruto::MONO_DE_EXPR_DIV:
+    case Suruto::MONO_DE_EXPR_INTDIV:
         ChAnalyzeMono(suruto->m_mono);
         ChAnalyzeExpr(suruto->m_expr);
         break;
@@ -6201,6 +6498,7 @@ void ChAnalyzeSuruto(shared_ptr<Suruto>& suruto)
     case Suruto::SHITE_KAKERUTO:
     case Suruto::SHITE_HIKUTO:
     case Suruto::SHITE_WARUTO:
+    case Suruto::SHITE_INTWARUTO:
         ChAnalyzeShite(suruto->m_shite);
         ChAnalyzeExpr(suruto->m_expr);
         break;

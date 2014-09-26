@@ -860,6 +860,8 @@ namespace Calc_H
             if (lexeme("ÇπÇ¢ÇπÇ¬"))                         return set_info(info, T_TAN);
             if (lexeme("ÇπÇ¢Ç∑Ç§"))                         return set_info(info, T_SEISUU);
             if (lexeme("ÇπÇ¢Ç∂ÇÂ"))                         return set_info(info, T_SEIJO);
+            if (lexeme("ÇπÇ¢ÇµÇÂÅ["))                       return set_info(info, T_INTQUOT);
+            if (lexeme("ÇπÇ¢ÇµÇÂÇ§"))                       return set_info(info, T_INTQUOT);
             if (lexeme("ÇπÇ¢Ç∞ÇÒ"))                         return set_info(info, T_SIN);
             if (lexeme("ÇπÇ¢"))                             return set_info(info, T_SEI);
             if (lexeme("Ç∑ÇÍÇŒ"))                           return set_info(info, T_SURUTO);
@@ -1767,6 +1769,7 @@ namespace Calc_H
                 case T_DIFF:
                 case T_PROD:
                 case T_QUOT:
+                case T_INTQUOT:
                 case T_MAX:
                 case T_MIN:
                 case T_AVERAGE:
@@ -2094,6 +2097,7 @@ namespace Calc_H
                 case T_PLUS:
                 case T_PROD:
                 case T_QUOT:
+                case T_INTQUOT:
                 case T_SHITA:
                 case T_SHITE:
                 case T_SUM:
@@ -2339,6 +2343,7 @@ namespace Calc_H
                     case T_OSHIETE:
                     case T_PERCENT:
                     case T_PROD:
+                    case T_INTQUOT:
                     case T_QUOT:
                     case T_R_PAREN:
                     case T_SHITA:
@@ -2509,6 +2514,7 @@ namespace Calc_H
                 case T_MIN:
                 case T_MONO:
                 case T_PROD:
+                case T_INTQUOT:
                 case T_QUOT:
                 case T_RIPPOU:
                 case T_ROOT:

@@ -81,6 +81,7 @@
 %token T_IJOU<ChTokenInfo>;
 %token T_IKA<ChTokenInfo>;
 %token T_IKURA<ChTokenInfo>;
+%token T_INTQUOT<ChTokenInfo>;
 %token T_IO<ChTokenInfo>;        // replaced
 %token T_ISO<ChTokenInfo>;       // replaced
 %token T_JIMEINAYAKUSUU<ChTokenInfo>;
@@ -563,6 +564,7 @@ mono<Mono>
     | [DoMono2] expression_list(0) T_NO4 T_KAKEZAN
     | [DoMono3] expression_list(0) T_NO2 T_DIFF
     | [DoMono4] expression_list(0) T_NO2 T_QUOT
+    | [DoMono85] expression_list(0) T_NO2 T_INTQUOT
     | [DoMono75] expression_list(0) T_NO2 vector_function(1)
     | [DoMono75] expression_list(0) T_NOUCHI vector_function(1)
     | [DoMono84] expression_list(0) T_NOUCHI domains(1)
@@ -602,7 +604,9 @@ mono<Mono>
     | [DoMono64] mono(0) T_NO4 T_WARIZAN       T_SHITA T_MONO
     | [DoMono64] mono(0) T_NO4 T_WARIZAN
     | [DoMono64] mono(0) T_NO2 T_QUOT
+    | [DoMono86] mono(0) T_NO2 T_INTQUOT
     | [DoMono76] mono(0) T_NO2 T_QUOT T_TO1 T_AMARI
+    | [DoMono76] mono(0) T_NO2 T_INTQUOT T_TO1 T_AMARI
     | [DoMono78] mono(0) T_NO4 T_HEIHOUKON
     | [DoMono79] mono(0) T_NO4 T_KAIJOU
     | [DoMono9] mono(0) T_NO4 T_KEISAN T_WO2 T_SHITA T_MONO
@@ -688,6 +692,7 @@ mono<Mono>
     | [DoMono23] mono(0) T_TO1 expression(1) T_NO2 T_PROD
     | [DoMono24] mono(0) T_TO1 expression(1) T_NO2 T_DIFF
     | [DoMono25] mono(0) T_TO1 expression(1) T_NO2 T_QUOT
+    | [DoMono87] mono(0) T_TO1 expression(1) T_NO2 T_INTQUOT
     | [DoMono28] mono(0) T_NO5 T_TASU T_MONO
     | [DoMono29] mono(0) T_NO5 T_KAKERU T_MONO
     | [DoMono30] mono(0) T_NO5 T_HIKU T_MONO
@@ -710,9 +715,12 @@ mono<Mono>
     | [DoMono67] suruto(0)              T_DIFF
     | [DoMono68] suruto(0) T_SORE T_NO2 T_QUOT
     | [DoMono68] suruto(0)              T_QUOT
+    | [DoMono88] suruto(0) T_SORE T_NO2 T_INTQUOT
+    | [DoMono88] suruto(0)              T_INTQUOT
     | [DoMono69] suruto(0) T_SORE T_NO9 T_AMARI
     | [DoMono69] suruto(0)              T_AMARI
-    | [DoMono77] suruto(0)              T_QUOT T_TO1 T_AMARI
+    | [DoMono77] suruto(0)              T_QUOT    T_TO1 T_AMARI
+    | [DoMono77] suruto(0)              T_INTQUOT T_TO1 T_AMARI
     | [DoMono41] mono(0) T_NO5 T_TASARERU T_MONO
     | [DoMono42] mono(0) T_NO5 T_KAKERARERU T_MONO
     | [DoMono43] mono(0) T_NO5 T_HIKARERU T_MONO
