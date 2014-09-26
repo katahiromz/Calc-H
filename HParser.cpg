@@ -1094,6 +1094,14 @@ domain<Dom>
     | [DoDom3] domain(0) T_NO1 primary_domain(1)
     | [DoDom3] domain(0) T_DEARU primary_domain(1)
     | [DoDom5] domain(0) T_NOUCHI domain(1)
+    | [DoDom6] domain(0) T_NI expression(1) T_WO1 T_TASHITA T_MONO
+    | [DoDom6] domain(0) T_NI expression(1)       T_TASHITA T_MONO
+    | [DoDom7] domain(0) T_KARA1 expression(1) T_WO1 T_HIITA T_MONO
+    | [DoDom7] domain(0) T_KARA1 expression(1)       T_HIITA T_MONO
+    | [DoDom8] domain(0) T_NI expression(1) T_WO1 T_KAKETA T_MONO
+    | [DoDom8] domain(0) T_NI expression(1)       T_KAKETA T_MONO
+    | [DoDom9] domain(0) T_WO2 expression(1) T_DE T_WATTA T_MONO
+    | [DoDom9] domain(0) T_WO2 expression(1)      T_WATTA T_MONO
     ;
 
 primary_constraint<PrimCnstr>

@@ -3562,6 +3562,54 @@ namespace Calc_H
             return shared_ptr<Dom>(d);
         }
 
+        shared_ptr<Dom> DoDom6(shared_ptr<Dom>& dom, shared_ptr<Expr>& expr1)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoDom6" << std::endl;
+            #endif
+            Dom *d = new Dom;
+            d->m_type = Dom::DOM_ADD;
+            d->m_dom = dom;
+            d->m_expr1 = expr1;
+            return shared_ptr<Dom>(d);
+        }
+
+        shared_ptr<Dom> DoDom7(shared_ptr<Dom>& dom, shared_ptr<Expr>& expr1)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoDom7" << std::endl;
+            #endif
+            Dom *d = new Dom;
+            d->m_type = Dom::DOM_SUB;
+            d->m_dom = dom;
+            d->m_expr1 = expr1;
+            return shared_ptr<Dom>(d);
+        }
+
+        shared_ptr<Dom> DoDom8(shared_ptr<Dom>& dom, shared_ptr<Expr>& expr1)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoDom8" << std::endl;
+            #endif
+            Dom *d = new Dom;
+            d->m_type = Dom::DOM_MUL;
+            d->m_dom = dom;
+            d->m_expr1 = expr1;
+            return shared_ptr<Dom>(d);
+        }
+
+        shared_ptr<Dom> DoDom9(shared_ptr<Dom>& dom, shared_ptr<Expr>& expr1)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoDom9" << std::endl;
+            #endif
+            Dom *d = new Dom;
+            d->m_type = Dom::DOM_DIV;
+            d->m_dom = dom;
+            d->m_expr1 = expr1;
+            return shared_ptr<Dom>(d);
+        }
+
         shared_ptr<PrimDom> DoPrimDom1(shared_ptr<PrimDom>& primdom)
         {
             #ifdef DEEPDEBUG

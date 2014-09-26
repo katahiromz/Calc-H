@@ -39,24 +39,26 @@ bool ChScan(
     Iterator begin, Iterator end)
 {
     scanner.scan(infos, begin, end);
-    #ifdef _DEBUG
-        scanner.show_tokens(infos.begin(), infos.end());
-    #endif
     return true;
 }
 
+typedef Calc_H::Scanner<std::string::const_iterator, Calc_H::ParserSite> CH_Scanner;
+typedef Calc_H::Parser<shared_ptr<Calc_H::Node>, Calc_H::ParserSite> CH_Parser;
+
 bool ChScanString(
-    Calc_H::Scanner<std::string::const_iterator,Calc_H::ParserSite>& scanner,
-    std::vector<ChTokenInfo>& infos, const std::string& str)
+    CH_Scanner&                 scanner,
+    std::vector<ChTokenInfo>&   infos,
+    const std::string&          str)
 {
     return ChScan<std::string::const_iterator>(scanner, infos, str.begin(), str.end());
 }
 
-bool ChResynth(
-    Calc_H::Scanner<std::string::const_iterator,Calc_H::ParserSite>& scanner,
-    std::vector<ChTokenInfo>& infos)
+bool ChResynth(CH_Scanner& scanner, std::vector<ChTokenInfo>& infos)
 {
     scanner.resynth(infos);
+    #ifdef _DEBUG
+        scanner.show_tokens(infos.begin(), infos.end());
+    #endif
     return true;
 }
 
@@ -68,7 +70,7 @@ bool ChParse(
     using namespace Calc_H;
     ParserSite ps;
 
-    Parser<shared_ptr<Node>, ParserSite> parser(ps);
+    CH_Parser parser(ps);
     std::vector<ChTokenInfo>::iterator it, end2 = infos.end();
     if (ps.error().empty())
     {
@@ -176,6 +178,7 @@ static const char * const ch_indeterminate = "どちらともいえません。";
 static const char * const ch_not_regular = "けいさんたいしょうがせいすうではないので、けいさんできません。";
 static const char * const ch_all_zero_gcd = "すべてがぜろなので、さいだいこうやくすうがけいさんできません。";
 static const char * const ch_zero_exists_lcm = "ぜろがそんざいするので、さいしょうこうばいすうがけいさんできません。";
+static const char * const ch_dont_know = "さっぱりわかりません。";
 
 using namespace Calc_H;
 using namespace Ndrr1D;
@@ -2503,6 +2506,7 @@ void ChAnalyzeDomainsOfExprKaraExprMade(
 
 void ChAnalyzeDomainsOfDom(shared_ptr<Domains>& domains, shared_ptr<Dom>& dom)
 {
+    CH_Value v1;
     assert(domains);
     switch (dom->m_type)
     {
@@ -2531,6 +2535,63 @@ void ChAnalyzeDomainsOfDom(shared_ptr<Domains>& domains, shared_ptr<Dom>& dom)
     case Dom::DOM_NOUCHI_DOM:
         ChAnalyzeDomainsOfDom(domains, dom->m_dom);
         ChAnalyzeDomainsOfDom(domains, dom->m_dom2);
+        break;
+
+    case Dom::DOM_ADD:
+        ChAnalyzeDomainsOfDom(domains, dom->m_dom);
+        ChAnalyzeExpr(dom->m_expr1);
+        v1 = ChCalcExpr(dom->m_expr1);
+        v1.trim();
+        if (!domains->HasExtraAttrs() || !v1.is_i())
+        {
+            domains.get()->Offset(v1);
+        }
+        else
+        {
+            ChSetMessage(ch_dont_know);
+        }
+        break;
+
+    case Dom::DOM_SUB:
+        ChAnalyzeDomainsOfDom(domains, dom->m_dom);
+        ChAnalyzeExpr(dom->m_expr1);
+        v1 = ChCalcExpr(dom->m_expr1);
+        v1.trim();
+        if (!domains->HasExtraAttrs() || !v1.is_i())
+        {
+            domains.get()->Offset(-v1);
+        }
+        else
+        {
+            ChSetMessage(ch_dont_know);
+        }
+        break;
+
+    case Dom::DOM_MUL:
+        ChAnalyzeDomainsOfDom(domains, dom->m_dom);
+        ChAnalyzeExpr(dom->m_expr1);
+        v1 = ChCalcExpr(dom->m_expr1);
+        v1.trim();
+        if (!domains->HasExtraAttrs() && v1.is_i())
+        {
+            if (v1 == 0)
+            {
+                *domains.get() = Ndrr1D::Domains(v1);
+            }
+            else
+            {
+                domains.get()->Multiply(v1);
+                domains.get()->Optimize();
+            }
+        }
+        else
+        {
+            ChSetMessage(ch_dont_know);
+        }
+        break;
+
+    case Dom::DOM_DIV:
+        ChSetMessage(ch_dont_know);
         break;
 
     default:
@@ -6514,6 +6575,7 @@ void ChAnalyzeSuruto(shared_ptr<Suruto>& suruto)
 
 void ChAnalyzeSentence(shared_ptr<Sentence>& sentence)
 {
+    CH_Value v1;
     assert(sentence);
     switch (sentence->m_type)
     {
@@ -7068,8 +7130,7 @@ std::string ChJustDoIt(std::string& query)
     else
     {
         Calc_H::ParserSite ps;
-        Calc_H::Scanner<std::string::const_iterator, Calc_H::ParserSite>
-            scanner(ps);
+        CH_Scanner scanner(ps);
 
         std::vector<ChTokenInfo> infos;
         if (s_retried && time(NULL) - s_time < 30)

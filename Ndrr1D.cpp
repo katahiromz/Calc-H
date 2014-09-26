@@ -543,6 +543,23 @@ void Range::Offset(const number_type& diff)
     }
 }
 
+void Range::Multiply(const number_type& num)
+{
+    assert(num != 0);
+    if (m_pnLBound)
+    {
+        *m_pnLBound *= num;
+    }
+    if (m_pnUBound)
+    {
+        *m_pnUBound *= num;
+    }
+    if (m_pnLBound && m_pnUBound && *m_pnLBound > *m_pnUBound)
+    {
+        std::swap(m_pnLBound, m_pnUBound);
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // Ndrr1D::Ranges
 
@@ -916,6 +933,16 @@ void Ranges::Offset(const number_type& diff)
     }
 }
 
+void Ranges::Multiply(const number_type& num)
+{
+    assert(num != 0);
+    size_t i, siz = size();
+    for (i = 0; i < siz; ++i)
+    {
+        ((*this)[i]).get()->Multiply(num);
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // Ndrr1D::Aspect
 
@@ -1230,6 +1257,27 @@ bool Aspect::MustBe2() const
         }
     }
     return false;
+}
+
+void Aspect::Offset(const Ndrr1D::integer_type& i)
+{
+    assert(!HasExtraAttrs());
+    if (m_pnResidue)
+    {
+        *m_pnResidue += i;
+        *m_pnResidue %= *m_pnModulus;
+    }
+}
+
+void Aspect::Multiply(const integer_type& num)
+{
+    assert(!HasExtraAttrs());
+    assert(num != 0);
+    if (m_pnModulus && m_pnResidue)
+    {
+        *m_pnModulus *= num;
+        *m_pnResidue *= num;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -1749,6 +1797,26 @@ void Domain::FixBeforeIncludes(Domain& d)
     d.FixNarrower();
 }
 
+void Domain::Offset(const number_type& diff)
+{
+    assert(!HasExtraAttrs());
+    m_ranges.Offset(diff);
+    if (m_aspect.empty())
+        m_aspect.clear();
+    else
+        m_aspect.Offset(diff.to_i());
+}
+
+void Domain::Multiply(const number_type& num)
+{
+    assert(!HasExtraAttrs());
+    m_ranges.Multiply(num);
+    if (m_aspect.empty())
+        m_aspect.clear();
+    else
+        m_aspect.Multiply(num.to_i());
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // Domains
 
@@ -2266,6 +2334,37 @@ bool Domains::Equal(const Domains& d) const
     if (!d2.Includes(d1))
         return false;
     return true;
+}
+
+bool Domains::HasExtraAttrs() const
+{
+    size_t i, siz = size();
+    for (i = 0; i < siz; ++i)
+    {
+        if (((*this)[i])->HasExtraAttrs())
+            return true;
+    }
+    return false;
+}
+
+void Domains::Offset(const number_type& diff)
+{
+    assert(!HasExtraAttrs());
+    size_t i, siz = size();
+    for (i = 0; i < siz; ++i)
+    {
+        ((*this)[i]).get()->Offset(diff);
+    }
+}
+
+void Domains::Multiply(const number_type& num)
+{
+    assert(!HasExtraAttrs());
+    size_t i, siz = size();
+    for (i = 0; i < siz; ++i)
+    {
+        ((*this)[i]).get()->Multiply(num);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////

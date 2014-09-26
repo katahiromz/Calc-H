@@ -263,7 +263,8 @@ namespace Calc_H
     {
         enum {
             CNSTRED_PRIMDOM, PRIMDOM_ONLY, DOM_OF_DOM, NUM_ONLY,
-            EXPR_KARA_EXPR_MADE, DOM_NOUCHI_DOM
+            EXPR_KARA_EXPR_MADE, DOM_NOUCHI_DOM,
+            DOM_ADD, DOM_SUB, DOM_MUL, DOM_DIV
         } m_type;
         shared_ptr<Dom>         m_dom;
         shared_ptr<Dom>         m_dom2;
