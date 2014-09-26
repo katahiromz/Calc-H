@@ -2242,6 +2242,57 @@ void ChAnalyzeDomainsOfPrimCnstr(
         }
         break;
 
+    case PrimCnstr::WARUTO_AMARU:
+        ChAnalyzeExpr(primcnstr->m_expr);
+        v = ChCalcExpr(primcnstr->m_expr);
+        v.trim();
+        if (v.is_i())
+        {
+            if (v < 0)
+                v = -v;
+
+            pmp::integer_type i1, i2;
+            i1 = v.get_i();
+
+            ChAnalyzeExpr(primcnstr->m_expr2);
+            v = ChCalcExpr(primcnstr->m_expr2);
+            v.trim();
+            if (v > 0 && v < i1)
+            {
+                i2 = v.get_i();
+                domains.get()->Intersect(Ndrr1D::Aspect(&i1, &i2));
+            }
+            else
+            {
+                ChSetMessage(ch_dont_know);
+            }
+        }
+        else
+        {
+            ChSetMessage(ch_dont_know);
+        }
+        break;
+
+    case PrimCnstr::WARUTO_AMARANAI:
+        ChAnalyzeExpr(primcnstr->m_expr);
+        v = ChCalcExpr(primcnstr->m_expr);
+        v.trim();
+        if (v.is_i())
+        {
+            if (v < 0)
+                v = -v;
+
+            pmp::integer_type i1, i2;
+            i1 = v.get_i();
+            i2 = 0;
+            domains.get()->Intersect(Ndrr1D::Aspect(&i1, &i2));
+        }
+        else
+        {
+            ChSetMessage(ch_dont_know);
+        }
+        break;
+
     default:
         assert(0);
     }
@@ -7079,7 +7130,6 @@ void CrTrimString(std::string& str)
 
 std::string ChJustDoIt(std::string& query)
 {
-    static bool s_retried = false;
     static std::string s_query_prev;
     static time_t s_time;
 
@@ -7096,6 +7146,10 @@ std::string ChJustDoIt(std::string& query)
         i = 0;
     if (i == query.find("//"))
         return "";  // retry
+
+    ChReplaceString(query, "Ç‹Å[Ç∑", "Ç‹Ç∑");
+    ChReplaceString(query, "Ç‹Ç†Ç∑", "Ç‹Ç∑");
+    ChReplaceString(query, "Ç‹ÇüÇ∑", "Ç‹Ç∑");
 
     sstream << "Ç±ÇΩÇ¶ÅF";
 
@@ -7133,7 +7187,7 @@ std::string ChJustDoIt(std::string& query)
         CH_Scanner scanner(ps);
 
         std::vector<ChTokenInfo> infos;
-        if (s_retried && time(NULL) - s_time < 30)
+        if (!s_query_prev.empty() && time(NULL) - s_time < 30)
         {
             query = s_query_prev + query;
         }
@@ -7154,11 +7208,12 @@ std::string ChJustDoIt(std::string& query)
             case T_KAKERU:
             case T_WARU:
             case T_KARA1:
-            case T_DE:
+            case T_DE1:
+            case T_DE2:
+            case T_DE3:
             case T_NO1:
             case T_WO1:
             case T_ETTO:
-                s_retried = true;
                 s_query_prev = query;
                 s_time = time(NULL);
                 return "";  // retry
@@ -7169,7 +7224,6 @@ std::string ChJustDoIt(std::string& query)
         }
 
         ChResynth(scanner, infos);
-        s_retried = false;
         s_query_prev.clear();
 
         if (ChParse(sentence, error, infos))

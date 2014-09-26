@@ -3973,6 +3973,30 @@ namespace Calc_H
             return shared_ptr<PrimCnstr>(pc);
         }
 
+        shared_ptr<PrimCnstr> DoPrimCnstr8(
+            shared_ptr<Expr>& expr, shared_ptr<Expr>& expr2)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoPrimCnstr8" << std::endl;
+            #endif
+            PrimCnstr *pc = new PrimCnstr;
+            pc->m_type = PrimCnstr::WARUTO_AMARU;
+            pc->m_expr = expr;
+            pc->m_expr2 = expr2;
+            return shared_ptr<PrimCnstr>(pc);
+        }
+
+        shared_ptr<PrimCnstr> DoPrimCnstr9(shared_ptr<Expr>& expr)
+        {
+            #ifdef DEEPDEBUG
+                std::cout << "DoPrimCnstr9" << std::endl;
+            #endif
+            PrimCnstr *pc = new PrimCnstr;
+            pc->m_type = PrimCnstr::WARUTO_AMARANAI;
+            pc->m_expr = expr;
+            return shared_ptr<PrimCnstr>(pc);
+        }
+
     public:
               CH_Location& location()       { return m_location; }
         const CH_Location& location() const { return m_location; }

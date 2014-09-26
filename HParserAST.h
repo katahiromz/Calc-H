@@ -318,9 +318,11 @@ namespace Calc_H
     struct PrimCnstr : Node
     {
         enum {
-            IJOU, IKA, CHIISAI, OOKII, WARIKIRU, HITOSHII, SEIJO
+            IJOU, IKA, CHIISAI, OOKII, WARIKIRU, HITOSHII, SEIJO,
+            WARUTO_AMARU, WARUTO_AMARANAI
         } m_type;
         shared_ptr<Expr>        m_expr;
+        shared_ptr<Expr>        m_expr2;
         shared_ptr<Mono>        m_mono;
     };
 

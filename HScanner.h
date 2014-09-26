@@ -74,6 +74,8 @@ namespace Calc_H
                 resynth23(infos);
                 resynth24(infos);
                 resynth25(infos);
+                resynth26(infos);
+                resynth27(infos);
             }
         }
 
@@ -171,6 +173,10 @@ namespace Calc_H
             {
                 return set_info(info, T_KANA);
             }
+
+            if (!lexeme("がいち", false) && !lexeme("がいっ", false) && !lexeme("がいく", false) &&
+                !lexeme("がいお", false) && !lexeme("がいそ", false) &&  lexeme("がい"))
+                return set_info(info, T_GAI);
 
             // 最長一致法。
             // 【ここから】行を降順に並び替えておく。
@@ -839,8 +845,8 @@ namespace Calc_H
             if (lexeme("である"))                           return set_info(info, T_DEARU);
             if (lexeme("でありんす"))                       return set_info(info, T_DEARU);
             if (lexeme("であります"))                       return set_info(info, T_DEARU);
-            if (lexeme("であり"))                           return set_info(info, T_DE);
-            if (lexeme("で"))                               return set_info(info, T_DE);
+            if (lexeme("であり"))                           return set_info(info, T_DE1);
+            if (lexeme("で"))                               return set_info(info, T_DE1);
             if (lexeme("てん"))                             return set_info(info, T_DOT);
             if (lexeme("つぶん"))                           return set_info(info, T_BAI);
             if (lexeme("って"))                             return set_info(info, T_HA);
@@ -1269,7 +1275,6 @@ namespace Calc_H
             if (lexeme("きゅう"))                           return set_info(info, T_KYUU);
             if (lexeme("きすー"))                           return set_info(info, T_KISUU);
             if (lexeme("きすう"))                           return set_info(info, T_KISUU);
-            if (lexeme("がい"))                             return set_info(info, T_GAI);
             if (lexeme("が"))                               return set_info(info, T_HA);
             if (lexeme("かー"))                             return set_info(info, T_KANA);
             if (lexeme("かん"))                             return set_info(info, T_KAN);
@@ -1499,6 +1504,8 @@ namespace Calc_H
             if (lexeme("ありますの"))                       return set_info(info, T_ARI);
             if (lexeme("あります"))                         return set_info(info, T_ARI);
             if (lexeme("あり"))                             return set_info(info, T_ARI);
+            if (lexeme("あまる"))                           return set_info(info, T_AMARU);
+            if (lexeme("あまります"))                       return set_info(info, T_AMARU);
             if (lexeme("あまり"))                           return set_info(info, T_AMARI);
             if (lexeme("あのー"))                           return set_info(info, T_ETTO);
             if (lexeme("あのねー"))                         return set_info(info, T_ETTO);
@@ -2298,7 +2305,8 @@ namespace Calc_H
                 case T_AMARI:
                 case T_BAI:
                 case T_BUNNO:
-                case T_DE:
+                case T_DE1:
+                case T_DE2:
                 case T_DIFF:
                 case T_HA:
                 case T_HEIHOU:
@@ -2557,7 +2565,8 @@ namespace Calc_H
                     {
                     case T_AMARI:
                     case T_BAI:
-                    case T_DE:
+                    case T_DE1:
+                    case T_DE2:
                     case T_DIFF:
                     case T_HEIHOUKON:
                     case T_HIITA:
@@ -3117,6 +3126,81 @@ namespace Calc_H
                 newinfos.push_back(*it);
             }
             infos = newinfos;
+        }
+
+        // 「ぐうすう」「きすう」「しぜんすう」などの後の「を」を
+        // 「は」に変える。
+        void resynth26(std::vector<info_type>& infos)
+        {
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            for (; it != end; ++it)
+            {
+                switch (it->get_token())
+                {
+                case T_SHIZENSUU:
+                case T_SEISUU:
+                case T_GUUSUU:
+                case T_KISUU:
+                case T_JISSUU:
+                case T_SOSUU:
+                case T_GOUSEISUU:
+                case T_KOUBAISUU:
+                case T_KOUYAKUSUU:
+                case T_BAISUU:
+                case T_YAKUSUU:
+                case T_SOINSUU:
+                case T_JIMEINAYAKUSUU:
+                case T_SHINNOYAKUSUU:
+                    if ((it + 1)->get_token() == T_WO1)
+                    {
+                        (it + 1)->set_token(T_HA);
+                    }
+                    break;
+
+                default:
+                    break;
+                }
+            }
+        }
+
+        // 「わりきる」の前の「で」をT_DE2に変える。
+        // T_WO1 T_WARUTOの前のT_DE1をT_DE3に変える。
+        void resynth27(std::vector<info_type>& infos)
+        {
+            std::vector<info_type>::iterator it = infos.begin();
+            std::vector<info_type>::iterator end = infos.end();
+            for (; it != end; ++it)
+            {
+                switch (it->get_token())
+                {
+                case T_DE1:
+                    if ((it + 1)->get_token() == T_WARIKIRU)
+                    {
+                        it->set_token(T_DE2);
+                    }
+                    break;
+
+                default:
+                    break;
+                }
+            }
+            for (it = infos.begin(); it != end; ++it)
+            {
+                if (it->get_token() == T_WO1 &&
+                    (it + 1)->get_token() == T_WARUTO)
+                {
+                    std::vector<info_type>::iterator it2 = it;
+                    for (; it2 != infos.begin(); --it2)
+                    {
+                        if (it2->get_token() == T_DE1)
+                        {
+                            it2->set_token(T_DE3);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
     private:
