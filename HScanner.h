@@ -1474,6 +1474,7 @@ namespace Calc_H
             if (lexeme("Ç¢Ç≠Ç¬Ç…Ç»ÇÈ"))                     return set_info(info, T_IKURA);
             if (lexeme("Ç¢Ç≠Ç¬Ç…Ç»ÇËÇ‹Ç∑"))                 return set_info(info, T_IKURA);
             if (lexeme("Ç¢Ç≠Ç¬Ç»ÇÒ"))                       return set_info(info, T_IKURA);
+            if (lexeme("Ç¢Ç≠Ç¬Ç»ÇÃÅ["))                     return set_info(info, T_IKURA);
             if (lexeme("Ç¢Ç≠Ç¬Ç»ÇÃ"))                       return set_info(info, T_IKURA);
             if (lexeme("Ç¢Ç≠Ç¬"))                           return set_info(info, T_IKURA);
             if (lexeme("Ç¢Ç©"))                             return set_info(info, T_IKA);
