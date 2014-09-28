@@ -543,9 +543,20 @@ void Range::Offset(const number_type& diff)
     }
 }
 
+bool Range::IsMultiplyableBy(const number_type& num) const
+{
+    return true;
+}
+
 void Range::Multiply(const number_type& num)
 {
-    assert(num != 0);
+    assert(IsMultiplyableBy(num));
+    if (num == 0)
+    {
+        *this = Range(0);
+        return;
+    }
+
     if (m_pnLBound)
     {
         *m_pnLBound *= num;
@@ -554,7 +565,30 @@ void Range::Multiply(const number_type& num)
     {
         *m_pnUBound *= num;
     }
-    if (m_pnLBound && m_pnUBound && *m_pnLBound > *m_pnUBound)
+    if (num < 0)
+    {
+        std::swap(m_pnLBound, m_pnUBound);
+    }
+}
+
+bool Range::IsDividableBy(const number_type& num) const
+{
+    return num != 0;
+}
+
+void Range::Divide(const number_type& num)
+{
+    assert(IsDividableBy(num));
+
+    if (m_pnLBound)
+    {
+        *m_pnLBound /= num;
+    }
+    if (m_pnUBound)
+    {
+        *m_pnUBound /= num;
+    }
+    if (num < 0)
     {
         std::swap(m_pnLBound, m_pnUBound);
     }
@@ -933,13 +967,39 @@ void Ranges::Offset(const number_type& diff)
     }
 }
 
+bool Ranges::IsMultiplyableBy(const number_type& num) const
+{
+    return true;
+}
+
 void Ranges::Multiply(const number_type& num)
 {
-    assert(num != 0);
+    if (num == 0)
+    {
+        *this = Ranges(0);
+        return;
+    }
+
     size_t i, siz = size();
     for (i = 0; i < siz; ++i)
     {
         ((*this)[i]).get()->Multiply(num);
+    }
+}
+
+bool Ranges::IsDividableBy(const number_type& num) const
+{
+    return num != 0;
+}
+
+void Ranges::Divide(const number_type& num)
+{
+    assert(IsDividableBy(num));
+
+    size_t i, siz = size();
+    for (i = 0; i < siz; ++i)
+    {
+        ((*this)[i]).get()->Divide(num);
     }
 }
 
@@ -1273,14 +1333,90 @@ void Aspect::Offset(const Ndrr1D::integer_type& i)
     }
 }
 
+bool Aspect::IsMultiplyableBy(const number_type& num) const
+{
+    if (empty() || entire())
+        return true;
+
+    if (HasExtraAttrs())
+        return false;
+
+    number_type n = num;
+    n.trim();
+    return (n % 1 == 0);
+}
+
 void Aspect::Multiply(const integer_type& num)
 {
-    assert(!HasExtraAttrs());
-    assert(num != 0);
+    assert(IsMultiplyableBy(num));
+
+    if (empty() || entire())
+        return;
+
     if (m_pnModulus && m_pnResidue)
     {
-        *m_pnModulus *= num;
-        *m_pnResidue *= num;
+        if (num < 0)
+        {
+            *m_pnModulus *= -num;
+            *m_pnResidue *= num;
+            while (*m_pnResidue < 0)
+            {
+                *m_pnResidue += *m_pnModulus;
+            }
+        }
+        else
+        {
+            *m_pnModulus *= num;
+            *m_pnResidue *= num;
+        }
+    }
+}
+
+bool Aspect::IsDividableBy(const number_type& num) const
+{
+    if (empty() || entire())
+        return true;
+
+    if (HasExtraAttrs())
+        return false;
+
+    number_type n = num;
+    n.trim();
+    if (m_pnModulus && m_pnResidue)
+    {
+        if (n % 1 != 0)
+            return false;
+
+        if (*m_pnModulus % n != 0 || *m_pnResidue % n != 0)
+            return false;
+    }
+    return true;
+}
+
+void Aspect::Divide(const number_type& num)
+{
+    assert(IsDividableBy(num));
+
+    if (empty() || entire())
+        return;
+
+    if (m_pnModulus && m_pnResidue)
+    {
+        integer_type i = num.to_i();
+        if (i < 0)
+        {
+            *m_pnModulus /= -i;
+            *m_pnResidue /= i;
+            while (*m_pnResidue < 0)
+            {
+                *m_pnResidue += *m_pnModulus;
+            }
+        }
+        else
+        {
+            *m_pnModulus /= i;
+            *m_pnResidue /= i;
+        }
     }
 }
 
@@ -1811,14 +1947,33 @@ void Domain::Offset(const number_type& diff)
         m_aspect.Offset(diff.to_i());
 }
 
+bool Domain::IsMultiplyableBy(const number_type& num) const
+{
+    return m_ranges.IsMultiplyableBy(num) && m_aspect.IsMultiplyableBy(num);
+}
+
 void Domain::Multiply(const number_type& num)
 {
-    assert(!HasExtraAttrs());
+    assert(IsMultiplyableBy(num));
     m_ranges.Multiply(num);
-    if (m_aspect.empty())
-        m_aspect.clear();
-    else
+    if (!m_aspect.empty() && !m_aspect.entire())
         m_aspect.Multiply(num.to_i());
+}
+
+bool Domain::IsDividableBy(const number_type& num) const
+{
+    if (num == 0)
+        return false;
+
+    return m_aspect.IsDividableBy(num) && m_ranges.IsDividableBy(num);
+}
+
+void Domain::Divide(const number_type& num)
+{
+    assert(IsDividableBy(num));
+    m_ranges.Divide(num);
+    if (!m_aspect.empty() && !m_aspect.entire())
+        m_aspect.Divide(num);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -2361,13 +2516,51 @@ void Domains::Offset(const number_type& diff)
     }
 }
 
+bool Domains::IsMultiplyableBy(const number_type& num) const
+{
+    if (HasExtraAttrs())
+        return false;
+
+    size_t i, siz = size();
+    for (i = 0; i < siz; ++i)
+    {
+        if (!((*this)[i])->IsMultiplyableBy(num))
+            return false;
+    }
+    return true;
+}
+
 void Domains::Multiply(const number_type& num)
 {
-    assert(!HasExtraAttrs());
+    assert(IsMultiplyableBy(num));
     size_t i, siz = size();
     for (i = 0; i < siz; ++i)
     {
         ((*this)[i]).get()->Multiply(num);
+    }
+}
+
+bool Domains::IsDividableBy(const number_type& num) const
+{
+    if (HasExtraAttrs())
+        return false;
+
+    size_t i, siz = size();
+    for (i = 0; i < siz; ++i)
+    {
+        if (!((*this)[i])->IsDividableBy(num))
+            return false;
+    }
+    return true;
+}
+
+void Domains::Divide(const number_type& num)
+{
+    assert(IsDividableBy(num));
+    size_t i, siz = size();
+    for (i = 0; i < siz; ++i)
+    {
+        ((*this)[i]).get()->Divide(num);
     }
 }
 

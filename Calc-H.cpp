@@ -2624,26 +2624,38 @@ void ChAnalyzeDomainsOfDom(shared_ptr<Domains>& domains, shared_ptr<Dom>& dom)
         ChAnalyzeExpr(dom->m_expr1);
         v1 = ChCalcExpr(dom->m_expr1);
         v1.trim();
-        if (!domains->HasExtraAttrs() && v1.is_i())
+        if (v1 == 0)
         {
-            if (v1 == 0)
-            {
-                *domains.get() = Ndrr1D::Domains(v1);
-            }
-            else
+            *domains.get() = Ndrr1D::Domains(v1);
+        }
+        else
+        {
+            if (domains->IsMultiplyableBy(v1))
             {
                 domains.get()->Multiply(v1);
                 domains.get()->Optimize();
             }
+            else
+            {
+                ChSetMessage(ch_dont_know);
+            }
+        }
+        break;
+
+    case Dom::DOM_DIV:
+        ChAnalyzeDomainsOfDom(domains, dom->m_dom);
+        ChAnalyzeExpr(dom->m_expr1);
+        v1 = ChCalcExpr(dom->m_expr1);
+        v1.trim();
+        if (domains->IsDividableBy(v1))
+        {
+            domains.get()->Divide(v1);
+            domains.get()->Optimize();
         }
         else
         {
             ChSetMessage(ch_dont_know);
         }
-        break;
-
-    case Dom::DOM_DIV:
-        ChSetMessage(ch_dont_know);
         break;
 
     default:

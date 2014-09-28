@@ -117,7 +117,11 @@ namespace Ndrr1D
         void Intersect(const Range& r);
         bool Equal(const Range& r) const;
         void Offset(const number_type& diff);
-        void Multiply(const number_type& diff);
+
+        bool IsMultiplyableBy(const number_type& num) const;
+        void Multiply(const number_type& num);
+        bool IsDividableBy(const number_type& num) const;
+        void Divide(const number_type& num);
 
         static Range *Intersect(const Range *r1, const Range *r2);
         static Range *Whole() { return new Range(); }
@@ -154,7 +158,11 @@ namespace Ndrr1D
         void Intersect(const Ranges& r);
         void Union(const Ranges& ranges);
         void Offset(const number_type& diff);
-        void Multiply(const number_type& diff);
+
+        bool IsMultiplyableBy(const number_type& num) const;
+        void Multiply(const number_type& num);
+        bool IsDividableBy(const number_type& num) const;
+        void Divide(const number_type& num);
 
         static Ranges *Union(const Ranges *r1, const Ranges *r2);
         static Ranges *Intersect(const Ranges *ranges, const Range *r);
@@ -202,7 +210,11 @@ namespace Ndrr1D
         void Intersect(const Aspect& a);
         bool Equal(const Aspect& a) const;
         void Offset(const integer_type& i);
+
+        bool IsMultiplyableBy(const number_type& num) const;
         void Multiply(const integer_type& num);
+        bool IsDividableBy(const number_type& num) const;
+        void Divide(const number_type& num);
 
         static Aspect *Intersect(const Aspect *a1, const Aspect *a2);
     };
@@ -273,7 +285,11 @@ namespace Ndrr1D
         bool MustBe2() const             { return m_aspect.MustBe2(); }
         bool Equal(const Domain& d) const;
         void Offset(const number_type& diff);
+
+        bool IsMultiplyableBy(const number_type& num) const;
         void Multiply(const number_type& diff);
+        bool IsDividableBy(const number_type& num) const;
+        void Divide(const number_type& num);
 
         enum Type
         {
@@ -345,7 +361,11 @@ namespace Ndrr1D
         number_type *GetUBound(bool& has_max) const;
         bool HasExtraAttrs() const;
         void Offset(const number_type& diff);
+
+        bool IsMultiplyableBy(const number_type& num) const;
         void Multiply(const number_type& diff);
+        bool IsDividableBy(const number_type& num) const;
+        void Divide(const number_type& diff);
 
         static Domains *Intersect(const Domains *domains, const Domain *domain);
         static Domains *Intersect(const Domains *d1, const Domains *d2);

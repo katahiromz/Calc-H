@@ -3154,7 +3154,20 @@ namespace Calc_H
                 case T_SHINNOYAKUSUU:
                     if ((it + 1)->get_token() == T_WO1)
                     {
-                        (it + 1)->set_token(T_HA);
+                        bool flag = false;
+                        std::vector<info_type>::iterator it2 = it;
+                        for (; it2 != end; ++it2)
+                        {
+                            if (it2->get_token() == T_DE1 &&
+                                (it2 + 1)->get_token() == T_WATTA &&
+                                (it2 + 2)->get_token() == T_MONO)
+                            {
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (!flag)
+                            (it + 1)->set_token(T_HA);
                     }
                     break;
 
