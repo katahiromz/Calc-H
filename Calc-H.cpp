@@ -2258,7 +2258,7 @@ void ChAnalyzeDomainsOfPrimCnstr(
             ChAnalyzeExpr(primcnstr->m_expr2);
             v = ChCalcExpr(primcnstr->m_expr2);
             v.trim();
-            if (v > 0 && v < i1)
+            if (v > 0 && v < i1 && v.is_i())
             {
                 i2 = v.get_i();
                 domains.get()->Intersect(Ndrr1D::Aspect(&i1, &i2));

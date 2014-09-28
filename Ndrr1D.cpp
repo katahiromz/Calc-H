@@ -1265,6 +1265,10 @@ void Aspect::Offset(const Ndrr1D::integer_type& i)
     if (m_pnResidue)
     {
         *m_pnResidue += i;
+        while (*m_pnResidue < 0)
+        {
+            *m_pnResidue += *m_pnModulus;
+        }
         *m_pnResidue %= *m_pnModulus;
     }
 }
