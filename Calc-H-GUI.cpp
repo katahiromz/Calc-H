@@ -252,14 +252,31 @@ unsigned __stdcall CalcThreadProc(void *p)
     ::EnableWindow(::GetDlgItem(hwnd, edt2), TRUE);
     ::EnableWindow(::GetDlgItem(hwnd, IDOK), TRUE);
 
+    size_t paren_start = result.find('(');
+    size_t paren_end = result.find(')');
+    if (paren_start != std::string::npos &&
+        paren_end != std::string::npos)
+    {
+        result.erase(paren_start, paren_end - paren_start);
+    }
+    if (result.find("‚±‚½‚¦F") == 0) {
+        result.erase(0, strlen("‚±‚½‚¦F"));
+    }
+
     if (result.find("‚µ‚ã‚¤‚è‚å‚¤‚µ‚Ü‚·") != std::string::npos)
     {
+        if (ch_speeching && ch_speeching->IsAvailable()) {
+            ch_speeching->Speak(result);
+            ch_speeching->WaitUntilDone(3000);
+        }
         ChOnExit(hwnd);
         ::EndDialog(hwnd, IDCANCEL);
     }
-
-    if (ch_speeching->IsAvailable()) {
-        ch_speeching->Speak(result);
+    else 
+    {
+        if (ch_speeching && ch_speeching->IsAvailable()) {
+            ch_speeching->Speak(result);
+        }
     }
 
     ch_is_running = false;
@@ -365,9 +382,11 @@ int WINAPI WinMain(
 {
     ch_hInstance = hInstance;
 
-    ::CoInitialize(NULL);
+    HRESULT hr = ::CoInitializeEx(NULL, COINIT_MULTITHREADED);
     {
-        ch_speeching = make_shared<Speeching>();
+        if (SUCCEEDED(hr)) {
+            ch_speeching = make_shared<Speeching>();
+        }
 
         ch_hCtrlAHook = ::SetWindowsHookEx(WH_MSGFILTER,
             ChCtrlAMessageProc, NULL, ::GetCurrentThreadId());
@@ -377,7 +396,12 @@ int WINAPI WinMain(
         ::UnhookWindowsHookEx(ch_hCtrlAHook);
         ch_hCtrlAHook = NULL;
     }
-    ::CoUninitialize();
+    if (SUCCEEDED(hr)) {
+        if (ch_speeching) {
+            ch_speeching.reset();
+        }
+        ::CoUninitialize();
+    }
 
     return 0;
 }

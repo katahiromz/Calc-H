@@ -7175,6 +7175,7 @@ std::string ChJustDoIt(std::string& query)
         query == "‚‘‚•‚‰‚”" || query == "‚p‚t‚h‚s" ||
         query.find("‚¨‚í‚é") != std::string::npos ||
         query.find("‚¨‚í‚è") != std::string::npos ||
+        query.find("‚µ‚ã‚¤‚è‚å‚¤") != std::string::npos ||
         query.find("owaru") != std::string::npos ||
         query.find("owari") != std::string::npos)
     {

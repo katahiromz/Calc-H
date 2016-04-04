@@ -41,7 +41,7 @@ public:
                               &wide[0], len);
         return Speak(wide, async);
     }
-    bool IsAvailable() const { return m_available; }
+    bool IsAvailable() const { return this && m_available; }
     HRESULT GetVolume(USHORT *volume) { return m_voice->GetVolume(volume); }
     HRESULT SetVolume(USHORT volume) { return m_voice->SetVolume(volume); }
     HRESULT Pause() { return m_voice->Pause(); }

@@ -14,8 +14,8 @@ DEFS = -std=c++11 -static -Wall -pedantic -D_SJIS -finput-charset=CP932 -fexec-c
 
 INCLUDES = -I$(BOOST_DIR)
 
-CXXFLAGS = $(DEFS) $(INCLUDES) -O9 -Ofast -DNDEBUG
-#CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG
+#CXXFLAGS = $(DEFS) $(INCLUDES) -O9 -Ofast -DNDEBUG
+CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG
 #CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG -DDEEPDEBUG
 
 CAPER = ./caper$(DOTEXE)
@@ -58,11 +58,9 @@ gui: Calc-H-GUI$(DOTEXE)
 
 Calc-H-CUI$(DOTEXE): $(COMMON_OBJS) Calc-H-CUI$(DOTOBJ)
 	$(CXX) -mconsole $(CXXFLAGS) -o Calc-H-CUI$(DOTEXE) $(COMMON_OBJS) Calc-H-CUI$(DOTOBJ)
-	sleep 2
 	strip -s Calc-H-CUI$(DOTEXE)
 Calc-H-GUI$(DOTEXE): $(GUI_OBJS) $(GUI_HEADERS)
 	$(CXX) -mwindows $(CXXFLAGS) -o Calc-H-GUI$(DOTEXE) $(GUI_OBJS) -lsapi -lole32
-	sleep 2
 	strip -s Calc-H-GUI$(DOTEXE)
 
 Calc-H$(DOTOBJ): $(HEADERS) Calc-H.cpp
