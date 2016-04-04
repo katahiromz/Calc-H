@@ -220,6 +220,41 @@ void ChOnExit(HWND hwnd)
     ch_fnOldEditWndProc = NULL;
 }
 
+void ChFixResultAsText(std::string& result) {
+    size_t found;
+    std::string ha_wa("[は/わ]");
+    for (;;) {
+        found = result.find(ha_wa);
+        if (found == std::string::npos) {
+            break;
+        }
+        result.replace(found, ha_wa.size(), "は");
+    }
+}
+
+void ChFixResultAsVoice(std::string& result) {
+    size_t paren_start = result.find('(');
+    size_t paren_end = result.find(')');
+    if (paren_start != std::string::npos &&
+        paren_end != std::string::npos)
+    {
+        result.erase(paren_start, paren_end - paren_start);
+    }
+    std::string kotae("こたえ：");
+    if (result.find(kotae) == 0) {
+        result.erase(0, kotae.size());
+    }
+    size_t found;
+    std::string ha_wa("[は/わ]");
+    for (;;) {
+        found = result.find(ha_wa);
+        if (found == std::string::npos) {
+            break;
+        }
+        result.replace(found, ha_wa.size(), "わ");
+    }
+}
+
 unsigned __stdcall CalcThreadProc(void *p)
 {
     HWND hwnd = reinterpret_cast<HWND>(p);
@@ -240,6 +275,8 @@ unsigned __stdcall CalcThreadProc(void *p)
     ch_history_index = ch_history_count = ch_history.size();
 
     std::string result = ChJustDoIt(query);
+    std::string result_copy = result;
+    ChFixResultAsText(result);
 
     std::string contents("にゅうりょく：");
     contents += str;
@@ -252,19 +289,13 @@ unsigned __stdcall CalcThreadProc(void *p)
     ::EnableWindow(::GetDlgItem(hwnd, edt2), TRUE);
     ::EnableWindow(::GetDlgItem(hwnd, IDOK), TRUE);
 
-    size_t paren_start = result.find('(');
-    size_t paren_end = result.find(')');
-    if (paren_start != std::string::npos &&
-        paren_end != std::string::npos)
-    {
-        result.erase(paren_start, paren_end - paren_start);
-    }
-    if (result.find("こたえ：") == 0) {
-        result.erase(0, strlen("こたえ："));
-    }
+    result = result_copy;
+    ChFixResultAsVoice(result);
 
     if (result.find("しゅうりょうします") != std::string::npos)
     {
+        ::SetDlgItemTextA(hwnd, edt2, "終了中です...");
+        ::EnableWindow(::GetDlgItem(hwnd, edt2), FALSE);
         if (ch_speeching && ch_speeching->IsAvailable()) {
             ch_speeching->Speak(result);
             ch_speeching->WaitUntilDone(3000);

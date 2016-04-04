@@ -169,14 +169,14 @@ public:
 };
 static CH_PrimeTable ch_prime_table;
 
-static const char * const ch_not_tashizan = "たしざんではありません。";
-static const char * const ch_not_kakezan = "かけざんではありません。";
-static const char * const ch_not_hikizan = "ひきざんではありません。";
-static const char * const ch_not_warizan = "わりざんではありません。";
+static const char * const ch_not_tashizan = "たしざんで[は/わ]ありません。";
+static const char * const ch_not_kakezan = "かけざんで[は/わ]ありません。";
+static const char * const ch_not_hikizan = "ひきざんで[は/わ]ありません。";
+static const char * const ch_not_warizan = "わりざんで[は/わ]ありません。";
 static const char * const ch_right = "はい、そうです。";
 static const char * const ch_wrong = "いいえ、ちがいます。";
 static const char * const ch_indeterminate = "どちらともいえません。";
-static const char * const ch_not_regular = "けいさんたいしょうがせいすうではないので、けいさんできません。";
+static const char * const ch_not_regular = "けいさんたいしょうがせいすうで[は/わ]ないので、けいさんできません。";
 static const char * const ch_all_zero_gcd = "すべてがぜろなので、さいだいこうやくすうがけいさんできません。";
 static const char * const ch_zero_exists_lcm = "ぜろがそんざいするので、さいしょうこうばいすうがけいさんできません。";
 static const char * const ch_dont_know = "さっぱりわかりません。";
@@ -476,7 +476,7 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
             }
             else
             {
-                ChSetMessage("かいじょうがけいさんできるのはしぜんすうのみです。");
+                ChSetMessage("かいじょうがけいさんできるの[は/わ]しぜんすうのみです。");
                 return 0;
             }
         }
@@ -496,7 +496,7 @@ CH_Value ChCalcPrim(const shared_ptr<Prim>& prim)
             }
             else
             {
-                ChSetMessage("じょすうがしぜんすうではありません。");
+                ChSetMessage("じょすうがしぜんすうで[は/わ]ありません。");
                 return 0;
             }
         }
@@ -546,7 +546,7 @@ CH_Value ChCalcFact(const shared_ptr<Fact>& fact)
             if (value.is_i() && value.get_i() >= 0)
                 value = ChCalcFactorial(value.get_i());
             else
-                ChSetMessage("かいじょうがけいさんできるのはしぜんすうのみです。");
+                ChSetMessage("かいじょうがけいさんできるの[は/わ]しぜんすうのみです。");
             return value;
         }
 
@@ -994,7 +994,7 @@ CH_Value ChCalcMono(const shared_ptr<Mono>& mono)
         if (v1.is_i() && v1.get_i() >= 0)
             v2 = ChCalcFactorial(v1.get_i());
         else
-            ChSetMessage("かいじょうがけいさんできるのはしぜんすうのみです。");
+            ChSetMessage("かいじょうがけいさんできるの[は/わ]しぜんすうのみです。");
         return v2;
 
     case Mono::DOMS_SUM:
@@ -1364,11 +1364,11 @@ CH_Value ChCalcSentence(const shared_ptr<Sentence>& sentence)
         }
         else if (flag1)
         {
-            ChSetMessage("ぜんしゃはそんざいしません。");
+            ChSetMessage("ぜんしゃ[は/わ]そんざいしません。");
         }
         else if (flag2)
         {
-            ChSetMessage("こうしゃはそんざいしません。");
+            ChSetMessage("こうしゃ[は/わ]そんざいしません。");
         }
         else if (sentence->m_doms2->m_domains->Includes(
             *sentence->m_doms1->m_domains.get()))
@@ -1829,7 +1829,7 @@ break2:
             }
             else
             {
-                ChSetMessage("せいすうではないかずのそいんすうはていぎされていません。");
+                ChSetMessage("せいすうで[は/わ]ないかずのそいんすう[は/わ]ていぎされていません。");
             }
         }
         break;
@@ -1917,7 +1917,7 @@ void ChAnalyzeDomainsOfPrimDom(
             }
             else
             {
-                ChSetMessage("せいすうではないかずのばいすうはていぎされていません。");
+                ChSetMessage("せいすうで[は/わ]ないかずのばいすう[は/わ]ていぎされていません。");
             }
         }
         break;
@@ -1934,7 +1934,7 @@ void ChAnalyzeDomainsOfPrimDom(
 
                 if (v.is_zero())
                 {
-                    ChSetMessage("ぜろのやくすうはていぎされていません。");
+                    ChSetMessage("ぜろのやくすう[は/わ]ていぎされていません。");
                 }
                 else
                 {
@@ -1952,7 +1952,7 @@ void ChAnalyzeDomainsOfPrimDom(
             }
             else
             {
-                ChSetMessage("せいすうではないかずのやくすうはていぎされていません。");
+                ChSetMessage("せいすうで[は/わ]ないかずのやくすう[は/わ]ていぎされていません。");
             }
         }
         break;
@@ -1969,7 +1969,7 @@ void ChAnalyzeDomainsOfPrimDom(
 
                 if (v.is_zero())
                 {
-                    ChSetMessage("ぜろのやくすうはていぎされていません。");
+                    ChSetMessage("ぜろのやくすう[は/わ]ていぎされていません。");
                 }
                 else
                 {
@@ -1986,7 +1986,7 @@ void ChAnalyzeDomainsOfPrimDom(
             }
             else
             {
-                ChSetMessage("せいすうではないかずのそいんすうはていぎされていません。");
+                ChSetMessage("せいすうで[は/わ]ないかずのそいんすう[は/わ]ていぎされていません。");
             }
         }
         break;
@@ -2007,7 +2007,7 @@ void ChAnalyzeDomainsOfPrimDom(
 
                 if (v.is_zero())
                 {
-                    ChSetMessage("ぜろのやくすうはていぎされていません。");
+                    ChSetMessage("ぜろのやくすう[は/わ]ていぎされていません。");
                 }
                 else
                 {
@@ -2021,7 +2021,7 @@ void ChAnalyzeDomainsOfPrimDom(
             }
             else
             {
-                ChSetMessage("せいすうではないかずのやくすうはていぎされていません。");
+                ChSetMessage("せいすうで[は/わ]ないかずのやくすう[は/わ]ていぎされていません。");
             }
         }
         break;
@@ -2038,7 +2038,7 @@ void ChAnalyzeDomainsOfPrimDom(
 
                 if (v.is_zero())
                 {
-                    ChSetMessage("ぜろのやくすうはていぎされていません。");
+                    ChSetMessage("ぜろのやくすう[は/わ]ていぎされていません。");
                 }
                 else
                 {
@@ -2056,7 +2056,7 @@ void ChAnalyzeDomainsOfPrimDom(
             }
             else
             {
-                ChSetMessage("せいすうではないかずのやくすうはていぎされていません。");
+                ChSetMessage("せいすうで[は/わ]ないかずのやくすう[は/わ]ていぎされていません。");
             }
         }
         break;
@@ -2087,7 +2087,7 @@ void ChAnalyzeDomainsOfPrimDom(
             }
             else
             {
-                ChSetMessage("せいすうではないかずのばいすうはていぎされていません。");
+                ChSetMessage("せいすうで[は/わ]ないかずのばいすう[は/わ]ていぎされていません。");
             }
         }
         break;
@@ -2107,7 +2107,7 @@ void ChAnalyzeDomainsOfPrimDom(
 
                 if (v.is_zero())
                 {
-                    ChSetMessage("ぜろのやくすうはていぎされていません。");
+                    ChSetMessage("ぜろのやくすう[は/わ]ていぎされていません。");
                 }
                 else
                 {
@@ -2125,7 +2125,7 @@ void ChAnalyzeDomainsOfPrimDom(
             }
             else
             {
-                ChSetMessage("せいすうではないかずのやくすうはていぎされていません。");
+                ChSetMessage("せいすうで[は/わ]ないかずのやくすう[は/わ]ていぎされていません。");
             }
         }
         break;
@@ -2199,7 +2199,7 @@ void ChAnalyzeDomainsOfPrimCnstr(
         }
         else
         {
-            ChSetMessage("わるかずがせいすうではありません。");
+            ChSetMessage("わるかずがせいすうで[は/わ]ありません。");
         }
         break;
 
@@ -2221,7 +2221,7 @@ void ChAnalyzeDomainsOfPrimCnstr(
 
             if (v.is_zero())
             {
-                ChSetMessage("ぜろのやくすうはていぎされていません。");
+                ChSetMessage("ぜろのやくすう[は/わ]ていぎされていません。");
             }
             else
             {
@@ -2239,7 +2239,7 @@ void ChAnalyzeDomainsOfPrimCnstr(
         }
         else
         {
-            ChSetMessage("せいすうではないかずのせいじょはていぎされていません。");
+            ChSetMessage("せいすうで[は/わ]ないかずのせいじょ[は/わ]ていぎされていません。");
         }
         break;
 
@@ -2377,7 +2377,7 @@ void ChAnalyzeDomainsOfAndCnstr(
 
             if (v.is_zero())
             {
-                ChSetMessage("ぜろのやくすうはていぎされていません。");
+                ChSetMessage("ぜろのやくすう[は/わ]ていぎされていません。");
             }
             else
             {
@@ -2395,7 +2395,7 @@ void ChAnalyzeDomainsOfAndCnstr(
         }
         else
         {
-            ChSetMessage("せいすうではないかずのせいじょはていぎされていません。");
+            ChSetMessage("せいすうで[は/わ]ないかずのせいじょ[は/わ]ていぎされていません。");
         }
         break;
 
@@ -7196,7 +7196,7 @@ std::string ChJustDoIt(std::string& query)
         query.find("だれ") != std::string::npos)
     {
         sstream <<
-            "ぼくは、けいさんろぼっと、ばれっとです。" << std::endl;
+            "ぼく[は/わ]、けいさんろぼっと、ばれっとです。" << std::endl;
     }
     else
     {

@@ -4014,7 +4014,7 @@ namespace Calc_H
         void not_supported_yet(const std::string& str)
         {
             message(std::string("エラー: ") + str +
-                    " はまだサポートされていません。");
+                    " [は/わ]まだサポートされていません。");
         }
 
               std::string& error()       { return m_error; }
