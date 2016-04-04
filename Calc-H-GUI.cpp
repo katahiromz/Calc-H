@@ -16,6 +16,9 @@ std::vector<std::string> ch_history;
 size_t              ch_history_index = 0;
 size_t              ch_history_count = 0;
 
+// speeching
+shared_ptr<Speeching> ch_speeching;
+
 // hook for Ctrl+A
 HHOOK ch_hCtrlAHook = NULL;
 
@@ -255,6 +258,10 @@ unsigned __stdcall CalcThreadProc(void *p)
         ::EndDialog(hwnd, IDCANCEL);
     }
 
+    if (ch_speeching->IsAvailable()) {
+        ch_speeching->Speak(result);
+    }
+
     ch_is_running = false;
 
     return 0;
@@ -358,13 +365,19 @@ int WINAPI WinMain(
 {
     ch_hInstance = hInstance;
 
-    ch_hCtrlAHook = ::SetWindowsHookEx(WH_MSGFILTER,
-        ChCtrlAMessageProc, NULL, ::GetCurrentThreadId());
+    ::CoInitialize(NULL);
+    {
+        ch_speeching = make_shared<Speeching>();
 
-    ::DialogBox(hInstance, MAKEINTRESOURCE(1), NULL, ChDialogProc);
+        ch_hCtrlAHook = ::SetWindowsHookEx(WH_MSGFILTER,
+            ChCtrlAMessageProc, NULL, ::GetCurrentThreadId());
 
-    ::UnhookWindowsHookEx(ch_hCtrlAHook);
-    ch_hCtrlAHook = NULL;
+        ::DialogBox(hInstance, MAKEINTRESOURCE(1), NULL, ChDialogProc);
+
+        ::UnhookWindowsHookEx(ch_hCtrlAHook);
+        ch_hCtrlAHook = NULL;
+    }
+    ::CoUninitialize();
 
     return 0;
 }

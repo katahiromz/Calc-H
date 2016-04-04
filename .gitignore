@@ -10,3 +10,4 @@ HParser.h
 FTCHECK.BAT
 caper.log
 DomainTest
+*.opendb

@@ -29,6 +29,7 @@ HEADERS = \
 	HScanner.h \
 	Location.h \
 	stdafx.h \
+	Speeching.h \
 
 COMMON_OBJS = \
 	Calc-H$(DOTOBJ) \
@@ -48,13 +49,16 @@ GUI_HEADERS = \
 	Resizable.h \
 	Resizable_inl.h \
 
-all: Calc-H-CUI$(DOTEXE) #Calc-H-GUI$(DOTEXE)
+all: cui gui
+
+cui: Calc-H-CUI$(DOTEXE)
+gui: Calc-H-GUI$(DOTEXE)
 
 Calc-H-CUI$(DOTEXE): $(COMMON_OBJS) Calc-H-CUI$(DOTOBJ)
 	$(CXX) -mconsole $(CXXFLAGS) -o Calc-H-CUI$(DOTEXE) $(COMMON_OBJS) Calc-H-CUI$(DOTOBJ)
 	strip -s Calc-H-CUI$(DOTEXE)
 Calc-H-GUI$(DOTEXE): $(GUI_OBJS) $(GUI_HEADERS)
-	$(CXX) -mwindows $(CXXFLAGS) -o Calc-H-GUI$(DOTEXE) $(GUI_OBJS)
+	$(CXX) -mwindows $(CXXFLAGS) -o Calc-H-GUI$(DOTEXE) $(GUI_OBJS) -lsapi -lole32
 	strip -s Calc-H-GUI$(DOTEXE)
 
 Calc-H$(DOTOBJ): $(HEADERS) Calc-H.cpp

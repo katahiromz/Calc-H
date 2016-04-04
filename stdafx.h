@@ -37,10 +37,12 @@ inline int MzcGetLParamY(LPARAM lParam)
 
 ////////////////////////////////////////////////////////////////////////////
 
-#include "Speech.h"
+#ifdef _WIN32
+    #include "Speeching.h"
 
-#include "PointSizeRect.h"
-#include "Resizable.h"
+    #include "PointSizeRect.h"
+    #include "Resizable.h"
+#endif
 
 #define DRR1D_USES_PMPNUMBER
 #include "PmpNumber.hpp"

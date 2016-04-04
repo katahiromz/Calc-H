@@ -9,8 +9,8 @@
 
 次の環境に対応しています。
 
-    * Windows + Visual C++ 2013
-    * Windows + MinGW + MSYS + g++
+    * Windows + Visual C++ 2015
+    * Windows + MinGW + MSYS2 + g++
 
 Boostのインストールが別途必要です。また、
 jonigata氏の最新のパーサジェネレータCaperが必要です。
@@ -22,7 +22,7 @@ jonigata氏の最新のパーサジェネレータCaperが必要です。
     https://github.com/jonigata/caper
 
 
-Windows + Visual C++ 2013の場合
+Windows + Visual C++ 2015の場合
 ---------------------------------------
 
 最初にcaper.exeをこのフォルダにおいてください。それから、
@@ -30,7 +30,7 @@ Windows + Visual C++ 2013の場合
 Boostへのインクルードパスを設定すれば、普通にビルドできます。
 
 
-Windows + MinGW + MSYS + g++の場合
+Windows + MinGW + MSYS2 + g++の場合
 ----------------------------------
 
 最初にcaper.exeをこのフォルダにおいてください。それから、
