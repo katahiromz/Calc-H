@@ -37,9 +37,7 @@ inline int MzcGetLParamY(LPARAM lParam)
 
 ////////////////////////////////////////////////////////////////////////////
 
-//#define NO_ATLBASEFAKE
-#define ATLBASEFAKE_CXX11
-#include "atlbasefake.h"
+#include "Speech.h"
 
 #include "PointSizeRect.h"
 #include "Resizable.h"
