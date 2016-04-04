@@ -37,10 +37,12 @@ inline int MzcGetLParamY(LPARAM lParam)
 
 ////////////////////////////////////////////////////////////////////////////
 
-#ifdef _WIN32
-    #include "PointSizeRect.h"
-    #include "Resizable.h"
-#endif
+//#define NO_ATLBASEFAKE
+#define ATLBASEFAKE_CXX11
+#include "atlbasefake.h"
+
+#include "PointSizeRect.h"
+#include "Resizable.h"
 
 #define DRR1D_USES_PMPNUMBER
 #include "PmpNumber.hpp"
