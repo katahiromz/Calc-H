@@ -179,6 +179,9 @@ BOOL ChOnInitDialog(HWND hwnd)
     contents += ch_logo;
     contents += "\n";
     contents += ch_feature;
+    if (ch_voice && ch_voice->IsAvailable()) {
+        ch_voice->Speak(ch_feature);
+    }
     ChAddOutput(hwnd, contents.c_str());
 
     ch_resizable.OnParentCreate(hwnd, TRUE);

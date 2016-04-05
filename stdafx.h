@@ -58,7 +58,7 @@ inline int MzcGetLParamY(LPARAM lParam)
         "       | katayama.hirofumi.mz@gmail.com |\n" \
         "       +--------------------------------+\n"
 
-#define ch_feature  "Ç±Ç¶Ç™Ç≈ÇÈÇÊÇ§Ç…Ç»ÇËÇ‹ÇµÇΩÅB\n"
+#define ch_feature  "ÇµÇÒÇ´ÇÃÇ§ÅFÇ±Ç¶Ç™Ç≈ÇÈÇÊÇ§Ç…Ç»ÇËÇ‹ÇµÇΩÅB\n"
 
 std::string ChJustDoIt(std::string& query);
 void CrTrimString(std::string& str);
