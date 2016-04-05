@@ -4,7 +4,7 @@
 
 #include "WinVoice.h"
 
-#ifdef SPEECHING_TEST
+#ifdef WIN_VOICE_TEST
     int main(void) {
         CoInitialize(NULL);
         {
