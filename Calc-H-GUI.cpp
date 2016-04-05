@@ -16,8 +16,8 @@ std::vector<std::string> ch_history;
 size_t              ch_history_index = 0;
 size_t              ch_history_count = 0;
 
-// speeching
-shared_ptr<Speeching> ch_speeching;
+// voice
+shared_ptr<WinVoice> ch_voice;
 
 // mute
 HBITMAP ch_hbmMute = NULL;
@@ -191,7 +191,7 @@ BOOL ChOnInitDialog(HWND hwnd)
     ch_hbmMute = LoadBitmap(ch_hInstance, MAKEINTRESOURCE(100));
     ch_hbmMuteOff = LoadBitmap(ch_hInstance, MAKEINTRESOURCE(101));
     HBITMAP hbm;
-    if (ch_speeching->IsMute()) {
+    if (ch_voice->IsMute()) {
         hbm = ch_hbmMute;
     } else {
         hbm = ch_hbmMuteOff;
@@ -297,8 +297,8 @@ unsigned __stdcall CalcThreadProc(void *p)
         query.find("みゅーとかいじょ") != std::string::npos ||
         query.find("みゅーとをかいじょ") != std::string::npos)
     {
-        if (ch_speeching && ch_speeching->IsAvailable()) {
-            ch_speeching->SetMute(FALSE);
+        if (ch_voice && ch_voice->IsAvailable()) {
+            ch_voice->SetMute(FALSE);
         }
         result = "こたえ：みゅーとをかいじょしました。";
     } else if (query.find("だまれ") != std::string::npos ||
@@ -308,8 +308,8 @@ unsigned __stdcall CalcThreadProc(void *p)
         query.find("しょうおん") != std::string::npos ||
         query.find("みゅーと") != std::string::npos)
     {
-        if (ch_speeching && ch_speeching->IsAvailable()) {
-            ch_speeching->SetMute(TRUE);
+        if (ch_voice && ch_voice->IsAvailable()) {
+            ch_voice->SetMute(TRUE);
         }
         result = "こたえ：みゅーとしました。";
     } else {
@@ -337,17 +337,17 @@ unsigned __stdcall CalcThreadProc(void *p)
     {
         ::SetDlgItemTextA(hwnd, edt2, "終了中です...");
         ::EnableWindow(::GetDlgItem(hwnd, edt2), FALSE);
-        if (ch_speeching && ch_speeching->IsAvailable()) {
-            ch_speeching->Speak(result);
-            ch_speeching->WaitUntilDone(3000);
+        if (ch_voice && ch_voice->IsAvailable()) {
+            ch_voice->Speak(result);
+            ch_voice->WaitUntilDone(3000);
         }
         ChOnExit(hwnd);
         ::EndDialog(hwnd, IDCANCEL);
     }
     else 
     {
-        if (ch_speeching && ch_speeching->IsAvailable()) {
-            ch_speeching->Speak(result);
+        if (ch_voice && ch_voice->IsAvailable()) {
+            ch_voice->Speak(result);
         }
     }
 
@@ -413,13 +413,13 @@ ChDialogProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
         case psh1:
             if (HIWORD(wParam) == BN_CLICKED) {
-                if (ch_speeching && ch_speeching->IsAvailable()) {
-                    if (ch_speeching->IsMute()) {
-                        ch_speeching->SetMute(FALSE);
+                if (ch_voice && ch_voice->IsAvailable()) {
+                    if (ch_voice->IsMute()) {
+                        ch_voice->SetMute(FALSE);
                         SendDlgItemMessageA(hwnd, psh1, BM_SETIMAGE,
                             IMAGE_BITMAP, (LPARAM)ch_hbmMuteOff);
                     } else {
-                        ch_speeching->SetMute(TRUE);
+                        ch_voice->SetMute(TRUE);
                         SendDlgItemMessageA(hwnd, psh1, BM_SETIMAGE,
                             IMAGE_BITMAP, (LPARAM)ch_hbmMute);
                     }
@@ -472,7 +472,7 @@ int WINAPI WinMain(
     HRESULT hr = ::CoInitializeEx(NULL, COINIT_MULTITHREADED);
     {
         if (SUCCEEDED(hr)) {
-            ch_speeching = make_shared<Speeching>();
+            ch_voice = make_shared<WinVoice>();
         }
 
         ch_hCtrlAHook = ::SetWindowsHookEx(WH_MSGFILTER,
@@ -484,8 +484,8 @@ int WINAPI WinMain(
         ch_hCtrlAHook = NULL;
     }
     if (SUCCEEDED(hr)) {
-        if (ch_speeching) {
-            ch_speeching.reset();
+        if (ch_voice) {
+            ch_voice.reset();
         }
         ::CoUninitialize();
     }

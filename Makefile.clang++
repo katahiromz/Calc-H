@@ -29,7 +29,7 @@ HEADERS = \
 	HScanner.h \
 	Location.h \
 	stdafx.h \
-	Speeching.h \
+	WinVoice.h \
 
 COMMON_OBJS = \
 	Calc-H$(DOTOBJ) \

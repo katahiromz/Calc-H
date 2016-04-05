@@ -38,7 +38,7 @@ inline int MzcGetLParamY(LPARAM lParam)
 ////////////////////////////////////////////////////////////////////////////
 
 #ifdef _WIN32
-    #include "Speeching.h"
+    #include "WinVoice.h"
 
     #include "PointSizeRect.h"
     #include "Resizable.h"

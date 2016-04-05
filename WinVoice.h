@@ -1,9 +1,9 @@
-// Speeching.h --- SAPI wrapper module
+// WinVoice.h --- SAPI wrapper module
 // See ReadMe.txt and License.txt.
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef CALC_H_SPEECHING_H
-#define CALC_H_SPEECHING_H
+#ifndef WIN_VOICE_H
+#define WIN_VOICE_H
 
 #include <string>
 
@@ -16,9 +16,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 // NOTE: CoInitialize or CoInitializeEx call is required.
-class Speeching {
+class WinVoice {
 public:
-    Speeching() {
+    WinVoice() {
         HRESULT hr = m_voice.CoCreateInstance(CLSID_SpVoice);
         m_available = SUCCEEDED(hr);
         if (m_available) {
@@ -65,10 +65,10 @@ protected:
     bool m_available;
     CComPtr<ISpVoice> m_voice;
     bool m_mute;
-}; // class Speeching
+}; // class WinVoice
 
 ////////////////////////////////////////////////////////////////////////////
 
-#endif  // ndef CALC_H_SPEECHING_H
+#endif  // ndef WIN_VOICE_H
 
 ////////////////////////////////////////////////////////////////////////////

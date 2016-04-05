@@ -6,8 +6,8 @@ DOTOBJ = .o
 
 CXX = g++
 
-#BOOST_DIR = .
-BOOST_DIR = /c/local/boost_1_55_0
+BOOST_DIR = .
+#BOOST_DIR = /c/local/boost_1_55_0
 
 DEFS = -std=c++11 -static -Wall -pedantic -D_SJIS -finput-charset=CP932 -fexec-charset=CP932
 #DEFS = -std=c++11 -static -Wall -pedantic -D_UTF8
@@ -30,7 +30,7 @@ HEADERS = \
 	Location.h \
 	stdafx.h \
 	Ndrr1D.hpp \
-	Speeching.h \
+	WinVoice.h \
 
 COMMON_OBJS = \
 	Calc-H$(DOTOBJ) \

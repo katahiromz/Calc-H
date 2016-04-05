@@ -184,7 +184,7 @@
     <ClInclude Include="PointSizeRect_inl.h" />
     <ClInclude Include="Resizable.h" />
     <ClInclude Include="Resizable_inl.h" />
-    <ClInclude Include="Speeching.h" />
+    <ClInclude Include="WinVoice.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
