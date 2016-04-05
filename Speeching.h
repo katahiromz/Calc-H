@@ -24,8 +24,12 @@ public:
         if (m_available) {
             hr = m_voice->SetOutput(NULL, TRUE);
         }
+        m_mute = false;
     }
     HRESULT Speak(const std::wstring& str, bool async = true) {
+        if (m_mute) {
+            return 0;
+        }
         DWORD flags = SPF_PURGEBEFORESPEAK;
         if (async) {
             flags |= SPF_ASYNC;
@@ -49,10 +53,18 @@ public:
     HRESULT WaitUntilDone(ULONG msec) { return m_voice->WaitUntilDone(msec); }
     HRESULT GetRate(LONG *rate) { return m_voice->GetRate(rate); }
     HRESULT SetRate(LONG rate) { return m_voice->SetRate(rate); }
+    void SetMute(BOOL on) {
+        if (on) {
+            m_voice->Speak(L"", SPF_PURGEBEFORESPEAK, NULL);
+        }
+        m_mute = on;
+    }
+    bool IsMute() const { return m_mute; }
 
 protected:
     bool m_available;
     CComPtr<ISpVoice> m_voice;
+    bool m_mute;
 }; // class Speeching
 
 ////////////////////////////////////////////////////////////////////////////

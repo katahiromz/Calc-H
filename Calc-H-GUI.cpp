@@ -19,6 +19,10 @@ size_t              ch_history_count = 0;
 // speeching
 shared_ptr<Speeching> ch_speeching;
 
+// mute
+HBITMAP ch_hbmMute = NULL;
+HBITMAP ch_hbmMuteOff = NULL;
+
 // hook for Ctrl+A
 HHOOK ch_hCtrlAHook = NULL;
 
@@ -174,6 +178,7 @@ BOOL ChOnInitDialog(HWND hwnd)
     std::string contents;
     contents += ch_logo;
     contents += "\n";
+    contents += ch_feature;
     ChAddOutput(hwnd, contents.c_str());
 
     ch_resizable.OnParentCreate(hwnd, TRUE);
@@ -181,6 +186,17 @@ BOOL ChOnInitDialog(HWND hwnd)
     ch_resizable.SetLayoutAnchor(stc1, mzcLA_BOTTOM_LEFT);
     ch_resizable.SetLayoutAnchor(edt2, mzcLA_BOTTOM_LEFT, mzcLA_BOTTOM_RIGHT);
     ch_resizable.SetLayoutAnchor(IDOK, mzcLA_BOTTOM_RIGHT);
+    ch_resizable.SetLayoutAnchor(psh1, mzcLA_BOTTOM_LEFT);
+
+    ch_hbmMute = LoadBitmap(ch_hInstance, MAKEINTRESOURCE(100));
+    ch_hbmMuteOff = LoadBitmap(ch_hInstance, MAKEINTRESOURCE(101));
+    HBITMAP hbm;
+    if (ch_speeching->IsMute()) {
+        hbm = ch_hbmMute;
+    } else {
+        hbm = ch_hbmMuteOff;
+    }
+    SendDlgItemMessageA(hwnd, psh1, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hbm);
 
     HICON hIcon;
     hIcon = ::LoadIcon(ch_hInstance, MAKEINTRESOURCE(1));
@@ -274,7 +290,32 @@ unsigned __stdcall CalcThreadProc(void *p)
     ch_history.push_back(query);
     ch_history_index = ch_history_count = ch_history.size();
 
-    std::string result = ChJustDoIt(query);
+    std::string result;
+    if (query.find("しゃべれ") != std::string::npos ||
+        query.find("こえをだ") != std::string::npos ||
+        query.find("おとをだ") != std::string::npos ||
+        query.find("みゅーとかいじょ") != std::string::npos ||
+        query.find("みゅーとをかいじょ") != std::string::npos)
+    {
+        if (ch_speeching && ch_speeching->IsAvailable()) {
+            ch_speeching->SetMute(FALSE);
+        }
+        result = "こたえ：みゅーとをかいじょしました。";
+    } else if (query.find("だまれ") != std::string::npos ||
+        query.find("しずかに") != std::string::npos ||
+        query.find("おとをけ") != std::string::npos ||
+        query.find("こえをけ") != std::string::npos ||
+        query.find("しょうおん") != std::string::npos ||
+        query.find("みゅーと") != std::string::npos)
+    {
+        if (ch_speeching && ch_speeching->IsAvailable()) {
+            ch_speeching->SetMute(TRUE);
+        }
+        result = "こたえ：みゅーとしました。";
+    } else {
+        result = ChJustDoIt(query);
+    }
+
     std::string result_copy = result;
     ChFixResultAsText(result);
 
@@ -369,6 +410,21 @@ ChDialogProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             ChOnExit(hwnd);
             ::EndDialog(hwnd, IDCANCEL);
             break;
+
+        case psh1:
+            if (HIWORD(wParam) == BN_CLICKED) {
+                if (ch_speeching && ch_speeching->IsAvailable()) {
+                    if (ch_speeching->IsMute()) {
+                        ch_speeching->SetMute(FALSE);
+                        SendDlgItemMessageA(hwnd, psh1, BM_SETIMAGE,
+                            IMAGE_BITMAP, (LPARAM)ch_hbmMuteOff);
+                    } else {
+                        ch_speeching->SetMute(TRUE);
+                        SendDlgItemMessageA(hwnd, psh1, BM_SETIMAGE,
+                            IMAGE_BITMAP, (LPARAM)ch_hbmMute);
+                    }
+                }
+            }
         }
         break;
 

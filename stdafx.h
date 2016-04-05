@@ -50,13 +50,15 @@ inline int MzcGetLParamY(LPARAM lParam)
 
 ////////////////////////////////////////////////////////////////////////////
 
-const char * const ch_logo = 
+#define ch_logo     \
+        "       +--------------------------------+\n" \
+        "       |  ひらがな電卓 Calc-H ver.0.8.7 |\n" \
+        "       |   by 片山博文MZ (katahiromz)   |\n" \
+        "       | http://katahiromz.web.fc2.com/ |\n" \
+        "       | katayama.hirofumi.mz@gmail.com |\n" \
         "       +--------------------------------+\n"
-        "       |  ひらがな電卓 Calc-H ver.0.8.7 |\n"
-        "       |   by 片山博文MZ (katahiromz)   |\n"
-        "       | http://katahiromz.web.fc2.com/ |\n"
-        "       | katayama.hirofumi.mz@gmail.com |\n"
-        "       +--------------------------------+\n";
+
+#define ch_feature  "こえがでるようになりました。\n"
 
 std::string ChJustDoIt(std::string& query);
 void CrTrimString(std::string& str);
