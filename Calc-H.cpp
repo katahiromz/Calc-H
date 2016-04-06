@@ -5,14 +5,7 @@
 // (Japanese, Shift_JIS)
 // LinuxÇÃèÍçáÇÕÅAUTF-8Ç…ïœä∑ÇµÇƒâ∫Ç≥Ç¢ÅB
 
-#define DRR1D_USES_PMPNUMBER
-#include "PmpNumber.hpp"
-#include "Ndrr1D.hpp"
-#include "Calc-H.h"
-
-#include <ctime>            // for std::time
-#include <iterator>         // for std::istreambuf_iterator
-#include <iostream>         // for std::cerr
+#include "stdafx.h"
 
 #include "HParserAST.h"     // for Calc_H::Node, Calc_H::TokenInfo
 #include "HParser.h"        // for Calc_H::Parser
@@ -7297,6 +7290,43 @@ std::string ChJustDoIt(std::string& query)
     }
 
     return sstream.str();
+}
+
+////////////////////////////////////////////////////////////////////////////
+
+void ChFixResultForDisplay(std::string& result) {
+    size_t found;
+    std::string ha_wa("[ÇÕ/ÇÌ]");
+    for (;;) {
+        found = result.find(ha_wa);
+        if (found == std::string::npos) {
+            break;
+        }
+        result.replace(found, ha_wa.size(), "ÇÕ");
+    }
+}
+
+void ChFixResultForVoice(std::string& result) {
+    size_t paren_start = result.find('(');
+    size_t paren_end = result.find(')');
+    if (paren_start != std::string::npos &&
+        paren_end != std::string::npos)
+    {
+        result.erase(paren_start, paren_end - paren_start);
+    }
+    std::string kotae("Ç±ÇΩÇ¶ÅF");
+    if (result.find(kotae) == 0) {
+        result.erase(0, kotae.size());
+    }
+    size_t found;
+    std::string ha_wa("[ÇÕ/ÇÌ]");
+    for (;;) {
+        found = result.find(ha_wa);
+        if (found == std::string::npos) {
+            break;
+        }
+        result.replace(found, ha_wa.size(), "ÇÌ");
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////

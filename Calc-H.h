@@ -3,6 +3,9 @@
 // This file is part of Calc-H.  See file "ReadMe.txt" and "License.txt".
 ////////////////////////////////////////////////////////////////////////////
 
+#ifndef CALC_H_H_
+#define CALC_H_H_
+
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <string>   // for std::string
@@ -65,6 +68,22 @@ static const CH_Value ch_muryoutaisuu   ("10000000000000000000000000000000000000
 #include "Location.h"
 #include "HParserAST.h"
 
+std::string ChJustDoIt(std::string& query);
+void CrTrimString(std::string& str);
 void ChReplaceString(std::string& str,
                      const std::string& from,
                      const std::string& to);
+void ChFixResultForDisplay(std::string& result);
+void ChFixResultForVoice(std::string& result);
+
+#define ch_logo     \
+        "       +--------------------------------+\n" \
+        "       |  ひらがな電卓 Calc-H ver.0.8.7 |\n" \
+        "       |   by 片山博文MZ (katahiromz)   |\n" \
+        "       | http://katahiromz.web.fc2.com/ |\n" \
+        "       | katayama.hirofumi.mz@gmail.com |\n" \
+        "       +--------------------------------+\n"
+
+#define ch_feature  "しんきのう：こえがでるようになりました。\n"
+
+#endif  // ndef CALC_H_H_

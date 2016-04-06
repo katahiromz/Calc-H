@@ -3,6 +3,9 @@
 // This file is part of Calc-H.  See file "ReadMe.txt" and "License.txt".
 ////////////////////////////////////////////////////////////////////////////
 
+#ifndef CALC_H_STDAFX_H_
+#define CALC_H_STDAFX_H_
+
 #include <string>       // for std::string
 #include <vector>       // for std::vector
 #include <iostream>     // for std::cin, std::cout, std::cerr, std::endl
@@ -11,6 +14,9 @@
 #include <cassert>      // for assert
 #include <algorithm>    // for std::sort, std::unique
 #include <cmath>        // for math functions
+#include <ctime>            // for std::time
+#include <iterator>         // for std::istreambuf_iterator
+#include <iostream>         // for std::cerr
 
 #ifdef _WIN32
     #include <windows.h>
@@ -39,7 +45,6 @@ inline int MzcGetLParamY(LPARAM lParam)
 
 #ifdef _WIN32
     #include "WinVoice.h"
-
     #include "PointSizeRect.h"
     #include "Resizable.h"
 #endif
@@ -48,22 +53,10 @@ inline int MzcGetLParamY(LPARAM lParam)
 #include "PmpNumber.hpp"
 #include "Ndrr1D.hpp"
 
+#include "Calc-H.h"
+
 ////////////////////////////////////////////////////////////////////////////
 
-#define ch_logo     \
-        "       +--------------------------------+\n" \
-        "       |  ひらがな電卓 Calc-H ver.0.8.7 |\n" \
-        "       |   by 片山博文MZ (katahiromz)   |\n" \
-        "       | http://katahiromz.web.fc2.com/ |\n" \
-        "       | katayama.hirofumi.mz@gmail.com |\n" \
-        "       +--------------------------------+\n"
-
-#define ch_feature  "しんきのう：こえがでるようになりました。\n"
-
-std::string ChJustDoIt(std::string& query);
-void CrTrimString(std::string& str);
-void ChReplaceString(std::string& str,
-                     const std::string& from,
-                     const std::string& to);
+#endif  // ndef CALC_H_STDAFX_H_
 
 ////////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-// Calc-H-GUI.cpp -- Hiragana Calculator Calc-H
+// win.cpp -- Hiragana Calculator Calc-H for Windows
 // This file is part of Calc-H.  See file "ReadMe.txt" and "License.txt".
 ////////////////////////////////////////////////////////////////////////////
 // (Japanese, Shift_JIS)
@@ -239,40 +239,6 @@ void ChOnExit(HWND hwnd)
     ch_fnOldEditWndProc = NULL;
 }
 
-void ChFixResultAsText(std::string& result) {
-    size_t found;
-    std::string ha_wa("[ÇÕ/ÇÌ]");
-    for (;;) {
-        found = result.find(ha_wa);
-        if (found == std::string::npos) {
-            break;
-        }
-        result.replace(found, ha_wa.size(), "ÇÕ");
-    }
-}
-
-void ChFixResultAsVoice(std::string& result) {
-    size_t paren_start = result.find('(');
-    size_t paren_end = result.find(')');
-    if (paren_start != std::string::npos &&
-        paren_end != std::string::npos)
-    {
-        result.erase(paren_start, paren_end - paren_start);
-    }
-    std::string kotae("Ç±ÇΩÇ¶ÅF");
-    if (result.find(kotae) == 0) {
-        result.erase(0, kotae.size());
-    }
-    size_t found;
-    std::string ha_wa("[ÇÕ/ÇÌ]");
-    for (;;) {
-        found = result.find(ha_wa);
-        if (found == std::string::npos) {
-            break;
-        }
-        result.replace(found, ha_wa.size(), "ÇÌ");
-    }
-}
 
 unsigned __stdcall CalcThreadProc(void *p)
 {
@@ -320,7 +286,7 @@ unsigned __stdcall CalcThreadProc(void *p)
     }
 
     std::string result_copy = result;
-    ChFixResultAsText(result);
+    ChFixResultForDisplay(result);
 
     std::string contents("Ç…Ç„Ç§ÇËÇÂÇ≠ÅF");
     contents += str;
@@ -334,7 +300,7 @@ unsigned __stdcall CalcThreadProc(void *p)
     ::EnableWindow(::GetDlgItem(hwnd, IDOK), TRUE);
 
     result = result_copy;
-    ChFixResultAsVoice(result);
+    ChFixResultForVoice(result);
 
     if (result.find("ÇµÇ„Ç§ÇËÇÂÇ§ÇµÇ‹Ç∑") != std::string::npos)
     {

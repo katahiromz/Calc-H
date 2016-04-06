@@ -1,21 +1,21 @@
-# Makefile.clang++ --- Makefile for clang++
-# Usage: make -f Makefile.clang++
+# Makefile.msys --- Makefile for MSYS
+# Usage: make -f Makefile.msys
 
-DOTEXE = 
+DOTEXE = .exe
 DOTOBJ = .o
 
-CXX = clang++
+CXX = g++
 
 BOOST_DIR = .
 #BOOST_DIR = /c/local/boost_1_55_0
 
-#DEFS = -std=c++0x -static -Wall -pedantic -D_SJIS -finput-charset=CP932 -fexec-charset=CP932
-DEFS = -std=c++0x -static -Wall -pedantic -D_UTF8
+DEFS = -std=c++11 -static -Wall -pedantic -D_SJIS -finput-charset=CP932 -fexec-charset=CP932
+#DEFS = -std=c++11 -static -Wall -pedantic -D_UTF8
 
 INCLUDES = -I$(BOOST_DIR)
 
-CXXFLAGS = $(DEFS) $(INCLUDES) -O9 -Ofast -DNDEBUG
-#CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG
+#CXXFLAGS = $(DEFS) $(INCLUDES) -O9 -Ofast -DNDEBUG
+CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG
 #CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG -DDEEPDEBUG
 
 CAPER = ./caper$(DOTEXE)
@@ -29,18 +29,20 @@ HEADERS = \
 	HScanner.h \
 	Location.h \
 	stdafx.h \
+	Ndrr1D.hpp \
 	WinVoice.h \
 
 COMMON_OBJS = \
 	Calc-H$(DOTOBJ) \
 	PmpNumber$(DOTOBJ) \
+	Ndrr1D$(DOTOBJ) \
 
 GUI_OBJS = \
 	$(COMMON_OBJS) \
-	Calc-H-GUI$(DOTOBJ) \
+	win$(DOTOBJ) \
 	PointSizeRect$(DOTOBJ) \
 	Resizable$(DOTOBJ) \
-	Calc-H-GUI_res$(DOTOBJ) \
+	win_res$(DOTOBJ) \
 
 GUI_HEADERS = \
 	stdafx.h \
@@ -49,13 +51,10 @@ GUI_HEADERS = \
 	Resizable.h \
 	Resizable_inl.h \
 
-all: cui gui
+all: Calc-H-CUI$(DOTEXE) Calc-H-GUI$(DOTEXE)
 
-cui: Calc-H-CUI$(DOTEXE)
-gui: Calc-H-GUI$(DOTEXE)
-
-Calc-H-CUI$(DOTEXE): $(COMMON_OBJS) Calc-H-CUI$(DOTOBJ)
-	$(CXX) -mconsole $(CXXFLAGS) -o Calc-H-CUI$(DOTEXE) $(COMMON_OBJS) Calc-H-CUI$(DOTOBJ)
+Calc-H-CUI$(DOTEXE): $(COMMON_OBJS) console$(DOTOBJ)
+	$(CXX) -mconsole $(CXXFLAGS) -o Calc-H-CUI$(DOTEXE) $(COMMON_OBJS) console$(DOTOBJ)
 	strip -s Calc-H-CUI$(DOTEXE)
 Calc-H-GUI$(DOTEXE): $(GUI_OBJS) $(GUI_HEADERS)
 	$(CXX) -mwindows $(CXXFLAGS) -o Calc-H-GUI$(DOTEXE) $(GUI_OBJS) -lsapi -lole32
@@ -65,19 +64,28 @@ Calc-H$(DOTOBJ): $(HEADERS) Calc-H.cpp
 	$(CXX) -c $(CXXFLAGS) Calc-H.cpp
 PmpNumber$(DOTOBJ): PmpNumber.hpp PmpNumber.cpp
 	$(CXX) -c $(CXXFLAGS) PmpNumber.cpp
-Calc-H-CUI$(DOTOBJ): stdafx.h Calc-H-CUI.cpp
-	$(CXX) -c $(CXXFLAGS) Calc-H-CUI.cpp
-Calc-H-GUI$(DOTOBJ): stdafx.h Calc-H-GUI.cpp
-	$(CXX) -c $(CXXFLAGS) Calc-H-GUI.cpp
+Ndrr1D$(DOTOBJ): Ndrr1D.hpp Ndrr1D.cpp
+	$(CXX) -c $(CXXFLAGS) Ndrr1D.cpp
+console$(DOTOBJ): stdafx.h console.cpp
+	$(CXX) -c $(CXXFLAGS) console.cpp
+win$(DOTOBJ): stdafx.h win.cpp
+	$(CXX) -c $(CXXFLAGS) win.cpp
 PointSizeRect$(DOTOBJ): stdafx.h PointSizeRect.cpp PointSizeRect.h PointSizeRect_inl.h
 	$(CXX) -c $(CXXFLAGS) PointSizeRect.cpp
 Resizable$(DOTOBJ): stdafx.h Resizable.cpp Resizable.h Resizable.h
 	$(CXX) -c $(CXXFLAGS) Resizable.cpp
-Calc-H-GUI_res$(DOTOBJ): Calc-H-GUI.rc
-	windres -i Calc-H-GUI.rc -o Calc-H-GUI_res$(DOTOBJ)
+win_res$(DOTOBJ): win.rc
+	windres -i win.rc -o win_res$(DOTOBJ)
 
 HParser.h: $(CAPER) HParser.cpg
-	$(CAPER) HParser.cpg HParser.h >caper.log 2>&1
+	time $(CAPER) HParser.cpg HParser.h >caper.log 2>&1
+
+test: Calc-H-CUI$(DOTEXE) TestGen$(DOTEXE)
+	TestGen$(DOTEXE) >TestData.txt
+	Calc-H-CUI$(DOTEXE) TestData.txt >TestResult.txt
+
+TestGen$(DOTEXE): TestGen.cpp
+	$(CXX) -O3 -o TestGen$(DOTEXE) TestGen.cpp
 
 clean:
 	rm -f *$(DOTOBJ)

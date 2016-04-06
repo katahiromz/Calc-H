@@ -22,5 +22,5 @@ FONT 12, "ÇlÇr ÉSÉVÉbÉN"
 }
 
 #if defined(__BORLANDC__) || defined(__GNUC__)
-    1 24 "Calc-H-GUI_exe.manifest"
+    1 24 "win.manifest"
 #endif
