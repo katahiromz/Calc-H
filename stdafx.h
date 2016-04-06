@@ -23,6 +23,14 @@
     #include <process.h>
 #endif
 
+#include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
+using boost::shared_ptr;
+using boost::static_pointer_cast;
+using boost::dynamic_pointer_cast;
+using boost::make_shared;
+#define shared_ptr shared_ptr
+
 ////////////////////////////////////////////////////////////////////////////
 
 #define EXTENDS_MOBJECT /*empty*/

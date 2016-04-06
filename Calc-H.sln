@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calc-H-GUI", "Calc-H-GUI.vcxproj", "{7571E44F-9E19-4590-A5AF-8291BA71B0F9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calc-H-CUI", "Calc-H-CUI.vcxproj", "{5A8DCBB3-E129-412C-9068-B1F6D950683C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7571E44F-9E19-4590-A5AF-8291BA71B0F9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7571E44F-9E19-4590-A5AF-8291BA71B0F9}.Debug|Win32.Build.0 = Debug|Win32
+		{7571E44F-9E19-4590-A5AF-8291BA71B0F9}.Release|Win32.ActiveCfg = Release|Win32
+		{7571E44F-9E19-4590-A5AF-8291BA71B0F9}.Release|Win32.Build.0 = Release|Win32
+		{5A8DCBB3-E129-412C-9068-B1F6D950683C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5A8DCBB3-E129-412C-9068-B1F6D950683C}.Debug|Win32.Build.0 = Debug|Win32
+		{5A8DCBB3-E129-412C-9068-B1F6D950683C}.Release|Win32.ActiveCfg = Release|Win32
+		{5A8DCBB3-E129-412C-9068-B1F6D950683C}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

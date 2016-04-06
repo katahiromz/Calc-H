@@ -3,7 +3,7 @@
 // See file "ReadMe.txt" and "License.txt".
 /////////////////////////////////////////////////////////////////////////////
 
-#include "PmpNumber.hpp"
+#include "stdafx.h"
 
 namespace pmp
 {
