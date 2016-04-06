@@ -18,6 +18,7 @@ size_t              ch_history_count = 0;
 
 // voice
 shared_ptr<WinVoice> ch_voice;
+BOOL ch_mute = FALSE;
 
 // mute
 HBITMAP ch_hbmMute = NULL;
@@ -171,35 +172,104 @@ void ChAddOutput(HWND hwnd, const char *text)
     ::SendDlgItemMessageA(hwnd, edt1, WM_SETREDRAW, TRUE, 0);
 }
 
+BOOL ChLoadSettings(VOID) {
+    LONG result;
+    HKEY hKey;
+    ch_mute = FALSE;
+    result = ::RegOpenKeyExA(HKEY_CURRENT_USER,
+        "SOFTWARE\\Katayama Hirofumi MZ\\Calc-H", 0, KEY_READ, &hKey);
+    if (result == ERROR_SUCCESS) {
+        DWORD dwValue;
+        DWORD dwSize = sizeof(DWORD);
+        dwValue = 0;
+        result = ::RegQueryValueExA(hKey, "Mute", NULL, NULL,
+            (LPBYTE)&dwValue, &dwSize);
+        if (result == ERROR_SUCCESS) {
+            ch_mute = dwValue;
+        }
+        ::RegCloseKey(hKey);
+        return TRUE;
+    }
+    return FALSE;
+}
+
+BOOL ChSaveSettings(VOID) {
+    LONG result;
+    HKEY hkeySoftware, hkeyCompany, hkeyApp;
+    DWORD dwDisp;
+    result = ::RegOpenKeyExA(
+        HKEY_CURRENT_USER, "SOFTWARE", 0, KEY_READ, &hkeySoftware);
+    if (result == ERROR_SUCCESS) {
+        result = ::RegCreateKeyExA(hkeySoftware,
+            "Katayama Hirofumi MZ", 0, NULL, 0, KEY_WRITE, NULL,
+            &hkeyCompany, &dwDisp);
+        if (result == ERROR_SUCCESS) {
+            result = ::RegCreateKeyExA(hkeyCompany,
+                "Calc-H", 0, NULL, 0, KEY_WRITE, NULL,
+                &hkeyApp, &dwDisp);
+            if (result == ERROR_SUCCESS) {
+                DWORD dwValue = ch_mute;
+                result = ::RegSetValueExA(hkeyApp, "Mute", 0, REG_DWORD,
+                    (LPBYTE)&dwValue, sizeof(DWORD));
+                ::RegCloseKey(hkeyApp);
+            }
+            ::RegCloseKey(hkeyCompany);
+        }
+        ::RegCloseKey(hkeySoftware);
+    }
+    return result == ERROR_SUCCESS;
+}
+
+VOID ChSetMute(BOOL bMute) {
+    if (ch_voice && ch_voice->IsAvailable()) {
+        ch_voice->SetMute(!!bMute);
+    }
+    ch_mute = !!bMute;
+    HBITMAP hbm;
+    if (bMute) {
+        hbm = ch_hbmMute;
+    } else {
+        hbm = ch_hbmMuteOff;
+    }
+    SendDlgItemMessageA(
+        ch_hMainWnd, psh1, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hbm);
+    if (bMute) {
+        SendDlgItemMessageA(
+            ch_hMainWnd, psh1, BM_SETCHECK, BST_CHECKED, 0);
+    } else {
+        SendDlgItemMessageA(
+            ch_hMainWnd, psh1, BM_SETCHECK, BST_UNCHECKED, 0);
+    }
+}
+
 BOOL ChOnInitDialog(HWND hwnd)
 {
     ch_hMainWnd = hwnd;
+
+    ch_hbmMute = LoadBitmap(ch_hInstance, MAKEINTRESOURCE(100));
+    ch_hbmMuteOff = LoadBitmap(ch_hInstance, MAKEINTRESOURCE(101));
+
+    ChLoadSettings();
+    ChSetMute(ch_mute);
 
     std::string contents;
     contents += ch_logo;
     contents += "\n";
     contents += ch_feature;
-    if (ch_voice && ch_voice->IsAvailable()) {
-        ch_voice->Speak(ch_feature);
-    }
     ChAddOutput(hwnd, contents.c_str());
-
+    if (!ch_mute) {
+        if (ch_voice && ch_voice->IsAvailable()) {
+            ch_voice->Speak(ch_feature);
+        }
+    }
+    
     ch_resizable.OnParentCreate(hwnd, TRUE);
     ch_resizable.SetLayoutAnchor(edt1, mzcLA_TOP_LEFT, mzcLA_BOTTOM_RIGHT);
     ch_resizable.SetLayoutAnchor(stc1, mzcLA_BOTTOM_LEFT);
     ch_resizable.SetLayoutAnchor(edt2, mzcLA_BOTTOM_LEFT, mzcLA_BOTTOM_RIGHT);
     ch_resizable.SetLayoutAnchor(IDOK, mzcLA_BOTTOM_RIGHT);
     ch_resizable.SetLayoutAnchor(psh1, mzcLA_BOTTOM_LEFT);
-
-    ch_hbmMute = LoadBitmap(ch_hInstance, MAKEINTRESOURCE(100));
-    ch_hbmMuteOff = LoadBitmap(ch_hInstance, MAKEINTRESOURCE(101));
-    HBITMAP hbm;
-    if (ch_voice->IsMute()) {
-        hbm = ch_hbmMute;
-    } else {
-        hbm = ch_hbmMuteOff;
-    }
-    SendDlgItemMessageA(hwnd, psh1, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hbm);
+    
 
     HICON hIcon;
     hIcon = ::LoadIcon(ch_hInstance, MAKEINTRESOURCE(1));
@@ -239,7 +309,6 @@ void ChOnExit(HWND hwnd)
     ch_fnOldEditWndProc = NULL;
 }
 
-
 unsigned __stdcall CalcThreadProc(void *p)
 {
     HWND hwnd = reinterpret_cast<HWND>(p);
@@ -266,9 +335,7 @@ unsigned __stdcall CalcThreadProc(void *p)
         query.find("みゅーとかいじょ") != std::string::npos ||
         query.find("みゅーとをかいじょ") != std::string::npos)
     {
-        if (ch_voice && ch_voice->IsAvailable()) {
-            ch_voice->SetMute(FALSE);
-        }
+        ChSetMute(FALSE);
         result = "こたえ：みゅーとをかいじょしました。";
     } else if (query.find("だまれ") != std::string::npos ||
         query.find("しずかに") != std::string::npos ||
@@ -277,9 +344,7 @@ unsigned __stdcall CalcThreadProc(void *p)
         query.find("しょうおん") != std::string::npos ||
         query.find("みゅーと") != std::string::npos)
     {
-        if (ch_voice && ch_voice->IsAvailable()) {
-            ch_voice->SetMute(TRUE);
-        }
+        ChSetMute(TRUE);
         result = "こたえ：みゅーとしました。";
     } else {
         result = ChJustDoIt(query);
@@ -377,22 +442,13 @@ ChDialogProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
         case IDCANCEL:
             ChOnExit(hwnd);
+            ChSaveSettings();
             ::EndDialog(hwnd, IDCANCEL);
             break;
 
         case psh1:
             if (HIWORD(wParam) == BN_CLICKED) {
-                if (ch_voice && ch_voice->IsAvailable()) {
-                    if (ch_voice->IsMute()) {
-                        ch_voice->SetMute(FALSE);
-                        SendDlgItemMessageA(hwnd, psh1, BM_SETIMAGE,
-                            IMAGE_BITMAP, (LPARAM)ch_hbmMuteOff);
-                    } else {
-                        ch_voice->SetMute(TRUE);
-                        SendDlgItemMessageA(hwnd, psh1, BM_SETIMAGE,
-                            IMAGE_BITMAP, (LPARAM)ch_hbmMute);
-                    }
-                }
+                ChSetMute(!ch_mute);
             }
         }
         break;
