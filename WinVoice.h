@@ -57,7 +57,7 @@ public:
         if (on) {
             m_voice->Speak(L"", SPF_PURGEBEFORESPEAK, NULL);
         }
-        m_mute = on;
+        m_mute = !!on;
     }
     bool IsMute() const { return m_mute; }
 
