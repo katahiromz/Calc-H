@@ -20,23 +20,8 @@
 /////////////////////////////////////////////////////////////////////////////
 // smart pointers
 
-#ifndef shared_ptr
-    #if (__cplusplus >= 201103L)
-        #include <memory>
-        using std::shared_ptr;
-        using std::static_pointer_cast;
-        using std::dynamic_pointer_cast;
-        using std::make_shared;
-    #else
-        #include <boost/shared_ptr.hpp>
-        #include <boost/make_shared.hpp>
-        using boost::shared_ptr;
-        using boost::static_pointer_cast;
-        using boost::dynamic_pointer_cast;
-        using boost::make_shared;
-    #endif
-    #define shared_ptr shared_ptr
-#endif
+#include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
 // Boost.Multiprecision
@@ -709,7 +694,7 @@ namespace pmp
             }
         }; // struct Inner
 
-        shared_ptr<Inner> m_inner;
+        boost::shared_ptr<Inner> m_inner;
     }; // class Number
 
     #ifdef PMP_INTDIV_INTEGER

@@ -29,7 +29,7 @@ namespace pmp
 namespace pmp
 {
     Number::Number(Type type, const std::string& str) :
-        m_inner(shared_ptr<Inner>(new Inner(type, str)))
+        m_inner(boost::shared_ptr<Inner>(new Inner(type, str)))
     {
     }
 
@@ -38,7 +38,7 @@ namespace pmp
 #ifndef PMP_DISABLE_VECTOR
         if (str.find(',') != std::string::npos)
         {
-            m_inner = shared_ptr<Inner>(new Inner(VECTOR, str));
+            m_inner = boost::shared_ptr<Inner>(new Inner(VECTOR, str));
         }
         else
 #endif
@@ -46,15 +46,15 @@ namespace pmp
             str.find("e+") != std::string::npos ||
             str.find("e-") != std::string::npos)
         {
-            m_inner = shared_ptr<Inner>(new Inner(FLOATING, str));
+            m_inner = boost::shared_ptr<Inner>(new Inner(FLOATING, str));
         }
         else if (str.find("/") != std::string::npos)
         {
-            m_inner = shared_ptr<Inner>(new Inner(RATIONAL, str));
+            m_inner = boost::shared_ptr<Inner>(new Inner(RATIONAL, str));
         }
         else
         {
-            m_inner = shared_ptr<Inner>(new Inner(INTEGER, str));
+            m_inner = boost::shared_ptr<Inner>(new Inner(INTEGER, str));
         }
     }
 
