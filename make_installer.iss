@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{1A516438-9674-40B5-AE5A-D17756F3CABD}
 AppName=ひらがな電卓 Calc-H
-AppVerName=ひらがな電卓 Calc-H 0.8.7
+AppVerName=ひらがな電卓 Calc-H 0.8.8
 AppPublisher=片山博文MZ
 AppPublisherURL=http://katahiromz.web.fc2.com/
 AppSupportURL=http://katahiromz.web.fc2.com/
@@ -17,7 +17,7 @@ DefaultGroupName=ひらがな電卓 Calc-H
 AllowNoIcons=yes
 LicenseFile=License.txt
 OutputDir=.
-OutputBaseFilename=calch-0.8.7-setup
+OutputBaseFilename=calch-0.8.8-setup
 SetupIconFile=Calc-H.ico
 Compression=lzma
 SolidCompression=yes
