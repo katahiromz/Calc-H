@@ -6,6 +6,8 @@
 #ifndef HPARSERSITE_H_
 #define HPARSERSITE_H_
 
+#include "Location.h"
+
 namespace Calc_H
 {
     //
@@ -4013,8 +4015,7 @@ namespace Calc_H
 
         void not_supported_yet(const std::string& str)
         {
-            message(std::string("エラー: ") + str +
-                    " {は/わ}まだサポートされていません。");
+            message(ch_error_colon + str + ch_not_supported_yet);
         }
 
               std::string& error()       { return m_error; }

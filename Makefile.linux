@@ -4,19 +4,20 @@
 DOTEXE = 
 DOTOBJ = .o
 
-CXX = clang++
+CXX = g++
+ICONV = iconv
 
 BOOST_DIR = .
 #BOOST_DIR = /c/local/boost_1_55_0
 
-DEFS = -std=c++0x -static -Wall -pedantic -D_SJIS -finput-charset=CP932 -fexec-charset=CP932
-#DEFS = -std=c++0x -static -Wall -pedantic -D_UTF8
+DEFS = -std=c++0x -static -Wall -pedantic -D_UTF8  -finput-charset=UTF-8 -fexec-charset=UTF-8
+DEFS2 = -DUSE_GTKMM `pkg-config gtkmm-2.4 --cflags`
 
 INCLUDES = -I$(BOOST_DIR)
 
-CXXFLAGS = $(DEFS) $(INCLUDES) -O9 -Ofast -DNDEBUG `pkg-config gtkmm-2.4 --cflags`
-#CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG `pkg-config gtkmm-2.4 --cflags`
-#CXXFLAGS = $(DEFS) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG -DDEEPDEBUG `pkg-config gtkmm-2.4 --cflags`
+CXXFLAGS = $(DEFS) $(DEFS2) $(INCLUDES) -O9 -Ofast -DNDEBUG
+#CXXFLAGS = $(DEFS) $(DEFS2) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG
+#CXXFLAGS = $(DEFS) $(DEFS2) $(INCLUDES) -O0 -g -ggdb -DDEBUG -D_DEBUG -DDEEPDEBUG
 
 CAPER = ./caper$(DOTEXE)
 
@@ -26,14 +27,14 @@ HEADERS = \
 	HParser.h \
 	HParserAST.h \
 	HParserSite.h \
-	HScanner.h \
+	HScanner-UTF8.h \
 	Location.h \
 	stdafx.h \
 
 PRECOMPILED_HEADER = stdafx.h.gch
 
 COMMON_OBJS = \
-	Calc-H$(DOTOBJ) \
+	Calc-H-UTF8$(DOTOBJ) \
 	Ndrr1D$(DOTOBJ) \
 	PmpNumber$(DOTOBJ) \
 
@@ -53,15 +54,15 @@ CUI_LIBS =
 
 all: Calc-H-CUI$(DOTEXE) Calc-H-GUI$(DOTEXE)
 
-Calc-H-CUI$(DOTEXE): $(COMMON_OBJS) console$(DOTOBJ)
+Calc-H-CUI$(DOTEXE): $(CUI_OBJS)
 	$(CXX) $(CXXFLAGS) -mconsole -o Calc-H-CUI$(DOTEXE) $(CUI_OBJS) $(CUI_LIBS)
 	strip -s Calc-H-CUI$(DOTEXE)
-Calc-H-GUI$(DOTEXE): $(GUI_OBJS) $(GUI_HEADERS)
+Calc-H-GUI$(DOTEXE): $(GUI_OBJS)
 	$(CXX) $(CXXFLAGS) -o Calc-H-GUI$(DOTEXE) $(GUI_OBJS) $(GUI_LIBS)
 	strip -s Calc-H-GUI$(DOTEXE)
 
-Calc-H$(DOTOBJ): $(PRECOMPILED_HEADER) Calc-H.cpp
-	$(CXX) -c $(CXXFLAGS) Calc-H.cpp
+Calc-H-UTF8$(DOTOBJ): $(PRECOMPILED_HEADER) Calc-H-UTF8.cpp
+	$(CXX) -c $(CXXFLAGS) Calc-H-UTF8.cpp
 PmpNumber$(DOTOBJ): $(PRECOMPILED_HEADER) PmpNumber.cpp
 	$(CXX) -c $(CXXFLAGS) PmpNumber.cpp
 Ndrr1D$(DOTOBJ): $(PRECOMPILED_HEADER) Ndrr1D.cpp
@@ -73,6 +74,11 @@ linux$(DOTOBJ): $(PRECOMPILED_HEADER) linux.cpp
 
 HParser.h: $(CAPER) HParser.cpg
 	$(CAPER) HParser.cpg HParser.h >caper.log 2>&1
+
+Calc-H-UTF8.cpp: Calc-H.cpp
+	$(ICONV) --from-code=SJIS --to-code=UTF-8 Calc-H.cpp > Calc-H-UTF8.cpp
+HScanner-UTF8.h: HScanner.h
+	$(ICONV) --from-code=SJIS --to-code=UTF-8 HScanner.h > HScanner-UTF8.h
 
 $(PRECOMPILED_HEADER): $(HEADERS)
 	$(CXX) -c $(CXXFLAGS) -o $(PRECOMPILED_HEADER) stdafx.h

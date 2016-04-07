@@ -2,21 +2,13 @@
 // console.cpp -- Hiragana Calculator Calc-H
 // This file is part of Calc-H.  See file "ReadMe.txt" and "License.txt".
 ////////////////////////////////////////////////////////////////////////////
-// (Japanese, Shift_JIS)
 #include "stdafx.h"
 
 ////////////////////////////////////////////////////////////////////////////
 
 void ChShowHelp(void)
 {
-    std::cout <<
-    "Calc-H-CUI --- ひらがな電卓Calc-H (CUI)\n"
-    "使い方: Calc-H-CUI.exe [\"入力ファイル\" | -e \"けいさんしき\"]\n"
-    "オプション:\n"
-    "   -e \"けいさんしき\"     式を計算した結果を表示する。\n"
-    "   --help                このメッセージを表示する。\n"
-    "   --version             バージョン情報を表示する。\n" <<
-    std::endl;
+    std::cout << ch_cui_help << std::endl;
 }
 
 void ChShowVersion(void)
@@ -35,12 +27,11 @@ int main(int argc, char **argv)
     {
         ChShowVersion();
 
-        std::cerr << "「exit」か「おわる」でしゅうりょうできます。" <<
-            std::endl << std::endl;
+        std::cerr << ch_type_exit_to_quit << std::endl;
 
         for (;;)
         {
-            std::cout << "にゅうりょく：";
+            std::cout << ch_do_input;
 
             if (!std::getline(std::cin, query))
                 break;
@@ -48,7 +39,7 @@ int main(int argc, char **argv)
             std::string result = ChJustDoIt(query);
             std::cout << result << std::endl;
 
-            if (result.find("しゅうりょうします") != std::string::npos)
+            if (result.find(ch_quitting) != std::string::npos)
                 break;
         }
         return 0;
@@ -86,7 +77,7 @@ int main(int argc, char **argv)
 
     if (argc != 2)
     {
-        std::cout << "エラー：引数の指定が間違っています。" << std::endl;
+        std::cout << ch_error_num_of_args << std::endl;
         ChShowHelp();
         return 1;
     }
@@ -104,17 +95,17 @@ int main(int argc, char **argv)
             std::string result = ChJustDoIt(query);
             if (!result.empty())
             {
-                std::cout << "にゅうりょく：" << input << std::endl;
+                std::cout << ch_do_input << input << std::endl;
                 std::cout << result << std::endl;
             }
 
-            if (result.find("しゅうりょうします") != std::string::npos)
+            if (result.find(ch_quitting) != std::string::npos)
                 break;
         }
     }
     else
     {
-        std::cerr << "ファイル「" << argv[1] << "」が開けませんでした。" <<
+        std::cerr << ch_file_paren << argv[1] << ch_paren_cannot_open <<
                      std::endl;
     }
 

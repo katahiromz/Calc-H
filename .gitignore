@@ -20,3 +20,5 @@ HParser.h
 Calc-H-GUI
 Calc-H-CUI
 stdafx.h.gch
+Calc-H-UTF8.cpp
+HScanner-UTF8.h

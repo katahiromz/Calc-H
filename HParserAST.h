@@ -6,6 +6,8 @@
 #ifndef HPARSER_AST_H_
 #define HPARSER_AST_H_
 
+#include "Location.h"
+
 namespace Calc_H
 {
     struct Node;

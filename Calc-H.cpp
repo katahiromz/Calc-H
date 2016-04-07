@@ -2,14 +2,16 @@
 // Calc-H.cpp -- Hiragana Calculator Calc-H
 // This file is part of Calc-H.  See file "ReadMe.txt" and "License.txt".
 ////////////////////////////////////////////////////////////////////////////
-// (Japanese, Shift_JIS)
-// Linuxの場合は、UTF-8に変換して下さい。
 
 #include "stdafx.h"
 
 #include "HParserAST.h"     // for Calc_H::Node, Calc_H::TokenInfo
 #include "HParser.h"        // for Calc_H::Parser
-#include "HScanner.h"       // for Calc_H::Scanner
+#ifdef USE_GTKMM
+    #include "HScanner-UTF8.h"  // for Calc_H::Scanner
+#else
+    #include "HScanner.h"   // for Calc_H::Scanner
+#endif
 #include "HParserSite.h"    // for Calc_H::ParserSite
 
 namespace Calc_H
@@ -24,6 +26,37 @@ namespace Calc_H
         "ご", "ろく", "なな", "はち", "きゅう"
     };
 }
+
+std::string ch_cui_help =
+    "Calc-H-CUI --- ひらがな電卓Calc-H (CUI)\n"
+    "使い方: Calc-H-CUI.exe [\"入力ファイル\" | -e \"けいさんしき\"]\n"
+    "オプション:\n"
+    "   -e \"けいさんしき\"     式を計算した結果を表示する。\n"
+    "   --help                このメッセージを表示する。\n"
+    "   --version             バージョン情報を表示する。\n";
+
+std::string ch_logo =
+    "       +--------------------------------+\n"
+    "       |  ひらがな電卓 Calc-H ver.0.8.8 |\n"
+    "       |   by 片山博文MZ (katahiromz)   |\n"
+    "       | http://katahiromz.web.fc2.com/ |\n"
+    "       | katayama.hirofumi.mz@gmail.com |\n"
+    "       +--------------------------------+\n";
+
+std::string ch_feature =
+    "しんきのう：こえがでるようになりました。\n";
+
+std::string ch_type_exit_to_quit =
+    "「exit」か「おわる」でしゅうりょうできます。\n";
+
+std::string ch_do_input = "にゅうりょく：";
+std::string ch_quitting = "しゅうりょうします";
+std::string ch_error_num_of_args = "エラー：引数の指定が間違っています。";
+std::string ch_file_paren = "ファイル「";
+std::string ch_paren_cannot_open = "」が開けませんでした。";
+std::string ch_error_colon = "エラー: ";
+std::string ch_not_supported_yet =
+    " {は/わ}まだサポートされていません。";
 
 template <class Iterator>
 bool ChScan(
