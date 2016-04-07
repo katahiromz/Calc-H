@@ -1590,7 +1590,7 @@ namespace Calc_H
             if (ch == EOF)
                 return commit_token(eof);
 
-            message("‚±‚Æ‚Î‚ª‚í‚©‚è‚Ü‚¹‚ñB");
+            message("‚¢‚İ‚ª‚í‚©‚è‚Ü‚¹‚ñB");
 
             return commit_token(eof);
         }   // get_token

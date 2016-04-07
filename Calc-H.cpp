@@ -78,7 +78,7 @@ bool ChParse(
                 if (parser.error())
                 {
                     ps.location() = it->location();
-                    ps.message("ことばがわかりません。");
+                    ps.message("いみがわかりません。");
                 }
                 break;
             }
@@ -7226,7 +7226,7 @@ std::string ChJustDoIt(std::string& query)
             case T_ETTO:
                 s_query_prev = query;
                 s_time = time(NULL);
-                return "";  // retry
+                return "こたえ：なんですか。\n";  // retry
 
             default:
                 break;
