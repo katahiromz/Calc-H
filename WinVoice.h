@@ -23,6 +23,8 @@ public:
         m_available = SUCCEEDED(hr);
         if (m_available) {
             hr = m_voice->SetOutput(NULL, TRUE);
+            hr = m_voice->SetVolume(100);
+            hr = hr;
         }
         m_mute = false;
     }
