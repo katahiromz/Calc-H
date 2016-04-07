@@ -259,8 +259,9 @@ BOOL ChOnInitDialog(HWND hwnd)
 
     std::string contents;
     contents += ch_logo;
-    contents += "\n";
+    contents += '\n';
     contents += ch_feature;
+    contents += '\n';
     ChAddOutput(hwnd, contents.c_str());
     if (!ch_mute) {
         if (ch_voice && ch_voice->IsAvailable()) {
