@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #ifndef ATLBASEFAKE_H
-#define ATLBASEFAKE_H     1   // Version 1
+#define ATLBASEFAKE_H     2   // Version 2
 
 #ifndef __cplusplus
   #error C++ compiler was not enabled. Use .cpp or .cc extension. You lose.
@@ -421,8 +421,8 @@
 
   // conversion
   namespace atlbasefake {
-    class A2W {
-      A2W(const char *psz) {
+    class CA2WEX {
+      CA2WEX(const char *psz) {
         int len = ::MultiByteToWideChar(CP_ACP, 0, psz, -1, NULL, 0);
         m_wide.resize(len);
         ::MultiByteToWideChar(CP_ACP, 0, psz, -1, &m_wide[0], len);
@@ -430,12 +430,19 @@
       operator       WCHAR*()       { return &m_wide[0]; }
       operator const WCHAR*() const { return m_wide.c_str(); }
 
+      WCHAR *data()              { return &m_wide[0]; }
+      const WCHAR *c_str() const { return m_wide.c_str(); }
+
     protected:
       std::wstring m_wide;
+
+    private:
+      CA2WEX(const CA2WEX&);
+      CA2WEX& operator=(const CA2WEX&);
     };
 
-    class W2A {
-      W2A(const WCHAR *psz) {
+    class CW2AEX {
+      CW2AEX(const WCHAR *psz) {
         int len = ::WideCharToMultiByte(CP_ACP, 0, psz, -1, NULL, 0,
                                         NULL, NULL);
         m_ansi.resize(len);
@@ -445,14 +452,23 @@
       operator       char*()       { return &m_ansi[0]; }
       operator const char*() const { return m_ansi.c_str(); }
 
+      char *data()              { return &m_ansi[0]; }
+      const char *c_str() const { return m_ansi.c_str(); }
+
     protected:
       std::string m_ansi;
+
+    private:
+      CW2AEX(const CW2AEX&);
+      CW2AEX& operator=(const CW2AEX&);
     };
   } // namespace atlbasefake
 
   #define USES_CONVERSION using namespace atlbasefake
   #define A2A(ansi) (ansi)
   #define W2W(wide) (wide)
+  #define A2W(ansi) CA2WEX(ansi).data()
+  #define W2A(wide) CW2AEX(wide).data()
   #ifdef UNICODE
     #define A2T A2W
     #define W2T W2W
