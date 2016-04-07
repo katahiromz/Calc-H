@@ -57,4 +57,3 @@ Name: "{commondesktop}\‚Ð‚ç‚ª‚È“d‘ì Calc-H (CUI)"; Filename: "{app}\Calc-H-CUI.e
 
 [Run]
 Filename: "{app}\Calc-H-GUI.exe"; Description: "{cm:LaunchProgram,‚Ð‚ç‚ª‚È“d‘ì Calc-H}"; Flags: nowait postinstall skipifsilent
-
