@@ -269,7 +269,7 @@ BOOL ChOnInitDialog(HWND hwnd)
     ch_resizable.SetLayoutAnchor(edt2, mzcLA_BOTTOM_LEFT, mzcLA_BOTTOM_RIGHT);
     ch_resizable.SetLayoutAnchor(IDOK, mzcLA_BOTTOM_RIGHT);
     ch_resizable.SetLayoutAnchor(psh1, mzcLA_BOTTOM_LEFT);
-    
+    ch_resizable.SetLayoutAnchor(psh2, mzcLA_BOTTOM_LEFT);
 
     HICON hIcon;
     hIcon = ::LoadIcon(ch_hInstance, MAKEINTRESOURCE(1));
@@ -336,7 +336,7 @@ unsigned __stdcall CalcThreadProc(void *p)
         query.find("みゅーとをかいじょ") != std::string::npos)
     {
         ChSetMute(FALSE);
-        result = "こたえ：みゅーとをかいじょしました。";
+        result = "こたえ：みゅーとをかいじょしました。\n";
     } else if (query.find("だまれ") != std::string::npos ||
         query.find("しずかに") != std::string::npos ||
         query.find("おとをけ") != std::string::npos ||
@@ -345,7 +345,7 @@ unsigned __stdcall CalcThreadProc(void *p)
         query.find("みゅーと") != std::string::npos)
     {
         ChSetMute(TRUE);
-        result = "こたえ：みゅーとしました。";
+        result = "こたえ：みゅーとしました。\n";
     } else {
         result = ChJustDoIt(query);
     }
