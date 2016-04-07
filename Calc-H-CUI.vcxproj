@@ -101,10 +101,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="WinVoice.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="atlbasefake.h" />
     <ClInclude Include="Calc-H.h" />
     <ClInclude Include="HParserAST.h" />
     <ClInclude Include="HParserSite.h" />
@@ -113,7 +111,6 @@
     <ClInclude Include="Ndrr1D.hpp" />
     <ClInclude Include="PmpNumber.hpp" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="WinVoice.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Calc-H-CUI.rc" />
