@@ -310,7 +310,6 @@ namespace Calc_H
             if (lexeme("わからんの"))                       return set_info(info, T_WAKARAN);
             if (lexeme("わからんと"))                       return set_info(info, T_WAKARAN);
             if (lexeme("わからん"))                         return set_info(info, T_WAKARAN);
-            if (lexeme("わからへんん"))                     return set_info(info, T_WAKARAN);
             if (lexeme("わからへんの"))                     return set_info(info, T_WAKARAN);
             if (lexeme("わからへん"))                       return set_info(info, T_WAKARAN);
             if (lexeme("わからねーの"))                     return set_info(info, T_WAKARAN);
@@ -415,7 +414,6 @@ namespace Calc_H
             if (lexeme("むっ"))                             return set_info(info, T_ROKU);
             if (lexeme("むう"))                             return set_info(info, T_ROKU);
             if (lexeme("む"))                               return set_info(info, T_ROKU);
-            if (lexeme("みー"))                             return set_info(info, T_SAN);
             if (lexeme("みー"))                             return set_info(info, T_KURE);
             if (lexeme("みんな"))                           return set_info(info, T_ALL);
             if (lexeme("みろ"))                             return set_info(info, T_KURE);
@@ -425,10 +423,8 @@ namespace Calc_H
             if (lexeme("みっ"))                             return set_info(info, T_SAN);
             if (lexeme("みたまへ"))                         return set_info(info, T_KURE);
             if (lexeme("みたまえ"))                         return set_info(info, T_KURE);
-            if (lexeme("みい"))                             return set_info(info, T_SAN);
             if (lexeme("みい"))                             return set_info(info, T_KURE);
             if (lexeme("みぃ"))                             return set_info(info, T_KURE);
-            if (lexeme("み"))                               return set_info(info, T_SAN);
             if (lexeme("み"))                               return set_info(info, T_KURE);
             if (lexeme("まん"))                             return set_info(info, T_MAN);
             if (lexeme("まで"))                             return set_info(info, T_MADE);
@@ -1428,8 +1424,12 @@ namespace Calc_H
             if (lexeme("いっ"))                             return set_info(info, T_ICHI);
             if (lexeme("いちばんちいさいもの"))             return set_info(info, T_MIN);
             if (lexeme("いちばんちいさいかず"))             return set_info(info, T_MIN);
+            if (lexeme("いちばんおーきーもの"))             return set_info(info, T_MAX);
+            if (lexeme("いちばんおーきーかず"))             return set_info(info, T_MAX);
             if (lexeme("いちばんおおきーもの"))             return set_info(info, T_MAX);
             if (lexeme("いちばんおおきーかず"))             return set_info(info, T_MAX);
+            if (lexeme("いちばんおーきいもの"))             return set_info(info, T_MAX);
+            if (lexeme("いちばんおーきいかず"))             return set_info(info, T_MAX);
             if (lexeme("いちばんおおきいもの"))             return set_info(info, T_MAX);
             if (lexeme("いちばんおおきいかず"))             return set_info(info, T_MAX);
             if (lexeme("いち"))                             return set_info(info, T_ICHI);
