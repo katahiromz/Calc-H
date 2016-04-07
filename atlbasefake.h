@@ -3,8 +3,8 @@
 // This file is public domain software (PDS). Use it at your own risk.
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef ATLBASEFAKE_H
-#define ATLBASEFAKE_H     2   // Version 2
+#ifndef ATLBASEFAKE_H_
+#define ATLBASEFAKE_H_     2   // Version 2
 
 #ifndef __cplusplus
   #error C++ compiler was not enabled. Use .cpp or .cc extension. You lose.
@@ -486,6 +486,6 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-#endif  // ndef ATLBASEFAKE_H
+#endif  // ndef ATLBASEFAKE_H_
 
 //////////////////////////////////////////////////////////////////////////////
