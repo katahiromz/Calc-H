@@ -1,7 +1,7 @@
 # Makefile.linux --- Makefile for linux
 # Usage: make -f Makefile.linux
 
-DOTEXE = 
+DOTEXE =
 DOTOBJ = .o
 
 CXX = g++
@@ -10,7 +10,7 @@ ICONV = iconv
 BOOST_DIR = .
 #BOOST_DIR = /c/local/boost_1_55_0
 
-DEFS = -std=c++0x -static -Wall -pedantic -D_UTF8  -finput-charset=UTF-8 -fexec-charset=UTF-8
+DEFS = -std=c++11 -Wall -pedantic -D_UTF8 -finput-charset=UTF-8 -fexec-charset=UTF-8
 DEFS2 = -DUSE_GTKMM `pkg-config gtkmm-2.4 --cflags`
 
 INCLUDES = -I$(BOOST_DIR)
@@ -50,12 +50,12 @@ GUI_HEADERS = \
 	stdafx.h \
 
 GUI_LIBS = `pkg-config gtkmm-2.4 --libs`
-CUI_LIBS = 
+CUI_LIBS = `pkg-config gtkmm-2.4 --libs`
 
 all: Calc-H-CUI$(DOTEXE) Calc-H-GUI$(DOTEXE)
 
 Calc-H-CUI$(DOTEXE): $(CUI_OBJS)
-	$(CXX) $(CXXFLAGS) -mconsole -o Calc-H-CUI$(DOTEXE) $(CUI_OBJS) $(CUI_LIBS)
+	$(CXX) $(CXXFLAGS) -o Calc-H-CUI$(DOTEXE) $(CUI_OBJS) $(CUI_LIBS)
 	strip -s Calc-H-CUI$(DOTEXE)
 Calc-H-GUI$(DOTEXE): $(GUI_OBJS)
 	$(CXX) $(CXXFLAGS) -o Calc-H-GUI$(DOTEXE) $(GUI_OBJS) $(GUI_LIBS)
@@ -76,9 +76,9 @@ HParser.h: $(CAPER) HParser.cpg
 	$(CAPER) HParser.cpg HParser.h >caper.log 2>&1
 
 Calc-H-UTF8.cpp: Calc-H.cpp
-	$(ICONV) --from-code=SJIS --to-code=UTF-8 Calc-H.cpp > Calc-H-UTF8.cpp
+	$(ICONV) --from-code=CP932 --to-code=UTF-8 Calc-H.cpp > Calc-H-UTF8.cpp
 HScanner-UTF8.h: HScanner.h
-	$(ICONV) --from-code=SJIS --to-code=UTF-8 HScanner.h > HScanner-UTF8.h
+	$(ICONV) --from-code=CP932 --to-code=UTF-8 HScanner.h > HScanner-UTF8.h
 
 $(PRECOMPILED_HEADER): $(HEADERS)
 	$(CXX) -c $(CXXFLAGS) -o $(PRECOMPILED_HEADER) stdafx.h
