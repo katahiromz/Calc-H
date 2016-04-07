@@ -31,6 +31,7 @@
   #include <oleauto.h>  // for CoCreateInstance
   #include <unknwn.h>   // for IUnknown
   #include <cassert>    // for assert
+  #include <string>     // for std::string and std::wstring
 
   inline IUnknown* AtlComPtrAssign(IUnknown** pp, IUnknown* lp) {
     if (NULL == pp) return NULL;
@@ -416,6 +417,54 @@
     bool CComPtrBase<T>::IsEqualObject(std::nullptr_t) throw() {
       return NULL == p;
     }
+  #endif
+
+  // conversion
+  namespace atlbasefake {
+    class A2W {
+      A2W(const char *psz) {
+        int len = ::MultiByteToWideChar(CP_ACP, 0, psz, -1, NULL, 0);
+        m_wide.resize(len);
+        ::MultiByteToWideChar(CP_ACP, 0, psz, -1, &m_wide[0], len);
+      }
+      operator       WCHAR*()       { return &m_wide[0]; }
+      operator const WCHAR*() const { return m_wide.c_str(); }
+
+    protected:
+      std::wstring m_wide;
+    };
+
+    class W2A {
+      W2A(const WCHAR *psz) {
+        int len = ::WideCharToMultiByte(CP_ACP, 0, psz, -1, NULL, 0,
+                                        NULL, NULL);
+        m_ansi.resize(len);
+        ::WideCharToMultiByte(CP_ACP, 0, psz, -1,
+                              &m_ansi[0], len, NULL, NULL);
+      }
+      operator       char*()       { return &m_ansi[0]; }
+      operator const char*() const { return m_ansi.c_str(); }
+
+    protected:
+      std::string m_ansi;
+    };
+  } // namespace atlbasefake
+
+  #define USES_CONVERSION using namespace atlbasefake
+  #define A2A(ansi) (ansi)
+  #define W2W(wide) (wide)
+  #ifdef UNICODE
+    #define A2T A2W
+    #define W2T W2W
+    #define T2A W2A
+    #define T2W W2W
+    #define T2T W2W
+  #else
+    #define A2T A2A
+    #define W2T W2A
+    #define T2A A2A
+    #define T2W A2W
+    #define T2T A2A
   #endif
 #endif  // ndef NO_ATLBASEFAKE
 
