@@ -22,6 +22,13 @@ SetupIconFile=Calc-H.ico
 Compression=lzma
 SolidCompression=yes
 UninstallDisplayIcon={app}\Calc-H-GUI.exe
+VersionInfoCompany=片山博文MZ
+VersionInfoCopyright=Copyright (C) 2016 Katayama Hirofumi MZ.
+VersionInfoDescription=ひらがなで計算できる電卓
+VersionInfoProductName=ひらがな電卓Calc-H
+VersionInfoProductTextVersion=0.8.8
+VersionInfoProductVersion=0.8.8.0
+VersionInfoVersion=0.8.8.0
 
 [Languages]
 Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
