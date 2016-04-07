@@ -1,9 +1,8 @@
 (Japanese, Shift_JIS)
 
-Copyright (C) 2014 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>.
+Copyright (C) 2014-2016 Katayama Hirofumi MZ <katayama.hirofumi.mz@gmail.com>.
 
 このソフトは、フリーソフトウェアです。自己責任でご自由にお使い下さい。
-ただし、商品化の権利は、片山博文MZに属します。
 
 ---
 This software is free software. Use it freely at your own risk.
