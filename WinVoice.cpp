@@ -2,7 +2,7 @@
 // See ReadMe.txt and License.txt.
 ////////////////////////////////////////////////////////////////////////////
 
-#include "WinVoice.h"
+#include "stdafx.h"
 
 #ifdef WIN_VOICE_TEST
     int main(void) {

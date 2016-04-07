@@ -1,4 +1,4 @@
-# Makefile.msys --- Makefile for MSYS
+# Makefile.msys --- Makefile for msys
 # Usage: make -f Makefile.msys
 
 DOTEXE = .exe
@@ -29,20 +29,26 @@ HEADERS = \
 	HScanner.h \
 	Location.h \
 	stdafx.h \
-	Ndrr1D.hpp \
 	WinVoice.h \
+
+PRECOMPILED_HEADER = stdafx.h.gch
 
 COMMON_OBJS = \
 	Calc-H$(DOTOBJ) \
-	PmpNumber$(DOTOBJ) \
 	Ndrr1D$(DOTOBJ) \
+	PmpNumber$(DOTOBJ) \
 
 GUI_OBJS = \
 	$(COMMON_OBJS) \
 	win$(DOTOBJ) \
 	PointSizeRect$(DOTOBJ) \
 	Resizable$(DOTOBJ) \
-	win_res$(DOTOBJ) \
+	Calc-H-GUI_res$(DOTOBJ) \
+
+CUI_OBJS = \
+	$(COMMON_OBJS) \
+	console$(DOTOBJ) \
+	Calc-H-CUI_res$(DOTOBJ) \
 
 GUI_HEADERS = \
 	stdafx.h \
@@ -51,41 +57,42 @@ GUI_HEADERS = \
 	Resizable.h \
 	Resizable_inl.h \
 
+GUI_LIBS = -lsapi -lole32
+CUI_LIBS = 
+
 all: Calc-H-CUI$(DOTEXE) Calc-H-GUI$(DOTEXE)
 
-Calc-H-CUI$(DOTEXE): $(COMMON_OBJS) console$(DOTOBJ)
-	$(CXX) -mconsole $(CXXFLAGS) -o Calc-H-CUI$(DOTEXE) $(COMMON_OBJS) console$(DOTOBJ)
+Calc-H-CUI$(DOTEXE): $(CUI_OBJS)
+	$(CXX) $(CXXFLAGS) -mconsole -o Calc-H-CUI$(DOTEXE) $(CUI_OBJS) $(CUI_LIBS)
 	strip -s Calc-H-CUI$(DOTEXE)
 Calc-H-GUI$(DOTEXE): $(GUI_OBJS) $(GUI_HEADERS)
-	$(CXX) -mwindows $(CXXFLAGS) -o Calc-H-GUI$(DOTEXE) $(GUI_OBJS) -lsapi -lole32
+	$(CXX) $(CXXFLAGS) -mwindows -o Calc-H-GUI$(DOTEXE) $(GUI_OBJS) $(GUI_LIBS)
 	strip -s Calc-H-GUI$(DOTEXE)
 
-Calc-H$(DOTOBJ): $(HEADERS) Calc-H.cpp
+Calc-H$(DOTOBJ): $(PRECOMPILED_HEADER) Calc-H.cpp
 	$(CXX) -c $(CXXFLAGS) Calc-H.cpp
-PmpNumber$(DOTOBJ): PmpNumber.hpp PmpNumber.cpp
+PmpNumber$(DOTOBJ): $(PRECOMPILED_HEADER) PmpNumber.hpp PmpNumber.cpp
 	$(CXX) -c $(CXXFLAGS) PmpNumber.cpp
-Ndrr1D$(DOTOBJ): Ndrr1D.hpp Ndrr1D.cpp
+Ndrr1D$(DOTOBJ): $(PRECOMPILED_HEADER) Ndrr1D.cpp
 	$(CXX) -c $(CXXFLAGS) Ndrr1D.cpp
-console$(DOTOBJ): stdafx.h console.cpp
+console$(DOTOBJ): $(PRECOMPILED_HEADER) console.cpp
 	$(CXX) -c $(CXXFLAGS) console.cpp
-win$(DOTOBJ): stdafx.h win.cpp
+win$(DOTOBJ): $(PRECOMPILED_HEADER) win.cpp
 	$(CXX) -c $(CXXFLAGS) win.cpp
-PointSizeRect$(DOTOBJ): stdafx.h PointSizeRect.cpp PointSizeRect.h PointSizeRect_inl.h
+PointSizeRect$(DOTOBJ): $(PRECOMPILED_HEADER) PointSizeRect.cpp
 	$(CXX) -c $(CXXFLAGS) PointSizeRect.cpp
-Resizable$(DOTOBJ): stdafx.h Resizable.cpp Resizable.h Resizable.h
+Resizable$(DOTOBJ): $(PRECOMPILED_HEADER) Resizable.cpp
 	$(CXX) -c $(CXXFLAGS) Resizable.cpp
-win_res$(DOTOBJ): win.rc
-	windres -i win.rc -o win_res$(DOTOBJ)
+Calc-H-CUI_res$(DOTOBJ): Calc-H-CUI.rc
+	windres -i Calc-H-CUI.rc -o Calc-H-CUI_res$(DOTOBJ)
+Calc-H-GUI_res$(DOTOBJ): Calc-H-GUI.rc
+	windres -i Calc-H-GUI.rc -o Calc-H-GUI_res$(DOTOBJ)
 
 HParser.h: $(CAPER) HParser.cpg
-	time $(CAPER) HParser.cpg HParser.h >caper.log 2>&1
+	$(CAPER) HParser.cpg HParser.h >caper.log 2>&1
 
-test: Calc-H-CUI$(DOTEXE) TestGen$(DOTEXE)
-	TestGen$(DOTEXE) >TestData.txt
-	Calc-H-CUI$(DOTEXE) TestData.txt >TestResult.txt
-
-TestGen$(DOTEXE): TestGen.cpp
-	$(CXX) -O3 -o TestGen$(DOTEXE) TestGen.cpp
+$(PRECOMPILED_HEADER): $(HEADERS)
+	$(CXX) -c $(CXXFLAGS) -o $(PRECOMPILED_HEADER) stdafx.h
 
 clean:
 	rm -f *$(DOTOBJ)

@@ -17,3 +17,6 @@ FTCHECK.BAT
 caper.log
 DomainTest
 HParser.h
+Calc-H-GUI
+Calc-H-CUI
+stdafx.h.gch
