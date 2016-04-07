@@ -251,6 +251,11 @@ BOOL ChOnInitDialog(HWND hwnd)
 
     ChLoadSettings();
     ChSetMute(ch_mute);
+    if (!ch_voice || !ch_voice->IsAvailable() || ch_voice->Speak("") != S_OK) {
+        std::string str;
+        str = "このパソコンでは音声出力は利用できません。";
+        ChAddOutput(hwnd, str.c_str());
+    }
 
     std::string contents;
     contents += ch_logo;
@@ -262,7 +267,7 @@ BOOL ChOnInitDialog(HWND hwnd)
             ch_voice->Speak(ch_feature);
         }
     }
-    
+
     ch_resizable.OnParentCreate(hwnd, TRUE);
     ch_resizable.SetLayoutAnchor(edt1, mzcLA_TOP_LEFT, mzcLA_BOTTOM_RIGHT);
     ch_resizable.SetLayoutAnchor(stc1, mzcLA_BOTTOM_LEFT);
